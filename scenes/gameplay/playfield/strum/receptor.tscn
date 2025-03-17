@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://cmgwmgu7ltg4g"]
 
 [ext_resource type="Script" uid="uid://bbf5a6cwe65vb" path="res://scenes/gameplay/playfield/strum/receptor.gd" id="1_k7yf3"]
-[ext_resource type="SpriteFrames" uid="uid://dleey3pestsf3" path="res://assets/game/playfield/notes/funkin/notes.xml" id="2_hhmwu"]
+[ext_resource type="SpriteFrames" path="res://assets/game/notetypes/funkin/notes.res" id="2_5mn6o"]
 
 [sub_resource type="Animation" id="Animation_gq5wj"]
 resource_name = "0 confirm"
@@ -551,7 +551,7 @@ _data = {
 script = ExtResource("1_k7yf3")
 
 [node name="sprite" type="AnimatedSprite2D" parent="."]
-sprite_frames = ExtResource("2_hhmwu")
+sprite_frames = ExtResource("2_5mn6o")
 animation = &"arrowDOWN"
 
 [node name="animation_player" type="AnimationPlayer" parent="."]

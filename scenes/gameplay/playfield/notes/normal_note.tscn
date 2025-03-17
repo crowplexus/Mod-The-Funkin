@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://gib0vewis1qh"]
 
 [ext_resource type="Script" uid="uid://ds4v6bqi66g6f" path="res://scenes/gameplay/playfield/notes/normal_note.gd" id="1_31kjc"]
-[ext_resource type="SpriteFrames" uid="uid://dleey3pestsf3" path="res://assets/game/playfield/notes/funkin/notes.xml" id="2_dxqt7"]
-[ext_resource type="SpriteFrames" uid="uid://bamkaphps7gkt" path="res://assets/game/playfield/notes/funkin/splashes.xml" id="3_8d3la"]
+[ext_resource type="SpriteFrames" path="res://assets/game/notetypes/funkin/notes.res" id="2_31kjc"]
+[ext_resource type="SpriteFrames" path="res://assets/game/notetypes/funkin/splashes.res" id="2_xg47h"]
 
 [sub_resource type="Animation" id="Animation_fer4d"]
 resource_name = "0"
@@ -173,7 +173,7 @@ offset_bottom = 810.0
 position = Vector2(26, 0)
 
 [node name="arrow" type="AnimatedSprite2D" parent="."]
-sprite_frames = ExtResource("2_dxqt7")
+sprite_frames = ExtResource("2_31kjc")
 animation = &"arrowDOWN"
 
 [node name="animation_player" type="AnimationPlayer" parent="."]
@@ -184,5 +184,5 @@ libraries = {
 [node name="splash" type="AnimatedSprite2D" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0.6)
-sprite_frames = ExtResource("3_8d3la")
-animation = &"note impact 1 purple"
+sprite_frames = ExtResource("2_xg47h")
+animation = &"note impact 1 blue"

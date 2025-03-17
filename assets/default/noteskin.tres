@@ -6,4 +6,4 @@
 script = ExtResource("1_djc7k")
 note_textures = Dictionary[String, SpriteFrames]({})
 splash_textures = Dictionary[String, SpriteFrames]({})
-metadata/_custom_type_script = ExtResource("1_djc7k")
+metadata/_custom_type_script = "uid://bkshysfrjk7g0"

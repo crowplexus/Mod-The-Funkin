@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://e6aauvpfa4sm"
-path="res://.godot/imported/mine.png-d5199f4f996571688d7c29ca271c9a91.ctex"
+uid="uid://cbdyeu02fra37"
+path="res://.godot/imported/splashes.png-12853ba1afb9f9e5b892e7b38eb8f092.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/game/playfield/notes/mine/mine.png"
-dest_files=["res://.godot/imported/mine.png-d5199f4f996571688d7c29ca271c9a91.ctex"]
+source_file="res://assets/game/notetypes/funkin/splashes.png"
+dest_files=["res://.godot/imported/splashes.png-12853ba1afb9f9e5b892e7b38eb8f092.ctex"]
 
 [params]
 

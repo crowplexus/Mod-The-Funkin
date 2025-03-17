@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbdyeu02fra37"
-path="res://.godot/imported/splashes.png-e724771dae9ed2403fc7894ef4be371d.ctex"
+uid="uid://bd8cshek1l6k"
+path="res://.godot/imported/notes.png-cc59bc8ba092689683d2ef921a979666.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/game/playfield/notes/funkin/splashes.png"
-dest_files=["res://.godot/imported/splashes.png-e724771dae9ed2403fc7894ef4be371d.ctex"]
+source_file="res://assets/game/notetypes/funkin/notes.png"
+dest_files=["res://.godot/imported/notes.png-cc59bc8ba092689683d2ef921a979666.ctex"]
 
 [params]
 
