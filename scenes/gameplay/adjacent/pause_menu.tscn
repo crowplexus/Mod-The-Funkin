@@ -1,0 +1,45 @@
+[gd_scene load_steps=4 format=3 uid="uid://bpmp1nmibtels"]
+
+[ext_resource type="Script" uid="uid://dneaqu7ju0tcu" path="res://scenes/gameplay/adjacent/pause_menu.gd" id="1_w2hsy"]
+[ext_resource type="FontFile" uid="uid://bd4a21b8dcnsd" path="res://assets/ui/fonts/funkin.ttf" id="2_qtn84"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_x0mjd"]
+font = ExtResource("2_qtn84")
+font_size = 32
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[node name="pause_menu" type="Control"]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w2hsy")
+
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="options" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="template" type="Label" parent="options"]
+layout_mode = 2
+text = "Blah blah blah"
+label_settings = SubResource("LabelSettings_x0mjd")
+horizontal_alignment = 1
+vertical_alignment = 1

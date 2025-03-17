@@ -1,0 +1,64 @@
+[gd_scene load_steps=6 format=3 uid="uid://dbnioh46qdgeu"]
+
+[ext_resource type="Script" uid="uid://dldbeb83hhywp" path="res://scenes/gameplay/adjacent/game_over.gd" id="1_3h0j1"]
+[ext_resource type="PackedScene" uid="uid://xjrclwpe5fqq" path="res://scenes/gameplay/characters/bf-dead.tscn" id="2_27ttc"]
+[ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="3_lhesv"]
+[ext_resource type="Texture2D" uid="uid://c8ojeibw5m13i" path="res://assets/game/characters/boyfriend/goreOfMyComfortCharacter.jpeg" id="4_yafmw"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_yafmw"]
+font = ExtResource("3_lhesv")
+font_size = 32
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[node name="game_over" type="Node2D"]
+script = ExtResource("1_3h0j1")
+
+[node name="bg" type="ColorRect" parent="."]
+offset_left = -2000.0
+offset_top = -3000.0
+offset_right = 3000.0
+offset_bottom = 2000.0
+color = Color(0, 0, 0, 1)
+
+[node name="skeleton" parent="." instance=ExtResource("2_27ttc")]
+position = Vector2(617, 391)
+
+[node name="secret_texts" type="CanvasLayer" parent="."]
+
+[node name="gore_of_my_comfort_character" type="Sprite2D" parent="secret_texts"]
+visible = false
+position = Vector2(644, 360)
+texture = ExtResource("4_yafmw")
+
+[node name="message" type="Label" parent="secret_texts"]
+offset_top = 48.0
+offset_right = 1275.0
+offset_bottom = 109.0
+text = "Сейчас не время для неудач
+попробуйте еще раз!"
+label_settings = SubResource("LabelSettings_yafmw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="yes" type="Label" parent="secret_texts"]
+offset_left = 379.0
+offset_top = 608.0
+offset_right = 529.0
+offset_bottom = 669.0
+text = "Да"
+label_settings = SubResource("LabelSettings_yafmw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="no" type="Label" parent="secret_texts"]
+offset_left = 739.0
+offset_top = 610.0
+offset_right = 889.0
+offset_bottom = 671.0
+text = "Нет"
+label_settings = SubResource("LabelSettings_yafmw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="music" type="AudioStreamPlayer" parent="."]

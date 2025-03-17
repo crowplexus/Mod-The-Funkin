@@ -1,0 +1,188 @@
+[gd_scene load_steps=10 format=3 uid="uid://gib0vewis1qh"]
+
+[ext_resource type="Script" uid="uid://ds4v6bqi66g6f" path="res://scenes/gameplay/playfield/notes/normal_note.gd" id="1_31kjc"]
+[ext_resource type="SpriteFrames" uid="uid://dleey3pestsf3" path="res://assets/game/playfield/notes/funkin/notes.xml" id="2_dxqt7"]
+[ext_resource type="SpriteFrames" uid="uid://bamkaphps7gkt" path="res://assets/game/playfield/notes/funkin/splashes.xml" id="3_8d3la"]
+
+[sub_resource type="Animation" id="Animation_fer4d"]
+resource_name = "0"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("arrow:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"purple tap"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("arrow:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_cusb7"]
+resource_name = "1"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("arrow:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"blue tap"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("arrow:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_j2xfe"]
+resource_name = "2"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("arrow:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"green tap"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("arrow:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_f2bup"]
+resource_name = "3"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("arrow:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"red tap"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("arrow:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_5wcya"]
+length = 0.0416708
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("arrow:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"arrowDOWN"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("arrow:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lpqa0"]
+_data = {
+&"0": SubResource("Animation_fer4d"),
+&"1": SubResource("Animation_cusb7"),
+&"2": SubResource("Animation_j2xfe"),
+&"3": SubResource("Animation_f2bup"),
+&"RESET": SubResource("Animation_5wcya")
+}
+
+[node name="normal" type="Node2D"]
+script = ExtResource("1_31kjc")
+
+[node name="clip_rect" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0.8)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -32.0
+offset_right = 53.0
+offset_bottom = 864.0
+
+[node name="hold_body" type="TextureRect" parent="clip_rect"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 810.0
+
+[node name="hold_tail" type="Sprite2D" parent="clip_rect"]
+position = Vector2(26, 0)
+
+[node name="arrow" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_dxqt7")
+animation = &"arrowDOWN"
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_lpqa0")
+}
+
+[node name="splash" type="AnimatedSprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.6)
+sprite_frames = ExtResource("3_8d3la")
+animation = &"note impact 1 purple"

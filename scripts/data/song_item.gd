@@ -1,0 +1,9 @@
+## Resource for constructing a song item[br]
+## Mostly used in freeplay.
+class_name SongItem
+extends Resource
+
+## Name shown in the menu.
+@export var name: StringName = &"Unknown"
+## Folder used to locate the song (for loading charts from)
+@export var folder: String = "test"

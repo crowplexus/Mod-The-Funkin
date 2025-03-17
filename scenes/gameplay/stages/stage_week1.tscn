@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://c10wmwqhwc2gj"]
+
+[ext_resource type="Script" uid="uid://bqopd8xbhve36" path="res://scenes/gameplay/stages/bases/bg_stage2d.gd" id="1_ovrs3"]
+[ext_resource type="Texture2D" uid="uid://ceju0y2ql8ly3" path="res://assets/game/backgrounds/default/stageback.png" id="2_tcq48"]
+[ext_resource type="Texture2D" uid="uid://dc4g4m5no7dce" path="res://assets/game/backgrounds/default/stagecurtains.png" id="3_12vu6"]
+[ext_resource type="Texture2D" uid="uid://brb55bnrpt1p3" path="res://assets/game/backgrounds/default/stagefront.png" id="4_w4ir1"]
+
+[node name="stage_week_1" type="Node2D" node_paths=PackedStringArray("camera")]
+script = ExtResource("1_ovrs3")
+camera = NodePath("camera_2d")
+
+[node name="camera_2d" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+position_smoothing_enabled = true
+rotation_smoothing_enabled = true
+
+[node name="back" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.9, 0.9)
+
+[node name="stageback" type="Sprite2D" parent="back"]
+position = Vector2(561, -87)
+texture = ExtResource("2_tcq48")
+
+[node name="front" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.9, 0.9)
+
+[node name="stagefront" type="Sprite2D" parent="front"]
+position = Vector2(746, 760)
+texture = ExtResource("4_w4ir1")
+
+[node name="curts" type="Parallax2D" parent="."]
+scroll_scale = Vector2(1.3, 1.3)
+
+[node name="stagecurtains" type="Sprite2D" parent="curts"]
+position = Vector2(710, 174)
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("3_12vu6")

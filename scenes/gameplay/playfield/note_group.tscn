@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7p2r5ddmvksb"]
+
+[ext_resource type="Script" uid="uid://c3dm5njdcq7if" path="res://scenes/gameplay/playfield/note_group.gd" id="1_58y1f"]
+
+[node name="note_group" type="Node"]
+script = ExtResource("1_58y1f")

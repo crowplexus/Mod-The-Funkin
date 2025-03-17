@@ -1,0 +1,9 @@
+.vscode/
+out/
+# Godot 4+ specific ignores
+.godot/
+/android/
+# OS-specific
+*.tmp
+*.DS_Store
+desktop.ini

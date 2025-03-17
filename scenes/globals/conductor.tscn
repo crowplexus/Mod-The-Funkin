@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://boh8r5qu5i1xn"]
+
+[ext_resource type="Script" uid="uid://cuxjf52d0a06l" path="res://scenes/globals/conductor.gd" id="1_dqjak"]
+[ext_resource type="AudioStream" uid="uid://c732jy0inr3bb" path="res://assets/sounds/scroll.ogg" id="2_emm5y"]
+
+[node name="conductor" type="Node"]
+script = ExtResource("1_dqjak")
+
+[node name="metronome" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("2_emm5y")
+max_polyphony = 10

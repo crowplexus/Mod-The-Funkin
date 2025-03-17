@@ -1,0 +1,195 @@
+[gd_scene load_steps=14 format=3 uid="uid://bjkg052ui3mnl"]
+
+[ext_resource type="Script" uid="uid://bqen71fvkle87" path="res://scenes/gameplay/hud/fortnite_hud.gd" id="1_vvh1u"]
+[ext_resource type="StyleBox" uid="uid://dhwynnq1ji6ou" path="res://scenes/gameplay/hud/styleboxes/fortnite_bar_bg.tres" id="3_epiwg"]
+[ext_resource type="StyleBox" uid="uid://bdag5e631yhvt" path="res://scenes/gameplay/hud/styleboxes/health_bar_right.tres" id="3_vvh1u"]
+[ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/gameplay/hud/combo_group.gd" id="6_dqqga"]
+[ext_resource type="PackedScene" uid="uid://d0a6dlj2togbt" path="res://scenes/gameplay/playfield/strum/4k.tscn" id="7_oimmk"]
+[ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="8_vvh1u"]
+[ext_resource type="Script" uid="uid://cfnk73c6iyf2s" path="res://scenes/gameplay/playfield/player/botplay.gd" id="8_wmrok"]
+[ext_resource type="Script" uid="uid://dp7ul3erh1ciu" path="res://scenes/gameplay/playfield/player/player.gd" id="9_cskj3"]
+[ext_resource type="Texture2D" uid="uid://cw3h68ylrq7fy" path="res://assets/ui/countdown/prepare.png" id="10_ojldb"]
+[ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="11_x72vp"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3l1f0"]
+font = ExtResource("8_vvh1u")
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_it28e"]
+font = ExtResource("8_vvh1u")
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvh1u"]
+bg_color = Color(0, 0.625916, 0.994639, 1)
+
+[node name="default_hud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vvh1u")
+
+[node name="combo_group" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0.8)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_dqqga")
+
+[node name="judgement" type="Sprite2D" parent="combo_group"]
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit0" type="Sprite2D" parent="combo_group"]
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit1" type="Sprite2D" parent="combo_group"]
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit2" type="Sprite2D" parent="combo_group"]
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="note_fields" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="left_notes" parent="note_fields" instance=ExtResource("7_oimmk")]
+position = Vector2(142, 105)
+
+[node name="player" type="Node" parent="note_fields/left_notes"]
+script = ExtResource("8_wmrok")
+
+[node name="right_notes" parent="note_fields" instance=ExtResource("7_oimmk")]
+position = Vector2(797, 105)
+
+[node name="player" type="Node" parent="note_fields/right_notes"]
+script = ExtResource("9_cskj3")
+
+[node name="health_bar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -614.0
+offset_top = -60.0
+offset_right = -163.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/background = ExtResource("3_epiwg")
+theme_override_styles/fill = ExtResource("3_vvh1u")
+value = 50.0
+show_percentage = false
+
+[node name="health_percent" type="Label" parent="health_bar"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.002
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 456.11
+offset_top = -2.0
+offset_right = 33.2079
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "50%"
+label_settings = SubResource("LabelSettings_3l1f0")
+
+[node name="score_text" type="Label" parent="health_bar"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.002
+anchor_top = -0.48
+anchor_right = 1.012
+anchor_bottom = 1.486
+offset_left = 0.9
+offset_top = 29.2
+offset_right = -4.39999
+offset_bottom = 24.71
+grow_horizontal = 2
+grow_vertical = 2
+text = "Score: 0 | Combo: 0 | Breaks: 0"
+label_settings = SubResource("LabelSettings_it28e")
+horizontal_alignment = 1
+
+[node name="accuracy_bar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -614.0
+offset_top = -75.0
+offset_right = -163.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/background = ExtResource("3_epiwg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_vvh1u")
+value = 50.0
+show_percentage = false
+
+[node name="accuracy_progress" type="Label" parent="accuracy_bar"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.002
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 455.902
+offset_top = -6.0
+offset_right = 170.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0.00%"
+label_settings = SubResource("LabelSettings_3l1f0")
+
+[node name="countdown" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="sprite" type="Sprite2D" parent="countdown"]
+visible = false
+position = Vector2(640, 360)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("10_ojldb")
+
+[node name="sound" type="AudioStreamPlayer" parent="countdown"]
+stream = ExtResource("11_x72vp")
+max_polyphony = 5
+
+[node name="timer" type="Timer" parent="countdown"]
+one_shot = true

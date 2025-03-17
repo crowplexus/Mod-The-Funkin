@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://i5g45da4c14o"]
+
+[ext_resource type="Script" uid="uid://ctb4gh4xj2fwd" path="res://scenes/globals/overlay.gd" id="1_alel3"]
+
+[node name="overlay" type="CanvasLayer"]
+script = ExtResource("1_alel3")
+
+[node name="fps_label" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 1174.0
+offset_top = 195.0
+offset_right = 1252.0
+offset_bottom = 242.0
+theme_override_constants/line_spacing = -5
+theme_override_font_sizes/font_size = 14
+text = "N/A FPS
+N/A RAM"
+horizontal_alignment = 2
+
+[node name="update_timer" type="Timer" parent="."]
+unique_name_in_owner = true

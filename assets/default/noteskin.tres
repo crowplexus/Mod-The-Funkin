@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="NoteSkin" load_steps=2 format=3 uid="uid://dxhq200ow8ypp"]
+
+[ext_resource type="Script" uid="uid://bkshysfrjk7g0" path="res://scripts/gameplay/noteskin.gd" id="1_djc7k"]
+
+[resource]
+script = ExtResource("1_djc7k")
+note_textures = Dictionary[String, SpriteFrames]({})
+splash_textures = Dictionary[String, SpriteFrames]({})
+metadata/_custom_type_script = ExtResource("1_djc7k")
