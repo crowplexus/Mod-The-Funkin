@@ -36,11 +36,11 @@ position = Vector2(710, 174)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("3_12vu6")
 
+[node name="dj" type="Marker2D" parent="."]
+position = Vector2(560, 420)
+
 [node name="player" type="Marker2D" parent="."]
 position = Vector2(800, 450)
 
 [node name="enemy" type="Marker2D" parent="."]
 position = Vector2(335, 450)
-
-[node name="dj" type="Marker2D" parent="."]
-position = Vector2(560, 420)

@@ -215,8 +215,10 @@ func load_characters() -> void:
 		new_actor.position = DEFAULT_POS[idx]
 		set(MARKER_NAMES[idx], new_actor)
 		#print_debug("loaded ", new_actor.name, " as ", MARKER_NAMES[idx])
-		if player == new_actor: new_actor.faces_left = true
-		if not stage_bg: add_child(new_actor) # add here if there's no background
+		if new_actor == player: new_actor.faces_left = true
+		if not stage_bg:
+			add_child(new_actor) # add here if there's no background
+			if new_actor == dj: move_child(dj, player.get_index() - 1)
 	# load the characters inside the stage if possible (layering purposes)
 	if stage_bg:
 		for idx: int in MARKER_NAMES.size():
