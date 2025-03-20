@@ -95,8 +95,8 @@ func update_accuracy(time: float) -> void:
 ## Updates the accuracy counter only.
 func update_accuracy_counter() -> void:
 	match score_system:
-		ScoringSystem.HitTime: accuracy = accuracy_points / (notes_hit_count + (misses + breaks))
-		_: accuracy = accuracy_points / (notes_hit_count + (MISS_POINTS + (misses + breaks)))
+		ScoringSystem.HitTime: accuracy = accuracy_points / (notes_hit_count + (MISS_POINTS + (misses + breaks)))
+		_: accuracy = accuracy_points / (notes_hit_count + (misses + breaks))
 	if is_nan(accuracy): accuracy = 0.0
 	accuracy = minf(100.0, maxf(0.0, accuracy))
 
