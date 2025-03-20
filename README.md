@@ -6,11 +6,13 @@ made just for fun and not really meant to be used in a serious modding environme
 
 ## Credits:
 
-Thank you [Suok](https://twitter.com/SuokArts3) for the custom sprites, Epic Judgement, the Prepare countdown sprite, and the placeholder character (face) sprites.
+Thank you [Suok](https://twitter.com/SuokArts3) for the custom sprites, Epic Judgement, the Prepare countdown sprite, and the placeholder character (face) sprites
 
-Thank you [ImNotSonic](https://twitter.com/Imnotsonic1) for the pixel variants of the UI sprites Suok made.
+Thank you [ImNotSonic](https://twitter.com/Imnotsonic1) for the pixel variants of the UI sprites Suok made
 
-Thank you [Riley](https://github.com/what-is-a-git/FunkinGodot) for the Sparrow Atlas to SpriteFrames converter.
+Thank you [lufekaji](https://twitter.com/lufekaji) for the app icon
+
+Thank you [Riley](https://github.com/what-is-a-git/FunkinGodot) for the Sparrow Atlas to SpriteFrames converter
 
 Thank you [NebulaTheZorua](https://twitter.com/Nebula_Zorua) for the ideas and the previous feedback you gave
 

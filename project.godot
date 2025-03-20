@@ -10,9 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Friday Night Funkin' (Fortnite)"
-config/description="The true question is: is this Friday Night Funkin' or Fortnite?
-(it's FNF)"
+config/name="Friday Night Funkin'"
+config/description="A 4k Rhythm Game Engine, based on Friday Night Funkin'"
 config/version="0.1.0"
 run/main_scene="uid://81sm66x3qr7k"
 config/features=PackedStringArray("4.4", "Mobile")
@@ -21,7 +20,7 @@ run/low_processor_mode=true
 boot_splash/show_image=false
 boot_splash/fullsize=false
 boot_splash/use_filter=false
-config/icon="uid://db61tq0ixttx5"
+config/icon="uid://dskmlhhqpvkkc"
 
 [autoload]
 
