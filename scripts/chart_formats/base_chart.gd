@@ -39,7 +39,6 @@ func get_velocity_change(timestamp: float) -> TimedEvent:
 		push_error("Unable to get velocity change from an empty events list")
 		return null
 	var change: TimedEvent = scheduled_events[0]
-	if timestamp <= 0.0: return change # This is, most likely, the first change.
 	for i: TimedEvent in scheduled_events:
 		if VELOCITY_EVENTS.has(i.name) and i.time >= timestamp:
 			change = i
