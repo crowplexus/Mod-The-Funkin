@@ -92,12 +92,11 @@ func update_accuracy(time: float) -> void:
 
 ## Updates the accuracy counter only.
 func update_accuracy_counter() -> void:
-	var penalty: int = misses + breaks
 	match score_system:
-		ScoringSystem.HitTime: accuracy = accuracy_points / (notes_hit_count + penalty)
-		_: accuracy = accuracy_points / (notes_hit_count + (MISS_POINTS + penalty))
+		ScoringSystem.HitTime: accuracy = accuracy_points / (notes_hit_count + (misses + breaks))
+		_: accuracy = accuracy_points / (notes_hit_count + (MISS_POINTS + (misses + breaks)))
 	if is_nan(accuracy): accuracy = 0.0
-	accuracy = clampf(accuracy, 0.0, 100.0)
+	accuracy = minf(100.0, maxf(0.0, accuracy))
 
 ## Updates the counter for the tiers you have.
 func update_tier_score(tier: int) -> void:
@@ -129,16 +128,15 @@ static func get_max_hit_window_secs() -> float:
 
 ## Calculate the accuracy points for a single hit (in milliseconds).
 static func calc_max_points(tier: int, time: float) -> float:
-	var max_points: float = 100.0 - (tier * POINTS_WEIGHT)
 	if tier == 1 and not Global.settings.use_epics: tier -= 1
+	var max_points: float = 100.0 - (tier * POINTS_WEIGHT)
 	var points: float = (TIMINGS[tier] / time) * max_points
 	return min(points, max_points)
 
 ## Accuracy Scores based on judgement obtained (instead of note hit time).
 static func calc_judgement_points(tier: int) -> float:
-	var points: float = 100.0 - (tier * POINTS_WEIGHT)
 	if tier == 1 and not Global.settings.use_epics: tier -= 1
-	return points
+	return 100.0 - (tier * POINTS_WEIGHT)
 
 ## Returns a judgement tier based on the time provided.[br]
 ## Tier 0 (Epic) will never get returned if disabled in settings.
