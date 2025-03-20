@@ -2,6 +2,8 @@ little fnf godot thing
 
 made just for fun and not really meant to be used in a serious modding environment
 
+---
+
 ## Credits:
 
 Thank you [Suok](https://twitter.com/SuokArts3) for the custom sprites, Epic Judgement, the Prepare countdown sprite, and the placeholder character (face) sprites.
