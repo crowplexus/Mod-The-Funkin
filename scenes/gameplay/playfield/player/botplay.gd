@@ -31,5 +31,5 @@ func _process(delta: float) -> void:
 func on_note_hit(note: Note) -> void:
 	note_field.play_animation(note.column, NoteField.RepState.CONFIRM)
 	note_field.set_reset_timer(note.column, 0.3 * Conductor.crotchet)
-	if get_tree().current_scene is Gameplay:
+	if get_tree().current_scene is Gameplay and get_tree().current_scene.enemy:
 		get_tree().current_scene.enemy.sing(note.column, true)

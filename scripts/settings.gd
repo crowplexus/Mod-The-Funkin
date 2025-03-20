@@ -37,7 +37,7 @@ var scroll: int = 0
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
 ## Changes the UI elements and dialogue language.
 @export_enum("en", "pt", "mk") # English, Portuguese, Macedonian
-var language: String = "en"
+var language: String = "mk"
 
 func _init(use_defaults: bool = false) -> void:
 	AudioServer.set_bus_volume_db(0, linear_to_db(master_volume * 0.01))

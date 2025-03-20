@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c10wmwqhwc2gj"]
 
-[ext_resource type="Script" uid="uid://bqopd8xbhve36" path="res://scenes/gameplay/stages/bases/bg_stage2d.gd" id="1_ovrs3"]
+[ext_resource type="Script" uid="uid://bqopd8xbhve36" path="res://scenes/gameplay/stages/bases/funkin_stage_2d.gd" id="1_ovrs3"]
 [ext_resource type="Texture2D" uid="uid://ceju0y2ql8ly3" path="res://assets/game/backgrounds/default/stageback.png" id="2_tcq48"]
 [ext_resource type="Texture2D" uid="uid://dc4g4m5no7dce" path="res://assets/game/backgrounds/default/stagecurtains.png" id="3_12vu6"]
 [ext_resource type="Texture2D" uid="uid://brb55bnrpt1p3" path="res://assets/game/backgrounds/default/stagefront.png" id="4_w4ir1"]
@@ -35,3 +35,12 @@ scroll_scale = Vector2(1.3, 1.3)
 position = Vector2(710, 174)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("3_12vu6")
+
+[node name="player" type="Marker2D" parent="."]
+position = Vector2(800, 450)
+
+[node name="enemy" type="Marker2D" parent="."]
+position = Vector2(335, 450)
+
+[node name="dj" type="Marker2D" parent="."]
+position = Vector2(560, 420)

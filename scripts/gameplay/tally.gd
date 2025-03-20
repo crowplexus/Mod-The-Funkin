@@ -51,7 +51,8 @@ func zero(previous_tally: Tally = null) -> void:
 	accuracy_points = previous_tally.accuracy_points if previous_tally else 0.0
 	score_system = previous_tally.score_system if previous_tally else ScoringSystem.Judge
 	for i: int in tiers_scored.size():
-		tiers_scored[i] = previous_tally.tiers_scored[i] if previous_tally else 0
+		var has: bool = previous_tally and (i + 1) < previous_tally.tiers_scored.size()
+		tiers_scored[i] = previous_tally.tiers_scored[i] if has else 0
 	update_accuracy_counter()
 
 ## Merges a Tally with another.[br]
@@ -76,6 +77,7 @@ func increase_score(amount: float) -> void:
 ## Increases the misses counter by the amount provided (default: 1).
 func increase_misses(amount: int = 1) -> void:
 	misses += amount
+	self.tiers_scored[-1] = misses + breaks
 
 ## Increases the combo counter by the amount provided.
 func increase_combo(amount: int) -> void:
@@ -158,9 +160,8 @@ func get_tier_grade() -> String:
 	#	fc_tier = "Noplay"
 	#	return fc_tier
 	var scores: = self.tiers_scored
-	if scores.size() >= 3: # 3 tiers or more
-		if scores[3] == 0 and (misses + breaks) == 0:
-			if scores[0] > 0: fc_tier = "PFC" #"Perf" # Epic
-			if scores[1] > 0: fc_tier = "GFC" #"Great" # Sick
-			if scores[2] > 0: fc_tier = "FC" #"Piss" if randf_range(0, 100) < 0.5 else "Pass" # Good, 1/500 chance of saying Piss instead
+	if scores[3] == 0 and (misses + breaks) == 0:
+		if scores[0] > 0: fc_tier = "PFC" #"Perf" # Epic
+		if scores[1] > 0: fc_tier = "GFC" #"Great" # Sick
+		if scores[2] > 0: fc_tier = "FC" #"Piss" if randf_range(0, 100) < 0.5 else "Pass" # Good, 1/500 chance of saying Piss instead
 	return fc_tier

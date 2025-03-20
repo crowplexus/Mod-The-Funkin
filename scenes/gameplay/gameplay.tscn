@@ -1,11 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cvf84mr6iepcs"]
+[gd_scene load_steps=6 format=3 uid="uid://cvf84mr6iepcs"]
 
 [ext_resource type="Script" uid="uid://btgjnxmxnkh14" path="res://scenes/gameplay/gameplay.gd" id="1_7biu0"]
 [ext_resource type="PackedScene" uid="uid://bjkg052ui3mnl" path="res://scenes/gameplay/hud/fortnite_hud.tscn" id="2_0w2j2"]
 [ext_resource type="Script" uid="uid://c3dm5njdcq7if" path="res://scenes/gameplay/playfield/note_group.gd" id="4_q64rj"]
-[ext_resource type="PackedScene" uid="uid://c10wmwqhwc2gj" path="res://scenes/gameplay/stages/stage_week1.tscn" id="5_0w2j2"]
-[ext_resource type="AudioStream" uid="uid://fo6ulwenanwk" path="res://assets/sounds/hitsound.ogg" id="5_q64rj"]
-[ext_resource type="PackedScene" uid="uid://4po3ojxk5tt3" path="res://scenes/gameplay/characters/bf.tscn" id="6_0w2j2"]
+[ext_resource type="PackedScene" uid="uid://c10wmwqhwc2gj" path="res://scenes/gameplay/stages/main_stage.tscn" id="5_0w2j2"]
 
 [sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_7biu0"]
 stream_count = 3
@@ -16,10 +14,7 @@ stream_2/volume = 0.0
 [node name="gameplay" type="Node2D"]
 script = ExtResource("1_7biu0")
 
-[node name="music_player" type="AudioStreamPlayer" parent="."]
-unique_name_in_owner = true
-stream = SubResource("AudioStreamSynchronized_7biu0")
-bus = &"Music"
+[node name="stage" parent="." instance=ExtResource("5_0w2j2")]
 
 [node name="hud_layer" type="CanvasLayer" parent="."]
 
@@ -28,18 +23,7 @@ bus = &"Music"
 [node name="note_group" type="Node2D" parent="hud_layer"]
 script = ExtResource("4_q64rj")
 
-[node name="scream" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_q64rj")
-volume_db = -6.021
-max_polyphony = 16
-bus = &"Sound Effects"
-
-[node name="stage" parent="." instance=ExtResource("5_0w2j2")]
-
-[node name="player" parent="." instance=ExtResource("6_0w2j2")]
-position = Vector2(908, 461)
-
-[node name="enemy" parent="." instance=ExtResource("6_0w2j2")]
-position = Vector2(340, 461)
-scale = Vector2(-1, 1)
-is_player = false
+[node name="music_player" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamSynchronized_7biu0")
+bus = &"Music"

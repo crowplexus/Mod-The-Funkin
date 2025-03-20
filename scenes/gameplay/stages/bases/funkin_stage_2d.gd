@@ -1,5 +1,5 @@
 ## Object used during gameplay to display a background.
-class_name BGStage2D
+class_name FunkinStage2D
 extends Node2D
 
 ## Camera attached to the stage.

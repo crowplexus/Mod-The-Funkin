@@ -3,6 +3,15 @@
 class_name FNFChart
 extends BaseChart
 
+## Background to load before the characters
+@export var stage: PackedScene = null
+## Characters to load, leave "null" to not load[br]Order: [Player, Enemy, DJ]
+@export var characters: Array[PackedScene] = [
+	preload("res://scenes/gameplay/characters/face.tscn"),
+	preload("res://scenes/gameplay/characters/face.tscn"),
+	preload("res://scenes/gameplay/characters/face.tscn"),
+]
+
 ## Parses a chart from a JSON file using the original FNF chart format or similar
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> BaseChart:
 	var path: String = "res://assets/game/songs/%s/charts/%s.json" % [ song_name, difficulty ]
@@ -30,8 +39,27 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	var chart_dict: Dictionary = json.song if legacy_mode else json
 	# i hate my lifeeee FUCK OFF SHADOWMARIO
 	var is_psych: bool = legacy_mode and "format" in chart_dict and chart_dict.format == "psych_v1_convert"
+	chart.scheduled_events.append(TimedEvent.velocity_change(0.0, 1.0))
 	
-	if "speed" in chart_dict: chart.velocity_changes[0].values.speed = chart_dict.speed
+	if "stage" in chart_dict:
+		var new_stage: String = str(chart_dict.stage).to_snake_case()
+		match new_stage:
+			"stage": new_stage = "main_stage"
+		var path: String = "res://scenes/gameplay/stages/%s.tscn" % new_stage
+		if ResourceLoader.exists(path):
+			chart.stage = load(path)
+		else:
+			print_debug("tried loading stage at ", path, " which leads to a file that doesn't exist.")
+	var players: PackedStringArray = ["player1", "player2", "gfVersion"]
+	for prop: String in players:
+		if not prop in chart_dict:
+			continue
+		var i: int = players.find(prop)
+		var path: String = "res://scenes/gameplay/characters/%s.tscn" % chart_dict[prop]
+		if path.contains("gfVersion") and not ResourceLoader.exists(path): path = path.replace("gfVersion", "player3")
+		if ResourceLoader.exists(path): chart.characters[i] = load(path)
+	
+	if "speed" in chart_dict: chart.scheduled_events[0].values.speed = chart_dict.speed
 	if "bpm" in chart_dict: chart.timing_changes[0].bpm = chart_dict.bpm
 
 	var fake_bpm: float = chart.get_bpm()
@@ -70,8 +98,8 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	
 	chart.notes.sort_custom(func(one: NoteData, two: NoteData): return one.time < two.time)
 	chart.timing_changes.sort_custom(func(one: SongTimeChange, two: SongTimeChange): return one.time < two.time)
-	chart.velocity_changes.sort_custom(func(one: TimedEvent, two: TimedEvent): return one.time < two.time)
-	Conductor.timing_changes = chart.timing_changes
+	chart.scheduled_events.sort_custom(func(one: TimedEvent, two: TimedEvent): return one.time < two.time)
+	Conductor.timing_changes = chart.timing_changes.duplicate()
 	
 	#var ghosts: int = 0
 	#var total_notes_collected: int = 0

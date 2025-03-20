@@ -39,12 +39,15 @@ var dance_sequence: Callable = func(beat: float) -> void:
 		dance()
 
 var pause_sing: bool = false
+var faces_left: bool = false
 var _last_anim: String = ""
 var _last_dance: int = 0
 
 func _ready() -> void:
 	if has_node("animation_player"): anim = get_node("animation_player")
 	if dance_sequence: Conductor.on_beat_hit.connect(dance_sequence)
+	if not is_player and faces_left:
+		scale.x *= -1
 
 func _exit_tree() -> void:
 	if dance_sequence: Conductor.on_beat_hit.disconnect(dance_sequence)

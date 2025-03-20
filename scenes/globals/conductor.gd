@@ -90,13 +90,13 @@ func update(new_time: float) -> void:
 		_prev_beat = current_beat
 	_prev_time = time
 
-## Returns the latest bpm according to the time frame.
+## Returns a time change that is near the timestamp provided.
 func get_timed_change(timestamp: float) -> SongTimeChange:
 	if Conductor.timing_changes.is_empty():
 		push_error("No Timing Changes are available, how did you do that? it always has at least one")
 		return null
 	var change: SongTimeChange = Conductor.timing_changes[0]
-	if time <= 0.0: return change # This is, most likely, the first change.
+	if timestamp <= 0.0: return change # This is, most likely, the first change.
 	for i: SongTimeChange in Conductor.timing_changes:
 		if i.time >= timestamp: # NOTE: Test with time parameter being exactly at a timing change, or after all timing changes
 			change = i

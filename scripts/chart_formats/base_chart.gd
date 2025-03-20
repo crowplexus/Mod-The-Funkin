@@ -2,15 +2,18 @@
 class_name BaseChart
 extends Resource
 
+const VELOCITY_EVENTS: Array[StringName] = [
+	&"Change Scroll Speed",
+	#&"Increase Slider Velocity",
+	#&"Set Slider Velocity",
+]
+
 ## Assets used in the chart (music files, custom hud and noteskin, pause menu, etc)
 @export var assets: ChartAssets
 ## List of notes to spawn in-game.
 @export var notes: Array[NoteData] = []
-## List of Velocity Changes made to the chart,
-## The first item will always be the default.
-@export var velocity_changes: Array[TimedEvent] = [
-	TimedEvent.velocity_change(0.0, 1.0)
-]
+## List of Events to be executed during the song.
+@export var scheduled_events: Array[TimedEvent] = []
 ## List of Timing Changes in the chart,
 ## The first item will always be the default.
 @export var timing_changes: Array[SongTimeChange] = [
@@ -30,9 +33,19 @@ func get_bpm(change: int = 0) -> float: return timing_changes[change].bpm
 ## Defaults to 0 for default time.
 func get_bpm_time(change: int = 0) -> float: return timing_changes[change].time
 
-## Returns the Speed value for a Velocity Change event.[br]
-## Defaults to 0 for default speed.
-func get_speed(change: int = 0) -> float: return velocity_changes[change].values.speed
+## Returns a velocity change that is near the timestamp provided.
+func get_velocity_change(timestamp: float) -> TimedEvent:
+	if scheduled_events.is_empty():
+		push_error("Unable to get velocity change from an empty events list")
+		return null
+	var change: TimedEvent = scheduled_events[0]
+	if timestamp <= 0.0: return change # This is, most likely, the first change.
+	for i: TimedEvent in scheduled_events:
+		if VELOCITY_EVENTS.has(i.name) and i.time >= timestamp:
+			change = i
+		else: # list is sorted, so exit early.
+			break
+	return change
 
 ## Parses a chart from a resource file containing it.[br]
 ## This method SHOULD be overriden by other parsers.
