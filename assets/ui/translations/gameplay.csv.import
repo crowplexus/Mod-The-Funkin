@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://0khsm6idmdow"
+
+[deps]
+
+files=["res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.pt.translation", "res://assets/ui/translations/gameplay.mk.translation"]
+
+source_file="res://assets/ui/translations/gameplay.csv"
+dest_files=["res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.pt.translation", "res://assets/ui/translations/gameplay.mk.translation"]
+
+[params]
+
+compress=true
+delimiter=0

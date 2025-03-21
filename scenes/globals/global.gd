@@ -5,11 +5,11 @@ extends Node
 @onready var sfx: Node = $"%sound_effects"
 @onready var resources: ResourcePreloader = $"%resource_preloader"
 
-var settings: Settings = Settings.new()
+var settings: Settings
 
 func _ready() -> void:
+	settings = Settings.new()
 	reset_discord()
-	TranslationServer.set_locale(settings.language)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.keycode == KEY_F11 and event.pressed:

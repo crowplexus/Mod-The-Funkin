@@ -62,7 +62,7 @@ func _start_game_over() -> void:
 func setup_secret() -> void:
 	if oops: text_tweens.resize(stupid_buttons.size() + 1)
 	for text: Control in stupid_buttons: text.modulate.a = 0.0
-	const TRANSLATE_CONTEXT: StringName = &"russian-bootleg-easteregg"
+	const TRANSLATE_CONTEXT: StringName = &"secrets"
 	secret_message.modulate.a = 0.0
 	# translate it all.
 	da_text.text = tr("choice_da", TRANSLATE_CONTEXT)
@@ -138,7 +138,7 @@ func _selected_nyet() -> void:
 	music.stream = GAME_OVER_SECRET
 	await get_tree().create_timer(0.5).timeout
 	secret_message.position.y = da_text.position.y
-	secret_message.text = tr("game_over", &"russian-bootleg-easteregg") #"игра окоичена!"
+	secret_message.text = tr("game_over", &"secrets") #"игра окоичена!"
 	gore.show()
 	secret_message.show()
 	music.play(0.0)

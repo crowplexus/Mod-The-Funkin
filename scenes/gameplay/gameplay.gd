@@ -245,7 +245,7 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 	else:
 		var next_hud: PackedScene = custom_hud if custom_hud else chart.assets.hud
 		if next_hud: hud = next_hud.instantiate()
-		else: hud = DEFAULT_HUDS.classic.instantiate() # if all else fails, use the classic one.
+		else: hud = DEFAULT_HUDS.advanced.instantiate() # if all else fails, use the classic one.
 	hud_layer.add_child(hud)
 	hud_layer.move_child(hud, idx)
 

@@ -21,7 +21,7 @@ func _ready() -> void:
 	for i: int in options.size():
 		var entry: Label = template.duplicate()
 		entry.modulate.a = 0.0
-		entry.text = tr("pause_%s" % options[i].to_lower())
+		entry.text = tr("pause_%s" % options[i].to_lower(), &"menus")
 		tween.tween_property(entry, "modulate:a", 1.0 if selected == i else 0.6, 0.3 * i)
 		menu_options.add_child(entry)
 	menu_options.remove_child(template)

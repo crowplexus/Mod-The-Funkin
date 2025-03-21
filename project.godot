@@ -13,6 +13,7 @@ config_version=5
 config/name="Friday Night Funkin'"
 config/description="A 4k Rhythm Game Engine, based on Friday Night Funkin'"
 config/version="0.1.0"
+config/tags=PackedStringArray("2d", "modding", "rhythm", "tool")
 run/main_scene="uid://81sm66x3qr7k"
 config/features=PackedStringArray("4.4", "Mobile")
 run/max_fps=144
@@ -21,7 +22,6 @@ boot_splash/show_image=false
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="uid://dskmlhhqpvkkc"
-config/tags=PackedStringArray("2d", "modding", "rhythm", "tool")
 
 [autoload]
 
@@ -96,7 +96,7 @@ ui_pause={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://assets/ui/translations/game.en.translation", "res://assets/ui/translations/game.mk.translation", "res://assets/ui/translations/game.pt.translation")
+locale/translations=PackedStringArray("res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.mk.translation", "res://assets/ui/translations/gameplay.pt.translation", "res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.mk.translation", "res://assets/ui/translations/menus.pt.translation", "res://assets/ui/translations/secrets.en.translation", "res://assets/ui/translations/secrets.es.translation", "res://assets/ui/translations/secrets.mk.translation", "res://assets/ui/translations/secrets.pt.translation")
 locale/locale_filter_mode=1
 
 [rendering]

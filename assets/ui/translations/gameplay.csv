@@ -1,0 +1,6 @@
+key,en,es,pt,mk
+
+score,Score,Puntos,Pontos,Поен
+misses,Misses,Fallos,Erros,Промаши
+info_bar,Score: %s | Combo: %s | Breaks: %s,Puntos: %s | Combo: %s | Rotos: %s,Pontos: %s | Combo: %s | Quebras: %s,Поен: %s | Комбо: %s | Промаши: %s
+info_bar_nomiss,Score: %s | Combo: %s,Puntos: %s | Combo: %s,Pontos: %s | Combo: %s,Поен: %s | Комбо: %s

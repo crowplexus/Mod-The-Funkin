@@ -102,7 +102,7 @@ func update_score_text() -> void:
 	var tally: bool = game and game.tally
 	var total_misses: int = game.tally.misses + game.tally.breaks
 	var fc_string: String = game.tally.get_tier_grade()
-	score_text.text = tr("score_text", &"gameplay") % [
+	score_text.text = tr("info_bar", &"gameplay") % [
 		(game.tally.score if tally else 0),
 		(game.tally.combo if tally else 0),
 		(fc_string if tally and not fc_string.is_empty() else str(total_misses) if tally else str(0)),
