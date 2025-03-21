@@ -96,7 +96,7 @@ ui_pause={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.mk.translation", "res://assets/ui/translations/gameplay.pt.translation", "res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.mk.translation", "res://assets/ui/translations/menus.pt.translation", "res://assets/ui/translations/secrets.en.translation", "res://assets/ui/translations/secrets.es.translation", "res://assets/ui/translations/secrets.mk.translation", "res://assets/ui/translations/secrets.pt.translation")
+locale/translations=PackedStringArray("res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.mk.translation", "res://assets/ui/translations/gameplay.pt_BR.translation", "res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.mk.translation", "res://assets/ui/translations/menus.pt_BR.translation", "res://assets/ui/translations/secrets.en.translation", "res://assets/ui/translations/secrets.es.translation", "res://assets/ui/translations/secrets.mk.translation", "res://assets/ui/translations/secrets.pt_BR.translation")
 locale/locale_filter_mode=1
 
 [rendering]
