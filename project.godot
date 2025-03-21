@@ -21,6 +21,7 @@ boot_splash/show_image=false
 boot_splash/fullsize=false
 boot_splash/use_filter=false
 config/icon="uid://dskmlhhqpvkkc"
+config/tags=PackedStringArray("2d", "modding", "rhythm", "tool")
 
 [autoload]
 
