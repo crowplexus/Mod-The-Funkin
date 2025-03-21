@@ -7,15 +7,17 @@ enum PlayMode {
 	CHARTING = (3 << 1),
 }
 
+## Default HUD scenes to use, mainly for settings and stuff.
+var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
+	"classic": load("res://scenes/gameplay/hud/funkin_hud.tscn"),
+	"advanced": load("res://scenes/gameplay/hud/fortnite_hud.tscn"),
+}
 ## Default Pause Menu, used if there's none set in the Chart Assets.
 const DEFAULT_PAUSE_MENU: PackedScene = preload("res://scenes/gameplay/adjacent/pause_menu.tscn")
-
 ## Default Results Screen.
 const DEFAULT_RESULTS_SCREEN: PackedScene = preload("res://scenes/gameplay/adjacent/results_screen.tscn")
-
 ## Default Health Percentage.
 const DEFAULT_HEALTH_VALUE: int = 50
-
 ## Default Health Weight (how much should it be multiplied by when gaining)
 const DEFAULT_HEALTH_WEIGHT: int = 5
 
@@ -31,9 +33,9 @@ var local_tally: Tally
 @onready var note_group: Node = $"hud_layer/note_group"
 
 @onready var hud_layer: CanvasLayer = $"hud_layer"
-@onready var hud: TemplateHUD = $"hud_layer/hud"
 @onready var default_hud_scale: Vector2 = $"hud_layer".scale
 
+var hud: TemplateHUD
 var stage_bg: FunkinStage2D
 var player: Actor2D
 var enemy: Actor2D
@@ -76,7 +78,6 @@ func _ready() -> void:
 	elif hud_layer.has_node("note_fields"): from_where = hud.get_node("note_fields")
 	for node: Node in from_where.get_children():
 		if node is NoteField: note_fields.append(node)
-
 	player_strums = note_fields[1]
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	if hud: hud.init_vars()
@@ -232,13 +233,21 @@ func load_characters() -> void:
 				stage_bg.add_child(actor_to_modify)
 				stage_bg.move_child(actor_to_modify, actor_idx)
 
-func reload_hud() -> void:
-	if chart.assets and chart.assets.hud:
-		hud.set_process(false) # just in case
-		hud.queue_free()
-		hud = chart.assets.hud.instantiate()
-		hud_layer.add_child(hud)
-		hud_layer.move_child(hud, 0)
+func reload_hud(custom_hud: PackedScene = null) -> void:
+	var idx: int = 0
+	if hud_layer.has_node("hud"):
+		idx = hud_layer.get_node("hud").get_index()
+		hud_layer.get_node("hud").set_process(false) # just in case
+		hud_layer.get_node("hud").queue_free()
+	var hud_type: String = Global.settings.hud_style.to_snake_case()
+	if hud_type in DEFAULT_HUDS:
+		hud = DEFAULT_HUDS[hud_type].instantiate()
+	else:
+		var next_hud: PackedScene = custom_hud if custom_hud else chart.assets.hud
+		if next_hud: hud = next_hud.instantiate()
+		else: hud = DEFAULT_HUDS.classic.instantiate() # if all else fails, use the classic one.
+	hud_layer.add_child(hud)
+	hud_layer.move_child(hud, idx)
 
 func load_streams() -> void:
 	if chart.assets and chart.assets.instrumental:
@@ -312,6 +321,7 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 		local_tally.combo = 0
 	#else: # decrease for miss combo
 	#	local_tally.combo -= 1
+	local_tally.score -= 50
 	local_tally.increase_misses(1) # increase by one
 	local_tally.update_accuracy_counter()
 	player.sing(idx, true, "miss")

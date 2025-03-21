@@ -75,16 +75,16 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_it28e")
 metadata/_edit_lock_ = true
 
 [node name="icon_p1" type="Sprite2D" parent="health_bar"]
-position = Vector2(267, 15)
-scale = Vector2(0.8, 0.8)
-texture = ExtResource("4_bkydb")
-hframes = 2
-
-[node name="icon_p2" type="Sprite2D" parent="health_bar"]
 position = Vector2(321, 15)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("4_bkydb")
 flip_h = true
+hframes = 2
+
+[node name="icon_p2" type="Sprite2D" parent="health_bar"]
+position = Vector2(267, 15)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("4_bkydb")
 hframes = 2
 
 [node name="score_text" type="Label" parent="health_bar"]

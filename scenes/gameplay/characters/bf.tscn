@@ -7,8 +7,10 @@
 
 [sub_resource type="Resource" id="Resource_kgqrn"]
 script = ExtResource("3_kgqrn")
-icon = ExtResource("2_tvlln")
+texture = ExtResource("2_tvlln")
 color = Color(0.192157, 0.690196, 0.819608, 1)
+hframes = 2
+vframes = 1
 metadata/_custom_type_script = ExtResource("3_kgqrn")
 
 [sub_resource type="Animation" id="Animation_g2rcx"]

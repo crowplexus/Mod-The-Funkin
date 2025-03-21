@@ -1,5 +1,8 @@
 extends TemplateHUD
 
+## Prevents the health bar from changing colors to the ones used by the icons.
+@export var keep_classic_health_colors: bool = false
+
 @onready var score_text: Label = $"health_bar/score_text"
 @onready var misses_text: Label = $"health_bar/misses_text"
 
@@ -86,11 +89,33 @@ func init_vars() -> void:
 			countdown_timer.name = "timer"
 			countdown_timer.one_shot = true
 			countdown.add_child(countdown_timer)
+		countdown_timer.timeout.connect(countdown_progress)
+	setup_icons()
+
+func setup_icons() -> void:
+	if game is Gameplay:
+		if game.player and game.player.icon:
+			if not keep_classic_health_colors:
+				var fill_style: StyleBox = health_bar.get_theme_stylebox("fill").duplicate()
+				fill_style.bg_color = game.player.icon.color
+				health_bar.add_theme_stylebox_override("fill", fill_style)
+			if game.player.icon.texture:
+				icon_p1.texture = game.player.icon.texture
+				icon_p1.hframes = game.player.icon.hframes
+				icon_p1.vframes = game.player.icon.vframes
+		if game.enemy and game.enemy.icon:
+			if not keep_classic_health_colors:
+				var background_style: StyleBox = health_bar.get_theme_stylebox("background").duplicate()
+				background_style.bg_color = game.enemy.icon.color
+				health_bar.add_theme_stylebox_override("background", background_style)
+			if game.enemy.icon.texture:
+				icon_p2.texture = game.enemy.icon.texture
+				icon_p2.hframes = game.enemy.icon.hframes
+				icon_p2.vframes = game.enemy.icon.vframes
 
 func start_countdown() -> void:
 	countdown.show()
 	countdown_timer.start(Conductor.crotchet)
-	countdown_timer.timeout.connect(countdown_progress)
 
 func countdown_progress() -> void:
 	if _countdown_iteration >= 4:
@@ -127,6 +152,9 @@ func update_score_text() -> void:
 
 func update_health(health: int) -> void:
 	_prev_health = health
+	if game is Gameplay: # this system sucks I may change it later
+		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(health)
+		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - health)
 
 func display_judgement(image: Texture2D) -> void:
 	combo_group.display_judgement(image)

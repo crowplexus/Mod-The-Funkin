@@ -35,6 +35,9 @@ var scroll: int = 0
 ## Defines the intensity of the HUD Bump.
 @export var hud_bump_intensity: int = 100:
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
+## Select a HUD style, or leave "Default" to let the songs decide.
+@export_enum("Default", "Classic", "Advanced")
+var hud_style: String = "Default"
 ## Changes the UI elements and dialogue language.
 @export_enum("en", "pt", "mk") # English, Portuguese, Macedonian
 var language: String = "en"
