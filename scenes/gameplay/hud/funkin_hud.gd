@@ -116,6 +116,7 @@ func setup_icons() -> void:
 func start_countdown() -> void:
 	countdown.show()
 	countdown_timer.start(Conductor.crotchet)
+	_countdown_iteration = 0
 
 func countdown_progress() -> void:
 	if _countdown_iteration >= 4:
