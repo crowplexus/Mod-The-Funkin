@@ -2,7 +2,11 @@
 class_name Judgement
 extends Resource
 
-enum SplashType { DISABLED = 0, WEAK = 1, FULL = 2 }
+enum SplashType {
+	DISABLED = 0,
+	WEAK = 1,
+	FULL = 2
+}
 
 ## Display Name of the judgement.
 @export var name: StringName = &"Unknown"

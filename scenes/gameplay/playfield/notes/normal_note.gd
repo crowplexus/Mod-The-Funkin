@@ -40,17 +40,12 @@ func hold_finished() -> void:
 func display_splash() -> Node2D:
 	if not note_field or column == -1:
 		return null
-	# TODO: change *all* of this
-	var dip: AnimatedSprite2D = null
-	var receptor: = note_field.get_child(column)
-	for child: Node in receptor.get_children():
-		if child.name.begins_with("splash_"):
-			if child.visible: continue
-			dip = child
-			break
+	var dip: AnimatedSprite2D = note_field.get_splash(column)
+	var receptor: Receptor = note_field.get_receptor(column)
 	if not dip:
 		dip = splash.duplicate()
 		dip.name = "splash_%s" % receptor.get_child_count()
+		dip.top_level = self.judgement.splash_type == Judgement.SplashType.FULL
 		if dip.top_level: dip.global_position = receptor.global_position
 		dip.animation_finished.connect(dip.hide)
 		receptor.add_child(dip)

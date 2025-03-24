@@ -72,6 +72,9 @@ func sing(direction: int, forced: bool = false, suffix: String = "", reversed: b
 	play_animation(sing_moves[direction % sing_moves.size()] + suffix, forced, reversed, speed)
 	idle_cooldown = 1.0
 
+func get_anim_position() -> float:
+	return anim.current_animation_position if anim else 0.0
+
 func die() -> void:
 	hide()
 	var game_over_screen: PackedScene = load("res://scenes/gameplay/adjacent/game_over.tscn")

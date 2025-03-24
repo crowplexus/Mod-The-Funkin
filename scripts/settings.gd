@@ -16,6 +16,11 @@ var master_mute: bool = false:
 ## Alternates between in-game scroll directions.
 @export_enum("Up:0","Down:1")
 var scroll: int = 0
+## Defines note keybinds.
+@export var keybinds: Array[PackedStringArray] = [
+	"ASWD".split(""), # Primary Keybinds (Player 1)
+	"Left,Down,Up,Right".split(",") # Secondary Keybinds (Player 2)
+]
 ## Prevents inputs from punishing you if you press keys when there's no notes to hit.
 @export var ghost_tapping: bool = true
 ## Defines the maximum timing window for a note to be hittable.
@@ -47,6 +52,8 @@ func _init(use_defaults: bool = false) -> void:
 	AudioServer.set_bus_volume_db(0, linear_to_db(master_volume * 0.01))
 	if not use_defaults: # not a "defaults-only" instance
 		reload_custom_settings()
+	keybinds[0] = "DFJK".split("")
+	reload_keybinds()
 	reload_locale()
 
 ## Reloads the current display language.
@@ -58,6 +65,24 @@ func reload_locale() -> void:
 		else: TranslationServer.set_locale("en")
 	else:
 		TranslationServer.set_locale(language)
+
+## Reloads the note keybinds.
+func reload_keybinds() -> void:
+	const NOTE_KEYBINDS: PackedStringArray = ["note_left", "note_down", "note_up", "note_right"]
+	for action: String in NOTE_KEYBINDS:
+		if InputMap.has_action(action):
+			for key: InputEvent in InputMap.action_get_events(action):
+				if not key or not InputMap.action_has_event(action, key): continue
+				InputMap.action_erase_event(action, key)
+				key.unreference()
+	for i: int in keybinds.size(): # 2 Players
+		for j: int in keybinds[i].size(): # 4 keys
+			var action: String = NOTE_KEYBINDS[j]
+			var keystr: String = keybinds[i][j].to_lower()
+			var new_event: InputEventKey = InputEventKey.new()
+			new_event.set_keycode(OS.find_keycode_from_string(keystr))
+			InputMap.action_add_event(action, new_event)
+			#print_debug(action, " set to ", OS.find_keycode_from_string(keystr))
 
 ## Reloads your own custom settings (if any).
 func reload_custom_settings() -> void:

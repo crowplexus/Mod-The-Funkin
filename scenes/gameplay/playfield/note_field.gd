@@ -23,6 +23,16 @@ func _ready() -> void:
 func get_receptor(idx: int) -> Node:
 	return get_child(idx % get_child_count())
 
+func get_splash(idx: int) -> Node:
+	var splash: Node = null
+	var receptor: = get_receptor(idx)
+	for child: Node in receptor.get_children():
+		if child.name.begins_with("splash_"):
+			if child.visible: continue
+			splash = child
+			break
+	return splash
+
 func play_animation(idx: int = 0, state: = NoteField.RepState.STATIC, force: bool = true) -> void:
 	var receptor: = get_child(idx % get_child_count())
 	if receptor is Receptor and receptor.has_method("play_animation"):

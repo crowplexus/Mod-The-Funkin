@@ -11,6 +11,7 @@ signal miss_note(note: Note, dir: int)
 @export var keys_held: Array[bool] = [ false, false, false, false ]
 
 var game: Node2D = null
+var actor: Actor2D = null
 var note_field: NoteField = null
 var force_disable_input: bool = false
 var note_group: Node2D
@@ -18,7 +19,9 @@ var note_group: Node2D
 func _ready() -> void:
 	note_field = get_parent()
 	game = get_tree().current_scene
+	if game is Gameplay and game.player: actor = game.player
 	hit_note.connect(on_note_hit)
+	hit_hold_note.connect(on_hold_hit)
 	miss_note.connect(on_note_miss)
 	keys_held.resize(controls.size())
 	keys_held.fill(false)
@@ -96,7 +99,6 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				else:
 					note.trip_timer = 1.0
 					note._stupid_visual_bug = note.hit_time < 0.0
-					note.allowed_to_hide = false
 		elif not note:
 			note_field.play_animation(idx, NoteField.RepState.PRESSED)
 			if not Global.settings.ghost_tapping:
@@ -106,6 +108,8 @@ func on_note_hit(note: Note) -> void:
 	if game is Gameplay: game.on_note_hit(note)
 func on_note_miss(note: Note = null, idx: int = -1) -> void:
 	if game is Gameplay: game.on_note_miss(note, idx)
+func on_hold_hit(note: Note) -> void:
+	if actor: actor.sing(note.column, actor.get_anim_position() > 0.1)
 
 func get_action_id(event: InputEvent) -> int:
 	var id: int = -1

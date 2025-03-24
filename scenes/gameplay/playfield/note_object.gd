@@ -67,7 +67,6 @@ var judgement: Judgement
 var dropped: bool = false
 var trip_timer: float = 1.0
 var _stupid_visual_bug: bool = false
-var allowed_to_hide: bool = true
 # VISUALS
 var scroll_mult: Vector2 = -Vector2.ONE
 var moving: bool = true
