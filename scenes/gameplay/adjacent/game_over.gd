@@ -2,7 +2,7 @@ extends Node2D
 
 const CONTINUE_SECRET: AudioStream = preload("res://assets/music/gameover/secret/continue.mp3")
 const GAME_OVER_SECRET: AudioStream = preload("res://assets/music/gameover/secret/game_over.mp3")
-
+const TOTAL_SECRET_MESSAGES: int = 3
 const SECRET_MESSAGES: Array[String] = [
 	"Pick up your balls\nand try again.",
 	"Make your girl proud\nand try again.",
@@ -47,7 +47,7 @@ func _start_game_over() -> void:
 		camera.position_smoothing_enabled = true # guarantee that it's enabled
 		camera.position_smoothing_speed = 1.0 # slow it down
 	
-	oops = randf_range(0, 100) < .5 # .5% chance
+	oops = randf_range(0, 100) < 0.1 # chance in %
 	setup_secret()
 	bg.modulate.a = 0.0
 	bg.visible = true
@@ -67,11 +67,10 @@ func setup_secret() -> void:
 	# translate it all.
 	da_text.text = tr("choice_da", TRANSLATE_CONTEXT)
 	nyet_text.text = tr("choice_nyet", TRANSLATE_CONTEXT)
-	var msg_id: int = SECRET_MESSAGES.find(SECRET_MESSAGES.pick_random()) + 1
-	var message: String = tr("secret_msg_%s" % msg_id, TRANSLATE_CONTEXT)
-	if message.is_empty() or message.begins_with("secret_msg_"):
-		message = tr("secret_msg_fallback", TRANSLATE_CONTEXT)
-	secret_message.text = message
+	var secret_msg: String = tr("secret_msg_%s" % randi_range(1, TOTAL_SECRET_MESSAGES), TRANSLATE_CONTEXT)
+	if secret_msg.is_empty() or secret_msg.begins_with("secret_msg_"):
+		secret_msg = tr("secret_msg_fallback", TRANSLATE_CONTEXT)
+	secret_message.text = secret_msg
 
 func _process(_delta: float) -> void:
 	if skeleton:
