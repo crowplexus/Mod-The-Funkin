@@ -3,11 +3,6 @@ extends Node2D
 const CONTINUE_SECRET: AudioStream = preload("res://assets/music/gameover/secret/continue.mp3")
 const GAME_OVER_SECRET: AudioStream = preload("res://assets/music/gameover/secret/game_over.mp3")
 const TOTAL_SECRET_MESSAGES: int = 3
-const SECRET_MESSAGES: Array[String] = [
-	"Pick up your balls\nand try again.",
-	"Make your girl proud\nand try again.",
-	"Years of rapping yet here you are losing to some brat\ntry again."
-]
 
 @export var skeleton: Actor2D
 
