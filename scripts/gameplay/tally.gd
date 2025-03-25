@@ -39,6 +39,8 @@ var notes_hit_count: int = 0
 var accuracy_points: float = 0.0
 ## Counts how many of (tier judgement) you've hit.
 var tiers_scored: Array[int] = [0, 0, 0, 0, 0]
+## Checks if epics are enabled in-game.
+static var use_epics: bool = true
 
 ## Resets all counters back to their previous state, or 0 if none specified.[br]
 ## Effectively cleaning the tally altogether if unspecified.
@@ -107,18 +109,18 @@ func update_tier_score(tier: int) -> void:
 	tiers_scored[tier] += 1
 
 ## Calculates the ratio of all tiers (except the highest) up to all the other judgements.[br]
-## Returns 0.0 if Global.settings.use_epics is disabled.
+## Returns 0.0 if use_epics is disabled in settings.
 func calculate_epic_ratio() -> float:
-	if not Global.settings.use_epics:
+	if not use_epics:
 		# there's no reason for this to be calculate cus there's only 4 (or less) judgements
 		return 0.0
 	# Sick, Good, Bad, Shit.
 	return self.tiers_scored[1] + self.tiers_scored[2] + self.tiers_scored[3] + self.tiers_scored[4]
 
 ## Calculates the ratio of Tier 1s (Sicks) up to all the other judgements.[br]
-## Returns 0.0 if Global.settings.use_epics is disabled.
+## Returns 0.0 if use_epics is disabled in settings.
 func calculate_sick_ratio() -> float:
-	if not Global.settings.use_epics:
+	if not use_epics:
 		# there's no reason for this to be calculate cus there's only 4 (or less) judgements
 		return 0.0
 	# Good, Bad, Shit.
@@ -130,14 +132,14 @@ static func get_max_hit_window_secs() -> float:
 
 ## Calculate the accuracy points for a single hit (in milliseconds).
 static func calc_max_points(tier: int, time: float) -> float:
-	if tier == 1 and not Global.settings.use_epics: tier -= 1
+	if tier == 1 and not use_epics: tier -= 1
 	var max_points: float = 100.0 - (tier * POINTS_WEIGHT)
 	var points: float = (TIMINGS[tier] / time) * max_points
 	return min(points, max_points)
 
 ## Accuracy Scores based on judgement obtained (instead of note hit time).
 static func calc_judgement_points(tier: int) -> float:
-	if tier == 1 and not Global.settings.use_epics: tier -= 1
+	if tier == 1 and not use_epics: tier -= 1
 	return 100.0 - (tier * POINTS_WEIGHT)
 
 ## Returns a judgement tier based on the time provided.[br]
@@ -145,7 +147,7 @@ static func calc_judgement_points(tier: int) -> float:
 static func judge_time(ms: float) -> int:
 	for i: int in TIMINGS.size():
 		var can_return: bool = ms <= TIMINGS[i]
-		if not Global.settings.use_epics and i == 0:
+		if not use_epics and i == 0:
 			can_return = false
 		if can_return: return i
 	return TIMINGS.find(TIMINGS.back())

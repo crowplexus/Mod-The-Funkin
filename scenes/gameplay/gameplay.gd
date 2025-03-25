@@ -58,15 +58,16 @@ var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 	set(new_health): health = clampi(new_health, 0, 100)
 
 func _ready() -> void:
-	scripts = ScriptPack.new()
-	scripts.load_global_scripts()
 	local_settings = Global.settings.duplicate()
 	local_tally = Tally.new()
+	scripts = ScriptPack.new()
+	Tally.use_epics = local_settings.use_epics
 	if not tally:
 		tally = Tally.new()
 	else:
 		# merge tallies if it's not a local one
 		tally.merge(local_tally)
+	scripts.load_global_scripts()
 	var max_hit_window: float = local_settings.max_hit_window
 	print_debug("max hit window is ", max_hit_window, " (", max_hit_window * 1000.0, "ms)")
 	if chart:
@@ -104,6 +105,7 @@ func restart_song() -> void:
 	health = Gameplay.DEFAULT_HEALTH_VALUE
 	if note_group: note_group.list_position = 0
 	Conductor.reset(chart.get_bpm(), false)
+	Conductor.play_offset = local_settings.sync_offset
 	# fixes a bug where your strums don't do anything after calling restart_song when notes are already spawned
 	# TODO: make this into a smooth transition for the pause menu
 	if note_group: for note: Note in note_group.get_children():
@@ -280,7 +282,7 @@ func init_note_spawner() -> void:
 	)
 	if chart and not chart.notes.is_empty():
 		note_group.note_list = chart.notes.duplicate(true)
-		if Conductor.length < 0.0: Conductor.length = chart.notes.back().time
+		if Conductor.length < 0.0: Conductor.length = chart.notes.back().timee
 
 func on_note_hit(note: Note) -> void:
 	if note.was_hit or note.column == -1:

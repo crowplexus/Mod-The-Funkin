@@ -25,6 +25,11 @@ var scroll: int = 0
 @export var ghost_tapping: bool = true
 ## Defines the maximum timing window for a note to be hittable.
 @export var max_hit_window: float = 0.18 # 180ms
+## Enables a 5th judgement not originally present in the game.
+@export var use_epics: bool = true
+## Defines an offset for music synching, delays note spawning.[br]
+## This is set to an amount of seconds.
+@export var sync_offset: float = 0.0
 ## Locks framerate to your monitor's refresh rate[br]
 ## May help reducing screen tearing.
 @export var vsync: bool = false:
@@ -32,8 +37,6 @@ var scroll: int = 0
 		var value: = DisplayServer.VSYNC_ADAPTIVE if new_vsync else DisplayServer.VSYNC_DISABLED
 		DisplayServer.window_set_vsync_mode(value)
 		vsync = new_vsync
-## Enables a 5th judgement not originally present in the game.
-@export var use_epics: bool = true
 ## Defines the intensity of the Camera Bump.
 @export var bump_intensity: int = 100:
 	set(new_bi): bump_intensity = clampi(new_bi, 0, 100)
