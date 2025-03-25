@@ -17,7 +17,7 @@ func call_func(signature: StringName, arguments: Array = []) -> void:
 
 func load_global_scripts() -> void:
 	var path: String = "res://assets/game/scripts/"
-	if ResourceLoader.exists(path):
+	if DirAccess.dir_exists_absolute(path):
 		push_scripts_only(path)
 
 func load_song_scripts(song: String, difficulty: String = "") -> void:

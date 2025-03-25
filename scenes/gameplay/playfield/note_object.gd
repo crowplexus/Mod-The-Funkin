@@ -79,7 +79,8 @@ func can_splash() -> bool:
 	return false
 
 func _ready() -> void:
-	scroll_mult = Note.get_scroll_as_vector(Global.settings.scroll)
+	var game: = get_tree().current_scene
+	scroll_mult = Note.get_scroll_as_vector(game.local_settings.scroll if game is Gameplay else Global.settings.scroll)
 	if has_node("clip_rect"):
 		clip_rect = get_node("clip_rect")
 		if has_node("clip_rect/hold_body"): hold_body = get_node("clip_rect/hold_body")

@@ -44,7 +44,7 @@ func _ready() -> void:
 		default_ip2_pos = icon_p2.position
 		default_ip2_scale = icon_p2.scale
 	print_debug(default_ip1_pos, default_ip2_pos)
-	_on_settings_changed()
+	_on_settings_changed(game.local_settings if game is Gameplay else Global.settings)
 	countdown.hide()
 
 func _process(delta: float) -> void:
@@ -61,8 +61,9 @@ func _process(delta: float) -> void:
 func _exit_tree() -> void:
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
 
-func _on_settings_changed() -> void:
-	match Global.settings.scroll:
+func _on_settings_changed(settings: Settings) -> void:
+	if not settings: return
+	match settings.scroll:
 		0:
 			note_fields.position.y = 0
 			health_bar.position.y = 660

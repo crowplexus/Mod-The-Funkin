@@ -7,3 +7,5 @@ out/
 *.tmp
 *.DS_Store
 desktop.ini
+# Maintainer-specific
+assets/game/scripts/*

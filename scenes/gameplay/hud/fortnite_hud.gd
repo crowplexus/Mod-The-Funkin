@@ -26,15 +26,16 @@ var game: Node2D
 func _ready() -> void:
 	if get_tree().current_scene and get_tree().current_scene is Node2D:
 		game = get_tree().current_scene
-	_on_settings_changed()
+	_on_settings_changed(game.local_settings if game is Gameplay else Global.settings)
 	countdown.hide()
 
 func _process(_delta: float) -> void:
 	if health_bar.value != _prev_health:
 		health_bar.value = lerp(health_bar.value, floorf(_prev_health), 0.05)
 
-func _on_settings_changed() -> void:
-	match Global.settings.scroll:
+func _on_settings_changed(settings: Settings) -> void:
+	if not settings: return
+	match settings.scroll:
 		0:
 			note_fields.position.y = 0
 			health_bar.position.y = 660

@@ -74,7 +74,8 @@ func _ready() -> void:
 		scripts.load_song_scripts(chart.parsed_values.folder, chart.parsed_values.file)
 		timed_events = chart.scheduled_events.duplicate()
 	add_child(scripts)
-	if assets:
+	scripts.call_func("_pack_entered")
+	if chart.assets:
 		load_stage()
 		load_characters()
 		load_streams()

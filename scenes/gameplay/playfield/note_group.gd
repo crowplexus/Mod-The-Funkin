@@ -56,11 +56,10 @@ func try_spawning() -> void:
 		if absf(note_data.time - Conductor.time) > 1.0: # TODO: account for note speed
 			break
 		var new_note: Note = get_note()
-		new_note.reload(note_data)
 		on_note_spawned.emit(note_data, new_note)
 		if new_note.note_field: # TODO: move note group to note field
-			new_note.modulate = new_note.note_field.modulate
 			new_note.visible = new_note.note_field.visible
+		new_note.reload(note_data)
 		list_position += 1#= clampi(list_position + 1, 0, note_list.size())
 		#print_debug("spawned at ", Conductor.time)
 
