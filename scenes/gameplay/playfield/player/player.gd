@@ -12,6 +12,7 @@ signal miss_note(note: Note, dir: int)
 
 var game: Node2D = null
 var actor: Actor2D = null
+var settings: Settings = null
 var note_field: NoteField = null
 var force_disable_input: bool = false
 var note_group: Node2D
@@ -19,7 +20,9 @@ var note_group: Node2D
 func _ready() -> void:
 	note_field = get_parent()
 	game = get_tree().current_scene
-	if game is Gameplay and game.player: actor = game.player
+	if game is Gameplay:
+		if game.player: actor = game.player
+		if game.local_settings: settings = game.local_settings
 	hit_note.connect(on_note_hit)
 	hit_hold_note.connect(on_hold_hit)
 	miss_note.connect(on_note_miss)
@@ -32,7 +35,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not note_group: return
 	for note: Note in note_group.get_children():
-		if not note.visible or note.hold_size <= 0.0 or note.trip_timer <= 0.0 or note.side != note_field.get_index() or not note.was_hit:
+		if note.hold_size <= 0.0 or note.trip_timer <= 0.0 or note.side != note_field.get_index() or not note.was_hit:
 			continue
 		note.update_hold(delta)
 		if keys_held[note.column] == true:
@@ -88,7 +91,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 	if Input.is_action_just_pressed(action):
 		var note: Note = _get_note(idx)
-		if note and note.is_hittable(Global.settings.max_hit_window):
+		if note and note.is_hittable(settings.max_hit_window):
 			hit_note.emit(note)
 			if note.was_hit:
 				note.hit_time = note.time - Conductor.playhead
@@ -101,7 +104,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 					note._stupid_visual_bug = note.hit_time < 0.0
 		elif not note:
 			note_field.play_animation(idx, NoteField.RepState.PRESSED)
-			if not Global.settings.ghost_tapping:
+			if not settings.ghost_tapping:
 				miss_note.emit(null, idx)
 
 func on_note_hit(note: Note) -> void:

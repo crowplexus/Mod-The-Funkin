@@ -14,7 +14,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not note_group: return
 	for note: Note in note_group.get_children():
-		if not note.visible or note.side != note_field.get_index():
+		if note.side != note_field.get_index():
 			continue
 		var was_hold: bool = note.hold_size > 0.0
 		if note.time <= Conductor.playhead and not note.was_hit:

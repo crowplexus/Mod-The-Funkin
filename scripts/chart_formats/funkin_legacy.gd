@@ -1,7 +1,7 @@
 ## Chart Format for Friday Night Funkin' (0.2.7.1),
 ## also includes support for any of its children formats (i.e: Psych Engine)
 class_name FNFChart
-extends BaseChart
+extends Chart
 
 ## Background to load before the characters
 @export var stage: PackedScene = null
@@ -13,21 +13,21 @@ extends BaseChart
 ]
 
 ## Parses a chart from a JSON file using the original FNF chart format or similar
-static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> BaseChart:
+static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Chart:
 	var path: String = "res://assets/game/songs/%s/charts/%s.json" % [ song_name, difficulty ]
 	var song: String = song_name
 	if not ResourceLoader.exists(path):
-		path = BaseChart.fix_path(path) + ".json"
-		song = BaseChart.fix_path(song)
+		path = Chart.fix_path(path) + ".json"
+		song = Chart.fix_path(song)
 		# and then if the lowercase path isn't found, just live with that.
 		if not ResourceLoader.exists(path):
 			# last resort, use default difficulty
 			path = path.replace(path.get_file().get_basename(), Global.DEFAULT_DIFFICULTY.to_lower())
 		if not ResourceLoader.exists(path):
 			print_debug("Failed to parse chart \"%s\" [Difficulty: %s]" % [ song, difficulty ])
-			return BaseChart.new()
+			return Chart.new()
 	var chart: FNFChart = FNFChart.parse_from_string(load(path).data)
-	chart.assets = BaseChart.get_assets_resource("res://assets/game/songs/%s/assets.tres" % song)
+	chart.assets = Chart.get_assets_resource("res://assets/game/songs/%s/assets.tres" % song)
 	chart.parsed_values["folder"] = song_name
 	chart.parsed_values["file"] = difficulty
 	return chart

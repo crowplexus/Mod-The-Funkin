@@ -59,7 +59,7 @@ func _process(delta: float) -> void:
 			dance()
 
 func play_animation(animation: String, forced: bool = false, reversed: bool = false, speed: float = 1.0) -> void:
-	if not anim: return
+	if not anim or not anim.has_animation(animation): return
 	if _last_anim != animation or forced: anim.seek(0.0)
 	anim.play(animation, -1, speed, reversed)
 	_last_anim = animation

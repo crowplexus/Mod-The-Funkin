@@ -25,9 +25,12 @@ var player_strums: NoteField
 # I need this to be static because of story mode,
 # since it reuses the same tally from the previous song.
 static var tally: Tally
-static var chart: BaseChart
+static var chart: Chart
 
 var local_tally: Tally
+var local_settings: Settings
+var assets: ChartAssets
+var scripts: ScriptPack
 
 @onready var music: AudioStreamPlayer = $%"music_player"
 @onready var note_group: Node = $"hud_layer/note_group"
@@ -41,7 +44,6 @@ var player: Actor2D
 var enemy: Actor2D
 var dj: Actor2D
 
-var assets: ChartAssets
 var game_mode: PlayMode = PlayMode.FREEPLAY
 var judgements: JudgementList = preload("res://assets/default/judgements.tres")
 var note_fields: Array[NoteField] = []
@@ -56,17 +58,23 @@ var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 	set(new_health): health = clampi(new_health, 0, 100)
 
 func _ready() -> void:
+	scripts = ScriptPack.new()
+	scripts.load_global_scripts()
+	local_settings = Global.settings.duplicate()
 	local_tally = Tally.new()
 	if not tally:
 		tally = Tally.new()
 	else:
 		# merge tallies if it's not a local one
 		tally.merge(local_tally)
-	var max_hit_window: float = Global.settings.max_hit_window
+	var max_hit_window: float = local_settings.max_hit_window
 	print_debug("max hit window is ", max_hit_window, " (", max_hit_window * 1000.0, "ms)")
-	if chart and chart.assets:
+	if chart:
 		assets = chart.assets
+		scripts.load_song_scripts(chart.parsed_values.folder, chart.parsed_values.file)
 		timed_events = chart.scheduled_events.duplicate()
+	add_child(scripts)
+	if assets:
 		load_stage()
 		load_characters()
 		load_streams()
@@ -81,6 +89,10 @@ func _ready() -> void:
 	player_strums = note_fields[1]
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	if hud: hud.init_vars()
+	scripts.call_func("_ready_post")
+	var tick_scripts: Callable = func(tick: int) -> void:
+		scripts.call_func("countdown_tick", [tick])
+	if hud: hud.on_countdown_tick.connect(tick_scripts)
 	restart_song()
 
 func restart_song() -> void:
@@ -92,7 +104,7 @@ func restart_song() -> void:
 	if note_group: note_group.list_position = 0
 	Conductor.reset(chart.get_bpm(), false)
 	# fixes a bug where your strums don't do anything after calling restart_song when notes are already spawned
-	# TODO: make this into a smooth trnasition for the pause menu
+	# TODO: make this into a smooth transition for the pause menu
 	if note_group: for note: Note in note_group.get_children():
 		note.queue_free()
 	if chart: fire_timed_event(chart.get_velocity_change(0.0))
@@ -115,11 +127,12 @@ func play_countdown(offset: float = 0.0) -> void:
 			hud.start_countdown()
 	crotchet_offset += offset
 	Conductor.set_time(Conductor.crotchet * crotchet_offset)
-	Global.update_discord("Solo (1 of 1)", "In-game")
+	Global.update_discord("%s" % Global.get_mode_string(game_mode), "In-game")
 
 func _exit_tree() -> void:
 	Conductor.length = -1.0
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
+	local_settings.unreference()
 
 func _process(delta: float) -> void:
 	if music and music.playing:
@@ -239,7 +252,7 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 		idx = hud_layer.get_node("hud").get_index()
 		hud_layer.get_node("hud").set_process(false) # just in case
 		hud_layer.get_node("hud").queue_free()
-	var hud_type: String = Global.settings.hud_style.to_snake_case()
+	var hud_type: String = local_settings.hud_style.to_snake_case()
 	if hud_type in DEFAULT_HUDS:
 		hud = DEFAULT_HUDS[hud_type].instantiate()
 	else:
