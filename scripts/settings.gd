@@ -3,6 +3,8 @@ extends Resource
 
 const _IGNORED_PROPERTIES: PackedStringArray = ["resource_local_to_scene", "resource_scene_unique_id", "resource_name", "resource_path", "script"]
 
+var _was_uncapped: bool = false
+
 ## Defines the Master Volume of the game.
 var master_volume: int = 20:
 	set(new_mv):
@@ -30,6 +32,13 @@ var scroll: int = 0
 ## Defines an offset for music synching, delays note spawning.[br]
 ## This is set to an amount of seconds.
 @export var sync_offset: float = 0.0
+## You know what a framerate is, right?
+@export var framerate: int = 120:
+	set(new_framerate):
+		if framerate == 0 and _was_uncapped: _was_uncapped = false
+		if not _was_uncapped and new_framerate < 30 or new_framerate > 360: _was_uncapped = true
+		Engine.max_fps = clampi(framerate, 30, 360)
+		framerate = Engine.max_fps
 ## Locks framerate to your monitor's refresh rate[br]
 ## May help reducing screen tearing.
 @export var vsync: bool = false:

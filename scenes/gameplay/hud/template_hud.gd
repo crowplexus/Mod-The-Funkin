@@ -2,10 +2,10 @@ class_name TemplateHUD
 extends Control
 
 ## Called whenever the countdown ticks.
-@warning_ignore("unused_signal")
+@warning_ignore("unused_signal") # shut UP?
 signal on_countdown_tick(tick: int)
 ## Called whenever the countdown ends.
-@warning_ignore("unused_signal")
+@warning_ignore("unused_signal") # shut UP?
 signal on_countdown_end()
 
 ## Use this if you want to skip the default hud countdown.
