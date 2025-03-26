@@ -45,7 +45,7 @@ func display_splash() -> Node2D:
 	if not dip:
 		dip = splash.duplicate()
 		dip.name = "splash_%s" % receptor.get_child_count()
-		dip.top_level = self.judgement.splash_type == Judgement.SplashType.FULL
+		if judgement.splash_type == Judgement.SplashType.FULL: dip.top_level = true
 		if dip.top_level: dip.global_position = receptor.global_position
 		dip.animation_finished.connect(dip.hide)
 		receptor.add_child(dip)
