@@ -45,10 +45,10 @@ func display_splash() -> Node2D:
 		dip = splash.duplicate()
 		dip.name = "splash_%s" % receptor.get_child_count()
 		dip.animation_finished.connect(dip.hide)
-		dip.top_level = true
 		dip.global_position = receptor.global_position
-		dip.scale = Vector2.ONE * (1.0 if judgement.splash_type == Judgement.SplashType.FULL else 0.8)
+		dip.top_level = true
 		receptor.add_child(dip)
+	dip.scale = Vector2.ONE * (1.0 if judgement.splash_type == Judgement.SplashType.FULL else 0.8)
 	dip.frame = 0
 	dip.show()
 	dip.play("note impact %s %s" %  [ randi_range(1, 2), Note.COLORS[column] ], 1.0)
