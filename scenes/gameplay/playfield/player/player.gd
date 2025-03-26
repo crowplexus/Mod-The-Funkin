@@ -42,7 +42,7 @@ func _process(delta: float) -> void:
 			note_field.play_animation(note.column, NoteField.RepState.CONFIRM, fmod(note.hold_size, 0.05) == 0)
 			hit_hold_note.emit(note)
 		else:
-			note.trip_timer -= 0.05 * absf(note.hold_size)
+			note.trip_timer -= 0.08 * note.hold_size
 		if note.trip_timer <= 0.0:
 			miss_note.emit(note, note.column)
 			note.dropped = true
@@ -100,7 +100,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 					note_field.play_animation(idx, NoteField.RepState.CONFIRM)
 					note_field.set_reset_timer(idx, 0.3)
 				else:
-					note.trip_timer = 1.0
+					note.trip_timer = 1.0 
 					note._stupid_visual_bug = note.hit_time < 0.0
 		elif not note:
 			note_field.play_animation(idx, NoteField.RepState.PRESSED)

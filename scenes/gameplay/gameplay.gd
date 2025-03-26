@@ -60,6 +60,7 @@ var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 
 func _default_rpc() -> void:
 	Global.update_discord("%s" % Global.get_mode_string(game_mode), "In-game")
+	Global.update_discord_timestamps(int(Conductor.time), int(Conductor.length))
 
 func _ready() -> void:
 	local_settings = Global.settings.duplicate()
@@ -156,7 +157,7 @@ func _process(delta: float) -> void:
 		process_timed_events()
 	if starting:
 		if Conductor.time >= 0.0:
-			Global.update_discord_timestamps(Conductor.time, Conductor.length)
+			_default_rpc()
 			if music: music.play(Conductor.time)
 			starting = false
 	else:

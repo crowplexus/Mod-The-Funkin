@@ -185,4 +185,4 @@ libraries = {
 visible = false
 modulate = Color(1, 1, 1, 0.6)
 sprite_frames = ExtResource("2_xg47h")
-animation = &"note impact 1 blue"
+animation = &"note impact 1 purple"
