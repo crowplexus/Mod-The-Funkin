@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://cmgwmgu7ltg4g" path="res://scenes/gameplay/playfield/strum/receptor.tscn" id="2_1qf5m"]
 
 [node name="4k" type="Node2D"]
-modulate = Color(1, 1, 1, 0.901961)
 scale = Vector2(0.7, 0.7)
 script = ExtResource("1_n8xoy")
 
