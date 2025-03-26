@@ -36,7 +36,10 @@ func _process(delta: float) -> void:
 func on_note_hit(note: Note) -> void:
 	note_field.play_animation(note.column, NoteField.RepState.CONFIRM)
 	note_field.set_reset_timer(note.column, 0.3 * (Conductor.crotchet + note.length))
+	# TODO: rewrite this to attach characters to the notefield or something like that.
 	if actor: actor.sing(note.column, true)
+	if game is Gameplay and game.music and not game.has_enemy_track:
+		game.music.stream.set_sync_stream_volume(1, linear_to_db(1.0))
 
 func on_hold_hit(note: Note) -> void:
 	if actor: actor.sing(note.column, actor.get_anim_position() > 0.1)

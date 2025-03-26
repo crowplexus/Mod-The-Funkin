@@ -54,6 +54,8 @@ var should_process_events: bool = true
 var ending: bool = false
 var starting: bool = true
 
+var has_enemy_track: bool = false
+
 var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 	set(new_health): health = clampi(new_health, 0, 100)
 
@@ -289,6 +291,7 @@ func load_streams() -> void:
 		music.stream.set_sync_stream(0, chart.assets.instrumental)
 		Conductor.length = chart.assets.instrumental.get_length()
 		if chart.assets.vocals:
+			has_enemy_track = chart.assets.vocals.size() > 1
 			for i: int in chart.assets.vocals.size():
 				music.stream.set_sync_stream(i + 1, chart.assets.vocals[i])
 
@@ -313,6 +316,7 @@ func on_note_hit(note: Note) -> void:
 	if note.can_splash(): note.display_splash()
 	if player and note.side == 1:
 		player.sing(note.column, note.arrow.visible)
+		if music: music.stream.set_sync_stream_volume(1, linear_to_db(1.0))
 	# kill everyone, and everything in your path
 	health += (DEFAULT_HEALTH_WEIGHT * judged_tier)
 	#print_debug("Health increased by ", DEFAULT_HEALTH_WEIGHT * judged_tier, "%")
@@ -361,6 +365,9 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 	local_tally.update_accuracy_counter()
 	player.sing(idx, true, "miss")
 	health += int(Tally.MISS_POINTS + damage_boost)
+	if music: music.stream.set_sync_stream_volume(1, linear_to_db(0.0))
+	if assets and assets.miss_note_sounds:
+		Global.play_sfx(assets.miss_note_sounds.pick_random(), randf_range(0.1, 0.4))
 	#print_debug("Health damaged by ", int(Tally.MISS_POINTS + damage_boost), "%")
 	tally.merge(local_tally)
 	hud.update_score_text()

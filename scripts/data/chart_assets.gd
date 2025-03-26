@@ -26,6 +26,12 @@ extends Resource
 	preload("res://assets/sounds/countdown/funkin/1.ogg"),
 	preload("res://assets/sounds/countdown/funkin/go.ogg"),
 ]
+## Miss Sounds that will be used when missing notes.
+@export var miss_note_sounds: Array[AudioStream] = [
+	preload("res://assets/sounds/miss/funkin/miss1.ogg"),
+	preload("res://assets/sounds/miss/funkin/miss2.ogg"),
+	preload("res://assets/sounds/miss/funkin/miss3.ogg"),
+]
 
 ## Returns an assets resource from the specified path (if it exists)[br]
 ## Will return a a default resource on fail.
