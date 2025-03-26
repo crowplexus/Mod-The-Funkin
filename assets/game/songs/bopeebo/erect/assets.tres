@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://jsjmxpnte6hx" path="res://assets/ui/countdown/go.png" id="8_3pqb8"]
 [ext_resource type="AudioStream" uid="uid://ckcccnlv022px" path="res://assets/game/songs/bopeebo/erect/Inst-erect.ogg" id="9_mjf85"]
 [ext_resource type="Resource" uid="uid://dxhq200ow8ypp" path="res://assets/default/noteskin.tres" id="10_3aho6"]
-[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/data/chart_assets.gd" id="11_bg48t"]
+[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/chart/data/chart_assets.gd" id="11_bg48t"]
 [ext_resource type="AudioStream" uid="uid://cqc47mmg4cc3o" path="res://assets/game/songs/bopeebo/erect/Voices-Player-erect.ogg" id="12_8p88l"]
 [ext_resource type="AudioStream" uid="uid://dg8qhu20tuafc" path="res://assets/game/songs/bopeebo/erect/Voices-Opponent-erect.ogg" id="13_r3v8y"]
 

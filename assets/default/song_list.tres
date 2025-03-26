@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SongList" load_steps=6 format=3 uid="uid://cfxu4hd3spw4u"]
 
-[ext_resource type="Script" uid="uid://cb8wmjygxeh2h" path="res://scripts/data/song_list.gd" id="1_ldt5e"]
-[ext_resource type="Script" uid="uid://cfh5aidjsi5bg" path="res://scripts/data/song_item.gd" id="2_ei7g8"]
+[ext_resource type="Script" uid="uid://cb8wmjygxeh2h" path="res://scripts/song_list.gd" id="1_ldt5e"]
+[ext_resource type="Script" uid="uid://cfh5aidjsi5bg" path="res://scripts/song_item.gd" id="2_ei7g8"]
 
 [sub_resource type="Resource" id="Resource_f5kmj"]
 script = ExtResource("2_ei7g8")

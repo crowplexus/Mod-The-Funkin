@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="DefaultContent" load_steps=2 format=3 uid="uid://pyjreivq1ocv"]
-
-[ext_resource type="Script" uid="uid://ci3dlj6w5vdxd" path="res://scripts/data/content_menus.gd" id="1_mkekb"]
-
-[resource]
-script = ExtResource("1_mkekb")
-metadata/_custom_type_script = ExtResource("1_mkekb")

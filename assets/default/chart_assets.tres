@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ChartAssets" load_steps=13 format=3 uid="uid://cp25ehrc4xvy2"]
+[gd_resource type="Resource" script_class="ChartAssets" load_steps=16 format=3 uid="uid://cp25ehrc4xvy2"]
 
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="1_s7xu8"]
-[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/data/chart_assets.gd" id="1_sw5gl"]
+[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/chart/data/chart_assets.gd" id="1_sw5gl"]
 [ext_resource type="AudioStream" uid="uid://c4y5bwvxdkv4o" path="res://assets/sounds/countdown/funkin/2.ogg" id="2_5i8fv"]
 [ext_resource type="Resource" uid="uid://dxhq200ow8ypp" path="res://assets/default/noteskin.tres" id="2_7t4i5"]
 [ext_resource type="AudioStream" uid="uid://c72s73suuam2n" path="res://assets/sounds/countdown/funkin/1.ogg" id="3_pjkj3"]
@@ -11,7 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://c03iqiu5m7if7" path="res://assets/ui/countdown/set.png" id="7_wc8np"]
 [ext_resource type="Texture2D" uid="uid://jsjmxpnte6hx" path="res://assets/ui/countdown/go.png" id="8_kvquv"]
 [ext_resource type="PackedScene" uid="uid://bjkg052ui3mnl" path="res://scenes/gameplay/hud/fortnite_hud.tscn" id="9_5i8fv"]
+[ext_resource type="AudioStream" uid="uid://1ahkreqvoty3" path="res://assets/sounds/miss/funkin/miss1.ogg" id="10_y0kxw"]
 [ext_resource type="PackedScene" uid="uid://bpmp1nmibtels" path="res://scenes/gameplay/adjacent/pause_menu.tscn" id="11_pjkj3"]
+[ext_resource type="AudioStream" uid="uid://c1pqgmd00h20b" path="res://assets/sounds/miss/funkin/miss2.ogg" id="11_wc8np"]
+[ext_resource type="AudioStream" uid="uid://j4gb0khptavt" path="res://assets/sounds/miss/funkin/miss3.ogg" id="12_kvquv"]
 
 [resource]
 script = ExtResource("1_sw5gl")
@@ -21,4 +24,5 @@ hud = ExtResource("9_5i8fv")
 pause_menu = ExtResource("11_pjkj3")
 countdown_textures = Array[Texture2D]([ExtResource("5_avynl"), ExtResource("6_y0kxw"), ExtResource("7_wc8np"), ExtResource("8_kvquv")])
 countdown_sounds = Array[AudioStream]([ExtResource("1_s7xu8"), ExtResource("2_5i8fv"), ExtResource("3_pjkj3"), ExtResource("4_g323n")])
+miss_note_sounds = Array[AudioStream]([ExtResource("10_y0kxw"), ExtResource("11_wc8np"), ExtResource("12_kvquv")])
 metadata/_custom_type_script = "uid://ba0wwnyur88ga"

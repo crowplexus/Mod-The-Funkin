@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://m23v5bi63wil" path="res://assets/ui/countdown/ready.png" id="6_cgra8"]
 [ext_resource type="Texture2D" uid="uid://c03iqiu5m7if7" path="res://assets/ui/countdown/set.png" id="7_tgs0x"]
 [ext_resource type="Texture2D" uid="uid://jsjmxpnte6hx" path="res://assets/ui/countdown/go.png" id="8_jdrc2"]
-[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/data/chart_assets.gd" id="9_aiqtt"]
+[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/chart/data/chart_assets.gd" id="9_aiqtt"]
 [ext_resource type="AudioStream" uid="uid://ci5ckrxlaihkr" path="res://assets/game/songs/bopeebo/default/Inst.ogg" id="9_biy52"]
 [ext_resource type="Resource" uid="uid://dxhq200ow8ypp" path="res://assets/default/noteskin.tres" id="10_i3il5"]
 [ext_resource type="AudioStream" uid="uid://dvxrnk1mitb2k" path="res://assets/game/songs/bopeebo/default/Voices-Player.ogg" id="12_emvj6"]

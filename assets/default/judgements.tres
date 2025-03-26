@@ -51,4 +51,4 @@ metadata/_custom_type_script = ExtResource("1_spwge")
 [resource]
 script = ExtResource("2_ka624")
 list = Array[ExtResource("1_spwge")]([SubResource("Resource_spwge"), SubResource("Resource_ka624"), SubResource("Resource_ya0cj"), SubResource("Resource_i6s6j"), SubResource("Resource_xs71s")])
-metadata/_custom_type_script = ExtResource("2_ka624")
+metadata/_custom_type_script = "uid://s7btyev2xf6m"

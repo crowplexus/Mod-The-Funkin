@@ -154,6 +154,7 @@ const DISCORD_RPC_DEFAULT_LI_TEXT: String = ""
 ## Resets the state of the Discord RPC plugin back to the defaults.
 func reset_discord() -> void:
 	DiscordRPC.app_id = DISCORD_RPC_ID
+	update_discord_timestamps(0, 0)
 	update_discord_images()
 
 ## Updates the details and state of Discord RPC.

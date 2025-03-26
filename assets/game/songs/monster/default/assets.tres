@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c03iqiu5m7if7" path="res://assets/ui/countdown/set.png" id="7_3ycmm"]
 [ext_resource type="Texture2D" uid="uid://jsjmxpnte6hx" path="res://assets/ui/countdown/go.png" id="8_s34mm"]
 [ext_resource type="AudioStream" uid="uid://cf0t4cirw8y5s" path="res://assets/game/songs/monster/default/Inst.ogg" id="9_egduw"]
-[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/data/chart_assets.gd" id="9_qkuc4"]
+[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/chart/data/chart_assets.gd" id="9_qkuc4"]
 [ext_resource type="Resource" uid="uid://dxhq200ow8ypp" path="res://assets/default/noteskin.tres" id="10_rw88c"]
 [ext_resource type="AudioStream" uid="uid://disw81trdu0ss" path="res://assets/game/songs/monster/default/Voices-Player.ogg" id="12_gj7pk"]
 [ext_resource type="AudioStream" uid="uid://vlr3rt663ydd" path="res://assets/game/songs/monster/default/Voices-Opponent.ogg" id="13_eudei"]

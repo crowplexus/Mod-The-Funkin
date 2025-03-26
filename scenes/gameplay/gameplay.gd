@@ -59,6 +59,9 @@ var has_enemy_track: bool = false
 var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 	set(new_health): health = clampi(new_health, 0, 100)
 
+func _default_rpc() -> void:
+	Global.update_discord("%s" % Global.get_mode_string(game_mode), "In-game")
+
 func _ready() -> void:
 	local_settings = Global.settings.duplicate()
 	local_tally = Tally.new()
@@ -134,7 +137,7 @@ func play_countdown(offset: float = 0.0) -> void:
 			hud.start_countdown()
 	crotchet_offset += offset
 	Conductor.set_time(Conductor.crotchet * crotchet_offset)
-	Global.update_discord("%s" % Global.get_mode_string(game_mode), "In-game")
+	_default_rpc()
 
 func _exit_tree() -> void:
 	Conductor.length = -1.0
@@ -178,6 +181,8 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 		if music: music.stop()
 		var instance: Control = pause_menu.instantiate()
 		instance.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+		if instance.has_signal("on_close"):
+			instance.connect("on_close", _default_rpc)
 		hud_layer.add_child(instance)
 		get_tree().paused = true
 		return
@@ -313,10 +318,10 @@ func on_note_hit(note: Note) -> void:
 	var abs_diff: float = absf(note.time - Conductor.playhead) * 1000.0
 	var judged_tier: int = Tally.judge_time(abs_diff)
 	note.judgement = judgements.list[judged_tier]
-	if note.can_splash(): note.display_splash()
 	if player and note.side == 1:
 		player.sing(note.column, note.arrow.visible)
 		if music: music.stream.set_sync_stream_volume(1, linear_to_db(1.0))
+	if note.can_splash(): note.display_splash()
 	# kill everyone, and everything in your path
 	health += (DEFAULT_HEALTH_WEIGHT * judged_tier)
 	#print_debug("Health increased by ", DEFAULT_HEALTH_WEIGHT * judged_tier, "%")

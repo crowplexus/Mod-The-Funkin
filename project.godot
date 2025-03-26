@@ -56,8 +56,7 @@ folder_colors={
 "res://scenes/": "purple",
 "res://scenes/gameplay/playfield/": "gray",
 "res://scripts/": "red",
-"res://scripts/chart_formats/": "yellow",
-"res://scripts/data/": "orange",
+"res://scripts/chart/": "yellow",
 "res://scripts/gameplay/": "green"
 }
 

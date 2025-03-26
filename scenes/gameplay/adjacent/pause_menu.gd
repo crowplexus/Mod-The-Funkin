@@ -1,5 +1,7 @@
 extends Control
 
+signal on_close()
+
 const LISTS: Dictionary[String, PackedStringArray] = {
 	"default": ["Resume", "Restart", "Difficulty", "Options", "Exit"],
 }
@@ -64,4 +66,5 @@ func change_selection(next: int = 0) -> void:
 func close() -> void:
 	can_control = false
 	get_tree().paused = false
+	on_close.emit()
 	self.queue_free()
