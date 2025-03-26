@@ -77,7 +77,7 @@ func _ready() -> void:
 	add_child(scripts)
 	scripts.call_func("_pack_entered")
 	if chart.assets:
-		load_stage()
+		load_stage(chart.stage if chart and chart.stage else null)
 		load_characters()
 		load_streams()
 		reload_hud()
@@ -211,9 +211,9 @@ func fire_timed_event(event: TimedEvent) -> void:
 			print_debug("scroll speed changed to ", event.values.speed, " at ", Conductor.time)
 	event.was_fired = true
 
-func load_stage(custom_path: PackedScene = null) -> void:
+func load_stage(stage_path: PackedScene = null) -> void:
 	if has_node("stage"): remove_child(get_node("stage"))
-	if not custom_path or not chart or (chart and not chart.characters):
+	if not stage_path:
 		print_debug("failed to load stage, making a dummy...")
 		stage_bg = FunkinStage2D.new()
 		var dummy_stage: ColorRect = ColorRect.new()
@@ -223,12 +223,10 @@ func load_stage(custom_path: PackedScene = null) -> void:
 		add_child(stage_bg)
 		move_child(stage_bg, 1)
 		return
-	var use_chart: bool = not custom_path and (chart and chart.stage)
-	if custom_path or (chart and chart.stage):
-		stage_bg = (chart.stage if use_chart else custom_path).instantiate()
-		print_debug("changed stage to ", stage_bg.scene_file_path)
-		add_child(stage_bg)
-		move_child(stage_bg, 1)
+	stage_bg = stage_path.instantiate()
+	print_debug("changed stage to ", stage_bg.scene_file_path)
+	add_child(stage_bg)
+	move_child(stage_bg, 1)
 
 func get_actor_from_index(idx: int) -> Actor2D:
 		var actor: Actor2D
