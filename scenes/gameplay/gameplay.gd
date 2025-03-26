@@ -53,7 +53,6 @@ var should_process_events: bool = true
 
 var ending: bool = false
 var starting: bool = true
-
 var has_enemy_track: bool = false
 
 var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
@@ -102,6 +101,11 @@ func _ready() -> void:
 	if hud: hud.on_countdown_tick.connect(tick_scripts)
 	restart_song()
 
+func kill_every_note() -> void:
+	if note_group:
+		for note: Node in note_group.get_children():
+			note.queue_free()
+
 func restart_song() -> void:
 	if music: music.seek(0.0)
 	ending = false
@@ -111,10 +115,9 @@ func restart_song() -> void:
 	if note_group: note_group.list_position = 0
 	Conductor.reset(chart.get_bpm(), false)
 	Conductor.play_offset = local_settings.sync_offset
-	# fixes a bug where your strums don't do anything after calling restart_song when notes are already spawned
-	# TODO: make this into a smooth transition for the pause menu
-	if note_group: for note: Note in note_group.get_children():
-		note.queue_free()
+	local_tally.zero()
+	tally.merge(local_tally)
+	kill_every_note()
 	if chart: fire_timed_event(chart.get_velocity_change(0.0))
 	for note_field: NoteField in note_fields:
 		if note_field.player is Player:

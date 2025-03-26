@@ -164,7 +164,7 @@ func update_discord(state: String, details: String) -> void:
 	DiscordRPC.refresh()
 
 ## Updates the Discord RPC to add timestamps.
-func update_discord_timestamps(start: int, end: int = -1) -> void:
+func update_discord_timestamps(start: float, end: float = -1) -> void:
 	DiscordRPC.start_timestamp = start
 	if end > -1: DiscordRPC.end_timestamp = end
 	DiscordRPC.refresh()
