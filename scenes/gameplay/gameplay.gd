@@ -214,7 +214,6 @@ func fire_timed_event(event: TimedEvent) -> void:
 func load_stage(stage_path: PackedScene = null) -> void:
 	if has_node("stage"): remove_child(get_node("stage"))
 	if not stage_path:
-		print_debug("failed to load stage, making a dummy...")
 		stage_bg = FunkinStage2D.new()
 		var dummy_stage: ColorRect = ColorRect.new()
 		dummy_stage.size = get_viewport_rect().size
@@ -252,7 +251,7 @@ func load_characters() -> void:
 		if new_actor == player: new_actor.faces_left = true
 		if not stage_bg: # most here as a safety measure, to add the characters regardless of whether there's a stage or not.
 			add_child(new_actor)
-			if new_actor == dj: move_child(dj, player.get_index() - 1)
+			if new_actor == dj: move_child(dj, player.get_index())
 	# load the characters inside the stage if possible (layering purposes)
 	for idx: int in MARKER_NAMES.size():
 		var ii: String = MARKER_NAMES[idx]
@@ -267,7 +266,7 @@ func load_characters() -> void:
 				stage_bg.move_child(new_actor, actor_idx)
 			else:
 				stage_bg.add_child(new_actor)
-				if new_actor == dj: stage_bg.move_child(dj, player.get_index() - 1)
+				if new_actor == dj: stage_bg.move_child(dj, player.get_index())
 
 func reload_hud(custom_hud: PackedScene = null) -> void:
 	var idx: int = 0
