@@ -31,20 +31,19 @@ var countdown_streams: Array[AudioStream] = []
 var _countdown_iteration: int = 0
 var _prev_health: int = 50
 
-var game: Node2D
+var game: Node
 
 func _ready() -> void:
-	if get_tree().current_scene and get_tree().current_scene is Node2D:
+	if get_tree().current_scene:
 		game = get_tree().current_scene
-	Conductor.on_beat_hit.connect(on_beat_hit)
 	if icon_p1:
 		default_ip1_pos = icon_p1.position
 		default_ip1_scale = icon_p1.scale
 	if icon_p2:
 		default_ip2_pos = icon_p2.position
 		default_ip2_scale = icon_p2.scale
-	print_debug(default_ip1_pos, default_ip2_pos)
-	_on_settings_changed(game.local_settings if game is Gameplay else Global.settings)
+	if game is Gameplay: _on_settings_changed(game.local_settings)
+	Conductor.on_beat_hit.connect(on_beat_hit)
 	countdown.hide()
 
 func _process(delta: float) -> void:
@@ -61,7 +60,7 @@ func _process(delta: float) -> void:
 func _exit_tree() -> void:
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
 
-func _on_settings_changed(settings: Settings) -> void:
+func _on_settings_changed(settings: Settings = Global.settings) -> void:
 	if not settings: return
 	match settings.scroll:
 		0:
