@@ -67,7 +67,9 @@ func _on_settings_changed(settings: Settings) -> void:
 		0:
 			note_fields.position.y = 0
 			health_bar.position.y = 660
+			combo_group.position.y = 130
 		1:
+			combo_group.position.y = 665
 			note_fields.position.y = 500
 			health_bar.position.y = 50
 

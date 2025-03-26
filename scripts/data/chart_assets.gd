@@ -26,3 +26,21 @@ extends Resource
 	preload("res://assets/sounds/countdown/funkin/1.ogg"),
 	preload("res://assets/sounds/countdown/funkin/go.ogg"),
 ]
+
+## Returns an assets resource from the specified path (if it exists)[br]
+## Will return a a default resource on fail.
+static func get_resource(song_name: String, difficulty: String, fallback: ChartAssets = Global.DEFAULT_CHART_ASSETS) -> ChartAssets:
+	var path: String = "res://assets/game/songs/%s/default/assets.tres" % [song_name]
+	var variation_path: String = path.replace("/default/", "/%s/" % solve_variation(difficulty))
+	if ResourceLoader.exists(variation_path):
+		path = variation_path
+	if not ResourceLoader.exists(path):
+		var file: String = path.get_file()
+		path = Chart.fix_path(path.replace(file, "")) + ".tres"
+		if not ResourceLoader.exists(path):
+			return fallback
+	return load(path)
+
+static func solve_variation(difficulty: String) -> String:
+	var x: String = difficulty.to_lower().strip_edges().strip_escapes()
+	return Global.DEFAULT_VARIATION_BINDINGS[x] if difficulty in Global.DEFAULT_VARIATION_BINDINGS else x

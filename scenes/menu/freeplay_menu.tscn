@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5qnedjs8xhcw"]
+[gd_scene load_steps=6 format=3 uid="uid://c5qnedjs8xhcw"]
 
 [ext_resource type="Script" uid="uid://dqt5jghej6xdr" path="res://scenes/menu/freeplay_menu.gd" id="1_ttjym"]
 [ext_resource type="Texture2D" uid="uid://ciwp55vsaghii" path="res://assets/ui/menu/menuDesat.png" id="2_f7icd"]
+[ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="3_i0mk5"]
 [ext_resource type="PackedScene" uid="uid://b5vnpx4av4rx" path="res://scenes/menu/freeplay/capsule.tscn" id="3_s6l1l"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5h24w"]
+font = ExtResource("3_i0mk5")
+font_size = 24
 
 [node name="freeplay_menu" type="Node2D"]
 script = ExtResource("1_ttjym")
@@ -11,6 +16,29 @@ script = ExtResource("1_ttjym")
 modulate = Color(0, 0.134167, 0.23, 1)
 position = Vector2(640, 365)
 texture = ExtResource("2_f7icd")
+
+[node name="score_bg" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 300.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="diff_text" type="Label" parent="score_bg"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "< Difficulty >"
+label_settings = SubResource("LabelSettings_5h24w")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
 [node name="song_container" type="Control" parent="."]
 layout_mode = 3

@@ -95,6 +95,12 @@ func log_to_linear(x: float) -> float: return 1 - (log(x) / LOG_MINIMUM)
 ## Default Chart Difficulty.
 const DEFAULT_DIFFICULTY: String = "normal"
 
+## Which variations should be rebound to other variations.
+const DEFAULT_VARIATION_BINDINGS: Dictionary[String, String] = {
+	# Nightmare is just Erect Hard Mode so here you go.
+	"nightmare": "erect"
+}
+
 ### Returns "PAUSED" if the tree is paused.
 func get_paused_string() -> String:
 	return "PAUSED" if get_tree().paused else ""

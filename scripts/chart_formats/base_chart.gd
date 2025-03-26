@@ -46,21 +46,41 @@ func get_velocity_change(timestamp: float) -> TimedEvent:
 			break
 	return change
 
+## Detects a chart format and parses it.
+static func detect_and_parse(song_name: StringName, difficulty: StringName = "normal") -> Chart:
+	const EXTENSIONS: = ["json", "fnfc", "scc", "sm"]
+	var path: String = "res://assets/game/songs/%s/charts/" % song_name
+	var chart: Chart
+	for ext: String in EXTENSIONS:
+		var p: String = path + "%s.%s" % [ difficulty, ext ]
+		if not ResourceLoader.exists(p):
+			p = Chart.fix_path(p) + ".%s" % ext
+		match p.get_extension():
+			_: # assume legacy (FNF 0.2.7.1/0.3)
+				chart = FNFChart.parse(song_name, difficulty, true)
+				print_debug("Parsing old FNF style chart ", song_name, " with difficulty ", difficulty)
+				break
+	if not chart:
+		chart = Chart.new()
+	if not chart.assets:
+		chart.assets = ChartAssets.get_resource(song_name, difficulty)
+	return chart
+
 ## Parses a chart from a resource file containing it.[br]
 ## This method SHOULD be overriden by other parsers.
-static func parse(song_name: StringName, difficulty: StringName = "normal") -> Chart:
-	var path: String = "res://assets/game/songs/%s/charts/%s.tres" % [ song_name, difficulty ]
-	var song: String = song_name
-	if not ResourceLoader.exists(path):
-		path = Chart.fix_path(path) + ".json"
-		song = Chart.fix_path(song)
+static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
+	var path: String = "res://assets/game/songs/%s/default/%s.tres" % [ song_name, difficulty ]
+	var variation_path: String = path.replace("/default/", "/%s/" % ChartAssets.solve_variation(difficulty))
+	if ResourceLoader.exists(variation_path):
+		path = variation_path
+	if not ResourceLoader.exists(path) and not skip_checks:
+		path = Chart.fix_path(path) + ".tres"
 		# and then if the lowercase path isn't found, just live with that.
 		if not ResourceLoader.exists(path):
 			return Chart.new()
-	
 	var chart: Chart = load(path)
-	chart.assets = Chart.get_assets_resource("res://assets/game/songs/%s/assets.tres" % song)
-	chart.parsed_values["folder"] = song_name
+	chart.assets = ChartAssets.get_resource(song_name, difficulty)
+	chart.parsed_values["folder"] = Chart.fix_path(song_name)
 	chart.parsed_values["file"] = difficulty
 	return chart
 
@@ -72,12 +92,3 @@ static func fix_path(path: String) -> String:
 		path = path.replace(forb, "")
 	path = path.strip_edges().strip_escapes()
 	return path
-
-## Returns an assets resource from the specified path (if it exists)[br]
-## Will return a a default resource on fail.
-static func get_assets_resource(path: String) -> ChartAssets:
-	if not ResourceLoader.exists(path):
-		path = Chart.fix_path(path)
-		if not ResourceLoader.exists(path):
-			return Global.DEFAULT_CHART_ASSETS
-	return load(path)

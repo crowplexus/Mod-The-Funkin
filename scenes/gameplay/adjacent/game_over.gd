@@ -160,8 +160,9 @@ func _selected_da() -> void:
 	await get_tree().create_timer(2.0 if in_gameplay else 3.0).timeout
 	# TODO: finish new transition
 	if in_gameplay:
-		camera.position_smoothing_speed = og_camera_speed
-		camera.global_position = get_viewport_rect().size * 0.5
+		if camera:
+			camera.position_smoothing_speed = og_camera_speed
+			camera.global_position = get_viewport_rect().size * 0.5
 		var game: Gameplay = get_tree().current_scene as Gameplay
 		game.restart_song()
 		game.try_revive()

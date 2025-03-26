@@ -18,7 +18,7 @@ extends Node2D
 ## "deathStart" -> plays when the game over sequence shows up.[br]
 ## "deathLoop" -> plays while no buttons are being pressed after the first death animation.[br]
 ## "deathConfirm" -> plays after pressing accept to end the game over sequence.[br]
-@export var death_skeleton: PackedScene = preload("res://scenes/gameplay/characters/bf-dead.tscn")
+@export var death_skeleton: PackedScene = load("res://scenes/gameplay/characters/bf-dead.tscn")
 ## Sound played when the character dies and gets sent to the game over sequence.[br]
 ## Keep in mind, change this in the skeleton scene itself, not in its parent.
 @export var death_sound: AudioStream = preload("res://assets/sounds/gameover/fnf_loss_sfx.ogg")
@@ -76,6 +76,8 @@ func get_anim_position() -> float:
 	return anim.current_animation_position if anim else 0.0
 
 func die() -> void:
+	if not death_skeleton:
+		return
 	hide()
 	var game_over_screen: PackedScene = load("res://scenes/gameplay/adjacent/game_over.tscn")
 	var instance: Node2D = game_over_screen.instantiate()

@@ -7,3 +7,5 @@ extends Resource
 @export var name: StringName = &"Unknown"
 ## Folder used to locate the song (for loading charts from)
 @export var folder: String = "test"
+## Song Difficulties, used in freeplay.
+@export var difficulties: PackedStringArray = ["easy", Global.DEFAULT_DIFFICULTY, "hard"]

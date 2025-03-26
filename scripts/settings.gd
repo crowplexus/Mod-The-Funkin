@@ -17,7 +17,8 @@ var master_mute: bool = false:
 		AudioServer.set_bus_mute(0, new_mute)
 ## Alternates between in-game scroll directions.
 @export_enum("Up:0","Down:1")
-var scroll: int = 0
+var scroll: int = 0:
+	set(new_scroll): scroll = wrapi(new_scroll, 0, 1)
 ## Defines note keybinds.
 @export var keybinds: Array[PackedStringArray] = [
 	"ASWD".split(""), # Primary Keybinds (Player 1)

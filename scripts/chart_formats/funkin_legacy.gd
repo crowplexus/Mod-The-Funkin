@@ -13,22 +13,24 @@ extends Chart
 ]
 
 ## Parses a chart from a JSON file using the original FNF chart format or similar
-static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Chart:
-	var path: String = "res://assets/game/songs/%s/charts/%s.json" % [ song_name, difficulty ]
-	var song: String = song_name
-	if not ResourceLoader.exists(path):
+static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
+	var path: String = "res://assets/game/songs/%s/default/%s.json" % [ song_name, difficulty ]
+	var variation_path: String = path.replace("/default/", "/%s/" % ChartAssets.solve_variation(difficulty))
+	if ResourceLoader.exists(variation_path):
+		path = variation_path
+	if not ResourceLoader.exists(path) and not skip_checks:
 		path = Chart.fix_path(path) + ".json"
-		song = Chart.fix_path(song)
 		# and then if the lowercase path isn't found, just live with that.
 		if not ResourceLoader.exists(path):
 			# last resort, use default difficulty
 			path = path.replace(path.get_file().get_basename(), Global.DEFAULT_DIFFICULTY.to_lower())
 		if not ResourceLoader.exists(path):
-			print_debug("Failed to parse chart \"%s\" [Difficulty: %s]" % [ song, difficulty ])
+			print_debug("Failed to parse chart \"%s\" [Difficulty: %s]" % [ song_name, difficulty ])
 			return Chart.new()
+	
 	var chart: FNFChart = FNFChart.parse_from_string(load(path).data)
-	chart.assets = Chart.get_assets_resource("res://assets/game/songs/%s/assets.tres" % song)
-	chart.parsed_values["folder"] = song_name
+	chart.assets = ChartAssets.get_resource(song_name, difficulty)
+	chart.parsed_values["folder"] = Chart.fix_path(song_name)
 	chart.parsed_values["file"] = difficulty
 	return chart
 

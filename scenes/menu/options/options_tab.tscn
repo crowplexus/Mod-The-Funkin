@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://gulb1ge3va36"]
+
+[ext_resource type="Script" uid="uid://dcbyww3fravuq" path="res://scenes/menu/options/options_tab.gd" id="1_s4ceo"]
+[ext_resource type="PackedScene" uid="uid://cn5qxa5uqvf8r" path="res://scenes/menu/options/ui/value_bar.tscn" id="2_7tf5q"]
+
+[node name="options_tab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s4ceo")
+
+[node name="gameplay" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="scroll" parent="gameplay" instance=ExtResource("2_7tf5q")]
+layout_mode = 2
+values = [&"Up", &"Down"]
+display_name = &"Scroll Direction"
+variable_name = &"scroll"
+
+[node name="ghost_tapping" parent="gameplay" instance=ExtResource("2_7tf5q")]
+layout_mode = 2
+display_name = &"Ghost Tapping"
+variable_name = &"ghost_tapping"
+
+[node name="use_epics" parent="gameplay" instance=ExtResource("2_7tf5q")]
+layout_mode = 2
+display_name = &"Use Epics"
+variable_name = &"use_epics"

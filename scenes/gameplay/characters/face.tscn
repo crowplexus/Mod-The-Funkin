@@ -272,6 +272,9 @@ _data = {
 [node name="face" type="Node2D"]
 script = ExtResource("1_7o7ua")
 icon = SubResource("Resource_kgqrn")
+death_sound = null
+death_confirm_sound = null
+death_music = null
 
 [node name="animated_sprite_2d" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("4_7o7ua")

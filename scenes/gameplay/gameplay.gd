@@ -82,7 +82,7 @@ func _ready() -> void:
 		load_streams()
 		reload_hud()
 	init_note_spawner()
-	# setup note fields.
+	# setup note fields, TODO: make dummies if there's no hud.
 	var from_where: Control
 	if hud.has_node("note_fields"): from_where = hud.get_node("note_fields")
 	elif hud_layer.has_node("note_fields"): from_where = hud.get_node("note_fields")
@@ -115,6 +115,8 @@ func restart_song() -> void:
 		if note_field.player is Player:
 			note_field.player.keys_held.fill(false)
 			note_field.player.note_group = note_group
+		for i: int in note_field.get_child_count():
+			note_field.play_animation(i)
 	if hud:
 		hud.update_health(health)
 		hud.update_score_text()
@@ -185,6 +187,9 @@ func process_timed_events() -> void:
 		should_process_events = false
 		return
 	var current_event: TimedEvent = timed_events[event_position]
+	if not current_event:
+		event_position += 1
+		return
 	if not current_event.was_fired:
 		#var idx: int = timed_events.find(current_event) # if i need it...
 		if Conductor.time < current_event.time:
@@ -196,6 +201,8 @@ func process_timed_events() -> void:
 	event_position += 1
 
 func fire_timed_event(event: TimedEvent) -> void:
+	if not event:
+		return
 	match event.name:
 		&"Scroll Speed Change":
 			for note_field: NoteField in note_fields:
@@ -205,6 +212,17 @@ func fire_timed_event(event: TimedEvent) -> void:
 	event.was_fired = true
 
 func load_stage(custom_path: PackedScene = null) -> void:
+	if has_node("stage"): remove_child(get_node("stage"))
+	if not custom_path or not chart or (chart and not chart.characters):
+		print_debug("failed to load stage, making a dummy...")
+		stage_bg = FunkinStage2D.new()
+		var dummy_stage: ColorRect = ColorRect.new()
+		dummy_stage.size = get_viewport_rect().size
+		dummy_stage.color = Color.BLACK
+		stage_bg.add_child(dummy_stage)
+		add_child(stage_bg)
+		move_child(stage_bg, 1)
+		return
 	var use_chart: bool = not custom_path and (chart and chart.stage)
 	if custom_path or (chart and chart.stage):
 		stage_bg = (chart.stage if use_chart else custom_path).instantiate()
@@ -221,10 +239,11 @@ func get_actor_from_index(idx: int) -> Actor2D:
 		return actor
 
 func load_characters() -> void:
-	if not chart or not chart.characters:
+	if not chart or (chart and not chart.characters):
+		print_debug("unable to load characters.")
 		return
 	const MARKER_NAMES: PackedStringArray = ["player", "enemy", "dj"]
-	const DEFAULT_POS: PackedVector2Array = [ Vector2(800, 450), Vector2(335, 450), Vector2(560, 420) ]
+	const DEFAULT_POS: PackedVector2Array = [ Vector2(1000, 450), Vector2(315, 450), Vector2(620, 420) ]
 	for idx: int in chart.characters.size():
 		var i: PackedScene = chart.characters[idx]
 		if not i or not i.can_instantiate(): continue
@@ -233,21 +252,24 @@ func load_characters() -> void:
 		set(MARKER_NAMES[idx], new_actor)
 		#print_debug("loaded ", new_actor.name, " as ", MARKER_NAMES[idx])
 		if new_actor == player: new_actor.faces_left = true
-		if not stage_bg:
-			add_child(new_actor) # add here if there's no background
+		if not stage_bg: # most here as a safety measure, to add the characters regardless of whether there's a stage or not.
+			add_child(new_actor)
 			if new_actor == dj: move_child(dj, player.get_index() - 1)
 	# load the characters inside the stage if possible (layering purposes)
-	if stage_bg:
-		for idx: int in MARKER_NAMES.size():
-			var ii: String = MARKER_NAMES[idx]
-			if not stage_bg.has_node(ii): continue
-			var actor_to_modify: Actor2D = get_actor_from_index(idx)
-			var new_position: Marker2D = stage_bg.get_node(ii)
-			var actor_idx: int = new_position.get_index()
-			if actor_to_modify:
+	for idx: int in MARKER_NAMES.size():
+		var ii: String = MARKER_NAMES[idx]
+		var new_actor: Actor2D = get_actor_from_index(idx)
+		if new_actor:
+			if stage_bg.has_node(ii):
+				var new_position: Marker2D = stage_bg.get_node(ii)
+				var actor_idx: int = new_position.get_index()
+				new_actor.position = new_position.position
 				stage_bg.remove_child(new_position)
-				stage_bg.add_child(actor_to_modify)
-				stage_bg.move_child(actor_to_modify, actor_idx)
+				stage_bg.add_child(new_actor)
+				stage_bg.move_child(new_actor, actor_idx)
+			else:
+				stage_bg.add_child(new_actor)
+				if new_actor == dj: stage_bg.move_child(dj, player.get_index() - 1)
 
 func reload_hud(custom_hud: PackedScene = null) -> void:
 	var idx: int = 0
@@ -282,7 +304,7 @@ func init_note_spawner() -> void:
 	)
 	if chart and not chart.notes.is_empty():
 		note_group.note_list = chart.notes.duplicate(true)
-		if Conductor.length < 0.0: Conductor.length = chart.notes.back().timee
+		if Conductor.length < 0.0: Conductor.length = chart.notes.back().time
 
 func on_note_hit(note: Note) -> void:
 	if note.was_hit or note.column == -1:

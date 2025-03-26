@@ -1,15 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://xjrclwpe5fqq"]
+[gd_scene load_steps=8 format=3 uid="uid://xjrclwpe5fqq"]
 
 [ext_resource type="Script" uid="uid://cbpwpskaofsru" path="res://scenes/gameplay/characters/bases/actor_2d.gd" id="1_nuwry"]
-[ext_resource type="Texture2D" uid="uid://ckfggl71y85yu" path="res://assets/game/characters/boyfriend/icon.png" id="2_bqijy"]
-[ext_resource type="Script" uid="uid://dovjbyvwk2plh" path="res://scenes/gameplay/characters/bases/health_icon.gd" id="3_c775y"]
 [ext_resource type="SpriteFrames" path="res://assets/game/characters/boyfriend/regular-dead.res" id="4_nuwry"]
-
-[sub_resource type="Resource" id="Resource_kgqrn"]
-script = ExtResource("3_c775y")
-icon = ExtResource("2_bqijy")
-color = Color(0.192157, 0.690196, 0.819608, 1)
-metadata/_custom_type_script = ExtResource("3_c775y")
 
 [sub_resource type="Animation" id="Animation_g2rcx"]
 resource_name = "RESET"
@@ -186,9 +178,6 @@ _data = {
 
 [node name="bf-dead" type="Node2D"]
 script = ExtResource("1_nuwry")
-dance_interval = 0.0
-icon = SubResource("Resource_kgqrn")
-is_player = true
 
 [node name="animated_sprite_2d" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("4_nuwry")

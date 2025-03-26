@@ -7,18 +7,21 @@
 script = ExtResource("2_ei7g8")
 name = &"Bopeebo"
 folder = "bopeebo"
+difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
 metadata/_custom_type_script = ExtResource("2_ei7g8")
 
 [sub_resource type="Resource" id="Resource_40pmu"]
 script = ExtResource("2_ei7g8")
 name = &"Monster"
 folder = "monster"
+difficulties = ["easy", "normal", "hard"]
 metadata/_custom_type_script = ExtResource("2_ei7g8")
 
 [sub_resource type="Resource" id="Resource_ei7g8"]
 script = ExtResource("2_ei7g8")
 name = &"Blazin\'"
 folder = "blazin"
+difficulties = ["easy", "normal", "hard"]
 metadata/_custom_type_script = ExtResource("2_ei7g8")
 
 [resource]
