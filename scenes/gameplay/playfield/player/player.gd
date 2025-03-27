@@ -96,7 +96,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			if note.was_hit:
 				note.hit_time = note.time - Conductor.playhead
 				if note.hold_size <= 0.0:
-					note.hide_all()
+					if not note.die_later: note.hide_all()
 					note_field.play_animation(idx, NoteField.RepState.CONFIRM)
 					note_field.set_reset_timer(idx, 0.3)
 				else:

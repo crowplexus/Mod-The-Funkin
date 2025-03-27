@@ -42,7 +42,7 @@ func move_present_nodes() -> void:
 		if node.note_field and node.note_field.player and node.note_field.player is Player:
 			miss_delay = 0.3
 		# preventing orphan nodes hopefully with this.
-		if not node.was_hit and (Conductor.playhead - node.time) > miss_delay:
+		if (not node.was_hit or node.die_later) and (Conductor.playhead - node.time) > miss_delay:
 			if miss_delay == 0.3 and not node.was_hit:
 				node.note_field.player.miss_note.emit(node, node.column)
 				node.was_missed = true

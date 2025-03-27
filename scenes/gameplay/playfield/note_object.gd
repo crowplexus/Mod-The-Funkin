@@ -59,6 +59,7 @@ var length: float = -1.0
 # Input stuff
 var was_hit: bool = false
 var was_missed: bool = false
+var die_later: bool = false
 #var late_hitbox: float = 1.0
 #var early_hitbox: float = 1.0
 var hit_time: float = 0.0
@@ -109,7 +110,7 @@ func update_hold(delta: float) -> void:
 		_stupid_visual_bug = false
 	hold_size -= delta / absf(clip_rect.scale.y)
 	display_hold(hold_size)
-	if hold_size <= 0.0 or trip_timer <= 0.0:
+	if (hold_size <= 0.0 or trip_timer <= 0.0) and not die_later:
 		hide_all()
 
 ## Override this function to do something when you finish holding all the way through.
