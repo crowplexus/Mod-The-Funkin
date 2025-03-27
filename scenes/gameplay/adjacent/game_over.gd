@@ -161,6 +161,7 @@ func _selected_da() -> void:
 	# TODO: finish new transition
 	if in_gameplay:
 		if camera:
+			camera.process_mode = Node.PROCESS_MODE_INHERIT
 			camera.position_smoothing_speed = og_camera_speed
 			camera.global_position = get_viewport_rect().size * 0.5
 		var game: Gameplay = get_tree().current_scene as Gameplay

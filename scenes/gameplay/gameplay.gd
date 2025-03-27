@@ -114,6 +114,8 @@ func restart_song() -> void:
 	ending = false
 	starting = true
 	event_position = 0
+	for event: TimedEvent in timed_events:
+		event.was_fired = false
 	health = Gameplay.DEFAULT_HEALTH_VALUE
 	if note_group: note_group.list_position = 0
 	Conductor.reset(chart.get_bpm(), false)
