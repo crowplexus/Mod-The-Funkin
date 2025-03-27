@@ -39,6 +39,7 @@ var scripts: ScriptPack
 @onready var default_hud_scale: Vector2 = $"hud_layer".scale
 
 var hud: TemplateHUD
+var camera: Camera2D
 var stage_bg: FunkinStage2D
 var player: Actor2D
 var enemy: Actor2D
@@ -100,6 +101,7 @@ func _ready() -> void:
 	var tick_scripts: Callable = func(tick: int) -> void:
 		scripts.call_func("countdown_tick", [tick])
 	if hud: hud.on_countdown_tick.connect(tick_scripts)
+	camera = get_viewport().get_camera_2d()
 	restart_song()
 
 func kill_every_note() -> void:
@@ -194,32 +196,38 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 		player.pause_sing = player_strums.player.keys_held.has(true)
 
 func process_timed_events() -> void:
-	if timed_events.is_empty() or event_position >= timed_events.size():
-		should_process_events = false
-		return
-	var current_event: TimedEvent = timed_events[event_position]
-	if not current_event:
-		event_position += 1
-		return
-	if not current_event.was_fired:
-		#var idx: int = timed_events.find(current_event) # if i need it...
+	#var idx: int = timed_events.find(current_event) # if i need it...
+	while event_position < timed_events.size():
+		var current_event: TimedEvent = timed_events[event_position]
 		if Conductor.time < current_event.time:
 			return
-		if current_event.efire:
-			current_event.efire.call()
-		else: # hardcoded events yayy !!!! ! ! ! !
-			fire_timed_event(current_event)
-	event_position += 1
+		if not current_event.was_fired:
+			if current_event.efire: current_event.efire.call()
+			else: fire_timed_event(current_event) # hardcoded events
+		event_position += 1
+		if event_position >= timed_events.size():
+			should_process_events = false
 
 func fire_timed_event(event: TimedEvent) -> void:
 	if not event:
 		return
 	match event.name:
-		&"Scroll Speed Change":
+		&"Change Camera Focus":
+			if camera:
+				var offset: Vector2 = Vector2(float(event.values.x) if "x" in event.values else 0.0,
+					float(event.values.y) if "y" in event.values else 0.0)
+				if event.values.char == -1:
+					camera.global_position = offset
+				else:
+					var actor: Actor2D = get_actor_from_index(event.values.char)
+					if actor:
+						camera.global_position = actor.global_position + offset
+						camera.global_position.x *= 0.85
+		&"Change Scroll Speed":
 			for note_field: NoteField in note_fields:
 				note_field.speed_change_tween = create_tween()
 				note_field.speed_change_tween.tween_property(note_field, "speed", event.values.speed, 1.0)
-			print_debug("scroll speed changed to ", event.values.speed, " at ", Conductor.time)
+			#print_debug("scroll speed changed to ", event.values.speed, " at ", Conductor.time)
 	event.was_fired = true
 
 func load_stage(stage_path: PackedScene = null) -> void:
@@ -227,9 +235,15 @@ func load_stage(stage_path: PackedScene = null) -> void:
 	if not stage_path:
 		stage_bg = FunkinStage2D.new()
 		var dummy_stage: ColorRect = ColorRect.new()
-		dummy_stage.size = get_viewport_rect().size
+		dummy_stage.size = get_viewport_rect().size * 5.0
+		dummy_stage.position = -dummy_stage.size * 0.5
 		dummy_stage.color = Color.BLACK
 		stage_bg.add_child(dummy_stage)
+		var dummy_camera: Camera2D = Camera2D.new()
+		dummy_camera.global_position = get_viewport_rect().size * 0.5
+		dummy_camera.position_smoothing_enabled = true
+		dummy_camera.rotation_smoothing_enabled = true
+		stage_bg.add_child(dummy_camera)
 		add_child(stage_bg)
 		move_child(stage_bg, 1)
 		return

@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://gib0vewis1qh"]
 
 [ext_resource type="Script" uid="uid://ds4v6bqi66g6f" path="res://scenes/gameplay/playfield/notes/normal_note.gd" id="1_31kjc"]
-[ext_resource type="SpriteFrames" path="res://assets/game/notetypes/funkin/notes.res" id="2_31kjc"]
+[ext_resource type="SpriteFrames" uid="uid://bssdylvyd1wg8" path="res://assets/game/notetypes/funkin/notes.res" id="2_31kjc"]
 [ext_resource type="SpriteFrames" path="res://assets/game/notetypes/funkin/splashes.res" id="2_xg47h"]
 
 [sub_resource type="Animation" id="Animation_fer4d"]
@@ -160,17 +160,17 @@ script = ExtResource("1_31kjc")
 modulate = Color(1, 1, 1, 0.8)
 layout_mode = 3
 anchors_preset = 0
-offset_left = -32.0
-offset_right = 53.0
-offset_bottom = 864.0
+offset_left = -30.0
+offset_right = 55.0
+offset_bottom = 850.0
 
 [node name="hold_body" type="TextureRect" parent="clip_rect"]
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 810.0
 
-[node name="hold_tail" type="Sprite2D" parent="clip_rect"]
-position = Vector2(26, 0)
+[node name="hold_tail" type="TextureRect" parent="clip_rect"]
+layout_mode = 0
 
 [node name="arrow" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_31kjc")

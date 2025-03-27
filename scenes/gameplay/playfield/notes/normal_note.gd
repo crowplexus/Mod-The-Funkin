@@ -4,6 +4,8 @@ extends Note
 @onready var splash: AnimatedSprite2D = $"splash"
 @onready var arrow: AnimatedSprite2D = $"arrow"
 
+var loaded_hold: bool = false
+
 func show_all() -> void:
 	if not arrow.visible: arrow.show()
 	var is_hold: bool = clip_rect and hold_size > 0.0
@@ -15,18 +17,20 @@ func reload(p_data: NoteData) -> void:
 	hold_size = length
 	player.play(str(column))
 	if not arrow.visible: arrow.show()
-	if arrow.sprite_frames and clip_rect and hold_size > 0.0 and hold_body: # damn
+	var is_hold: bool = arrow.sprite_frames and clip_rect and hold_size > 0.0 and hold_body
+	if is_hold: # damn
 		var color: = Note.COLORS[column % Note.COLORS.size()]
 		hold_body.texture = arrow.sprite_frames.get_frame_texture("%s hold piece" % color, 0)
-		if hold_tail: hold_tail.texture = arrow.sprite_frames.get_frame_texture("%s hold tail" % color, 0)
-		display_hold(hold_size)
-		if hold_tail:
-			hold_tail.position.y = hold_body.position.y + hold_body.size.y
+		hold_tail.texture = arrow.sprite_frames.get_frame_texture("%s hold tail" % color, 0)
+		hold_tail.size = hold_tail.texture.get_size()
+		hold_tail.position.y = hold_body.get_end().y
+		display_hold(length)
+		loaded_hold = true
 
-func update_hold(delta: float) -> void:
-	if arrow.visible: arrow.hide()
-	super(delta)
-	if hold_tail: hold_tail.position.y = hold_body.position.y + hold_body.size.y + 30
+func display_hold(size: float = 0.0, speed: float = 0.0 if data else 1.0) -> void:
+	super(size, speed)
+	if arrow.visible and loaded_hold: arrow.hide()
+	hold_tail.position.y = hold_body.get_end().y
 
 func can_splash() -> bool:
 	return judgement and judgement.splash_type != Judgement.SplashType.DISABLED and length <= 0.0

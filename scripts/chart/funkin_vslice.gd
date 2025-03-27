@@ -2,7 +2,7 @@
 class_name VSliceChart
 extends Chart
 
-static var DUMMY_METADATA: Dictionary = {
+const DUMMY_METADATA: Dictionary[String, Variant] = {
 	"version": "2.2.4",
 	"songName": "Undefined",
 	"artist": "Unknown",
@@ -105,10 +105,10 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 		if current_speed != scroll_speed:
 			chart.scheduled_events[0].values.speed = scroll_speed
 	# create notes.
+	var note_difficulty: String = difficulty.to_lower().strip_escapes().strip_edges()
+	if not note_difficulty in json.notes:
+		note_difficulty = "default"
 	if "notes" in json:
-		var note_difficulty: String = difficulty.to_lower().strip_escapes().strip_edges()
-		if not note_difficulty in json.notes:
-			note_difficulty = "default"
 		if note_difficulty in json.notes: # default or current difficulty.
 			var max_columns: int = 4
 			var fake_bpm: float = chart.get_bpm()
@@ -124,7 +124,15 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 				else:
 					push_warning("Unable to create note at ", fake_timer)
 			fake_timer += fake_crotchet / 4.0
-	# TODO: events.
+	# create events.
+	if "events" in json:
+		var song_events: Array
+		if json.events is Dictionary and note_difficulty in song_events:
+			song_events = json.events[note_difficulty]
+		elif json.events is Array:
+			song_events = json.events
+		for event: Dictionary in song_events:
+			if "t" in event and "e" in event: chart.scheduled_events.append(make_event(event.t, event.e, event.v))
 	# move metadata values
 	if "artist" in meta: chart.parsed_values.artist = meta.artist
 	if "charter" in meta: chart.parsed_values.charter = meta.charter
@@ -142,3 +150,18 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 	Conductor.timing_changes = chart.timing_changes.duplicate()
 	
 	return chart
+
+static func make_event(time: float, event_name: StringName = &"_", value: Variant = null) -> TimedEvent:
+	var event: TimedEvent = TimedEvent.new()
+	event.time = time * 0.001
+	match event_name:
+		&"FocusCamera":
+			if value is int or value is float: event.values.char = value
+			elif value is Dictionary: event.values.assign(value)
+			if "char" in event.values: event.values.char = int(event.values.char)
+			event.name = &"Change Camera Focus"
+		_:
+			event.name = event_name
+			if value is Dictionary: event.values.assign(value)
+			else: event.values.v = value
+	return event

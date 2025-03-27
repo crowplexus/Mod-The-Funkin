@@ -4,7 +4,7 @@
 ## arrow (Any Node2D type)[br]
 ## clip_rect (Any Control Type)[br]
 ##		hold_body (TextureRect)[br]
-##		hold_tail (Any Type)[br]
+##		hold_tail (TextureRect)[br]
 class_name Note
 extends Node2D
 
@@ -40,7 +40,7 @@ var hold_size: float = 0.0
 var hold_body: TextureRect
 ## Hold note tail, gets attached if [code]$"clip_rect/hold_tail"[/code]
 ## exists in the scene tree.
-var hold_tail: Node2D
+var hold_tail: TextureRect
 ## Control Node for hiding offscreen hold notes.
 var clip_rect: Control
 

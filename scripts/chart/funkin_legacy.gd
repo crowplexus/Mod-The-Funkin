@@ -67,12 +67,21 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	var fake_timer: float = 0.0
 	var max_columns: int = 4
 	
+	var was_must_hit: bool = false
+	
 	for measure: Dictionary in chart_dict["notes"]:
 		if not "sectionNotes" in measure: measure["sectionNotes"] = []
 		if not "mustHitSection" in measure: measure["mustHitSection"] = false
 		if not "changeBPM" in measure: measure["changeBPM"] = false
 		if not "bpm" in measure: measure["bpm"] = fake_bpm
 		var must_hit_section: bool = measure["mustHitSection"]
+		
+		if must_hit_section != was_must_hit:
+			was_must_hit = must_hit_section
+			var focus_change: = TimedEvent.new()
+			focus_change.name = &"Change Camera Focus"
+			focus_change.values.char = 0 if must_hit_section else 1
+			chart.scheduled_events.append(focus_change)
 		
 		for song_note: Array in measure["sectionNotes"]:
 			var column: int = int(song_note[1])
