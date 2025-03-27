@@ -37,3 +37,6 @@ static func velocity_change(_time: float, speed: float = 1.0) -> TimedEvent:
 #		Conductor.bpm = vc.values.bpm
 #		return vc.values.bpm
 #	return vc
+
+static func sort_by_time(one: TimedEvent, two: TimedEvent) -> bool:
+	return one.time < two.time

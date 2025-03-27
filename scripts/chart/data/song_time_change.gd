@@ -14,5 +14,5 @@ func calculate_beat_delta(delta: float) -> float:
 	return (bpm / 60.0) * delta
 func calculate_crotchet() -> float:
 	return 60.0 / bpm
-static func sort(a: SongTimeChange, b: SongTimeChange) -> bool:
+static func sort_by_time(a: SongTimeChange, b: SongTimeChange) -> bool:
 	return a.time < b.time

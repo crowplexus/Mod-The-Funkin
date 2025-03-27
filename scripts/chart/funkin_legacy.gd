@@ -14,10 +14,10 @@ extends Chart
 
 ## Parses a chart from a JSON file using the original FNF chart format or similar
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
-	var path: String = "res://assets/game/songs/%s/default/%s.json" % [ song_name, difficulty ]
-	var variation_path: String = path.replace("/default/", "/%s/" % ChartAssets.solve_variation(difficulty))
-	if ResourceLoader.exists(variation_path):
-		path = variation_path
+	var variation: String = ChartAssets.solve_variation(difficulty)
+	var path: String = "res://assets/game/songs/%s/%s/%s.json" % [ song_name, variation, difficulty ]
+	if not ResourceLoader.exists(path):
+		path = path.replace("/%s/" % variation, "/default/")
 	if not ResourceLoader.exists(path) and not skip_checks:
 		path = Chart.fix_path(path) + ".json"
 		# and then if the lowercase path isn't found, just live with that.
@@ -30,8 +30,6 @@ static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT
 	
 	var chart: FNFChart = FNFChart.parse_from_string(load(path).data)
 	chart.assets = ChartAssets.get_resource(song_name, difficulty)
-	chart.parsed_values["folder"] = Chart.fix_path(song_name)
-	chart.parsed_values["file"] = difficulty
 	return chart
 
 ## Parses a json string as a chart.
@@ -98,9 +96,9 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		
 		fake_timer += fake_crotchet / 4.0
 	
-	chart.notes.sort_custom(func(one: NoteData, two: NoteData): return one.time < two.time)
-	chart.timing_changes.sort_custom(func(one: SongTimeChange, two: SongTimeChange): return one.time < two.time)
-	chart.scheduled_events.sort_custom(func(one: TimedEvent, two: TimedEvent): return one.time < two.time)
+	chart.notes.sort_custom(NoteData.sort_by_time)
+	chart.timing_changes.sort_custom(SongTimeChange.sort_by_time)
+	chart.scheduled_events.sort_custom(TimedEvent.sort_by_time)
 	Conductor.timing_changes = chart.timing_changes.duplicate()
 	
 	#var ghosts: int = 0

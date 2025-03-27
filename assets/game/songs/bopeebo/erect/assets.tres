@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChartAssets" load_steps=14 format=3 uid="uid://uicbwukrj6ko"]
+[gd_resource type="Resource" script_class="ChartAssets" load_steps=17 format=3 uid="uid://ck4wbvcms75j7"]
 
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="1_q18bk"]
 [ext_resource type="AudioStream" uid="uid://c4y5bwvxdkv4o" path="res://assets/sounds/countdown/funkin/2.ogg" id="2_so52q"]
@@ -8,17 +8,21 @@
 [ext_resource type="Texture2D" uid="uid://m23v5bi63wil" path="res://assets/ui/countdown/ready.png" id="6_xgdlg"]
 [ext_resource type="Texture2D" uid="uid://c03iqiu5m7if7" path="res://assets/ui/countdown/set.png" id="7_josrh"]
 [ext_resource type="Texture2D" uid="uid://jsjmxpnte6hx" path="res://assets/ui/countdown/go.png" id="8_3pqb8"]
-[ext_resource type="AudioStream" uid="uid://ckcccnlv022px" path="res://assets/game/songs/bopeebo/erect/Inst-erect.ogg" id="9_mjf85"]
-[ext_resource type="Resource" uid="uid://dxhq200ow8ypp" path="res://assets/default/noteskin.tres" id="10_3aho6"]
-[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/chart/data/chart_assets.gd" id="11_bg48t"]
-[ext_resource type="AudioStream" uid="uid://cqc47mmg4cc3o" path="res://assets/game/songs/bopeebo/erect/Voices-Player-erect.ogg" id="12_8p88l"]
-[ext_resource type="AudioStream" uid="uid://dg8qhu20tuafc" path="res://assets/game/songs/bopeebo/erect/Voices-Opponent-erect.ogg" id="13_r3v8y"]
+[ext_resource type="AudioStream" uid="uid://c3dsb4c4vjx54" path="res://assets/game/songs/bopeebo/erect/Inst.ogg" id="9_g3ldm"]
+[ext_resource type="AudioStream" uid="uid://1ahkreqvoty3" path="res://assets/sounds/miss/funkin/miss1.ogg" id="9_mjf85"]
+[ext_resource type="AudioStream" uid="uid://c1pqgmd00h20b" path="res://assets/sounds/miss/funkin/miss2.ogg" id="10_3aho6"]
+[ext_resource type="AudioStream" uid="uid://j4gb0khptavt" path="res://assets/sounds/miss/funkin/miss3.ogg" id="11_bg48t"]
+[ext_resource type="Resource" uid="uid://dxhq200ow8ypp" path="res://assets/default/noteskin.tres" id="12_8p88l"]
+[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/chart/data/chart_assets.gd" id="13_r3v8y"]
+[ext_resource type="AudioStream" uid="uid://cg15cdct8ph07" path="res://assets/game/songs/bopeebo/erect/Voices-Player.ogg" id="15_6gpgs"]
+[ext_resource type="AudioStream" uid="uid://bfkr648r4s7vi" path="res://assets/game/songs/bopeebo/erect/Voices-Opponent.ogg" id="16_6gpgs"]
 
 [resource]
-script = ExtResource("11_bg48t")
-instrumental = ExtResource("9_mjf85")
-vocals = Array[AudioStream]([ExtResource("12_8p88l"), ExtResource("13_r3v8y")])
-note_skin = ExtResource("10_3aho6")
+script = ExtResource("13_r3v8y")
+instrumental = ExtResource("9_g3ldm")
+vocals = Array[AudioStream]([ExtResource("15_6gpgs"), ExtResource("16_6gpgs")])
+note_skin = ExtResource("12_8p88l")
 countdown_textures = Array[Texture2D]([ExtResource("5_mrgwp"), ExtResource("6_xgdlg"), ExtResource("7_josrh"), ExtResource("8_3pqb8")])
 countdown_sounds = Array[AudioStream]([ExtResource("1_q18bk"), ExtResource("2_so52q"), ExtResource("3_g3ldm"), ExtResource("4_6gpgs")])
+miss_note_sounds = Array[AudioStream]([ExtResource("9_mjf85"), ExtResource("10_3aho6"), ExtResource("11_bg48t")])
 metadata/_custom_type_script = "uid://ba0wwnyur88ga"

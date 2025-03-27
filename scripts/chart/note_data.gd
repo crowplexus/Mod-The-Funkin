@@ -18,12 +18,14 @@ static var EMPTY: NoteData = NoteData.new():
 @export var kind: StringName = &"default"
 ## Note Length, spawns a tail in the note if specified.
 @export var length: float = 0.0
-
+## Custom Parameters.
+@export var params: Array = []
 
 func _to_string() -> String:
 	return "[%s, %s, %s, %s]" % [ time, column, kind, length ]
 
-
+## Schema must use the original FNF format, that being:[br][br]
+## [ time: float (ms), column: int, length: float (ms), data: String ]
 static func from_array(data: Array, max_columns: int = 4) -> NoteData:
 	var swag_note: NoteData = NoteData.new()
 	var raw_column: int = int(data[1])
@@ -35,3 +37,20 @@ static func from_array(data: Array, max_columns: int = 4) -> NoteData:
 	swag_note.length = float(data[2]) * 0.001
 	swag_note.column = raw_column % max_columns
 	return swag_note
+
+## Schema must use the VSlice format, that being:[br][br]
+## [code]{ "t": float, "d": int, "l": float, "k": StringName, "p": Array[Variant] }[/code]
+static func from_dictionary(dictionary: Dictionary) -> NoteData:
+	var new_note: NoteData = NoteData.new()
+	new_note.time = -1
+	if "t" in dictionary and "d" in dictionary: # can spawn
+		new_note.time = float(dictionary.t * 0.001)
+		new_note.column = int(dictionary.d)
+		if "l" in dictionary: new_note.length = float(dictionary.l * 0.001)
+		if "k" in dictionary: new_note.kind = StringName(dictionary.k)
+		if "p" in dictionary: new_note.params = Array(dictionary.p)
+	return new_note
+
+
+static func sort_by_time(one: NoteData, two: NoteData) -> bool:
+	return one.time < two.time

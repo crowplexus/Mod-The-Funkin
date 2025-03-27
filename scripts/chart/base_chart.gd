@@ -2,6 +2,14 @@
 class_name Chart
 extends Resource
 
+enum ChartType {
+	DUMMY      = -1,
+	GENERIC    = 0,
+	FNF_LEGACY = 1,
+	FNF_VSLICE = 2,
+	STEPMANIA  = 3,
+}
+
 const VELOCITY_EVENTS: Array[StringName] = [
 	&"Change Scroll Speed",
 	#&"Increase Slider Velocity",
@@ -47,23 +55,42 @@ func get_velocity_change(timestamp: float) -> TimedEvent:
 	return change
 
 ## Detects a chart format and parses it.
-static func detect_and_parse(song_name: StringName, difficulty: StringName = "normal") -> Chart:
-	const EXTENSIONS: = ["json", "fnfc", "scc", "sm"]
-	var path: String = "res://assets/game/songs/%s/charts/" % song_name
+static func detect_and_parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Chart:
+	# TODO: rewerite all of this ig.
+	var variation: String = ChartAssets.solve_variation(difficulty)
+	var path: String = "res://assets/game/songs/%s/%s/%s.json" % [ song_name, variation, difficulty ]
+	if not ResourceLoader.exists(path):
+		path = path.replace("/%s/" % variation, "/default/")
+	
+	var chart_type: ChartType = ChartType.DUMMY
 	var chart: Chart
-	for ext: String in EXTENSIONS:
-		var p: String = path + "%s.%s" % [ difficulty, ext ]
-		if not ResourceLoader.exists(p):
-			p = Chart.fix_path(p) + ".%s" % ext
-		match p.get_extension():
-			_: # assume legacy (FNF 0.2.7.1/0.3)
-				chart = FNFChart.parse(song_name, difficulty, true)
-				print_debug("Parsing old FNF style chart ", song_name, " with difficulty ", difficulty)
-				break
+	
+	if ResourceLoader.exists(path):
+		chart_type = ChartType.FNF_LEGACY
+	elif ResourceLoader.exists(path.replace("/%s.json" % difficulty, "/chart.json")):
+		chart_type = ChartType.FNF_VSLICE
+
+	match chart_type:
+		ChartType.GENERIC:
+			chart = load(path)
+			print_debug("Parsing generic Godot Resource as chart ", song_name, " with difficulty ", difficulty)
+			chart.notes.sort_custom(NoteData.sort_by_time)
+			chart.timing_changes.sort_custom(SongTimeChange.sort_by_time)
+			chart.scheduled_events.sort_custom(TimedEvent.sort_by_time)
+		ChartType.FNF_VSLICE:
+			chart = VSliceChart.parse(song_name, difficulty, true)
+			print_debug("Parsing new FNF style chart ", song_name, " with difficulty ", difficulty)
+		ChartType.FNF_LEGACY:
+			chart = FNFChart.parse(song_name, difficulty, true)
+			print_debug("Parsing old FNF style chart ", song_name, " with difficulty ", difficulty)
+	
 	if not chart:
-		chart = Chart.new()
-	if not chart.assets:
+		chart = FNFChart.new() # make an FNFChart to avoid a metric fuckton amount of crashes.
+		chart.scheduled_events.append(TimedEvent.velocity_change(0.0))
 		chart.assets = ChartAssets.get_resource(song_name, difficulty)
+		print_debug("Unable to parse chart, creating a dummy...")
+	chart.parsed_values["folder"] = Chart.fix_path(song_name)
+	chart.parsed_values["file"] = difficulty
 	return chart
 
 ## Parses a chart from a resource file containing it.[br]
@@ -80,8 +107,6 @@ static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT
 			return Chart.new()
 	var chart: Chart = load(path)
 	chart.assets = ChartAssets.get_resource(song_name, difficulty)
-	chart.parsed_values["folder"] = Chart.fix_path(song_name)
-	chart.parsed_values["file"] = difficulty
 	return chart
 
 ## Fixes the chart path if its formatted differently from what charts usually use.
