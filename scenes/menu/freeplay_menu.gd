@@ -93,6 +93,8 @@ func change_selection(next: int = 0) -> void:
 	if item: item.label.modulate.a = 0.6
 	item = song_container.get_child(selected)
 	item.label.modulate.a = 1.0
+	if songs.list[selected - 1].difficulties.find(difficulty_name) == -1:
+		change_difficulty()
 
 ## Changes the index of the difficulty cursor
 func change_difficulty(next: int = 0) -> void:

@@ -20,7 +20,7 @@ var master_mute: bool = false:
 var scroll: int = 0
 ## Defines note keybinds.
 @export var keybinds: Array[PackedStringArray] = [
-	"ASWD".split(""), # Primary Keybinds (Player 1)
+	"DFJK".split(""), # Primary Keybinds (Player 1)
 	"Left,Down,Up,Right".split(",") # Secondary Keybinds (Player 2)
 ]
 ## Prevents inputs from punishing you if you press keys when there's no notes to hit.

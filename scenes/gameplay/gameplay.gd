@@ -26,6 +26,7 @@ var player_strums: NoteField
 # since it reuses the same tally from the previous song.
 static var tally: Tally
 static var chart: Chart
+static var current: Gameplay
 
 var local_tally: Tally
 var local_settings: Settings
@@ -64,6 +65,7 @@ func _default_rpc() -> void:
 	Global.update_discord_timestamps(int(Conductor.time), int(Conductor.length))
 
 func _ready() -> void:
+	current = self
 	local_settings = Global.settings.duplicate()
 	local_tally = Tally.new()
 	scripts = ScriptPack.new()
@@ -148,6 +150,7 @@ func play_countdown(offset: float = 0.0) -> void:
 	_default_rpc()
 
 func _exit_tree() -> void:
+	current = null
 	Conductor.length = -1.0
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
 	local_settings.unreference()
