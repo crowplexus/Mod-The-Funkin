@@ -139,6 +139,16 @@ func get_weekday_string() -> String:
 		4: return "Thursday"
 		5: return "Friday"
 		_: return "Unknown"
+
+func separate_thousands(value: int, separator: String = ",") -> String:
+	var vstr: String = str(abs(value))
+	var prefix: String = "-" if value < 0 else ""
+	# regex to insert a separator every 3 digits to the right
+	var regex = RegEx.new()
+	regex.compile("(\\d)(?=(\\d{3})+$)")
+	vstr = regex.sub(vstr, "$1" + separator, true)
+	return prefix + vstr
+
 #endregion
 
 #region Discord RPC
