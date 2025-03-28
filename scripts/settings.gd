@@ -64,12 +64,11 @@ var hud_style: String = "Default"
 var language: String = "auto" # "auto" means get OS locale
 
 func _init(use_defaults: bool = false) -> void:
-	TranslationServer.set_locale(language)
-	AudioServer.set_bus_volume_db(0, linear_to_db(master_volume * 0.01))
 	if not use_defaults: # not a "defaults-only" instance
 		reload_custom_settings()
-	reload_keybinds()
 	reload_locale()
+	AudioServer.set_bus_volume_db(0, linear_to_db(master_volume * 0.01))
+	reload_keybinds()
 
 ## Reloads the current display language.
 func reload_locale() -> void:
