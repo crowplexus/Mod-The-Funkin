@@ -120,7 +120,7 @@ offset_right = -457.08
 offset_bottom = 24.14
 grow_horizontal = 2
 grow_vertical = 2
-text = "Misses: 0"
+text = "Combo Breaks: 0"
 label_settings = SubResource("LabelSettings_it28e")
 horizontal_alignment = 1
 

@@ -41,10 +41,8 @@ const DUMMY_METADATA: Dictionary[String, Variant] = {
 ## Parses a chart from a JSON file using the new FNF chart format
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
 	var variation: String = ChartAssets.solve_variation(difficulty)
-	var path: String = "res://assets/game/songs/%s/%s/chart.json" % [ song_name, variation ]
-	if not ResourceLoader.exists(path):
-		path = path.replace("/%s/" % variation, "/default/")
-	
+	var path: String = ChartAssets.solve_song_path(song_name, variation) + "/chart.json"
+
 	if not ResourceLoader.exists(path) and not skip_checks:
 		path = Chart.fix_path(path) + ".json"
 		# and then if the lowercase path isn't found, just live with that.

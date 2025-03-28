@@ -149,7 +149,7 @@ func countdown_progress() -> void:
 func update_score_text() -> void:
 	var tally: bool = game and game.tally
 	score_text.text  = tr("score", &"gameplay") + ": %s" % (str(0) if not tally else Global.separate_thousands(game.tally.score))
-	misses_text.text = tr("misses", &"gameplay") + ": %s" % (0 if not tally else game.tally.misses)
+	misses_text.text = tr("combo_breaks", &"gameplay") + ": %s" % (0 if not tally else game.tally.misses + game.tally.breaks)
 
 func update_health(health: int) -> void:
 	_prev_health = health

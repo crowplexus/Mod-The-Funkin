@@ -33,18 +33,33 @@ extends Resource
 	preload("res://assets/sounds/miss/funkin/miss3.ogg"),
 ]
 
+static func solve_song_path(song_name: String, variation: String = Global.DEFAULT_DIFFICULTY) -> String:
+	var path: String = "res://assets/game/songs/%s/%s/" % [ song_name, variation ]
+	if not DirAccess.dir_exists_absolute(path): path = path.replace("/%s/" % variation, "/default/")
+	return path
+
 ## Returns an assets resource from the specified path (if it exists)[br]
 ## Will return a a default resource on fail.
 static func get_resource(song_name: String, difficulty: String, fallback: ChartAssets = Global.DEFAULT_CHART_ASSETS) -> ChartAssets:
-	var path: String = "res://assets/game/songs/%s/default/assets.tres" % [song_name]
-	var variation_path: String = path.replace("/default/", "/%s/" % solve_variation(difficulty))
-	if ResourceLoader.exists(variation_path):
-		path = variation_path
+	var variation: String = ChartAssets.solve_variation(difficulty)
+	var path: String = ChartAssets.solve_song_path(song_name, variation) + "assets.tres"
 	if not ResourceLoader.exists(path):
 		var file: String = path.get_file()
-		path = Chart.fix_path(path.replace(file, "")) + ".tres"
-		if not ResourceLoader.exists(path):
-			return fallback
+		if not ResourceLoader.exists(Chart.fix_path(path.replace(file, "")) + file):
+			print_debug("song ", song_name, " has no metadata file, using defaults")
+			var fb: ChartAssets = fallback.duplicate()
+			var audio_path: String = ChartAssets.solve_song_path(song_name, variation)
+			if not fb.instrumental and ResourceLoader.exists(audio_path + "Inst.ogg"):
+				fb.instrumental = AudioStreamOggVorbis.load_from_file(audio_path + "Inst.ogg")
+				print_debug("found instrumental for ", song_name)
+			var vocal_index: int = 0
+			for i: String in ["Voices-Player.ogg", "Voices-Opponent.ogg", "Voices.ogg"]:
+				if vocal_index > 2 and fb.vocals.size() != 0: break # break if there's Player/Enemy separate vocals.
+				if ResourceLoader.exists(audio_path + i):
+					fb.vocals.append(AudioStreamOggVorbis.load_from_file(audio_path + i))
+					print_debug("found vocal track ", i ," for ", song_name)
+				vocal_index += 1
+			return fb
 	return load(path)
 
 static func solve_variation(difficulty: String) -> String:

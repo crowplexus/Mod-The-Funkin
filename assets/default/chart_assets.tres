@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://m23v5bi63wil" path="res://assets/ui/countdown/ready.png" id="6_y0kxw"]
 [ext_resource type="Texture2D" uid="uid://c03iqiu5m7if7" path="res://assets/ui/countdown/set.png" id="7_wc8np"]
 [ext_resource type="Texture2D" uid="uid://jsjmxpnte6hx" path="res://assets/ui/countdown/go.png" id="8_kvquv"]
-[ext_resource type="PackedScene" uid="uid://bjkg052ui3mnl" path="res://scenes/gameplay/hud/fortnite_hud.tscn" id="9_5i8fv"]
+[ext_resource type="PackedScene" uid="uid://br6ornbfmuj7l" path="res://scenes/gameplay/hud/funkin_hud.tscn" id="9_y0kxw"]
 [ext_resource type="AudioStream" uid="uid://1ahkreqvoty3" path="res://assets/sounds/miss/funkin/miss1.ogg" id="10_y0kxw"]
 [ext_resource type="PackedScene" uid="uid://bpmp1nmibtels" path="res://scenes/gameplay/adjacent/pause_menu.tscn" id="11_pjkj3"]
 [ext_resource type="AudioStream" uid="uid://c1pqgmd00h20b" path="res://assets/sounds/miss/funkin/miss2.ogg" id="11_wc8np"]
@@ -20,7 +20,7 @@
 script = ExtResource("1_sw5gl")
 vocals = Array[AudioStream]([])
 note_skin = ExtResource("2_7t4i5")
-hud = ExtResource("9_5i8fv")
+hud = ExtResource("9_y0kxw")
 pause_menu = ExtResource("11_pjkj3")
 countdown_textures = Array[Texture2D]([ExtResource("5_avynl"), ExtResource("6_y0kxw"), ExtResource("7_wc8np"), ExtResource("8_kvquv")])
 countdown_sounds = Array[AudioStream]([ExtResource("1_s7xu8"), ExtResource("2_5i8fv"), ExtResource("3_pjkj3"), ExtResource("4_g323n")])

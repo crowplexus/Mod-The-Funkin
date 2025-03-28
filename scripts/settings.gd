@@ -61,7 +61,7 @@ var scroll: int = 0
 var hud_style: String = "Default"
 ## Changes the UI elements and dialogue language.
 @export_enum("en", "es", "pt", "mk") # English, Spanish, Portuguese, Macedonian
-var language: String = "auto" # "auto" means get OS locale
+var language: String = "mk" # "auto" means get OS locale
 
 func _init(use_defaults: bool = false) -> void:
 	TranslationServer.set_locale(language)
