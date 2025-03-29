@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://gulb1ge3va36"]
+[gd_scene load_steps=6 format=3 uid="uid://gulb1ge3va36"]
 
 [ext_resource type="Script" uid="uid://dcbyww3fravuq" path="res://scenes/menu/options/options_tab.gd" id="1_s4ceo"]
 [ext_resource type="PackedScene" uid="uid://cn5qxa5uqvf8r" path="res://scenes/menu/options/ui/value_bar.tscn" id="2_7tf5q"]
@@ -7,6 +7,10 @@
 [sub_resource type="LabelSettings" id="LabelSettings_5nl4s"]
 font = ExtResource("2_p4q55")
 font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_p4q55"]
+font = ExtResource("2_p4q55")
+font_size = 24
 
 [node name="options_tab" type="Control"]
 layout_mode = 3
@@ -31,11 +35,24 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.465
-offset_bottom = -14.8
+offset_bottom = -290.8
 grow_horizontal = 2
 grow_vertical = 2
-text = "-"
+text = "Name"
 label_settings = SubResource("LabelSettings_5nl4s")
+autowrap_mode = 2
+
+[node name="label2" type="Label" parent="description"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.465
+offset_top = 36.0
+offset_bottom = 21.2
+grow_horizontal = 2
+grow_vertical = 2
+text = "description"
+label_settings = SubResource("LabelSettings_p4q55")
 autowrap_mode = 2
 
 [node name="gameplay" type="VBoxContainer" parent="."]
