@@ -5,8 +5,8 @@ func setup() -> void:
 	if get_tree().current_scene:
 		game = get_tree().current_scene
 		if game is Gameplay:
-			if game.local_settings: settings = game.local_settings
 			if game.enemy: actor = game.enemy
+			settings = game.local_settings
 	hit_note.connect(on_note_hit)
 	set_process_input(false)
 	set_process_unhandled_input(false)
