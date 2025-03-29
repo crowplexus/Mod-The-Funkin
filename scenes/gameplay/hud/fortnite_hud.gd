@@ -5,7 +5,6 @@ extends TemplateHUD
 @onready var accuracy_text: Label = $"accuracy_bar/accuracy_progress"
 
 @onready var combo_group: Control = $"combo_group"
-@onready var note_fields: Control = $"note_fields"
 @onready var health_bar: ProgressBar = $"%health_bar"
 @onready var shield_bar: ProgressBar = $"%accuracy_bar" # this is accuracy not time btw
 
@@ -37,11 +36,13 @@ func _on_settings_changed(settings: Settings = Global.settings) -> void:
 	if not settings: return
 	match settings.scroll:
 		0:
-			note_fields.position.y = 0
+			if game is Gameplay:
+				game.note_fields.position.y = 0
 			health_bar.position.y = 660
 			shield_bar.position.y = 645
 		1:
-			note_fields.position.y = 500
+			if game is Gameplay:
+				game.note_fields.position.y = 500
 			health_bar.position.y = 50
 			shield_bar.position.y = 35
 

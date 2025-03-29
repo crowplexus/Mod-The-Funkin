@@ -6,15 +6,9 @@ const _IGNORED_PROPERTIES: PackedStringArray = ["resource_local_to_scene", "reso
 var _was_uncapped: bool = false
 
 ## Defines the Master Volume of the game.
-var master_volume: int = 20:
-	set(new_mv):
-		master_volume = clampi(new_mv, 0, 100)
-		AudioServer.set_bus_volume_db(0, linear_to_db(new_mv * 0.01))
+var master_volume: int = 20
 ## Shortcut setting for muting the whole game.
-var master_mute: bool = false:
-	set(new_mute):
-		master_mute = new_mute
-		AudioServer.set_bus_mute(0, new_mute)
+var master_mute: bool = false
 ## Alternates between in-game scroll directions.
 @export_enum("Up:0","Down:1")
 var scroll: int = 0
@@ -33,23 +27,10 @@ var scroll: int = 0
 ## This is set to an amount of seconds.
 @export var sync_offset: float = 0.0
 ## You know what a framerate is, right?
-@export var framerate: int = 120:
-	set(new_framerate):
-		if framerate == 0 and _was_uncapped: _was_uncapped = false
-		if not _was_uncapped and new_framerate < 30 or new_framerate > 360:
-			_was_uncapped = true
-			Engine.max_fps = 0
-			framerate = 0
-			return
-		Engine.max_fps = clampi(new_framerate, 30, 360)
-		framerate = Engine.max_fps
+@export var framerate: int = 120
 ## Locks framerate to your monitor's refresh rate[br]
 ## May help reducing screen tearing.
-@export var vsync: bool = false:
-	set(new_vsync):
-		var value: = DisplayServer.VSYNC_ADAPTIVE if new_vsync else DisplayServer.VSYNC_DISABLED
-		DisplayServer.window_set_vsync_mode(value)
-		vsync = new_vsync
+@export var vsync: bool = false
 ## Defines the intensity of the Camera Bump.
 @export var bump_intensity: int = 100:
 	set(new_bi): bump_intensity = clampi(new_bi, 0, 100)
@@ -66,9 +47,6 @@ var language: String = "auto" # "auto" means get OS locale
 func _init(use_defaults: bool = false) -> void:
 	if not use_defaults: # not a "defaults-only" instance
 		reload_custom_settings()
-	reload_locale()
-	AudioServer.set_bus_volume_db(0, linear_to_db(master_volume * 0.01))
-	reload_keybinds()
 
 ## Reloads the current display language.
 func reload_locale() -> void:
@@ -97,6 +75,27 @@ func reload_keybinds() -> void:
 			new_event.set_keycode(OS.find_keycode_from_string(keystr))
 			InputMap.action_add_event(action, new_event)
 			#print_debug(action, " set to ", OS.find_keycode_from_string(keystr))
+
+## Updates the master volume and mute.
+func update_master_volume() -> void:
+	master_volume = clampi(master_volume, 0, 100)
+	AudioServer.set_bus_volume_db(0, linear_to_db(master_volume * 0.01))
+	AudioServer.set_bus_mute(0, master_mute)
+
+## Updates the Engine's max framerate.
+func update_framerate() -> void:
+	if framerate == 0 and _was_uncapped: _was_uncapped = false
+	if not _was_uncapped and framerate < 30 or framerate > 360:
+		_was_uncapped = true
+		Engine.max_fps = 0
+		framerate = 0
+		return
+	Engine.max_fps = clampi(framerate, 30, 360)
+	framerate = Engine.max_fps
+
+## Updates the Engine's Display Server to enable/disable VSync.
+func update_vsync() -> void:
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ADAPTIVE if vsync else DisplayServer.VSYNC_DISABLED)
 
 ## Reloads your own custom settings (if any).
 func reload_custom_settings() -> void:

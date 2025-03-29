@@ -68,7 +68,7 @@ func reset(_bpm: float = 100.0, _active: bool = false) -> void:
 func set_time(new_time: float) -> void:
 	time = new_time
 	_prev_time = new_time
-	current_beat = 0.0#(new_time * bpm) / 60.0
+	current_beat = (new_time * bpm) / 60.0
 	current_bar = 0.0#current_beat * 4.0
 	_prev_beat = current_beat
 
@@ -83,13 +83,13 @@ func update(new_time: float) -> void:
 		bpm = ctc.bpm
 	
 	var beat_dt: float = ctc.calculate_beat_delta(time - _prev_time)
-	current_beat += beat_dt
 	current_bar += beat_dt * 4.0
-	if absf(_prev_beat - current_beat) >= 1.0:
+	current_beat += beat_dt
+	if int(_prev_beat) < int(current_beat):
 		if play_metronome_sound: metronome.play(0.0)
-		on_beat_hit.emit(current_beat)
-		if fmod(current_beat, 4.0) < Conductor.BEAT_EPSILON:
+		if int(current_beat) % 4 == 0:
 			on_bar_hit.emit(current_bar)
+		on_beat_hit.emit(current_beat)
 		_prev_beat = current_beat
 	_prev_time = time
 

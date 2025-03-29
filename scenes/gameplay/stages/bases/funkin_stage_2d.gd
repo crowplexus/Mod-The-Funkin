@@ -44,8 +44,7 @@ func reset_camera_bump(_delta: float) -> void:
 
 
 func bump_camera(beat: float) -> void:
-	if not camera or not auto_zoom: return
-	# TODO: detect how many digits zoom_interval has then fix the calc for those.
+	if not camera or not auto_zoom or int(beat) < 0: return
 	#var digits: int = str(zoom_interval).split("").size()
-	if int(beat * 100) % int(zoom_interval * 100) == 0: # man fuck this floating point shitt
+	if int(beat * 100) % int(zoom_interval * 100):
 		camera.zoom += Vector2(zoom_intensity, zoom_intensity)

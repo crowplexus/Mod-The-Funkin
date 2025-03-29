@@ -89,9 +89,9 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 				continue
 			var swag_note: NoteData = NoteData.from_array(song_note)
 			if legacy_mode:
-				swag_note.side = int(must_hit_section)
+				swag_note.side = int(not must_hit_section)
 				if column % (max_columns if is_psych else max_columns * 2) >= max_columns:
-					swag_note.side = int(not must_hit_section)
+					swag_note.side = int(must_hit_section)
 			#if swag_note.length > 0.0:
 			#	swag_note.length = swag_note.length / (fake_crotchet * 0.25)
 			chart.notes.append(swag_note)

@@ -9,6 +9,11 @@ var settings: Settings
 
 func _ready() -> void:
 	settings = Settings.new()
+	settings.update_master_volume()
+	settings.reload_locale()
+	settings.reload_keybinds()
+	settings.update_framerate()
+	settings.update_vsync()
 	reset_discord()
 
 func _unhandled_key_input(event: InputEvent) -> void:

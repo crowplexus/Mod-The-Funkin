@@ -116,7 +116,7 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 			for note: Dictionary in song_notes:
 				var new_note: NoteData = NoteData.from_dictionary(note)
 				if new_note.time >= 0.0:
-					new_note.side = int(1 - (new_note.column / max_columns) & 1) # christ.
+					new_note.side = int(new_note.column / max_columns)
 					new_note.column = int(new_note.column % max_columns)
 					chart.notes.append(new_note)
 				else:

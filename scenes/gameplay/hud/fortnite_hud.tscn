@@ -1,13 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://bjkg052ui3mnl"]
+[gd_scene load_steps=11 format=3 uid="uid://bjkg052ui3mnl"]
 
 [ext_resource type="Script" uid="uid://bqen71fvkle87" path="res://scenes/gameplay/hud/fortnite_hud.gd" id="1_vvh1u"]
 [ext_resource type="StyleBox" uid="uid://dhwynnq1ji6ou" path="res://scenes/gameplay/hud/styleboxes/fortnite_bar_bg.tres" id="3_epiwg"]
 [ext_resource type="StyleBox" uid="uid://bdag5e631yhvt" path="res://scenes/gameplay/hud/styleboxes/health_bar_right.tres" id="3_vvh1u"]
 [ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/gameplay/hud/combo_group.gd" id="6_dqqga"]
-[ext_resource type="PackedScene" uid="uid://d0a6dlj2togbt" path="res://scenes/gameplay/playfield/strum/4k.tscn" id="7_oimmk"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="8_vvh1u"]
-[ext_resource type="Script" uid="uid://cfnk73c6iyf2s" path="res://scenes/gameplay/playfield/player/botplay.gd" id="8_wmrok"]
-[ext_resource type="Script" uid="uid://dp7ul3erh1ciu" path="res://scenes/gameplay/playfield/player/player.gd" id="9_cskj3"]
 [ext_resource type="Texture2D" uid="uid://cw3h68ylrq7fy" path="res://assets/ui/countdown/prepare.png" id="10_ojldb"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="11_x72vp"]
 
@@ -60,27 +57,6 @@ metadata/acceleration = Vector2(0, 0)
 [node name="combo_digit2" type="Sprite2D" parent="combo_group"]
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
-
-[node name="note_fields" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_lock_ = true
-
-[node name="left_notes" parent="note_fields" instance=ExtResource("7_oimmk")]
-position = Vector2(142, 105)
-
-[node name="player" type="Node" parent="note_fields/left_notes"]
-script = ExtResource("8_wmrok")
-
-[node name="right_notes" parent="note_fields" instance=ExtResource("7_oimmk")]
-position = Vector2(797, 105)
-
-[node name="player" type="Node" parent="note_fields/right_notes"]
-script = ExtResource("9_cskj3")
 
 [node name="health_bar" type="ProgressBar" parent="."]
 unique_name_in_owner = true

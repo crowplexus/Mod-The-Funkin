@@ -9,7 +9,7 @@ enum PlayMode {
 
 ## Default HUD scenes to use, mainly for settings and stuff.
 var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
-	"classic": load("res://scenes/gameplay/hud/funkin_hud.tscn"),
+	"classic": load("res://scenes/gameplay/hud/classic_hud.tscn"),
 	"advanced": load("res://scenes/gameplay/hud/fortnite_hud.tscn"),
 }
 ## Default Pause Menu, used if there's none set in the Chart Assets.
@@ -34,7 +34,8 @@ var assets: ChartAssets
 var scripts: ScriptPack
 
 @onready var music: AudioStreamPlayer = $%"music_player"
-@onready var note_group: Node = $"hud_layer/note_group"
+@onready var note_group: Node2D = $"hud_layer/note_group"
+@onready var note_fields: Control = $"hud_layer/note_fields"
 
 @onready var hud_layer: CanvasLayer = $"hud_layer"
 @onready var default_hud_scale: Vector2 = $"hud_layer".scale
@@ -48,7 +49,6 @@ var dj: Actor2D
 
 var game_mode: PlayMode = PlayMode.FREEPLAY
 var judgements: JudgementList = preload("res://assets/default/judgements.tres")
-var note_fields: Array[NoteField] = []
 var timed_events: Array[TimedEvent] = []
 var event_position: int = 0
 var should_process_events: bool = true
@@ -76,8 +76,6 @@ func _ready() -> void:
 		# merge tallies if it's not a local one
 		tally.merge(local_tally)
 	scripts.load_global_scripts()
-	var max_hit_window: float = local_settings.max_hit_window
-	print_debug("max hit window is ", max_hit_window, " (", max_hit_window * 1000.0, "ms)")
 	if chart:
 		assets = chart.assets
 		scripts.load_song_scripts(chart.parsed_values.folder, chart.parsed_values.file)
@@ -89,14 +87,10 @@ func _ready() -> void:
 		load_characters()
 		load_streams()
 		reload_hud()
+	
 	init_note_spawner()
-	# setup note fields, TODO: make dummies if there's no hud.
-	var from_where: Control
-	if hud.has_node("note_fields"): from_where = hud.get_node("note_fields")
-	elif hud_layer.has_node("note_fields"): from_where = hud.get_node("note_fields")
-	for node: Node in from_where.get_children():
-		if node is NoteField: note_fields.append(node)
-	player_strums = note_fields[1]
+	setup_note_fields()
+	
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	if hud: hud.init_vars()
 	scripts.call_func("_ready_post")
@@ -105,6 +99,12 @@ func _ready() -> void:
 	if hud: hud.on_countdown_tick.connect(tick_scripts)
 	camera = get_viewport().get_camera_2d()
 	restart_song()
+
+func setup_note_fields() -> void:
+	# TODO: rewrite how note fields work entirely.
+	for i: NoteField in note_fields.get_children():
+		if i.player: i.player.setup()
+	player_strums = note_fields.get_child(0)
 
 func kill_every_note() -> void:
 	if note_group:
@@ -126,7 +126,7 @@ func restart_song() -> void:
 	tally.merge(local_tally)
 	kill_every_note()
 	if chart: fire_timed_event(chart.get_velocity_change(0.0))
-	for note_field: NoteField in note_fields:
+	for note_field: NoteField in note_fields.get_children():
 		if note_field.player is Player:
 			note_field.player.keys_held.fill(false)
 			note_field.player.note_group = note_group
@@ -229,7 +229,7 @@ func fire_timed_event(event: TimedEvent) -> void:
 						camera.global_position = actor.global_position + offset
 						camera.global_position.x *= 0.85
 		&"Change Scroll Speed":
-			for note_field: NoteField in note_fields:
+			for note_field: NoteField in note_fields.get_children():
 				note_field.speed_change_tween = create_tween()
 				note_field.speed_change_tween.tween_property(note_field, "speed", event.values.speed, 1.0)
 			#print_debug("scroll speed changed to ", event.values.speed, " at ", Conductor.time)
@@ -325,14 +325,14 @@ func load_streams() -> void:
 
 func init_note_spawner() -> void:
 	note_group.on_note_spawned.connect(func(data: NoteData, note: Node2D) -> void:
-		var receptor: = note_fields[data.side].get_child(data.column)
+		var receptor: = note_fields.get_child(data.side).get_child(data.column)
 		note.global_position = receptor.global_position
-		note.scale = note_fields[data.side].scale
-		note.note_field = note_fields[data.side]
+		note.scale = note_fields.get_child(data.side).scale
+		note.note_field = note_fields.get_child(data.side)
 	)
 	if chart and not chart.notes.is_empty():
 		note_group.note_list = chart.notes.duplicate(true)
-		if Conductor.length < 0.0: Conductor.length = chart.notes.back().time
+		if Conductor.length <= 0.0: Conductor.length = chart.notes.back().time
 
 func on_note_hit(note: Note) -> void:
 	if note.was_hit or note.column == -1:
@@ -341,7 +341,7 @@ func on_note_hit(note: Note) -> void:
 	var abs_diff: float = absf(note.time - Conductor.playhead) * 1000.0
 	var judged_tier: int = Tally.judge_time(abs_diff)
 	note.judgement = judgements.list[judged_tier]
-	if player and note.side == 1:
+	if player and note.side == 0:
 		player.sing(note.column, note.arrow.visible)
 		if music: music.stream.set_sync_stream_volume(1, linear_to_db(1.0))
 	if note.can_splash(): note.display_splash()
@@ -403,7 +403,7 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 	kill_yourself()
 
 func on_beat_hit(beat: float) -> void:
-	if int(beat) % 4 == 0: # fuck float imprecision.
+	if int(beat) > 0 and int(beat) % 4 == 0:
 		hud_layer.scale += Vector2(hud.get_bump_scale(), hud.get_bump_scale())
 
 func exit_game() -> void:

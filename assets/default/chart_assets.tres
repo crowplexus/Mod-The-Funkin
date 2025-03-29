@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://m23v5bi63wil" path="res://assets/ui/countdown/ready.png" id="6_y0kxw"]
 [ext_resource type="Texture2D" uid="uid://c03iqiu5m7if7" path="res://assets/ui/countdown/set.png" id="7_wc8np"]
 [ext_resource type="Texture2D" uid="uid://jsjmxpnte6hx" path="res://assets/ui/countdown/go.png" id="8_kvquv"]
-[ext_resource type="PackedScene" uid="uid://br6ornbfmuj7l" path="res://scenes/gameplay/hud/funkin_hud.tscn" id="9_y0kxw"]
+[ext_resource type="PackedScene" uid="uid://br6ornbfmuj7l" path="res://scenes/gameplay/hud/classic_hud.tscn" id="9_y0kxw"]
 [ext_resource type="AudioStream" uid="uid://1ahkreqvoty3" path="res://assets/sounds/miss/funkin/miss1.ogg" id="10_y0kxw"]
 [ext_resource type="PackedScene" uid="uid://bpmp1nmibtels" path="res://scenes/gameplay/adjacent/pause_menu.tscn" id="11_pjkj3"]
 [ext_resource type="AudioStream" uid="uid://c1pqgmd00h20b" path="res://assets/sounds/miss/funkin/miss2.ogg" id="11_wc8np"]

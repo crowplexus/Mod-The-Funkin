@@ -7,7 +7,6 @@ extends TemplateHUD
 @onready var misses_text: Label = $"health_bar/misses_text"
 
 @onready var combo_group: Control = $"combo_group"
-@onready var note_fields: Control = $"note_fields"
 @onready var health_bar: ProgressBar = $"health_bar"
 
 @onready var countdown: Control = $"countdown"
@@ -64,10 +63,12 @@ func _on_settings_changed(settings: Settings = Global.settings) -> void:
 	if not settings: return
 	match settings.scroll:
 		0:
-			note_fields.position.y = 0
+			if game is Gameplay:
+				game.note_fields.position.y = 0
 			health_bar.position.y = 660
 		1:
-			note_fields.position.y = 500
+			if game is Gameplay:
+				game.note_fields.position.y = 500
 			health_bar.position.y = 50
 
 func init_vars() -> void:
@@ -183,7 +184,8 @@ func display_combo(combo: int = -1) -> void:
 #		_ when accuracy <= -1: return "FAIL" # F, kinda, whatever
 #	return "N/A"
 
-func on_beat_hit(_beat: float) -> void:
+func on_beat_hit(beat: float) -> void:
+	if int(beat) < 0: return
 	if icon_p1: icon_p1.scale = default_ip1_scale * 1.2
 	if icon_p2: icon_p2.scale = default_ip2_scale * 1.2
 

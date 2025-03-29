@@ -12,17 +12,17 @@ signal miss_note(note: Note, dir: int)
 
 var game: Node2D = null
 var actor: Actor2D = null
-var settings: Settings = null
 var note_field: NoteField = null
+var settings: Settings = Global.settings
 var force_disable_input: bool = false
 var note_group: Node2D
 
-func _ready() -> void:
+func setup() -> void:
 	note_field = get_parent()
 	game = get_tree().current_scene
 	if game is Gameplay:
 		if game.player: actor = game.player
-		if game.local_settings: settings = game.local_settings
+		settings = game.local_settings
 	hit_note.connect(on_note_hit)
 	hit_hold_note.connect(on_hold_hit)
 	miss_note.connect(on_note_miss)
