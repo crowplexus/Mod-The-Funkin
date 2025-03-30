@@ -20,7 +20,8 @@ func _process(delta: float) -> void:
 	reset_camera_bump(delta)
 
 func _exit_tree() -> void:
-	Conductor.on_beat_hit.disconnect(on_beat_hit)
+	if Conductor.on_beat_hit.is_connected(on_beat_hit):
+		Conductor.on_beat_hit.disconnect(on_beat_hit)
 
 func initialize_camera_2d() -> void:
 	if camera:

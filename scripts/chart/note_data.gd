@@ -55,5 +55,5 @@ static func from_dictionary(dictionary: Dictionary) -> NoteData:
 	return new_note
 
 
-static func sort_by_time(one: NoteData, two: NoteData) -> bool:
+static func sort_by_time(one: NoteData, two: NoteData) -> int:
 	return one.time < two.time

@@ -105,6 +105,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	
 	var speed: float = chart_dict.speed if "speed" in chart_dict else 1.0
 	var scroll_speed_event: = TimedEvent.velocity_change(-2.0, speed)
+	scroll_speed_event.values.immediate = true
 	chart.scheduled_events.append(scroll_speed_event)
 	
 	chart.notes.sort_custom(NoteData.sort_by_time)

@@ -116,27 +116,33 @@ func setup_note_fields() -> void:
 	player_strums = note_fields.get_child(0)
 
 func kill_every_note() -> void:
-	if note_group:
-		for note: Node in note_group.get_children():
-			note.queue_free()
+	for note: Node in note_group.get_children():
+		note.queue_free()
 
 func restart_song() -> void:
-	_sync_rpc_timestamp()
-	if music: music.seek(0.0)
 	ending = false
 	starting = true
+	if music: music.seek(0.0)
+	# disable note spawning and event dispatching.
+	note_group.active = false
 	should_process_events = false
+	# reset Conductor and your score.
+	Conductor.reset(chart.get_bpm(), false)
+	local_tally.zero()
+	health = Gameplay.DEFAULT_HEALTH_VALUE
+	tally.merge(local_tally)
+	# unfire any previously fired events
 	for event: TimedEvent in timed_events:
 		event.was_fired = false
 	event_position = 0
 	should_process_events = not timed_events.is_empty()
-	health = Gameplay.DEFAULT_HEALTH_VALUE
-	if note_group: note_group.list_position = 0
-	Conductor.reset(chart.get_bpm(), false)
-	Conductor.play_offset = local_settings.sync_offset
-	local_tally.zero()
-	tally.merge(local_tally)
+	# kill notes in the note group to not give you damage
 	kill_every_note()
+	await note_group.get_child_count() == 0
+	note_group.list_position = 0
+	note_group.active = true
+	Conductor.play_offset = local_settings.sync_offset
+	# set initial scroll speed.
 	if chart: fire_timed_event(chart.get_velocity_change(0.0))
 	for note_field: NoteField in note_fields.get_children():
 		if note_field.player is Player:
@@ -144,10 +150,11 @@ func restart_song() -> void:
 			note_field.player.note_group = note_group
 		for i: int in note_field.get_child_count():
 			note_field.play_animation(i)
-		
+	# update hud if possible
 	if hud:
 		hud.update_health(health)
 		hud.update_score_text()
+	_sync_rpc_timestamp()
 	play_countdown()
 
 func play_countdown(offset: float = 0.0) -> void:
@@ -240,6 +247,7 @@ func fire_timed_event(event: TimedEvent) -> void:
 						camera.global_position = actor.global_position + offset
 						camera.global_position.x *= 0.85
 		&"Change Scroll Speed":
+			var immediate: bool = bool(event.values.immediate) if "immediate" in event.values else false
 			for note_field: NoteField in note_fields.get_children():
 				note_field.speed_change_tween = create_tween()
 				note_field.speed_change_tween.tween_property(note_field, "speed", event.values.speed, 1.0)
@@ -364,11 +372,10 @@ func on_note_hit(note: Note) -> void:
 	#print_debug("Health increased by ", DEFAULT_HEALTH_WEIGHT * judged_tier, "%")
 	# Scoring Stuff
 	local_tally.increase_score(abs_diff)
+	local_tally.increase_combo(1)
 	if note.judgement.combo_break and local_tally.combo > 0:
 		local_tally.breaks += 1
 		local_tally.combo = 0
-	if not note.judgement.combo_break:
-		local_tally.increase_combo(1)
 	local_tally.update_accuracy(abs_diff)
 	local_tally.update_tier_score(judged_tier)
 	# Update HUD

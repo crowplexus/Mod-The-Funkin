@@ -62,8 +62,8 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 	if not ResourceLoader.exists(path):
 		path = path.replace("/%s/" % variation, "/default/")
 	
-	var chart_type: ChartType = ChartType.DUMMY
 	var chart: Chart
+	var chart_type: ChartType = ChartType.DUMMY
 	
 	if ResourceLoader.exists(path):
 		chart_type = ChartType.FNF_LEGACY

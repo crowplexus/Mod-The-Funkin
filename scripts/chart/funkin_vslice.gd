@@ -71,7 +71,6 @@ static func get_vslice_metadata(song_name: String, difficulty: StringName = Glob
 static func parse_from_string(json: Dictionary, song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> VSliceChart:
 	var meta: Dictionary = get_vslice_metadata(song_name, difficulty)
 	var chart: VSliceChart = VSliceChart.new()
-	chart.scheduled_events.append(TimedEvent.velocity_change(-3.0, 1.0)) # default speed
 	# set stage to spawn before gameplay.
 	if "playData" in meta:
 		var play_data: Dictionary = meta["playData"]
@@ -98,10 +97,10 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 		var scroll_difficulty: String = difficulty.to_lower().strip_escapes().strip_edges()
 		if not scroll_difficulty in json["scrollSpeed"]:
 			scroll_difficulty = "default"
-		scroll_speed = float(json["scrollSpeed"][scroll_difficulty])
-		var current_speed: float = chart.scheduled_events[0].values.speed
-		if current_speed != scroll_speed:
-			chart.scheduled_events[0].values.speed = scroll_speed
+		if scroll_difficulty in json["scrollSpeed"]:
+			scroll_speed = float(json["scrollSpeed"][scroll_difficulty])
+	chart.scheduled_events.append(TimedEvent.velocity_change(-2.0, scroll_speed)) # default speed
+	chart.scheduled_events[-1].values.immediate = true
 	# create notes.
 	var note_difficulty: String = difficulty.to_lower().strip_escapes().strip_edges()
 	if not note_difficulty in json.notes:

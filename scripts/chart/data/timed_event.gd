@@ -38,5 +38,5 @@ static func velocity_change(_time: float, speed: float = 1.0) -> TimedEvent:
 #		return vc.values.bpm
 #	return vc
 
-static func sort_by_time(one: TimedEvent, two: TimedEvent) -> bool:
+static func sort_by_time(one: TimedEvent, two: TimedEvent) -> int:
 	return one.time < two.time

@@ -1,9 +1,9 @@
 extends Node2D
 
-const TEMPLATE_NOTE: PackedScene = preload("res://scenes/gameplay/playfield/notes/normal_note.tscn")
-
 signal on_note_spawned(data: NoteData, note: Note)
 signal on_note_deleted(note: Note)
+
+const TEMPLATE_NOTE: PackedScene = preload("res://scenes/gameplay/playfield/notes/normal_note.tscn")
 
 @export var active: bool = true
 
@@ -13,13 +13,6 @@ var speed: float = 1.0
 
 func _ready() -> void:
 	list_position = 0
-	#for i: int in 64: # precache this many notes
-	#	var preload_note: = TEMPLATE_NOTE.instantiate()
-	#	preload_note.name = "preload%s" % str(i)
-	#	preload_note.top_level = true
-	#	preload_note.hide_all()
-	#	add_child(preload_note)
-
 
 func _process(_delta: float) -> void:
 	if not active:
@@ -33,8 +26,7 @@ func spawning_complete() -> bool:
 
 
 func move_present_nodes() -> void:
-	for i: int in get_child_count():
-		var node: Note = get_child(i)
+	for node: Node in get_children():
 		if not node.visible:
 			continue
 		# NOTE: node is the note itself
@@ -54,7 +46,7 @@ func move_present_nodes() -> void:
 func try_spawning() -> void:
 	while list_position < note_list.size():
 		var note_data: NoteData = note_list[list_position]
-		if absf(note_data.time - Conductor.time) > (1.0 * speed):
+		if absf(note_data.time - Conductor.time) > (1.25 / speed):
 			break
 		var new_note: Note = get_note()
 		on_note_spawned.emit(note_data, new_note)
