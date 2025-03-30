@@ -50,13 +50,13 @@ static func get_resource(song_name: String, difficulty: String, fallback: ChartA
 			var fb: ChartAssets = fallback.duplicate()
 			var audio_path: String = ChartAssets.solve_song_path(song_name, variation)
 			if not fb.instrumental and ResourceLoader.exists(audio_path + "Inst.ogg"):
-				fb.instrumental = AudioStreamOggVorbis.load_from_file(audio_path + "Inst.ogg")
+				fb.instrumental = load(audio_path + "Inst.ogg")
 				print_debug("found instrumental for ", song_name)
 			var vocal_index: int = 0
 			for i: String in ["Voices-Player.ogg", "Voices-Opponent.ogg", "Voices.ogg"]:
 				if vocal_index > 2 and fb.vocals.size() != 0: break # break if there's Player/Enemy separate vocals.
 				if ResourceLoader.exists(audio_path + i):
-					fb.vocals.append(AudioStreamOggVorbis.load_from_file(audio_path + i))
+					fb.vocals.append(load(audio_path + i))
 					print_debug("found vocal track ", i ," for ", song_name)
 				vocal_index += 1
 			return fb
