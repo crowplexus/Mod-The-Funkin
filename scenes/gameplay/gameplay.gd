@@ -115,9 +115,11 @@ func restart_song() -> void:
 	if music: music.seek(0.0)
 	ending = false
 	starting = true
-	event_position = 0
+	should_process_events = false
 	for event: TimedEvent in timed_events:
 		event.was_fired = false
+	event_position = 0
+	should_process_events = not timed_events.is_empty()
 	health = Gameplay.DEFAULT_HEALTH_VALUE
 	if note_group: note_group.list_position = 0
 	Conductor.reset(chart.get_bpm(), false)
@@ -132,6 +134,7 @@ func restart_song() -> void:
 			note_field.player.note_group = note_group
 		for i: int in note_field.get_child_count():
 			note_field.play_animation(i)
+		
 	if hud:
 		hud.update_health(health)
 		hud.update_score_text()
@@ -232,6 +235,7 @@ func fire_timed_event(event: TimedEvent) -> void:
 			for note_field: NoteField in note_fields.get_children():
 				note_field.speed_change_tween = create_tween()
 				note_field.speed_change_tween.tween_property(note_field, "speed", event.values.speed, 1.0)
+				note_group.speed = event.values.speed
 			#print_debug("scroll speed changed to ", event.values.speed, " at ", Conductor.time)
 	event.was_fired = true
 

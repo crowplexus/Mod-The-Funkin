@@ -49,16 +49,17 @@ func display_judgement(texture: Texture2D) -> void:
 	judgement.scale = judge_scale * randf_range(0.9, 1.1)
 	judgement.texture = texture
 	judgement.position.y = -50
-	judgement.set_meta(ACCELERATION, Vector2(0, 500))
-	judgement.set_meta(VELOCITY, Vector2(randi_range(0, 10), randi_range(140, 175)))
+	#judgement.set_meta(ACCELERATION, Vector2(0, 500))
+	#judgement.set_meta(VELOCITY, Vector2(randi_range(0, 10), randi_range(140, 175)))
 	judgement.visible = true
 	if judgement_tween: judgement_tween.stop()
 	judgement_tween = create_tween().set_parallel(true)
 	judgement_tween.tween_property(judgement, "scale", judge_scale, 0.2)
-	judgement_tween.tween_property(judgement, "self_modulate:a", 0.0, 0.4).set_delay(Conductor.crotchet * 0.05)
+	judgement_tween.tween_property(judgement, "self_modulate:a", 0.0, 0.4).set_delay(Conductor.crotchet * 0.1)
 	judgement_tween.finished.connect(judgement.hide)
 
 func display_combo(amnt: int = 0) -> void:
+	hide_digits()
 	var combo: Array = str(amnt).pad_zeros(combo_digits).split("")
 	var offset: float = combo.size() - 3
 	for i: int in combo.size():
@@ -76,14 +77,13 @@ func display_combo(amnt: int = 0) -> void:
 		num_score.scale = combo_scale
 		num_score.scale.x *= 1.5
 		num_score.self_modulate.a = 1.0
-		num_score.visible = true
-		num_score.set_meta(ACCELERATION, Vector2(0, randi_range(250, 300)))
-		num_score.set_meta(VELOCITY, Vector2(randi_range(-5, 5), randi_range(130, 150)))
-		if display_tweens[i]: display_tweens[i].stop()
+		#num_score.set_meta(ACCELERATION, Vector2(0, randi_range(250, 300)))
+		#num_score.set_meta(VELOCITY, Vector2(randi_range(-5, 5), randi_range(130, 150)))
+		num_score.show()
 		display_tweens[i] = create_tween().set_parallel(true)
 		if num_score.scale != combo_scale:
 			display_tweens[i].tween_property(num_score, "scale", combo_scale, 0.1)
-		display_tweens[i].tween_property(num_score, "self_modulate:a", 0.0, 0.45).set_delay(Conductor.crotchet * 0.3)
+		display_tweens[i].tween_property(num_score, "self_modulate:a", 0.0, 0.45).set_delay(Conductor.crotchet * 0.5)
 		display_tweens[i].finished.connect(num_score.hide)
 
 
@@ -95,3 +95,11 @@ func compute_velocity(vel: float, accel: float, delta: float) -> float:
 func is_moving(node: Node) -> bool:
 	return node.get_meta(VELOCITY, Vector2.ZERO) != Vector2.ZERO or \
 		node.get_meta(ACCELERATION, Vector2.ZERO) != Vector2.ZERO
+
+
+func hide_digits() -> void:
+	for i: Tween in display_tweens: if i: i.stop()
+	for i: Node2D in display_digits: if i:
+		i.set_meta(VELOCITY, Vector2.ZERO)
+		i.set_meta(ACCELERATION, Vector2.ZERO)
+		i.hide()

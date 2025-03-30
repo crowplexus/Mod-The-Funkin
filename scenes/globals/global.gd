@@ -103,7 +103,7 @@ const DEFAULT_DIFFICULTY: String = "normal"
 ## Which variations should be rebound to other variations.
 const DEFAULT_VARIATION_BINDINGS: Dictionary[String, String] = {
 	# Nightmare is just Erect Hard Mode so here you go.
-	"nightmare": "erect"
+	"nightmare": "erect",
 }
 
 ### Returns "PAUSED" if the tree is paused.

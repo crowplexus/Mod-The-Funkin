@@ -26,7 +26,7 @@ func _to_string() -> String:
 
 ## Schema must use the original FNF format, that being:[br][br]
 ## [ time: float (ms), column: int, length: float (ms), data: String ]
-static func from_array(data: Array, max_columns: int = 4) -> NoteData:
+static func from_array(data: Array, max_columns: int = 4, return_raw_column: bool = false) -> NoteData:
 	var swag_note: NoteData = NoteData.new()
 	var raw_column: int = int(data[1])
 	swag_note.time = float(data[0]) * 0.001
@@ -35,7 +35,10 @@ static func from_array(data: Array, max_columns: int = 4) -> NoteData:
 	if data.size() > 3 and data[3] != "":
 		swag_note.kind = &"%s" % data[3]
 	swag_note.length = float(data[2]) * 0.001
-	swag_note.column = raw_column % max_columns
+	if not return_raw_column:
+		swag_note.column = raw_column % max_columns
+	else:
+		swag_note.column = raw_column
 	return swag_note
 
 ## Schema must use the VSlice format, that being:[br][br]

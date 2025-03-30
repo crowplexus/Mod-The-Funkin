@@ -9,6 +9,7 @@ signal on_note_deleted(note: Note)
 
 var note_list: Array[NoteData] = []
 var list_position: int = 0
+var speed: float = 1.0
 
 func _ready() -> void:
 	list_position = 0
@@ -53,15 +54,14 @@ func move_present_nodes() -> void:
 func try_spawning() -> void:
 	while list_position < note_list.size():
 		var note_data: NoteData = note_list[list_position]
-		if absf(note_data.time - Conductor.time) > 1.0: # TODO: account for note speed
+		if absf(note_data.time - Conductor.time) > (1.0 * speed):
 			break
 		var new_note: Note = get_note()
 		on_note_spawned.emit(note_data, new_note)
-		if new_note.note_field: # TODO: move note group to note field
+		if new_note.note_field:
 			new_note.visible = new_note.note_field.visible
 		new_note.reload(note_data)
-		list_position += 1#= clampi(list_position + 1, 0, note_list.size())
-		#print_debug("spawned at ", Conductor.time)
+		list_position += 1
 
 
 func get_note() -> Node:

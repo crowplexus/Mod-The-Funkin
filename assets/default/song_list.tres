@@ -7,7 +7,7 @@
 script = ExtResource("2_ei7g8")
 name = &"Bopeebo"
 folder = "bopeebo"
-difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
+difficulties = ["easy", "normal", "hard", "erect", "nightmare", "flaccid"]
 metadata/_custom_type_script = ExtResource("2_ei7g8")
 
 [sub_resource type="Resource" id="Resource_ldt5e"]

@@ -23,8 +23,8 @@ func _to_string() -> String:
 static func velocity_change(_time: float, speed: float = 1.0) -> TimedEvent:
 	var vc: = TimedEvent.new()
 	vc.name = &"Change Scroll Speed"
-	vc.time = _time
 	vc.values.speed = speed
+	vc.time = _time
 	return vc
 
 ### Returns a BPM Change event.

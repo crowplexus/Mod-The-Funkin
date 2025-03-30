@@ -36,11 +36,11 @@ func _ready() -> void:
 	if get_tree().current_scene:
 		game = get_tree().current_scene
 	if icon_p1:
-		default_ip1_pos = icon_p1.position
 		default_ip1_scale = icon_p1.scale
+		default_ip1_pos = icon_p1.position
 	if icon_p2:
-		default_ip2_pos = icon_p2.position
 		default_ip2_scale = icon_p2.scale
+		default_ip2_pos = icon_p2.position
 	if game is Gameplay: _on_settings_changed(game.local_settings)
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	countdown.hide()
@@ -155,34 +155,16 @@ func update_score_text() -> void:
 func update_health(health: int) -> void:
 	_prev_health = health
 	if game is Gameplay: # this system sucks I may change it later
-		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(health)
-		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - health)
+		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(_prev_health)
+		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - _prev_health)
 
 func display_judgement(image: Texture2D) -> void:
 	combo_group.display_judgement(image)
 
 func display_combo(combo: int = -1) -> void:
-	if combo < 5:
-		# TODO: miss combo
+	if combo < 0:
 		return
 	combo_group.display_combo(combo)
-
-#func get_rank(accuracy: float) -> String:
-#	# score text
-#	# str(game.tally).replace("{rank}", get_rank(game.tally.accuracy))
-#	match accuracy:
-#		# based on Turkey grading system.
-#		_ when accuracy >= 100: return "AA" # S+
-#		_ when accuracy >= 95: return "BA" # S
-#		_ when accuracy >= 90: return "BB" # A+
-#		_ when accuracy >= 85: return "CB" # A
-#		_ when accuracy >= 80: return "CC" # B+
-#		_ when accuracy >= 75: return "DC" # B
-#		_ when accuracy >= 70: return "DD" # C+
-#		_ when accuracy >= 65: return "FD" # C
-#		_ when accuracy <= 60: return "FF" # D
-#		_ when accuracy <= -1: return "FAIL" # F, kinda, whatever
-#	return "N/A"
 
 func on_beat_hit(beat: float) -> void:
 	if int(beat) < 0: return

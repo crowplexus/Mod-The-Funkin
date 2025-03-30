@@ -26,5 +26,7 @@ func sing(direction: int, forced: bool = false, suffix: String = "", reversed: b
 		idle_cooldown = 0.8
 		modulate = MISS_COLOR
 	else:
+		missing = false
+		modulate = normal_color
 		play_animation(sing_moves[direction % sing_moves.size()] + suffix, forced, reversed, speed)
 		idle_cooldown = 1.0

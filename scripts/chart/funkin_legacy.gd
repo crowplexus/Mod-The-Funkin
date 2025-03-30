@@ -36,10 +36,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	var chart: FNFChart = FNFChart.new()
 	var legacy_mode: bool = json.song is Dictionary
 	var chart_dict: Dictionary = json.song if legacy_mode else json
-	# i hate my lifeeee FUCK OFF SHADOWMARIO
-	var is_psych: bool = legacy_mode and "format" in chart_dict and chart_dict.format == "psych_v1_convert"
-	chart.scheduled_events.append(TimedEvent.velocity_change(0.0, 1.0))
-	
+	var is_psych: bool = false
 	if "stage" in chart_dict:
 		var new_stage: String = str(chart_dict.stage).to_snake_case()
 		match new_stage:
@@ -58,15 +55,13 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		if path.contains("gfVersion") and not ResourceLoader.exists(path): path = path.replace("gfVersion", "player3")
 		if ResourceLoader.exists(path): chart.characters[i] = load(path)
 	
-	if "speed" in chart_dict: chart.scheduled_events[0].values.speed = chart_dict.speed
-	if "bpm" in chart_dict: chart.timing_changes[0].bpm = chart_dict.bpm
-
+	chart.timing_changes[0].bpm = chart_dict.bpm if "bpm" in chart_dict else 100.0
+	
+	var was_must_hit: bool = false
 	var fake_bpm: float = chart.get_bpm()
 	var fake_crotchet: float = (60.0 / fake_bpm)
 	var fake_timer: float = 0.0
 	var max_columns: int = 4
-	
-	var was_must_hit: bool = false
 	
 	for measure: Dictionary in chart_dict["notes"]:
 		if not "sectionNotes" in measure: measure["sectionNotes"] = []
@@ -74,12 +69,15 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		if not "changeBPM" in measure: measure["changeBPM"] = false
 		if not "bpm" in measure: measure["bpm"] = fake_bpm
 		var must_hit_section: bool = measure["mustHitSection"]
+		if not is_psych and "sectionBeats" in measure and "format" in chart_dict:
+			is_psych = true
 		
-		if must_hit_section != was_must_hit:
+		if was_must_hit != must_hit_section:
 			was_must_hit = must_hit_section
 			var focus_change: = TimedEvent.new()
 			focus_change.name = &"Change Camera Focus"
-			focus_change.values.char = 0 if must_hit_section else 1
+			focus_change.values.char = 0 if was_must_hit else 1
+			focus_change.time = fake_timer
 			chart.scheduled_events.append(focus_change)
 		
 		for song_note: Array in measure["sectionNotes"]:
@@ -87,13 +85,13 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			if column <= -1:
 				# psych events, do something here later
 				continue
-			var swag_note: NoteData = NoteData.from_array(song_note)
+			var swag_note: NoteData = NoteData.from_array(song_note, max_columns)
 			if legacy_mode:
 				swag_note.side = int(not must_hit_section)
-				if column % (max_columns if is_psych else max_columns * 2) >= max_columns:
+				if column % (max_columns * 2) >= max_columns:
 					swag_note.side = int(must_hit_section)
-			#if swag_note.length > 0.0:
-			#	swag_note.length = swag_note.length / (fake_crotchet * 0.25)
+			if is_psych and swag_note.side < 2:
+				swag_note.side = 1 - swag_note.side
 			chart.notes.append(swag_note)
 		
 		if measure["changeBPM"] == true and fake_bpm != measure.bpm:
@@ -102,7 +100,11 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			print_debug("Pushed change at ", fake_timer, " which changes the bpm to ", measure.bpm)
 			chart.timing_changes.append(SongTimeChange.make(fake_timer, measure.bpm))
 		
-		fake_timer += fake_crotchet / 4.0
+		fake_timer += fake_crotchet * 4.0
+	
+	var speed: float = chart_dict.speed if "speed" in chart_dict else 1.0
+	var scroll_speed_event: = TimedEvent.velocity_change(-1.0, speed)
+	chart.scheduled_events.append(scroll_speed_event)
 	
 	chart.notes.sort_custom(NoteData.sort_by_time)
 	chart.timing_changes.sort_custom(SongTimeChange.sort_by_time)
