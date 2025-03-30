@@ -113,15 +113,16 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 			var fake_crotchet: float = (60.0 / fake_bpm)
 			var song_notes: Array = json.notes[note_difficulty]
 			var fake_timer: float = 0.0
+			var signature: float = 4.0
 			for note: Dictionary in song_notes:
 				var new_note: NoteData = NoteData.from_dictionary(note)
-				if new_note.time >= 0.0:
-					new_note.side = int(new_note.column) / max_columns
+				if new_note.column > -1:
+					new_note.side = int(new_note.column / max_columns)
 					new_note.column = int(new_note.column % max_columns)
 					chart.notes.append(new_note)
 				else:
 					push_warning("Unable to create note at ", fake_timer)
-			fake_timer += fake_crotchet / 4.0
+			fake_timer += fake_crotchet * signature
 	# create events.
 	if "events" in json:
 		var song_events: Array

@@ -45,7 +45,7 @@ static func from_array(data: Array, max_columns: int = 4, return_raw_column: boo
 ## [code]{ "t": float, "d": int, "l": float, "k": StringName, "p": Array[Variant] }[/code]
 static func from_dictionary(dictionary: Dictionary) -> NoteData:
 	var new_note: NoteData = NoteData.new()
-	new_note.time = -1
+	new_note.column = -1
 	if "t" in dictionary and "d" in dictionary: # can spawn
 		new_note.time = float(dictionary.t * 0.001)
 		new_note.column = int(dictionary.d)

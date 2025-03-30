@@ -8,11 +8,10 @@ var lights_alpha: float = 1.0
 
 func _ready() -> void:
 	crowd.frame = 0
-	crowd.autoplay = "Symbol 2 instance 1"
 	crowd.play("Symbol 2 instance 1")
 
 # doesn't work lol??? idk
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	lights_alpha -= lerpf(0.1, lights_alpha, 0.05)
 	green_light.modulate.a = lights_alpha
 	red_light.modulate.a = lights_alpha
