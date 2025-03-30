@@ -358,7 +358,8 @@ func on_note_hit(note: Note) -> void:
 	if note.judgement.combo_break and local_tally.combo > 0:
 		local_tally.breaks += 1
 		local_tally.combo = 0
-	local_tally.increase_combo(1)
+	if not note.judgement.combo_break:
+		local_tally.increase_combo(1)
 	local_tally.update_accuracy(abs_diff)
 	local_tally.update_tier_score(judged_tier)
 	# Update HUD
