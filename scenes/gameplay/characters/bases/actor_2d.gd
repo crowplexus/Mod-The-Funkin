@@ -18,7 +18,7 @@ extends Node2D
 ## "deathStart" -> plays when the game over sequence shows up.[br]
 ## "deathLoop" -> plays while no buttons are being pressed after the first death animation.[br]
 ## "deathConfirm" -> plays after pressing accept to end the game over sequence.[br]
-@export var death_skeleton: PackedScene = load("res://scenes/gameplay/characters/bf-dead.tscn")
+@export var death_skeleton: PackedScene = preload("res://scenes/gameplay/characters/bf-dead.tscn")
 ## Sound played when the character dies and gets sent to the game over sequence.[br]
 ## Keep in mind, change this in the skeleton scene itself, not in its parent.
 @export var death_sound: AudioStream = preload("res://assets/sounds/gameover/fnf_loss_sfx.ogg")
@@ -35,7 +35,7 @@ var idle_cooldown: float = 0.0
 ## If set to [code]true[/code], the character won't be able to idle until otherwise.
 ## Function to make the character dance, uses a generic method by default.
 var dance_sequence: Callable = func(beat: float) -> void:
-	if dance_interval > 0.0 and int(beat * 100) % int(dance_interval * 100) and idle_cooldown <= 0.0:
+	if fmod(snappedf(beat, 0.01), dance_interval) < 0.01 and idle_cooldown <= 0.0:
 		dance()
 
 var pause_sing: bool = false
@@ -96,5 +96,6 @@ func die() -> void:
 	#if get_tree().current_scene is Gameplay:
 	#	get_tree().current_scene.hud_layer.add_child(instance)
 	#else:
+	instance.z_index = 4096 # so this shows up in stages that use z_index
 	get_tree().current_scene.add_child(instance)
 	instance._start_game_over()

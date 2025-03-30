@@ -67,9 +67,10 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		if not "sectionNotes" in measure: measure["sectionNotes"] = []
 		if not "mustHitSection" in measure: measure["mustHitSection"] = false
 		if not "changeBPM" in measure: measure["changeBPM"] = false
-		if not "bpm" in measure: measure["bpm"] = fake_bpm
 		var must_hit_section: bool = measure["mustHitSection"]
+		var section_beats: float = 4.0
 		if not is_psych and "sectionBeats" in measure and "format" in chart_dict:
+			section_beats = float(measure["sectionBeats"])
 			is_psych = true
 		
 		if was_must_hit != must_hit_section:
@@ -100,10 +101,10 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			print_debug("Pushed change at ", fake_timer, " which changes the bpm to ", measure.bpm)
 			chart.timing_changes.append(SongTimeChange.make(fake_timer, measure.bpm))
 		
-		fake_timer += fake_crotchet * 4.0
+		fake_timer += fake_crotchet * section_beats
 	
 	var speed: float = chart_dict.speed if "speed" in chart_dict else 1.0
-	var scroll_speed_event: = TimedEvent.velocity_change(-1.0, speed)
+	var scroll_speed_event: = TimedEvent.velocity_change(-2.0, speed)
 	chart.scheduled_events.append(scroll_speed_event)
 	
 	chart.notes.sort_custom(NoteData.sort_by_time)

@@ -100,7 +100,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 					note_field.play_animation(idx, NoteField.RepState.CONFIRM)
 					note_field.set_reset_timer(idx, 0.3)
 				else:
-					note.trip_timer = 1.0
+					note.trip_timer = 0.5 # half a second
 					note._stupid_visual_bug = note.hit_time < 0.0
 		elif not note:
 			note_field.play_animation(idx, NoteField.RepState.PRESSED)

@@ -71,7 +71,7 @@ static func get_vslice_metadata(song_name: String, difficulty: StringName = Glob
 static func parse_from_string(json: Dictionary, song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> VSliceChart:
 	var meta: Dictionary = get_vslice_metadata(song_name, difficulty)
 	var chart: VSliceChart = VSliceChart.new()
-	chart.scheduled_events.append(TimedEvent.velocity_change(0.0, 1.0)) # default speed
+	chart.scheduled_events.append(TimedEvent.velocity_change(-3.0, 1.0)) # default speed
 	# set stage to spawn before gameplay.
 	if "playData" in meta:
 		var play_data: Dictionary = meta["playData"]
