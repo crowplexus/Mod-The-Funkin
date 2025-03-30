@@ -187,7 +187,7 @@ func _process(delta: float) -> void:
 			if music: music.play(Conductor.time)
 			starting = false
 	else:
-		if Conductor.time >= Conductor.length:
+		if Conductor.time >= Conductor.length and not ending:
 			end_song()
 		
 	# hud bumping #
@@ -343,7 +343,6 @@ func load_streams() -> void:
 			has_enemy_track = chart.assets.vocals.size() > 1
 			for i: int in chart.assets.vocals.size():
 				music.stream.set_sync_stream(i + 1, chart.assets.vocals[i])
-		music.finished.connect(end_song)
 
 func init_note_spawner() -> void:
 	note_group.on_note_spawned.connect(func(data: NoteData, note: Node2D) -> void:
