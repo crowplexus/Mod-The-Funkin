@@ -6,7 +6,7 @@ signal hit_hold_note(note: Note)
 signal miss_note(note: Note, dir: int)
 
 ## Actions to use for controlling.
-@export var controls: PackedStringArray = [ "note_left", "note_down", "note_up", "note_right" ]
+@export var controls: Array[String] = [ "note_left", "note_down", "note_up", "note_right" ]
 ## How many of the receptors are being held at a time
 @export var keys_held: Array[bool] = [ false, false, false, false ]
 

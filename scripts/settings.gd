@@ -1,7 +1,7 @@
 class_name Settings
 extends Resource
 
-const _IGNORED_PROPERTIES: PackedStringArray = ["resource_local_to_scene", "resource_scene_unique_id", "resource_name", "resource_path", "script"]
+const _IGNORED_PROPERTIES: Array[String] = ["resource_local_to_scene", "resource_scene_unique_id", "resource_name", "resource_path", "script"]
 
 var _was_uncapped: bool = false
 
@@ -60,7 +60,7 @@ func reload_locale() -> void:
 
 ## Reloads the note keybinds.
 func reload_keybinds() -> void:
-	const NOTE_KEYBINDS: PackedStringArray = ["note_left", "note_down", "note_up", "note_right"]
+	const NOTE_KEYBINDS: Array[String] = ["note_left", "note_down", "note_up", "note_right"]
 	for action: String in NOTE_KEYBINDS:
 		if InputMap.has_action(action):
 			for key: InputEvent in InputMap.action_get_events(action):

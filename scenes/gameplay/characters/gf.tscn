@@ -97,7 +97,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_kgqrn"]
 resource_name = "danceLeft"
-length = 0.541671
+length = 0.833338
 step = 0.0416667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -138,7 +138,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_6xe0f"]
 resource_name = "danceRight"
-length = 0.541671
+length = 0.833338
 step = 0.0416667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -399,6 +399,7 @@ _data = {
 [node name="gf" type="Node2D"]
 script = ExtResource("1_6xe0f")
 dance_interval = 1.0
+dance_moves = Array[String](["danceLeft", "danceRight"])
 icon = SubResource("Resource_dmv11")
 
 [node name="animated_sprite_2d" type="AnimatedSprite2D" parent="."]

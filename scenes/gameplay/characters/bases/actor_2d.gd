@@ -4,9 +4,9 @@ extends Node2D
 ## Beat delay for the character to bop its head.
 @export var dance_interval: float = 2.0
 ## Dance Animations for the character to play every dance interval.
-@export var dance_moves: PackedStringArray = ["idle"]
+@export var dance_moves: Array[String] = ["idle"]
 ## Sing Animations for the character to play when hitting the corresponding notes.
-@export var sing_moves: PackedStringArray = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
+@export var sing_moves: Array[String] = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
 ## How long it takes for a character to stop singing after doing so.
 @export var sing_duration: float = 2.0
 ## Icon shown on the health bar.
@@ -35,7 +35,7 @@ var idle_cooldown: float = 0.0
 ## If set to [code]true[/code], the character won't be able to idle until otherwise.
 ## Function to make the character dance, uses a generic method by default.
 var dance_sequence: Callable = func(beat: float) -> void:
-	if fmod(snappedf(beat, 0.01), dance_interval) < 0.01 and idle_cooldown <= 0.0:
+	if fmod(snappedf(beat, 0.01), dance_interval) <= dance_interval and idle_cooldown <= 0.0:
 		dance()
 
 var pause_sing: bool = false
