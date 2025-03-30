@@ -173,9 +173,9 @@ func reset_discord() -> void:
 	update_discord_images()
 
 ## Updates the details and state of Discord RPC.
-func update_discord(state: String, details: String) -> void:
+func update_discord(state: String, details: String = "") -> void:
 	DiscordRPC.state = state
-	DiscordRPC.details = details
+	if not details.is_empty(): DiscordRPC.details = details
 	DiscordRPC.refresh()
 
 ## Updates the Discord RPC to add timestamps.

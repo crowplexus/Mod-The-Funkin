@@ -85,11 +85,12 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 	var action: String = controls[idx]
 	keys_held[idx % keys_held.size()] = Input.is_action_pressed(action)
-	if Input.is_action_just_released(action):
+	if not event.is_echo() and event.is_action(action) and event.is_released():
 		note_field.play_animation(idx, NoteField.RepState.STATIC)
-		note_field.set_reset_timer(idx, 0.0)
+		if note_field.get_receptor(idx).reset_timer > 0.0:
+			note_field.set_reset_timer(idx, 0.0)
 		return
-	if Input.is_action_just_pressed(action):
+	if not event.is_echo() and event.is_action(action):
 		var note: Note = _get_note(idx)
 		if note and note.is_hittable(settings.max_hit_window):
 			hit_note.emit(note)
@@ -102,7 +103,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				else:
 					note.trip_timer = 0.5 # half a second
 					note._stupid_visual_bug = note.hit_time < 0.0
-		elif not note:
+		else:
 			note_field.play_animation(idx, NoteField.RepState.PRESSED)
 			if not settings.ghost_tapping:
 				miss_note.emit(null, idx)

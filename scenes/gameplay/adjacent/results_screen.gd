@@ -3,8 +3,8 @@ extends Control
 @onready var bg: ColorRect = $"background"
 
 func _ready() -> void:
-	Global.update_discord("had a built in emote", "what if Raven Team Leader")
-	Global.update_discord_timestamps(0)
+	Global.update_discord("","Raven Team Leader")
+	Global.update_discord_timestamps(-1, -1)
 
 func _unhandled_key_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_accept"):

@@ -15,7 +15,7 @@ var selected: int = 0
 var can_control: bool = false
 
 func _ready() -> void:
-	Global.update_discord("Solo (1 of 1)", "Paused")
+	Global.update_discord("Paused")
 	options.remove_at(2) # remove "Difficulty" temporarily.
 	
 	tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE).set_parallel(true)

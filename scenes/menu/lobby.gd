@@ -2,6 +2,7 @@ extends Node2D
 var menu_song: AudioStream = preload("res://assets/music/freakyMenu.ogg")
 func _ready() -> void:
 	Global.play_bgm(menu_song, 0.7)
+	Global.update_discord("Menus", "Main Menu")
 	pass
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:

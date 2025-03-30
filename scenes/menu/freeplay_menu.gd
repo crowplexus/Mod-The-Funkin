@@ -20,6 +20,7 @@ var difficulty_name: String = Global.DEFAULT_DIFFICULTY
 var exiting: bool = false
 
 func _ready() -> void:
+	Global.update_discord("Menus", "Selecting a Song in Freeplay")
 	if get_tree().paused: get_tree().paused = false
 	Global.play_bgm(default_song, 0.7)
 	Conductor.bpm = default_song.bpm
@@ -80,6 +81,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		var song_to_pick: = songs.list[selected - 1]
 		if selected == 0: song_to_pick = songs.pick_random()
 		Gameplay.chart = Chart.detect_and_parse(song_to_pick.folder, difficulty_name)
+		if Gameplay.chart:
+			Gameplay.chart.parsed_values.freeplay_name = song_to_pick.name
+			Gameplay.chart.parsed_values.freeplay_difficulty = difficulty_name.to_upper()
 		Global.change_scene("res://scenes/gameplay/gameplay.tscn")
 	if backing_out:
 		Global.change_scene("res://scenes/menu/lobby.tscn")

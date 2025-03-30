@@ -2,9 +2,9 @@ class_name Gameplay
 extends Node2D
 
 enum PlayMode {
-	STORY = (1 << 1),
-	FREEPLAY = (2 << 1),
-	CHARTING = (3 << 1),
+	STORY = 0,
+	FREEPLAY = 1,
+	CHARTING = 2,
 }
 
 ## Default HUD scenes to use, mainly for settings and stuff.
@@ -40,6 +40,9 @@ var scripts: ScriptPack
 @onready var hud_layer: CanvasLayer = $"hud_layer"
 @onready var default_hud_scale: Vector2 = $"hud_layer".scale
 
+var song_name: String = "Unknown"
+var difficulty_name: String = "???"
+
 var hud: TemplateHUD
 var camera: Camera2D
 var stage_bg: FunkinStage2D
@@ -48,6 +51,7 @@ var enemy: Actor2D
 var dj: Actor2D
 
 var game_mode: PlayMode = PlayMode.FREEPLAY
+var game_mode_name: String = Global.get_mode_string(game_mode)
 var judgements: JudgementList = preload("res://assets/default/judgements.tres")
 var timed_events: Array[TimedEvent] = []
 var event_position: int = 0
@@ -61,7 +65,10 @@ var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 	set(new_health): health = clampi(new_health, 0, 100)
 
 func _default_rpc() -> void:
-	Global.update_discord("%s" % Global.get_mode_string(game_mode), "In-game")
+	Global.update_discord(game_mode_name, "Playing %s (%s)" % [ song_name, difficulty_name ])
+	_sync_rpc_timestamp()
+
+func _sync_rpc_timestamp() -> void:
 	Global.update_discord_timestamps(int(Conductor.time), int(Conductor.length))
 
 func _ready() -> void:
@@ -80,6 +87,8 @@ func _ready() -> void:
 		assets = chart.assets
 		scripts.load_song_scripts(chart.parsed_values.folder, chart.parsed_values.file)
 		timed_events = chart.scheduled_events.duplicate()
+		if "freeplay_name" in chart.parsed_values: song_name = chart.parsed_values.freeplay_name
+		if "freeplay_difficulty" in chart.parsed_values: difficulty_name = chart.parsed_values.freeplay_difficulty
 	add_child(scripts)
 	scripts.call_func("_pack_entered")
 	if chart.assets:
@@ -112,6 +121,7 @@ func kill_every_note() -> void:
 			note.queue_free()
 
 func restart_song() -> void:
+	_sync_rpc_timestamp()
 	if music: music.seek(0.0)
 	ending = false
 	starting = true
@@ -167,14 +177,12 @@ func _process(delta: float) -> void:
 		process_timed_events()
 	if starting:
 		if Conductor.time >= 0.0:
-			_default_rpc()
 			if music: music.play(Conductor.time)
 			starting = false
 	else:
-		if not ending and Conductor.time >= Conductor.length:
-			ending = true
-			await get_tree().create_timer(0.5).timeout
-			exit_game()
+		if Conductor.time >= Conductor.length:
+			end_song()
+		
 	# hud bumping #
 	if hud_layer.is_inside_tree() and hud_layer.scale != Vector2.ONE:
 		hud_layer.scale = hud.get_bump_lerp_vector(hud_layer.scale, default_hud_scale, delta)
@@ -327,6 +335,7 @@ func load_streams() -> void:
 			has_enemy_track = chart.assets.vocals.size() > 1
 			for i: int in chart.assets.vocals.size():
 				music.stream.set_sync_stream(i + 1, chart.assets.vocals[i])
+		music.finished.connect(end_song)
 
 func init_note_spawner() -> void:
 	note_group.on_note_spawned.connect(func(data: NoteData, note: Node2D) -> void:
@@ -411,6 +420,11 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 func on_beat_hit(beat: float) -> void:
 	if int(beat) > 0 and int(beat) % 4 == 0:
 		hud_layer.scale += Vector2(hud.get_bump_scale(), hud.get_bump_scale())
+
+func end_song() -> void:
+	ending = true
+	await get_tree().create_timer(0.5).timeout
+	exit_game()
 
 func exit_game() -> void:
 	if tally: # NOTE: save tally before ending later.
