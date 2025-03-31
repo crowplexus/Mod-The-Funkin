@@ -4,8 +4,6 @@ extends TemplateHUD
 @export var keep_classic_health_colors: bool = false
 
 @onready var score_text: Label = $"health_bar/score_text"
-@onready var misses_text: Label = $"health_bar/misses_text"
-
 @onready var combo_group: Control = $"combo_group"
 @onready var health_bar: ProgressBar = $"health_bar"
 
@@ -69,7 +67,7 @@ func _on_settings_changed(settings: Settings = Global.settings) -> void:
 		1:
 			if game is Gameplay:
 				game.note_fields.position.y = 500
-			health_bar.position.y = 50
+			health_bar.position.y = 65
 
 func init_vars() -> void:
 	if not game.assets:
@@ -149,8 +147,10 @@ func countdown_progress() -> void:
 
 func update_score_text() -> void:
 	var tally: bool = game and game.tally
-	score_text.text  = tr("score", &"gameplay") + ": %s" % (str(0) if not tally else Global.separate_thousands(game.tally.score))
-	misses_text.text = tr("combo_breaks", &"gameplay") + ": %s" % (0 if not tally else game.tally.misses + game.tally.breaks)
+	score_text.text  = "%s: %s\n%s: %s" % [
+		tr("score", &"gameplay"), str(0) if not tally else Global.separate_thousands(game.tally.score),
+		tr("breaks", &"gameplay"), (0 if not tally else game.tally.misses + game.tally.breaks),
+	]
 
 func update_health(health: int) -> void:
 	_prev_health = health

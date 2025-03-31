@@ -40,9 +40,11 @@ func _process(delta: float) -> void:
 		note.update_hold(delta)
 		if keys_held[note.column] == true:
 			note_field.play_animation(note.column, NoteField.RepState.CONFIRM, fmod(note.hold_size, 0.05) == 0)
+			if note.modulate.a < 1.0: note.modulate.a = 1.0
 			hit_hold_note.emit(note)
 		else:
-			note.trip_timer -= 0.08 * note.hold_size
+			note.trip_timer -= 0.01 / note.hold_size
+			note.modulate.a = note.trip_timer
 		if note.trip_timer <= 0.0:
 			miss_note.emit(note, note.column)
 			note.dropped = true
@@ -99,7 +101,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				if note.hold_size <= 0.0:
 					if not note.die_later: note.hide_all()
 					note_field.play_animation(idx, NoteField.RepState.CONFIRM)
-					note_field.set_reset_timer(idx, 0.3)
+					note_field.set_reset_timer(idx, 0.2)
 				else:
 					note.trip_timer = 0.5 # half a second
 					note._stupid_visual_bug = note.hit_time < 0.0
