@@ -49,11 +49,11 @@ func _process(delta: float) -> void:
 	if health_bar.value != _prev_health:
 		health_bar.value = lerp(health_bar.value, floorf(_prev_health), 0.05)
 	if icon_p1 and icon_p1.scale != default_ip1_scale:
-		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * 20.0 * Conductor.rate))
-		icon_p1.position.x = lerpf(icon_p1.position.x, default_ip1_pos.x + (health_bar.size.x * 0.51) - (_prev_health * 6.0), 0.05)
+		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * 13.0 * Conductor.rate))
+		icon_p1.position.x = lerpf(icon_p1.position.x, default_ip1_pos.x + ((health_bar.size.x * default_ip1_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
 	if icon_p2 and icon_p2.scale != default_ip2_scale:
-		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * 20.0 * Conductor.rate))
-		icon_p2.position.x = lerpf(icon_p2.position.x, default_ip2_pos.x + (health_bar.size.x * 0.51) - (_prev_health * 6.0), 0.05)
+		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * 13.0 * Conductor.rate))
+		icon_p2.position.x = lerpf(icon_p2.position.x, default_ip2_pos.x + ((health_bar.size.x * default_ip2_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
 		
 
 func _exit_tree() -> void:
