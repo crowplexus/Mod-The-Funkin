@@ -89,12 +89,13 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			var column: int = int(song_note[1])
 			if column <= -1:
 				# psych events, do something here later
+				chart.load_psych_events(song_note)
 				continue
 			var swag_note: NoteData = NoteData.from_array(song_note, max_columns)
 			if legacy_mode:
-				swag_note.side = int(not must_hit_section)
+				swag_note.side = int(must_hit_section)
 				if column % (max_columns * 2) >= max_columns:
-					swag_note.side = int(must_hit_section)
+					swag_note.side = int(not must_hit_section)
 			if is_psych and swag_note.side < 2:
 				swag_note.side = 1 - swag_note.side
 			chart.notes.append(swag_note)
@@ -132,8 +133,22 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	return chart
 
 ## For Psych Engine Event Support.
-func load_psych_event() -> void:
-	pass
+func load_psych_events(event_note: Array) -> void:
+	var event_name: StringName
+	var time: float = 0.0
+	if event_note[1] is Array: # new psych format
+		for sub_event: Array in event_note[1]:
+			var event: TimedEvent = TimedEvent.new()
+			event.name = StringName(sub_event[0])
+			event.time = float(event_note[1][0])
+			event.values.assign({"v1": sub_event[1], "v2": sub_event[2]})
+			scheduled_events.append(event)
+	else: # legacy event
+		var event: TimedEvent = TimedEvent.new()
+		event.name = StringName(event_note[2])
+		event.time = float(event_note[0] * 0.001)
+		event.values.assign({"v1": event_note[3], "v2": event_note[4]})
+		scheduled_events.append(event)
 
 ## For Kade Engine BPM Change Events.
 func load_kade_bpm_changes() -> void:
