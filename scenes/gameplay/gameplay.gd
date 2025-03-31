@@ -122,7 +122,9 @@ func kill_every_note() -> void:
 func restart_song() -> void:
 	ending = false
 	starting = true
-	if music: music.seek(0.0)
+	if music:
+		music.stream_paused = true
+		music.seek(0.0)
 	# disable note spawning and event dispatching.
 	note_group.active = false
 	should_process_events = false
@@ -176,7 +178,7 @@ func _exit_tree() -> void:
 	local_settings.unreference()
 
 func _process(delta: float) -> void:
-	if music and music.playing:
+	if music and music.playing and not ending:
 		Conductor.update(music.get_playback_position() + AudioServer.get_time_since_last_mix())
 	elif not Conductor.active:
 		Conductor.active = true

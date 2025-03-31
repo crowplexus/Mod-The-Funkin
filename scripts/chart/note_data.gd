@@ -33,7 +33,7 @@ static func from_array(data: Array, max_columns: int = 4, return_raw_column: boo
 	swag_note.side = 0 if raw_column > (max_columns - 1) else 1
 	#print_debug(swag_note.side)
 	if data.size() > 3 and data[3] != "":
-		swag_note.kind = &"%s" % data[3]
+		swag_note.kind = StringName(data[3])
 	swag_note.length = float(data[2]) * 0.001
 	if not return_raw_column:
 		swag_note.column = raw_column % max_columns

@@ -14,7 +14,6 @@ func show_all() -> void:
 
 func reload(p_data: NoteData) -> void:
 	super(p_data)
-	hold_size = length
 	player.play(str(column))
 	if not arrow.visible: arrow.show()
 	var is_hold: bool = arrow.sprite_frames and clip_rect and hold_size > 0.0 and hold_body
@@ -24,10 +23,10 @@ func reload(p_data: NoteData) -> void:
 		hold_tail.texture = arrow.sprite_frames.get_frame_texture("%s hold tail" % color, 0)
 		hold_tail.size = hold_tail.texture.get_size()
 		hold_tail.position.y = hold_body.get_end().y
-		display_hold(length)
+		display_hold(hold_size, get_total_speed())
 		loaded_hold = true
 
-func display_hold(size: float = 0.0, speed: float = 0.0 if data else 1.0) -> void:
+func display_hold(size: float = 0.0, speed: float = -1.0) -> void:
 	super(size, speed)
 	if arrow.visible and loaded_hold: arrow.hide()
 	hold_tail.position.y = hold_body.get_end().y

@@ -42,7 +42,7 @@ func _process(delta: float) -> void:
 			note_field.play_animation(note.column, NoteField.RepState.CONFIRM, fmod(note.hold_size, 0.05) == 0)
 			if note.modulate.a < 1.0: note.modulate.a = 1.0
 			hit_hold_note.emit(note)
-		else:
+		elif note.hold_size > 0.04: # nerf hold dropping by a few seconds. (Bopeebo)
 			note.trip_timer -= 0.01 / note.hold_size
 			note.modulate.a = note.trip_timer
 		if note.trip_timer <= 0.0:

@@ -9,11 +9,9 @@ class_name Note
 extends Node2D
 
 ## Default Directions.
-const COLORS: PackedStringArray = ["purple","blue","green","red"]
-## Default Note Distance (in pixels)
+const COLORS: PackedStringArray = ["purple", "blue", "green", "red"]
+## Default Note Distance (in pixels).
 const DISTANCE: float = 450.0
-## Default Hold Distance (in pixels)
-const DISTANCE_HOLD: float = 1500.0
 ## Arrow Size (in pixels), for test purposes.
 const ARROW_SIZE: float = 64.0
 ## Hardcoded Speed Multiplier for new movement math.
@@ -89,7 +87,7 @@ func _ready() -> void:
 		clip_rect.scale *= -scroll_mult
 
 func get_total_speed() -> float:
-	var speed: float = note_field.speed * note_field.get_receptor(column % note_field.get_child_count()).speed
+	var speed: float = note_field.speed * note_field.get_receptor(column).speed
 	return speed * Note.SPEED_MULT
 
 func scroll_ahead() -> void:
@@ -108,8 +106,8 @@ func update_hold(delta: float) -> void:
 	if _stupid_visual_bug:
 		hold_size += hit_time / absf(clip_rect.scale.y)
 		_stupid_visual_bug = false
-	hold_size -= delta / absf(clip_rect.scale.y)
-	display_hold(hold_size)
+	hold_size = (time + length) - Conductor.playhead
+	display_hold(hold_size, get_total_speed())
 	if (hold_size <= 0.0 or trip_timer <= 0.0) and not die_later:
 		hide_all()
 
@@ -121,6 +119,7 @@ func hold_finished() -> void:
 ## Called whenever a note is spawned, remember to also call super(data)
 func reload(p_data: NoteData) -> void:
 	data = p_data
+	hold_size = p_data.length
 	_stupid_visual_bug = false
 	was_missed = false
 	was_hit = false
@@ -128,13 +127,13 @@ func reload(p_data: NoteData) -> void:
 
 ## Use this function for implementing hold note visuals.[br]
 ## Leave empty if you want your note type to not have holds.
-func display_hold(size: float = 0.0, speed: float = 0.0 if data else 1.0) -> void:
+func display_hold(size: float = 0.0, speed: float = -1.0) -> void:
+	if speed <= 0.0: speed = get_total_speed()
 	if column != -1 and not hold_body or not clip_rect:
 		return
-	if speed == 0.0: speed = get_total_speed()
 	# general implementation, should work for everything???
-	hold_body.size.y = (Note.DISTANCE_HOLD * speed) * size
 	hold_body.size.x = hold_body.texture.get_width()
+	hold_body.size.y = (size * (speed * 100.0)) - 0.01
 
 ## Use this function for implementing splash visuals.[br]
 ## Return null if you don't want note splashes on your note type.
