@@ -65,7 +65,7 @@ var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 	set(new_health): health = clampi(new_health, 0, 100)
 
 func _default_rpc() -> void:
-	Global.update_discord(game_mode_name, "Playing %s (%s)" % [ song_name, difficulty_name ])
+	Global.update_discord(game_mode_name, "Playing %s (%s)" % [ song_name, difficulty_name.to_upper() ])
 	_sync_rpc_timestamp()
 
 func _sync_rpc_timestamp() -> void:
@@ -88,6 +88,7 @@ func _ready() -> void:
 		scripts.load_song_scripts(chart.parsed_values.folder, chart.parsed_values.file)
 		timed_events = chart.scheduled_events.duplicate()
 		difficulty_name = chart.parsed_values.file
+		song_name = chart.song_name
 	add_child(scripts)
 	scripts.call_func("_pack_entered")
 	if chart.assets:

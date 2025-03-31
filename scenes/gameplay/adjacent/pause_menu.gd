@@ -57,7 +57,6 @@ func _ready() -> void:
 	$"panel/options/template".queue_free()
 	template.hide()
 
-	change_selection()
 	await get_tree().create_timer(0.1).timeout
 	can_control = true
 
