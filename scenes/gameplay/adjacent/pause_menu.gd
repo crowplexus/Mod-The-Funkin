@@ -23,8 +23,10 @@ func _ready() -> void:
 	Global.update_discord("Paused")
 	if Gameplay.current:
 		level_label.text = Gameplay.current.song_name
-		diffc_label.text = Gameplay.current.difficulty_name
-	options.remove_at(2) # remove "Difficulty" temporarily.
+		var difficulty: String = Gameplay.current.difficulty_name
+		var tr_diff: String = tr("difficulty_%s" % difficulty.to_lower(), &"menus")
+		diffc_label.text = tr_diff if not tr_diff.begins_with("difficulty_") else difficulty
+	options.remove_at(2) # remove "Difficulty" temporarily.su
 	
 	blue_panel.position.x = -get_viewport_rect().size.x
 	tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE).set_parallel(true)

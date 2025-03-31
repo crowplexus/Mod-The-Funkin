@@ -104,5 +104,6 @@ func change_difficulty(next: int = 0) -> void:
 	difficulty = wrapi(difficulty + next, 0, songs.list[selected - 1].difficulties.size())
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	var diff: String = songs.list[selected - 1].difficulties[difficulty]
-	diff_text.text = "< %s >" % diff
+	var tr_diff: String = tr("difficulty_%s" % diff.to_lower(), &"menus")
+	diff_text.text = "< %s >" % tr_diff if not tr_diff.begins_with("difficulty_") else diff
 	difficulty_name = diff
