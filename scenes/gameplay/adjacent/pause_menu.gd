@@ -27,7 +27,6 @@ func _ready() -> void:
 	options.remove_at(2) # remove "Difficulty" temporarily.
 	
 	blue_panel.position.x = -get_viewport_rect().size.x
-	print(blue_panel.position.x)
 	tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE).set_parallel(true)
 	tween.tween_property(blue_panel, "position:x", 0.0, 0.4)
 	
