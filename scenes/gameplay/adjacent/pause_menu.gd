@@ -8,11 +8,13 @@ const LISTS: Dictionary[String, PackedStringArray] = {
 
 @onready var blue_panel: Panel = $"panel"
 @onready var level_label: Label = $"panel/song_name"
-@onready var diffc_label: Label = $"panel/difficulty_name"
+@onready var diffc_label: Label = $"panel/song_name/difficulty_name"
 
 @onready var bg: ColorRect = $"background"
 @onready var template: Label = $"panel/options/template".duplicate()
 @onready var menu_options: Control = $"panel/options"
+@onready var progress_bar: ProgressBar = $"panel/progress_bar"
+@onready var progress_label: Label = $"panel/progress_bar/label"
 
 var list: PackedStringArray = []
 var difficulties: PackedStringArray = []
@@ -22,13 +24,23 @@ var tween: Tween
 
 func _ready() -> void:
 	Global.update_discord("Paused")
+	
+	progress_bar.value = Conductor.time / Conductor.length * progress_bar.max_value
+	var t: String = Global.format_to_time(clampf(Conductor.time, 0.0, Conductor.length))
+	var l: String = Global.format_to_time(Conductor.length)
+	progress_label.text = t + " " + l
+	
 	if Gameplay.current:
 		if "difficulties" in Gameplay.chart.parsed_values:
 			difficulties = Gameplay.chart.parsed_values.difficulties.duplicate()
 		level_label.text = Gameplay.chart.song_name
+		if not Gameplay.chart.artist.is_empty():
+			level_label.text += " — %s" % Gameplay.chart.artist
 		var difficulty: String = Gameplay.current.difficulty_name
 		var tr_diff: String = tr("difficulty_%s" % difficulty.to_lower(), &"menus")
 		diffc_label.text = tr_diff if not tr_diff.begins_with("difficulty_") else difficulty
+		if not Gameplay.chart.charter.is_empty():
+			diffc_label.text += " — Chart: %s" % Gameplay.chart.charter
 	if difficulties.size() > 1 and not difficulties.has("BACK"):
 		difficulties.append("BACK")
 	load_default_list()

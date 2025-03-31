@@ -73,9 +73,8 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 	var chart: VSliceChart = VSliceChart.new()
 	# set stage to spawn before gameplay.
 	if "songName" in meta: chart.song_name = meta["songName"]
-	if "artist" in meta:
-		chart.song_artist = meta.artist
-		if "charter" in meta: chart.song_artist += " (Charted by: " + meta.charter + ")"
+	if "artist" in meta: chart.artist = meta.artist
+	if "charter" in meta: chart.charter = meta.charter
 	if "playData" in meta:
 		var play_data: Dictionary = meta["playData"]
 		if "stage" in play_data:

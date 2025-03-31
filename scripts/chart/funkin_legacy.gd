@@ -57,11 +57,8 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	
 	chart.timing_changes[0].bpm = chart_dict.bpm if "bpm" in chart_dict else 100.0
 	chart.song_name = chart_dict.song
-	chart.song_artist
-	if "artist" in chart_dict:
-		chart.song_artist = chart_dict.artist
-		if "charter" in chart_dict:
-			chart.song_artist += " (Charted by: " + chart_dict.charter + ")"
+	if "artist" in chart_dict: chart.artist = chart_dict.artist
+	if "charter" in chart_dict: chart.charter = chart_dict.charter
 	
 	var was_must_hit: int = -1
 	var fake_bpm: float = chart.get_bpm()

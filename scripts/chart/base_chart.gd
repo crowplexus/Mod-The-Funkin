@@ -21,7 +21,9 @@ const VELOCITY_EVENTS: Array[StringName] = [
 ## Song Name (to display in menus).
 @export var song_name: StringName = &"Unknown"
 ## Song Artist (to display in menus).
-@export var song_artist: StringName = &""
+@export var artist: StringName = &""
+## Song Charter/Mapper (to display in menus).
+@export var charter: StringName = &""
 ## List of notes to spawn in-game.
 @export var notes: Array[NoteData] = []
 ## List of Events to be executed during the song.
