@@ -38,12 +38,16 @@ func _process(delta: float) -> void:
 		if note.hold_size <= 0.0 or note.trip_timer <= 0.0 or note.side != note_field.get_index() or not note.was_hit:
 			continue
 		note.update_hold(delta)
-		if keys_held[note.column] == true:
+		var trip_decay: float = 0.01 # needs to be nerfed for rolls?
+		var condition_to_trip: bool = keys_held[note.column] == false
+		if note.kind.begins_with("roll"): # invert the condition
+			condition_to_trip = not condition_to_trip
+		if not condition_to_trip:
 			note_field.play_animation(note.column, NoteField.RepState.CONFIRM, fmod(note.hold_size, 0.05) == 0)
 			if note.modulate.a < 1.0: note.modulate.a = 1.0
 			hit_hold_note.emit(note)
 		elif note.hold_size > 0.04: # nerf hold dropping by a few seconds. (Bopeebo)
-			note.trip_timer -= 0.01 / note.hold_size
+			note.trip_timer -= trip_decay / note.hold_size
 			note.modulate.a = note.trip_timer
 		if note.trip_timer <= 0.0:
 			miss_note.emit(note, note.column)
