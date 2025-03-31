@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://cn5qxa5uqvf8r"]
 
-[ext_resource type="Script" uid="uid://br718eijetu3x" path="res://scenes/menu/options/ui/value_bar.gd" id="1_jnjws"]
+[ext_resource type="Script" uid="uid://br718eijetu3x" path="res://scenes/menu/ui/options_bar.gd" id="1_jnjws"]
 
-[node name="toggle_bar" type="Control"]
+[node name="options_bar" type="Control"]
 layout_mode = 3
 anchor_right = 0.327
 anchor_bottom = 0.069

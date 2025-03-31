@@ -57,7 +57,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	
 	chart.timing_changes[0].bpm = chart_dict.bpm if "bpm" in chart_dict else 100.0
 	
-	var was_must_hit: bool = false
+	var was_must_hit: int = -1
 	var fake_bpm: float = chart.get_bpm()
 	var fake_crotchet: float = (60.0 / fake_bpm)
 	var fake_timer: float = 0.0
@@ -67,17 +67,18 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		if not "sectionNotes" in measure: measure["sectionNotes"] = []
 		if not "mustHitSection" in measure: measure["mustHitSection"] = false
 		if not "changeBPM" in measure: measure["changeBPM"] = false
-		var must_hit_section: bool = measure["mustHitSection"]
+		var must_hit_section: int = int(not measure["mustHitSection"])
 		var section_beats: float = 4.0
-		if not is_psych and "sectionBeats" in measure and "format" in chart_dict:
+		if "sectionBeats" in measure:
 			section_beats = float(measure["sectionBeats"])
-			is_psych = true
+			if not is_psych and measure and "format" in chart_dict and str(chart_dict.format).find("psych_v1") > -1:
+				is_psych = true
 		
 		if was_must_hit != must_hit_section:
 			was_must_hit = must_hit_section
 			var focus_change: = TimedEvent.new()
 			focus_change.name = &"Change Camera Focus"
-			focus_change.values.char = 0 if was_must_hit else 1
+			focus_change.values.char = was_must_hit
 			focus_change.time = fake_timer
 			chart.scheduled_events.append(focus_change)
 		
