@@ -64,9 +64,11 @@ func _on_settings_changed(settings: Settings = Global.settings) -> void:
 			if game is Gameplay:
 				game.note_fields.position.y = 0
 			health_bar.position.y = 660
+			combo_group.position.y = 120
 		1:
 			if game is Gameplay:
 				game.note_fields.position.y = 500
+			combo_group.position.y = 650
 			health_bar.position.y = 65
 
 func init_vars() -> void:
