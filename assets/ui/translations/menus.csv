@@ -2,6 +2,7 @@ key,en,es,pt-BR,mk
 
 pause_resume,Resume,Continuar,Prosseguir,Продолжи
 pause_restart,Restart,Reiniciar,Reiniciar,Рестартираjте
+pause_difficulty,Difficulty,Dificultad,Dificuldade,Тешкотија
 pause_options,Options,Opciones,Opções,Опции
 pause_exit,Exit,Salir,Sair,Излезете
 
@@ -11,3 +12,4 @@ difficulty_hard,Hard,Difícil,Durão,Тешка
 difficulty_erect,Erect,Ereto,Ereto,Ерекциjа
 difficulty_nightmare,Nightmare,Pesadilla,Pesadelo,Кошмар
 difficulty_flaccid,Flaccid,Flácido,Flácido,Флакцидно
+difficulty_back,Back,Volver,Voltar,Назад

@@ -11,10 +11,11 @@ const LISTS: Dictionary[String, PackedStringArray] = {
 @onready var diffc_label: Label = $"panel/difficulty_name"
 
 @onready var bg: ColorRect = $"background"
-@onready var template: Label = $"panel/options/template"
+@onready var template: Label = $"panel/options/template".duplicate()
 @onready var menu_options: Control = $"panel/options"
 
-var options: PackedStringArray = LISTS.default.duplicate()
+var list: PackedStringArray = []
+var difficulties: PackedStringArray = []
 var can_control: bool = false
 var selected: int = 0
 var tween: Tween
@@ -22,29 +23,37 @@ var tween: Tween
 func _ready() -> void:
 	Global.update_discord("Paused")
 	if Gameplay.current:
-		level_label.text = Gameplay.current.song_name
+		if "difficulties" in Gameplay.chart.parsed_values:
+			difficulties = Gameplay.chart.parsed_values.difficulties.duplicate()
+		level_label.text = Gameplay.chart.song_name
 		var difficulty: String = Gameplay.current.difficulty_name
 		var tr_diff: String = tr("difficulty_%s" % difficulty.to_lower(), &"menus")
 		diffc_label.text = tr_diff if not tr_diff.begins_with("difficulty_") else difficulty
-	options.remove_at(2) # remove "Difficulty" temporarily.su
+	if difficulties.size() > 1 and not difficulties.has("BACK"):
+		difficulties.append("BACK")
+	load_default_list()
 	
 	blue_panel.position.x = -get_viewport_rect().size.x
 	tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE).set_parallel(true)
 	tween.tween_property(blue_panel, "position:x", 0.0, 0.4)
 	
-	for i: int in options.size():
-		var entry: Label = template.duplicate()
-		entry.text = tr("pause_%s" % options[i].to_lower(), &"menus")
-		entry.modulate.a = 1.0 if selected == i else 0.6
-		menu_options.add_child(entry)
-	menu_options.remove_child(template)
-	
 	var og_mod_a: float = bg.modulate.a
-	tween.tween_property(bg, "modulate:a", og_mod_a, 0.4)
 	bg.modulate.a = 0.0
+	tween.tween_property(bg, "modulate:a", og_mod_a, 0.4)
+	
+	reload_options()
+	$"panel/options/template".queue_free()
+	template.hide()
+
 	change_selection()
 	await get_tree().create_timer(0.1).timeout
 	can_control = true
+
+func load_default_list() -> void:
+	var options: Array = LISTS.default.duplicate()
+	if difficulties.size() <= 1:
+		options.remove_at(2)
+	list = options
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not can_control or event.is_echo(): return
@@ -53,17 +62,35 @@ func _unhandled_input(event: InputEvent) -> void:
 	var axis: int = floori(Input.get_axis("ui_up", "ui_down"))
 	if axis != 0: change_selection(axis)
 	if accepting:
-		var game: = get_tree().current_scene
-		match options[selected].dedent():
-			"Resume":
-				if game is Gameplay and not game.starting and not game.ending:
-					game.music.play(Conductor.time)
+		if is_same(list, difficulties):
+			var folder: StringName = Gameplay.current.chart.parsed_values.folder
+			var selected_diff: String = difficulties[selected].dedent().to_snake_case()
+			if selected_diff == "back":
+				load_default_list()
+				reload_options()
+			else:
+				Gameplay.chart = Chart.detect_and_parse(folder, selected_diff)
+				Gameplay.chart.parsed_values.difficulties = difficulties
 				close()
-			"Restart":
-				if game is Gameplay: game.restart_song()
-				close()
-			"Exit":
-				Global.change_scene("res://scenes/menu/freeplay_menu.tscn")
+				get_tree().reload_current_scene()
+		else:
+			confirm_selection()
+
+func confirm_selection() -> void:
+	var game: = get_tree().current_scene
+	match list[selected].dedent():
+		"Resume":
+			if game is Gameplay and not game.starting and not game.ending:
+				game.music.play(Conductor.time)
+			close()
+		"Restart":
+			if game is Gameplay: game.restart_song()
+			close()
+		"Difficulty":
+			list = difficulties
+			reload_options()
+		"Exit":
+			Global.change_scene("res://scenes/menu/freeplay_menu.tscn")
 
 ## Changes the index of the selection cursor
 func change_selection(next: int = 0) -> void:
@@ -73,6 +100,19 @@ func change_selection(next: int = 0) -> void:
 	if item: item.modulate.a = 0.6
 	item = menu_options.get_child(selected)
 	item.modulate.a = 1.0
+
+## Reloads all of the options.
+func reload_options() -> void:
+	for i: Control in menu_options.get_children(): i.queue_free()
+	selected = 0 # TODO: find old selection and return to it.
+	for i: int in list.size():
+		var entry: Label = template.duplicate()
+		var context: String = "difficulty_" if is_same(list, difficulties) else "pause_"
+		entry.text = tr(context + "%s" % list[i].to_lower(), &"menus")
+		entry.modulate.a = 1.0 if selected == i else 0.6
+		entry.show() # just to be sure.
+		menu_options.add_child(entry)
+	change_selection()
 
 ## Closes the pause menu.
 func close() -> void:

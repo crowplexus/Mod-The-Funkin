@@ -82,8 +82,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if selected == 0: song_to_pick = songs.pick_random()
 		Gameplay.chart = Chart.detect_and_parse(song_to_pick.folder, difficulty_name)
 		if Gameplay.chart:
-			Gameplay.chart.parsed_values.freeplay_name = song_to_pick.name
-			Gameplay.chart.parsed_values.freeplay_difficulty = difficulty_name.to_upper()
+			Gameplay.chart.parsed_values.difficulties = song_to_pick.difficulties
 		Global.change_scene("res://scenes/gameplay/gameplay.tscn")
 	if backing_out:
 		Global.change_scene("res://scenes/menu/lobby.tscn")

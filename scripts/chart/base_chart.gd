@@ -18,6 +18,10 @@ const VELOCITY_EVENTS: Array[StringName] = [
 
 ## Assets used in the chart (music files, custom hud and noteskin, pause menu, etc)
 @export var assets: ChartAssets
+## Song Name (to display in menus).
+@export var song_name: StringName = &"Unknown"
+## Song Artist (to display in menus).
+@export var song_artist: StringName = &""
 ## List of notes to spawn in-game.
 @export var notes: Array[NoteData] = []
 ## List of Events to be executed during the song.

@@ -87,8 +87,7 @@ func _ready() -> void:
 		assets = chart.assets
 		scripts.load_song_scripts(chart.parsed_values.folder, chart.parsed_values.file)
 		timed_events = chart.scheduled_events.duplicate()
-		if "freeplay_name" in chart.parsed_values: song_name = chart.parsed_values.freeplay_name
-		if "freeplay_difficulty" in chart.parsed_values: difficulty_name = chart.parsed_values.freeplay_difficulty
+		difficulty_name = chart.parsed_values.file
 	add_child(scripts)
 	scripts.call_func("_pack_entered")
 	if chart.assets:
