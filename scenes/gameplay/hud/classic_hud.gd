@@ -45,7 +45,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if health_bar.value != _prev_health:
-		health_bar.value = lerp(health_bar.value, floorf(_prev_health), 0.05)
+		health_bar.value = lerp(health_bar.value, floorf(_prev_health), 0.15)
 	if icon_p1 and icon_p1.scale != default_ip1_scale:
 		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * 13.0 * Conductor.rate))
 		icon_p1.position.x = lerpf(icon_p1.position.x, default_ip1_pos.x + ((health_bar.size.x * default_ip1_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
@@ -168,8 +168,8 @@ func display_combo(combo: int = -1) -> void:
 
 func on_beat_hit(beat: float) -> void:
 	if int(beat) < 0: return
-	if icon_p1: icon_p1.scale = default_ip1_scale * 1.2
-	if icon_p2: icon_p2.scale = default_ip2_scale * 1.2
+	if icon_p1: icon_p1.scale = default_ip1_scale * 1.3
+	if icon_p2: icon_p2.scale = default_ip2_scale * 1.3
 
 func get_bump_lerp(from: float = 2.0, to: float = 1.0, _delta: float = 0) -> float:
 	return lerpf(from, to, 0.05) # TODO: use exp()

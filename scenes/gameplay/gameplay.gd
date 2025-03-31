@@ -246,8 +246,9 @@ func fire_timed_event(event: TimedEvent) -> void:
 				else:
 					var actor: Actor2D = get_actor_from_index(event.values.char)
 					if actor:
-						camera.global_position = actor.global_position + offset
-						camera.global_position.x *= 0.85
+						camera.global_position = actor.global_position + actor.camera_offset
+						camera.global_position += offset
+						
 		&"Change Scroll Speed":
 			var immediate: bool = bool(event.values.immediate) if "immediate" in event.values else false
 			for note_field: NoteField in note_fields.get_children():

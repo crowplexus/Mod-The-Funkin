@@ -12,15 +12,11 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it28e"]
 bg_color = Color(0, 0, 0, 1)
 draw_center = false
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
+border_width_left = 4
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
 corner_detail = 1
 anti_aliasing = false
 
@@ -65,24 +61,25 @@ show_percentage = false
 [node name="panel" type="Panel" parent="health_bar"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.008
-anchor_right = 1.01
-anchor_bottom = 1.5
-offset_left = -0.272
-offset_top = -5.0
-offset_right = 0.0900269
+anchor_left = -0.007
+anchor_top = -0.3
+anchor_right = 1.005
+anchor_bottom = 1.3
+offset_left = 0.13
+offset_right = 1.04999
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_it28e")
-metadata/_edit_lock_ = true
 
 [node name="icon_p1" type="Sprite2D" parent="health_bar"]
-position = Vector2(300, 5)
+position = Vector2(300, 0)
 texture = ExtResource("4_nfsnc")
 offset = Vector2(30, 0)
 flip_h = true
 hframes = 2
 
 [node name="icon_p2" type="Sprite2D" parent="health_bar"]
-position = Vector2(300, 5)
+position = Vector2(300, 0)
 texture = ExtResource("4_nfsnc")
 offset = Vector2(-35, 0)
 hframes = 2

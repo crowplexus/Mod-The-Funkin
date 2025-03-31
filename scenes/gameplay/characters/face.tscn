@@ -271,3 +271,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_7smad")
 }
 autoplay = "RESET"
+
+[node name="camera_offset" type="Marker2D" parent="."]
+position = Vector2(88, -40)
