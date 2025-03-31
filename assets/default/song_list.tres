@@ -48,8 +48,8 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_021w0"]
 script = ExtResource("2_ei7g8")
 name = &"Darnell (BF Mix)"
-folder = "darnell"
-difficulties = ["bf"]
+folder = "darnell-bf"
+difficulties = ["easy", "normal", "hard"]
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_qahuq"]
