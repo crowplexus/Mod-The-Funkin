@@ -120,11 +120,10 @@ func reload_song_items() -> void:
 		item.text = song.name
 		selectables.append(i)
 		item.song = song
-	for i: int in song_container.get_child_count(): # offset here
-		var item: Control = song_container.get_child(i)
-		item.label.modulate.a = 1.0 if i == selected else 0.6
-		item.position.y += (item.size.y + 5) * i
-	print(selectables.front(), " ", selectables.back())
 	song_selected = selectables.front()
 	selected = selectables.find(song_selected)
+	for i: int in song_container.get_child_count(): # offset here
+		var item: Control = song_container.get_child(i)
+		item.label.modulate.a = 1.0 if i == song_selected else 0.6
+		item.position.y += (item.size.y + 5) * i
 	change_selection()
