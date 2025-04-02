@@ -88,7 +88,6 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		for song_note: Array in measure["sectionNotes"]:
 			var column: int = int(song_note[1])
 			if column <= -1:
-				# psych events, do something here later
 				chart.load_psych_events(song_note)
 				continue
 			var swag_note: NoteData = NoteData.from_array(song_note, max_columns)
@@ -117,18 +116,6 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	chart.timing_changes.sort_custom(SongTimeChange.sort_by_time)
 	chart.scheduled_events.sort_custom(TimedEvent.sort_by_time)
 	Conductor.timing_changes = chart.timing_changes.duplicate()
-	
-	#var ghosts: int = 0
-	#var total_notes_collected: int = 0
-	#for i: int in chart.notes.size():
-	#	if i == 0: continue
-	#	var cur: NoteData = chart.notes[i]
-	#	var prev: NoteData = chart.notes[i - 1]
-	#	if prev and is_equal_approx(cur.time, prev.time) and cur.column == prev.column:
-	#		chart.notes.remove_at(i)
-	#		ghosts += 1
-	#	total_notes_collected += 1
-	#print_debug("deleted ", ghosts, " ghost notes from ", total_notes_collected, " total notes")
 	
 	return chart
 

@@ -27,6 +27,7 @@ func _ready() -> void:
 	#Global.request_audio_fade(Global.bgm, 1.0, 0.3)
 	song_container.get_child(0).text = "Random"
 	for song: SongItem in songs.list:
+		if not song: continue
 		#var i: int = songs.list.find(song)
 		var item: Control = random_template.duplicate()
 		song_container.add_child(item)
@@ -43,13 +44,12 @@ func _ready() -> void:
 	change_selection()
 	change_difficulty()
 
-func _process(_delta: float) -> void:
-	pass
-	#for item: Control in song_container.get_children():
-	#	var index: int = item.get_index()
-	#	#var scaled_y: float = remap(index, 0, 1, 0, 1.3)
-	#	item.position.x = lerpf(item.position.x, item.size.x + (60 * sin(index - selected)), exp(delta * 10))
-	#	item.position.y = lerpf(item.position.y, index * (((item.size.y * item.scale.y) / get_viewport_rect().size.y) + 10), exp(delta * 80))
+func _process(delta: float) -> void:
+	for item: Control in song_container.get_children():
+		var index: int = item.get_index()
+		var scaled_y: float = remap(index, 0, 1, 0, 1.3)
+		item.position.x = lerpf(item.position.x, item.size.x + (60 * sin(index - selected)), exp(delta * 10))
+		item.position.y = lerpf(item.position.y, (index - selected) * ((650 * (item.size.y * item.scale.y) / get_viewport_rect().size.y) + 10), 0.15)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if exiting: return

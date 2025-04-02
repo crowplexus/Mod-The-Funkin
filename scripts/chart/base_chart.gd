@@ -60,6 +60,24 @@ func get_velocity_change(timestamp: float) -> TimedEvent:
 			break
 	return change
 
+## Clear every overlapping note from the chart, only really used for fnf charts.
+func clear_overlapping_notes() -> void:
+	pass
+	#var counter: int = 0
+	#var total: int = 0
+	#for i: int in notes.size():
+	#	if i == 0 or i >= notes.size():
+	#		continue
+	#	var cur: NoteData = notes[i]
+	#	var prev: NoteData = notes[i - 1]
+	#	const epsilon: float = 1e-12
+	#	if prev and absf(cur.time - prev.time) < epsilon and cur.column == prev.column:
+	#		print_debug("removed note 	at ", prev.time, " (", cur.time, ")")
+	#		notes.remove_at(i)
+	#		counter += 1
+	#	total += 1
+	#print_debug("deleted ", counter, " overlapping notes from ", total, " total notes")
+
 ## Detects a chart format and parses it.
 static func detect_and_parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Chart:
 	# TODO: rewerite all of this ig.
@@ -83,12 +101,15 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 			chart.notes.sort_custom(NoteData.sort_by_time)
 			chart.timing_changes.sort_custom(SongTimeChange.sort_by_time)
 			chart.scheduled_events.sort_custom(TimedEvent.sort_by_time)
+			chart.clear_overlapping_notes()
 		ChartType.FNF_VSLICE:
 			chart = VSliceChart.parse(song_name, difficulty, true)
 			print_debug("Parsing new FNF style chart ", song_name, " with difficulty ", difficulty)
+			chart.clear_overlapping_notes()
 		ChartType.FNF_LEGACY:
 			chart = FNFChart.parse(song_name, difficulty, true)
 			print_debug("Parsing old FNF style chart ", song_name, " with difficulty ", difficulty)
+			chart.clear_overlapping_notes()
 	
 	if not chart:
 		chart = FNFChart.new() # make an FNFChart to avoid a metric fuckton amount of crashes.

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ctb4gh4xj2fwd" path="res://scenes/globals/overlay.gd" id="1_alel3"]
 
 [node name="overlay" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("1_alel3")
 
 [node name="fps_label" type="Label" parent="."]
