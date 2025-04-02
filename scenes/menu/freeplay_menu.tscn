@@ -14,26 +14,45 @@ script = ExtResource("1_ttjym")
 
 [node name="background" type="Sprite2D" parent="."]
 modulate = Color(0, 0.134167, 0.23, 1)
-position = Vector2(640, 365)
+position = Vector2(643, 365)
 texture = ExtResource("2_f7icd")
 
-[node name="score_bg" type="ColorRect" parent="."]
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 300.0
-offset_bottom = 50.0
+offset_right = 1280.0
+offset_bottom = 720.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
 
-[node name="diff_text" type="Label" parent="score_bg"]
+[node name="tip_text" type="Label" parent="ui"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -282.0
+offset_top = -33.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("3_i0mk5")
+theme_override_font_sizes/font_size = 20
+text = "[ Ungrouped ]
+Push Q/E to Switch Categories
+Push R to Select a Random Song"
+horizontal_alignment = 2
+
+[node name="diff_text" type="Label" parent="ui"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -197.0
+offset_bottom = 22.0
+grow_horizontal = 0
 text = "< Difficulty >"
 label_settings = SubResource("LabelSettings_5h24w")
 horizontal_alignment = 1
@@ -43,8 +62,9 @@ uppercase = true
 [node name="song_container" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
+offset_top = 30.0
 offset_right = 1280.0
-offset_bottom = 720.0
+offset_bottom = 690.0
 
 [node name="random" parent="song_container" instance=ExtResource("3_s6l1l")]
 text = "Random"

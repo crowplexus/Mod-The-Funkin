@@ -8,6 +8,7 @@ script = ExtResource("2_ei7g8")
 name = &"Bopeebo"
 folder = "bopeebo"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare", "flaccid"]
+list_name = &"Main Levels"
 metadata/_custom_type_script = ExtResource("2_ei7g8")
 
 [sub_resource type="Resource" id="Resource_ldt5e"]
@@ -15,6 +16,7 @@ script = ExtResource("2_ei7g8")
 name = &"Fresh"
 folder = "fresh"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
+list_name = &"Main Levels"
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_144s5"]
@@ -22,6 +24,7 @@ script = ExtResource("2_ei7g8")
 name = &"DadBattle"
 folder = "dadbattle"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
+list_name = &"Main Levels"
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_40pmu"]
@@ -29,6 +32,7 @@ script = ExtResource("2_ei7g8")
 name = &"Monster"
 folder = "monster"
 difficulties = ["easy", "normal", "hard"]
+list_name = &"Main Levels"
 metadata/_custom_type_script = ExtResource("2_ei7g8")
 
 [sub_resource type="Resource" id="Resource_xwn0i"]
@@ -36,6 +40,7 @@ script = ExtResource("2_ei7g8")
 name = &"Darnell"
 folder = "darnell"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
+list_name = &"Weekend"
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_jb0d5"]
@@ -43,6 +48,7 @@ script = ExtResource("2_ei7g8")
 name = &"Lit Up"
 folder = "lit-up"
 difficulties = ["easy", "normal", "hard"]
+list_name = &"Weekend"
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_8iv7k"]
@@ -50,6 +56,7 @@ script = ExtResource("2_ei7g8")
 name = &"2hot"
 folder = "2hot"
 difficulties = ["easy", "normal", "hard"]
+list_name = &"Weekend"
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_ei7g8"]
@@ -57,6 +64,7 @@ script = ExtResource("2_ei7g8")
 name = &"Blazin\'"
 folder = "blazin"
 difficulties = ["easy", "normal", "hard"]
+list_name = &"Weekend"
 metadata/_custom_type_script = ExtResource("2_ei7g8")
 
 [sub_resource type="Resource" id="Resource_021w0"]
@@ -64,6 +72,7 @@ script = ExtResource("2_ei7g8")
 name = &"Darnell (BF Mix)"
 folder = "darnell-bf"
 difficulties = ["easy", "normal", "hard"]
+list_name = &"Remixes"
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_q15lk"]
@@ -71,13 +80,15 @@ script = ExtResource("2_ei7g8")
 name = &"Lit Up (BF Mix)"
 folder = "lit-up-bf"
 difficulties = ["easy", "normal", "hard"]
+list_name = &"Remixes"
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_qahuq"]
 script = ExtResource("2_ei7g8")
 name = &"Hammerdread"
 folder = "hammerdread"
-difficulties = ["hard"]
+difficulties = ["easy", "normal", "hard"]
+list_name = &"Mods"
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [resource]
