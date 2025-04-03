@@ -20,6 +20,8 @@ Thank you [NebulaTheZorua](https://twitter.com/Nebula_Zorua) for the ideas and t
 
 Thank you [Doggo](http://github.com/doggogit) for the help with the Macedonian translation and also giving me a reason and motivation to learn the language ö
 
+Thank you [Unholywanderer04](https://github.com/Unholywanderer) for exploding my computer that one day.
+
 ---
 
 uhhh add more credits later idk...
