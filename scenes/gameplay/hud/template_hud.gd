@@ -1,5 +1,4 @@
-class_name TemplateHUD
-extends Control
+class_name TemplateHUD extends Control
 
 ## Called whenever the countdown ticks.
 @warning_ignore("unused_signal") # shut UP?

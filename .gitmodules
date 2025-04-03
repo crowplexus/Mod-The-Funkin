@@ -1,3 +1,0 @@
-[submodule "addons/ffmpeg"]
-	path = addons/ffmpeg
-	url = https://github.com/EIRTeam/EIRTeam.FFmpeg.git

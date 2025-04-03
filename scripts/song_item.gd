@@ -1,7 +1,6 @@
 ## Resource for constructing a song item[br]
 ## Mostly used in freeplay.
-class_name SongItem
-extends Resource
+class_name SongItem extends Resource
 
 ## Name shown in the menu.
 @export var name: StringName = &"Unknown"

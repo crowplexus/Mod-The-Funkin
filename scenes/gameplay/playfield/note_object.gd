@@ -5,8 +5,7 @@
 ## clip_rect (Any Control Type)[br]
 ##		hold_body (TextureRect)[br]
 ##		hold_tail (TextureRect)[br]
-class_name Note
-extends Node2D
+class_name Note extends Node2D
 
 ## Default Directions.
 const COLORS: PackedStringArray = ["purple", "blue", "green", "red"]

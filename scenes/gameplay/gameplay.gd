@@ -1,5 +1,4 @@
-class_name Gameplay
-extends Node2D
+class_name Gameplay extends Node2D
 
 enum PlayMode {
 	STORY = 0,
@@ -388,7 +387,6 @@ func on_note_hit(note: Note) -> void:
 	if note.judgement.combo_break and local_tally.combo > 0:
 		local_tally.breaks += 1
 		local_tally.combo = 0
-	local_tally.update_accuracy(abs_diff)
 	local_tally.update_tier_score(judged_tier)
 	# Update HUD
 	hud.display_judgement(note.judgement.texture)
@@ -422,11 +420,10 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 		local_tally.combo = 0
 	#else: # decrease for miss combo
 	#	local_tally.combo -= 1
-	local_tally.score -= 50
+	local_tally.score += Tally.MISS_SCORE # TODO: is this necessary anymore?
 	local_tally.increase_misses(1) # increase by one
-	local_tally.update_accuracy_counter()
 	player.sing(idx, true, "miss")
-	health += int(Tally.MISS_POINTS + damage_boost)
+	health += int(-5 + damage_boost)
 	if music: music.stream.set_sync_stream_volume(1, linear_to_db(0.0))
 	if assets and assets.miss_note_sounds:
 		Global.play_sfx(assets.miss_note_sounds.pick_random(), randf_range(0.1, 0.4))

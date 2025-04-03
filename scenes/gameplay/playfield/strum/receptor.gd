@@ -1,5 +1,4 @@
-class_name Receptor
-extends Node2D
+class_name Receptor extends Node2D
 
 @onready var parent: NoteField
 @onready var player: AnimationPlayer = $"animation_player"

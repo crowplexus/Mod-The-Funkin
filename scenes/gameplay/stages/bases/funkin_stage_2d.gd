@@ -1,16 +1,11 @@
 ## Object used during gameplay to display a background.
-class_name FunkinStage2D
-extends Node2D
+class_name FunkinStage2D extends Node2D
 
-## Camera attached to the stage.
-@export var camera: Camera2D = null
-## Camera will zoom automatically.
-@export var auto_zoom: bool = true
-## Zoom Interval (in beats).
-@export var zoom_interval: float = 4.0
-## Zoom Intensity (in beats).
-@export var zoom_intensity: float = 0.020 # 20%
-var camera_zoom: Vector2 = Vector2.ONE # default
+@export var camera: Camera2D = null ## Camera attached to the stage.
+@export var auto_zoom: bool = true ## If the camera should zoom automatically.
+@export var zoom_interval: float = 4.0 ## Zoom Interval (in beats).
+@export var zoom_intensity: float = 0.020 ## Zoom Intensity (defaults to 20% or 0.020).
+var camera_zoom: Vector2 = Vector2.ONE
 
 func _ready() -> void:
 	initialize_camera_2d()

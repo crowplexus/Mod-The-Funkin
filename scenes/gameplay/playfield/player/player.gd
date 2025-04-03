@@ -1,5 +1,4 @@
-class_name Player
-extends Node
+class_name Player extends Node
 
 signal hit_note(note: Note)
 signal hit_hold_note(note: Note)

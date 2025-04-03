@@ -1,6 +1,5 @@
 ## Assets used for the charts, inspired by what-is-a-git/FunkinGodot
-class_name ChartAssets
-extends Resource
+class_name ChartAssets extends Resource
 
 ## The chart's song instrumental
 @export var instrumental: AudioStream

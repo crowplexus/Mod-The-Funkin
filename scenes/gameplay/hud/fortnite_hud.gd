@@ -20,12 +20,20 @@ var countdown_streams: Array[AudioStream] = []
 var _countdown_iteration: int = 0
 var _prev_health: int = 50
 
+var _max_score: int = 0
+var _min_score: int = 0
+
 var game: Node2D
 
 func _ready() -> void:
 	if get_tree().current_scene and get_tree().current_scene is Node2D:
 		game = get_tree().current_scene
-	if game is Gameplay: _on_settings_changed(game.local_settings)
+	if game is Gameplay:
+		_on_settings_changed(game.local_settings)
+		if Gameplay.chart:
+			# minimum score wasn't really necessary, but eh.
+			_max_score = Tally.calculate_perfect_score(Gameplay.chart.note_counts[0])
+			_min_score = Tally.calculate_worst_score(Gameplay.chart.note_counts[0])
 	countdown.hide()
 
 func _process(_delta: float) -> void:
@@ -110,8 +118,10 @@ func update_score_text() -> void:
 		(fc_string if tally and not fc_string.is_empty() else str(total_misses) if tally else str(0)),
 	]
 	if tally:
-		accuracy_text.text = "%s%%" % [ snappedf(game.tally.accuracy, 0.001) if tally else 0.0 ]
-		shield_bar.value = clampf(game.tally.accuracy, 0.0, 100.0)
+		_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
+		var accuracy_score: float = Tally.calculate_score_percentage(game.tally.score, _max_score, _min_score)
+		accuracy_text.text = "%.2f%%" % accuracy_score
+		shield_bar.value = accuracy_score
 
 func update_health(health: int) -> void:
 	health_text.text = "%s%%" % health

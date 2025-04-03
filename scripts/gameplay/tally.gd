@@ -1,46 +1,40 @@
-class_name Tally
-extends Resource
+## Class to calculate and keep player scores.
+class_name Tally extends Resource
 
-## Defines the scoring system used for calculations, and how high scores will be displayed.
-enum ScoringSystem {
-	## Accuracy gets calculated based on the Judgement.
-	Judge = (1 << 1),
-	## Accuracy gets calculated based on Note Hit Time.
-	HitTime = (2 << 1),
-}
+@export var score: int = 0 ## Score accumulated from hitting notes.
+@export var misses: int = 0 ## Misses accumulated from missing notes.
+@export var combo: int = 0 ## Combo accumulated from hitting notes consecutively, resets to 0 if you miss.
+@export var breaks: int = 0 ## Combo Breaks, obtained whenever the combo counter resets to 0.
 
-## Accuracy Points you get from missing notes.
-const MISS_POINTS: float = -5.0
-## The weight of which accuracy points get multiplied by.
-const POINTS_WEIGHT: float = 20.0
-## Maximum score a note can receive.
-const MAX_SCORE: int = 500
-## Temporary, will be replaced with settings.
-const TIMINGS: Array[float] = [ 18.9, 37.8, 75.6, 113.4, 180.0 ]
-## Tier for a miss.
-static var MISS_TIER: int:
-	get: return TIMINGS.size() + 1
+const MAX_SCORE: int = 500 ## Maximum score a note can receive.
+const MISS_SCORE: int = -50 ## Score penalty per miss (negative to subtract from total).
+const DEVIATION_MULT: float = 7.1045825 ## Score Deviation scale (higher = stricter timing).
+const PENALTY_CURVE: float = 1.5 ## Penalty curve (worse judgments hurt more).
+const TIMINGS: Array[float] = [ 18.9, 37.8, 75.6, 113.4, 180.0 ] ## Temporary, will be replaced with settings.
+static var use_epics: bool = true ## Checks if epics are enabled in-game.
 
-## Score accumulated from hitting notes.
-@export var score: int = 0
-## Misses accumulated from missing notes.
-@export var misses: int = 0
-## Combo accumulated from hitting notes consecutively, resets to 0 if you miss.
-@export var combo: int = 0
-## Combo Breaks, obtained whenever the combo counter resets to 0.
-@export var breaks: int = 0
-## Accuracy accumulated from millisecond calculations made when hitting notes.
-@export var accuracy: float = 0.0
-## Used when displaying highscores.
-var score_system: ScoringSystem = ScoringSystem.Judge
-## Used for accuracy calculations.
-var notes_hit_count: int = 0
-## Used for accuracy calculations.
-var accuracy_points: float = 0.0
-## Counts how many of (tier judgement) you've hit.
-var tiers_scored: Array[int] = [0, 0, 0, 0, 0]
-## Checks if epics are enabled in-game.
-static var use_epics: bool = true
+var notes_hit_count: int = 0 ## Counts how many notes were hit in total.
+var tiers_scored: Array[int] = [0, 0, 0, 0, 0] ## Counts how many of (tier judgement) you've hit.
+
+## Worst-case scenario score (all hits have max penalty + misses).[br]
+## depends on values passed to the function.
+static func calculate_worst_score(note_count: int = 0, miss_count: int = 0) -> int:
+	var max_penalty: float = pow(exp(DEVIATION_MULT) - 1.0, PENALTY_CURVE)
+	var score_per_note: float = maxf(0, MAX_SCORE - min(max_penalty, MAX_SCORE))
+	var hits: int = note_count - miss_count
+	if note_count <= 0:
+		return floori(miss_count * MISS_SCORE)
+	else:
+		return floori(hits * score_per_note) + (miss_count * MISS_SCORE)
+
+## Best-case scenario score (all hits are perfect).
+static func calculate_perfect_score(notes: int = 0) -> int:
+	return notes * MAX_SCORE
+
+## Converts score values to a percentage, needs your current score, the max possible, and the minimum.
+static func calculate_score_percentage(current_score: int, max_score: int, min_score: int) -> float:
+	var percent: float = float(current_score - min_score) / float(max_score - min_score) * 100.0 # like, like Psych Engine… percent… oh mein kott?
+	return clampf(percent, -100.0, 100.0) if max_score > min_score else 0.0 # division by zero can happen, oops.
 
 ## Resets all counters back to their previous state, or 0 if none specified.[br]
 ## Effectively cleaning the tally altogether if unspecified.
@@ -50,12 +44,9 @@ func zero(previous_tally: Tally = null) -> void:
 	combo = previous_tally.combo if previous_tally else 0
 	breaks = previous_tally.breaks if previous_tally else 0
 	notes_hit_count = previous_tally.notes_hit_count if previous_tally else 0
-	accuracy_points = previous_tally.accuracy_points if previous_tally else 0.0
-	score_system = previous_tally.score_system if previous_tally else ScoringSystem.Judge
 	for i: int in tiers_scored.size():
 		var has: bool = previous_tally and (i + 1) < previous_tally.tiers_scored.size()
 		tiers_scored[i] = previous_tally.tiers_scored[i] if has else 0
-	update_accuracy_counter()
 
 ## Saves this tally as a resource.
 func save() -> void:
@@ -73,14 +64,14 @@ func merge(other: Tally, increase: bool = false) -> void:
 	combo = other.combo + (combo if increase else 0)
 	breaks = other.breaks + (breaks if increase else 0)
 	notes_hit_count = other.notes_hit_count + (notes_hit_count if increase else 0)
-	accuracy_points = other.accuracy_points + (accuracy_points if increase else 0.0)
 	for i: int in tiers_scored.size():
 		tiers_scored[i] = other.tiers_scored[i] + (tiers_scored[i] if increase else 0)
-	update_accuracy_counter()
 
 ## Increases the score by the amount provided (in ms).
 func increase_score(amount: float) -> void:
-	score += floori(MAX_SCORE - absf(amount))
+	var deviation: float = min(absf(amount) / TIMINGS[-1], 1.0)
+	var penalty: float = pow(exp(deviation * DEVIATION_MULT) - 1.0, PENALTY_CURVE)
+	score += floori(MAX_SCORE - min(penalty, MAX_SCORE))
 
 ## Increases the misses counter by the amount provided (default: 1).
 func increase_misses(amount: int = 1) -> void:
@@ -92,21 +83,6 @@ func increase_combo(amount: int) -> void:
 	combo += amount
 	# never decrease this idk
 	notes_hit_count += 1
-
-## Updates the accuracy currently displayed.
-func update_accuracy(time: float) -> void:
-	match score_system:
-		ScoringSystem.HitTime: accuracy_points += calc_max_points(judge_time(time), time)
-		_: accuracy_points += calc_judgement_points(judge_time(time))
-	update_accuracy_counter() # made this so its easier to update only the counter and not the values that it relies on.
-
-## Updates the accuracy counter only.
-func update_accuracy_counter() -> void:
-	match score_system:
-		ScoringSystem.HitTime: accuracy = accuracy_points / (notes_hit_count + (MISS_POINTS + (misses + breaks)))
-		_: accuracy = accuracy_points / (notes_hit_count + (misses + breaks))
-	if is_nan(accuracy): accuracy = 0.0
-	accuracy = minf(100.0, maxf(0.0, accuracy))
 
 ## Updates the counter for the tiers you have.
 func update_tier_score(tier: int) -> void:
@@ -135,18 +111,6 @@ func calculate_sick_ratio() -> float:
 ## Grabs the max hit window in seconds.
 static func get_max_hit_window_secs() -> float:
 	return TIMINGS.back() * 0.001
-
-## Calculate the accuracy points for a single hit (in milliseconds).
-static func calc_max_points(tier: int, time: float) -> float:
-	if tier == 1 and not use_epics: tier -= 1
-	var max_points: float = 100.0 - (tier * POINTS_WEIGHT)
-	var points: float = (TIMINGS[tier] / time) * max_points
-	return min(points, max_points)
-
-## Accuracy Scores based on judgement obtained (instead of note hit time).
-static func calc_judgement_points(tier: int) -> float:
-	if tier == 1 and not use_epics: tier -= 1
-	return 100.0 - (tier * POINTS_WEIGHT)
 
 ## Returns a judgement tier based on the time provided.[br]
 ## Tier 0 (Epic) will never get returned if disabled in settings.

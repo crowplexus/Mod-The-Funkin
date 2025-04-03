@@ -28,6 +28,9 @@ var countdown_streams: Array[AudioStream] = []
 var _countdown_iteration: int = 0
 var _prev_health: int = 50
 
+var _max_score: int = 0
+var _min_score: int = 0
+
 var game: Node
 
 func _ready() -> void:
@@ -39,7 +42,9 @@ func _ready() -> void:
 	if icon_p2:
 		default_ip2_scale = icon_p2.scale
 		default_ip2_pos = icon_p2.position
-	if game is Gameplay: _on_settings_changed(game.local_settings)
+	if game is Gameplay:
+		_on_settings_changed(game.local_settings)
+		_max_score = Tally.calculate_perfect_score(Gameplay.chart.note_counts[0])
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	countdown.hide()
 
@@ -149,8 +154,10 @@ func countdown_progress() -> void:
 
 func update_score_text() -> void:
 	var tally: bool = game and game.tally
+	var score: String = "0" if not tally else Global.separate_thousands(game.tally.score)
+	_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
 	score_text.text  = "%s: %s\n%s: %s" % [
-		tr("score", &"gameplay"), str(0) if not tally else Global.separate_thousands(game.tally.score),
+		tr("score", &"gameplay"), score + " (%.2f%%)" % Tally.calculate_score_percentage(game.tally.score, _max_score, _min_score),
 		tr("breaks", &"gameplay"), (0 if not tally else game.tally.misses + game.tally.breaks),
 	]
 

@@ -1,6 +1,5 @@
 ## Chart Format for Friday Night Funkin' (0.3+)
-class_name VSliceChart
-extends Chart
+class_name VSliceChart extends Chart
 
 const DUMMY_METADATA: Dictionary[String, Variant] = {
 	"version": "2.2.4",

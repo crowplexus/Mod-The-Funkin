@@ -1,5 +1,4 @@
-class_name HealthIcon
-extends Resource
+class_name HealthIcon extends Resource
 
 # TODO: change how health icons work entirely.
 

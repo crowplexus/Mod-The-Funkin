@@ -1,7 +1,6 @@
 ## Resource for a list of songs.[br]
 ## Used mainly in freeplay.
-class_name SongList
-extends Resource
+class_name SongList extends Resource
 
 ## List of songs to load to a menu.
 @export var list: Array[SongItem] = []

@@ -1,6 +1,6 @@
-class_name Actor2D
-extends Node2D
+class_name Actor2D extends Node2D
 
+## Placeholder character name, will be used in place of other characters if they aren't found.
 const PLACEHOLDER_NAME: StringName = &"face"
 
 ## Beat delay for the character to bop its head.

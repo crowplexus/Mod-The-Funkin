@@ -1,7 +1,6 @@
-## Chart Format for Friday Night Funkin' (0.2.7.1),
+## Chart Format for Friday Night Funkin' (0.2.7.1)[br]
 ## also includes support for any of its children formats (i.e: Psych Engine)
-class_name FNFChart
-extends Chart
+class_name FNFChart extends Chart
 
 ## Background to load before the characters
 @export var stage: PackedScene = null

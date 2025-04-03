@@ -1,6 +1,5 @@
 ## Base Chart Format, nothing inherently special!
-class_name Chart
-extends Resource
+class_name Chart extends Resource
 
 enum ChartType {
 	DUMMY      = -1,

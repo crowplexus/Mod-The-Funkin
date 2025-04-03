@@ -1,7 +1,6 @@
 ## Gameplay Object that usually contains 4 sprites,
 ## visually representing a player's playfield.
-class_name NoteField
-extends Node2D
+class_name NoteField extends Node2D
 
 enum RepState {
 	STATIC = 0,

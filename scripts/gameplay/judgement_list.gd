@@ -1,9 +1,7 @@
 ## Quite literally what it says.
-class_name JudgementList
-extends Resource
+class_name JudgementList extends Resource
 
-## List of judgements
-@export var list: Array[Judgement] = []
+@export var list: Array[Judgement] = [] ## List of judgements
 
 ## Returns a random element from the array. Generates an error and returns null if the array is empty.
 func pick_random() -> Judgement: return list.pick_random()

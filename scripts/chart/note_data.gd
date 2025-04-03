@@ -1,6 +1,5 @@
 ## Raw Note Data, used for loading charts.
-class_name NoteData
-extends Resource
+class_name NoteData extends Resource
 
 static var EMPTY: NoteData = NoteData.new():
 	set(new):
