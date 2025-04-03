@@ -52,7 +52,7 @@ var dj: Actor2D
 
 var game_mode: PlayMode = PlayMode.FREEPLAY
 var game_mode_name: String = Global.get_mode_string(game_mode)
-var judgements: JudgementList = preload("res://assets/default/judgements.tres")
+var judgements: JudgementList = preload("res://assets/resources/judgements.tres")
 var timed_events: Array[TimedEvent] = []
 var event_position: int = 0
 var should_process_events: bool = true

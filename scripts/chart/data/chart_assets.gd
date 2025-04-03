@@ -7,7 +7,7 @@ extends Resource
 ## The chart's song vocals (if any)
 @export var vocals: Array[AudioStream] = []
 ## The noteskin used in the song.
-@export var note_skin: NoteSkin = preload("res://assets/default/noteskin.tres")
+@export var note_skin: NoteSkin = preload("res://assets/resources/noteskin.tres")
 ## The HUD scene that will be used for the song, if unspecified, the game will use the default one.
 @export var hud: PackedScene
 ## The Pause Menu scene that will be used for the song, if unspecified, the game will use the default one.

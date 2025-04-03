@@ -42,6 +42,35 @@ tracks/1/keys = {
 "values": ["GF Dancing Beat"]
 }
 
+[sub_resource type="Animation" id="Animation_n3e2b"]
+resource_name = "cheer"
+length = 0.833338
+step = 0.0416667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("animate_symbol:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.833333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 20]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("animate_symbol:symbol")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["GF Cheer"]
+}
+
 [sub_resource type="Animation" id="Animation_6xe0f"]
 resource_name = "danceLeft"
 length = 0.583338
@@ -100,9 +129,9 @@ tracks/1/keys = {
 "values": ["GF Dancing Beat"]
 }
 
-[sub_resource type="Animation" id="Animation_6ydr1"]
-resource_name = "singLEFT"
-length = 0.208338
+[sub_resource type="Animation" id="Animation_kdgoy"]
+resource_name = "miss"
+length = 0.625004
 step = 0.0416667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -111,10 +140,10 @@ tracks/0/path = NodePath("animate_symbol:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = false
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.125),
+"times": PackedFloat32Array(0, 0.625),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0, 3]
+"values": [0, 15]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -126,7 +155,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": ["GF left note"]
+"values": ["gf sad"]
 }
 
 [sub_resource type="Animation" id="Animation_rkegg"]
@@ -158,8 +187,8 @@ tracks/1/keys = {
 "values": ["GF Down Note"]
 }
 
-[sub_resource type="Animation" id="Animation_nmurc"]
-resource_name = "singUP"
+[sub_resource type="Animation" id="Animation_6ydr1"]
+resource_name = "singLEFT"
 length = 0.208338
 step = 0.0416667
 tracks/0/type = "value"
@@ -184,7 +213,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": ["GF Up Note"]
+"values": ["GF left note"]
 }
 
 [sub_resource type="Animation" id="Animation_ed85i"]
@@ -216,9 +245,9 @@ tracks/1/keys = {
 "values": ["GF Right Note"]
 }
 
-[sub_resource type="Animation" id="Animation_n3e2b"]
-resource_name = "cheer"
-length = 0.833338
+[sub_resource type="Animation" id="Animation_nmurc"]
+resource_name = "singUP"
+length = 0.208338
 step = 0.0416667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -227,10 +256,10 @@ tracks/0/path = NodePath("animate_symbol:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = false
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.833333),
+"times": PackedFloat32Array(0, 0.125),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0, 20]
+"values": [0, 3]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -242,36 +271,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": ["GF Cheer"]
-}
-
-[sub_resource type="Animation" id="Animation_kdgoy"]
-resource_name = "miss"
-length = 0.625004
-step = 0.0416667
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("animate_symbol:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = false
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.625),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0, 15]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("animate_symbol:symbol")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["gf sad"]
+"values": ["GF Up Note"]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7smad"]

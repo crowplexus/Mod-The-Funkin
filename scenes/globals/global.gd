@@ -162,7 +162,7 @@ const DISCORD_RPC_ID: int = 1328904269151338507
 ## Default Large Image that shows up on Discord.
 const DISCORD_RPC_DEFAULT_LI: String = "default"
 ## Default assets for charts, used in case "assets.tres" is missing in the chart folder.
-const DEFAULT_CHART_ASSETS: ChartAssets = preload("res://assets/default/chart_assets.tres")
+const DEFAULT_CHART_ASSETS: ChartAssets = preload("res://assets/resources/chart_assets.tres")
 ## Default Text that shows up when you hover over the large image on Discord.
 const DISCORD_RPC_DEFAULT_LI_TEXT: String = ""
 

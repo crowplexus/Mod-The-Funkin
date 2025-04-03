@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Friday Night Funkin'"
+config/name="Mod The Funkin'"
 config/description="A 4k Rhythm Game Engine, based on Friday Night Funkin'"
 config/version="0.1.0"
 config/tags=PackedStringArray("2d", "modding", "rhythm", "tool")
@@ -50,8 +50,8 @@ enabled=PackedStringArray("res://addons/discord-rpc-gd/plugin.cfg", "res://addon
 
 folder_colors={
 "res://assets/": "teal",
-"res://assets/default/": "yellow",
 "res://assets/game/": "blue",
+"res://assets/resources/": "yellow",
 "res://assets/ui/": "pink",
 "res://scenes/": "purple",
 "res://scenes/gameplay/playfield/": "gray",
@@ -102,3 +102,7 @@ fullscreen={
 
 locale/translations=PackedStringArray("res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.mk.translation", "res://assets/ui/translations/gameplay.pt_BR.translation", "res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.mk.translation", "res://assets/ui/translations/menus.pt_BR.translation", "res://assets/ui/translations/secrets.en.translation", "res://assets/ui/translations/secrets.es.translation", "res://assets/ui/translations/secrets.mk.translation", "res://assets/ui/translations/secrets.pt_BR.translation")
 locale/locale_filter_mode=1
+
+[rendering]
+
+renderer/rendering_method="mobile"

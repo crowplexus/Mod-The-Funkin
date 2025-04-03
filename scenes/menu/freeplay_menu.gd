@@ -7,7 +7,7 @@ const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a R
 ## Song to play if the audio file for the hovered one couldn't be found.
 @export var default_song: AudioStream = preload("res://assets/music/freeplayRandom.ogg")
 ## List of songs to display on-screen.
-@export var songs: SongList = preload("res://assets/default/song_list.tres")
+@export var songs: SongList = preload("res://assets/resources/song_list.tres")
 
 @onready var song_container: Control = $"song_container"
 @onready var item_template: Control = $"song_container/random".duplicate()
