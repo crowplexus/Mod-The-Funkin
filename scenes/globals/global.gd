@@ -5,6 +5,7 @@ extends Node
 @onready var sfx: Node = $"%sound_effects"
 @onready var resources: ResourcePreloader = $"%resource_preloader"
 
+var _was_paused: bool = false
 var settings: Settings
 
 func _ready() -> void:
@@ -21,6 +22,17 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		if not event.is_echo() and event.is_action("fullscreen"):
 			var is_full: bool = get_window().mode == Window.Mode.MODE_FULLSCREEN
 			get_window().mode = Window.MODE_WINDOWED if is_full else Window.MODE_FULLSCREEN
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_APPLICATION_FOCUS_OUT when settings.auto_pause:
+			_was_paused = get_tree().paused
+			get_tree().paused = true
+		NOTIFICATION_APPLICATION_FOCUS_IN when settings.auto_pause:
+			get_tree().paused = _was_paused
+		NOTIFICATION_WM_CLOSE_REQUEST:
+			settings.save_settings()
+
 #endregion
 
 #region Utils

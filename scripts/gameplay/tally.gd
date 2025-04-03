@@ -57,6 +57,12 @@ func zero(previous_tally: Tally = null) -> void:
 		tiers_scored[i] = previous_tally.tiers_scored[i] if has else 0
 	update_accuracy_counter()
 
+## Saves this tally as a resource.
+func save() -> void:
+	var path: String = "user://highscores/%s.res" % [ Gameplay.current.song_name ]
+	var copy: Tally = self.duplicate()
+	return ResourceSaver.save(copy, path, ResourceSaver.FLAG_OMIT_EDITOR_PROPERTIES)
+
 ## Merges a Tally with another.[br]
 func merge(other: Tally, increase: bool = false) -> void:
 	if not other:

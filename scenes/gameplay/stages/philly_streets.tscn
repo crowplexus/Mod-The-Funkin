@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://diiecs7f5745l"]
-
-[ext_resource type="Script" uid="uid://bqopd8xbhve36" path="res://scenes/gameplay/stages/bases/funkin_stage_2d.gd" id="1_lsjp0"]
-
-[node name="philly_streets" type="Node2D"]
-script = ExtResource("1_lsjp0")
-metadata/_custom_type_script = "uid://bqopd8xbhve36"
-
-[node name="camera_2d" type="Camera2D" parent="."]

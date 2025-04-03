@@ -31,7 +31,7 @@ func _ready() -> void:
 			display_digits.append(node)
 			display_tweens.append(null)
 	if Gameplay.current and Gameplay.current.chart:
-		combo_digits = clampi(str(Gameplay.current.chart.notes.size()).length(), 1, 5)
+		combo_digits = clampi(str(Gameplay.current.chart.note_counts[0]).length(), 1, 5)
 
 func _process(delta: float) -> void:
 	for i: Sprite2D in get_children():

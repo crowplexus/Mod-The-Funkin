@@ -7,6 +7,7 @@ const TEMPLATE_NOTE: PackedScene = preload("res://scenes/gameplay/playfield/note
 
 @export var active: bool = true
 
+var offset: float = 0.0
 var note_list: Array[NoteData] = []
 var list_position: int = 0
 var speed: float = 1.0
@@ -46,7 +47,7 @@ func move_present_nodes() -> void:
 func try_spawning() -> void:
 	while list_position < note_list.size():
 		var note_data: NoteData = note_list[list_position]
-		if absf(note_data.time - Conductor.time) > (1.25 / speed):
+		if absf(note_data.time - Conductor.playhead + offset) > (1.25 / speed):
 			break
 		var new_note: Note = get_note()
 		on_note_spawned.emit(note_data, new_note)

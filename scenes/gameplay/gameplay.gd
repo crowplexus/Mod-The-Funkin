@@ -14,8 +14,6 @@ var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
 }
 ## Default Pause Menu, used if there's none set in the Chart Assets.
 const DEFAULT_PAUSE_MENU: PackedScene = preload("res://scenes/gameplay/adjacent/pause_menu.tscn")
-## Default Results Screen.
-const DEFAULT_RESULTS_SCREEN: PackedScene = preload("res://scenes/gameplay/adjacent/results_screen.tscn")
 ## Default Health Percentage.
 const DEFAULT_HEALTH_VALUE: int = 50
 ## Default Health Weight (how much should it be multiplied by when gaining)
@@ -143,9 +141,9 @@ func restart_song() -> void:
 	should_process_events = not timed_events.is_empty()
 	# kill notes in the note group to not give you damage
 	kill_every_note()
+	note_group.offset = local_settings.note_offset
 	note_group.list_position = 0
 	note_group.active = true
-	Conductor.play_offset = local_settings.sync_offset
 	# set initial scroll speed.
 	if chart: fire_timed_event(chart.get_velocity_change(0.0))
 	for note_field: NoteField in note_fields.get_children():
@@ -451,8 +449,4 @@ func exit_game() -> void:
 	if tally: # NOTE: save tally before ending later.
 		#tally.save()
 		tally = null
-	var results: Control = DEFAULT_RESULTS_SCREEN.instantiate()
-	results.process_mode = Node.PROCESS_MODE_ALWAYS
-	player.play_animation("hey", true)
-	hud_layer.add_child(results)
-	get_tree().paused = true
+	Global.change_scene("res://scenes/menu/freeplay_menu.tscn")

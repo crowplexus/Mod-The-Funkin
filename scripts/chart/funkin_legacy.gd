@@ -94,6 +94,9 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 					swag_note.side = int(not must_hit_section)
 			if is_psych and swag_note.side < 2:
 				swag_note.side = 1 - swag_note.side
+			if swag_note.side > chart.note_counts.size():
+				chart.note_counts.append(0)
+			chart.note_counts[swag_note.side] += 1
 			chart.notes.append(swag_note)
 		
 		if measure["changeBPM"] == true and fake_bpm != measure.bpm:

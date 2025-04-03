@@ -119,6 +119,9 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 					@warning_ignore("integer_division")
 					new_note.side = int(new_note.column / max_columns)
 					new_note.column = int(new_note.column % max_columns)
+					if new_note.side > chart.note_counts.size():
+						chart.note_counts.append(0)
+					chart.note_counts[new_note.side] += 1
 					chart.notes.append(new_note)
 				else:
 					push_warning("Unable to create note at ", fake_timer)

@@ -78,7 +78,7 @@ func dance(forced: bool = false, reversed: bool = false, speed: float = 1.0) -> 
 
 func sing(direction: int, forced: bool = false, suffix: String = "", reversed: bool = false, speed: float = 1.0) -> void:
 	play_animation(sing_moves[direction % sing_moves.size()] + suffix, forced, reversed, speed)
-	idle_cooldown = 1.0
+	idle_cooldown = 0.8
 
 func has_animation(animation: StringName) -> bool:
 	return anim and anim.has_animation(animation)

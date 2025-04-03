@@ -27,8 +27,6 @@ var time: float = 0.0
 var length: float = -1.0
 ## [code]time[/code] but used as a visual position (for notes, for example)
 var playhead: float = 0.0
-## Offset for the playhead.
-var play_offset: float = 0.0
 ## Beats per minute.
 var bpm: float = 100.0:
 	set(new_bpm):
@@ -60,7 +58,6 @@ var _prev_time: float = 0.0
 ## Resets the Conductor's values, call only when needed,
 ## as it can cause issues otherwise.
 func reset(_bpm: float = 100.0, _active: bool = false) -> void:
-	play_offset = 0.0
 	active = _active
 	bpm = _bpm
 	set_time(0.0)
@@ -75,7 +72,7 @@ func set_time(new_time: float) -> void:
 
 func update(new_time: float) -> void:
 	time = new_time # usually would be incremented by delta but I need this to be *set* for synching purposes
-	if playhead_copies_time: playhead = time + play_offset
+	if playhead_copies_time: playhead = time
 	
 	var ctc: SongTimeChange = Conductor.get_timed_change(time)
 	if bpm != ctc.bpm:

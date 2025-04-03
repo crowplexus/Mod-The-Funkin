@@ -25,9 +25,11 @@ var scroll: int = 0
 @export var use_epics: bool = true
 ## Defines an offset for music synching, delays note spawning.[br]
 ## This is set to an amount of seconds.
-@export var sync_offset: float = 0.0
+@export var note_offset: float = 0.0
 ## You know what a framerate is, right?
 @export var framerate: int = 120
+## Decides if the game should pause if the window loses focus.
+@export var auto_pause: bool = true
 ## Locks framerate to your monitor's refresh rate[br]
 ## May help reducing screen tearing.
 @export var vsync: bool = false
@@ -99,14 +101,14 @@ func update_vsync() -> void:
 
 ## Reloads your own custom settings (if any).
 func reload_custom_settings() -> void:
-	if not ResourceLoader.exists("user://settings.tres"):
+	if not ResourceLoader.exists("user://mtf_settings.tres"):
 		return
-	var custom_settings: Settings = load("user://settings.tres")
-	for key: String in get_settings().keys():
-		if get(key) != custom_settings.get(key):
-			set(key, custom_settings.get(key))
-	custom_settings.unreference()
-	custom_settings.free()
+	var custom_settings: Settings = load("user://mtf_settings.tres")
+	if custom_settings:
+		for key: String in get_settings().keys():
+			if get(key) != custom_settings.get(key):
+				set(key, custom_settings.get(key))
+		custom_settings.unreference()
 
 ## Grabs all the settings (not including constant properties)
 func get_settings() -> Dictionary:
@@ -119,4 +121,4 @@ func get_settings() -> Dictionary:
 ## Saves the settings to a file in the user folder[br]
 ## usually in %APPDATA%\Godot\app_userdata\ or /home/user/.local/share/godot/app_userdata/
 func save_settings() -> void:
-	ResourceSaver.save(self, "user://settings.tres")
+	ResourceSaver.save(self, "user://mtf_settings.tres", ResourceSaver.FLAG_OMIT_EDITOR_PROPERTIES)

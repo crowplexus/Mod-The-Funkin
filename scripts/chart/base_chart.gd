@@ -38,6 +38,8 @@ const VELOCITY_EVENTS: Array[StringName] = [
 	"folder": "null",
 	"file": "null",
 }
+## Note counter, only really useful internally
+var note_counts: Array[int] = [0, 0]
 
 ## Returns the BPM value for a BPM Change event.[br]
 ## Defaults to 0 for default bpm.
