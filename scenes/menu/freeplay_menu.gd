@@ -39,10 +39,10 @@ func _ready() -> void:
 	change_category()
 	change_difficulty()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	for item: Control in song_container.get_children():
 		var index: int = item.get_index()
-		var scaled_y: float = remap(index, 0, 1, 0, 1.3)
+		#var scaled_y: float = remap(index, 0, 1, 0, 1.3)
 		#item.position.x = lerpf(item.position.x, item.size.x + (60 * sin(index - selected)), exp(delta * 10))
 		item.position.y = lerpf(item.position.y, index * ((650 * (item.size.y * item.scale.y) / get_viewport_rect().size.y) + 10), 0.15)
 
@@ -82,7 +82,7 @@ func change_selection(next: int = 0) -> void:
 	
 	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back() + 1)
 	selected = wrapi(selected + next, 0, song_container.get_child_count())
-
+	
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	if item: item.label.modulate.a = 0.6
 	item = song_container.get_child(selected)

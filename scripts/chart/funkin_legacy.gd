@@ -6,11 +6,7 @@ extends Chart
 ## Background to load before the characters
 @export var stage: PackedScene = null
 ## Characters to load, leave "null" to not load[br]Order: [Player, Enemy, DJ]
-@export var characters: Array[PackedScene] = [
-	preload("res://scenes/gameplay/characters/face.tscn"),
-	preload("res://scenes/gameplay/characters/face.tscn"),
-	preload("res://scenes/gameplay/characters/face.tscn"),
-]
+@export var characters: Array[PackedScene] = [null, null, null]
 
 ## Parses a chart from a JSON file using the original FNF chart format or similar
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
@@ -54,9 +50,10 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		var path: String = "res://scenes/gameplay/characters/%s.tscn" % chart_dict[prop]
 		if path.contains("gfVersion") and not ResourceLoader.exists(path): path = path.replace("gfVersion", "player3")
 		if ResourceLoader.exists(path): chart.characters[i] = load(path)
+		else: chart.characters[i] = load(path.replace(chart_dict[prop], Actor2D.PLACEHOLDER_NAME))
 	
 	chart.timing_changes[0].bpm = chart_dict.bpm if "bpm" in chart_dict else 100.0
-	chart.song_name = chart_dict.song
+	chart.name = chart_dict.song
 	if "artist" in chart_dict: chart.artist = chart_dict.artist
 	if "charter" in chart_dict: chart.charter = chart_dict.charter
 	
@@ -121,8 +118,8 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 
 ## For Psych Engine Event Support.
 func load_psych_events(event_note: Array) -> void:
-	var event_name: StringName
-	var time: float = 0.0
+	#var event_name: StringName
+	#var time: float = 0.0
 	if event_note[1] is Array: # new psych format
 		for sub_event: Array in event_note[1]:
 			var event: TimedEvent = TimedEvent.new()

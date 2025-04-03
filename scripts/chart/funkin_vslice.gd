@@ -32,11 +32,7 @@ const DUMMY_METADATA: Dictionary[String, Variant] = {
 ## Background to load before the characters
 @export var stage: PackedScene = null
 ## Characters to load, leave "null" to not load[br]Order: [Player, Enemy, DJ]
-@export var characters: Array[PackedScene] = [
-	preload("res://scenes/gameplay/characters/face.tscn"),
-	preload("res://scenes/gameplay/characters/face.tscn"),
-	preload("res://scenes/gameplay/characters/face.tscn"),
-]
+@export var characters: Array[PackedScene] = [null, null, null,]
 
 ## Parses a chart from a JSON file using the new FNF chart format
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
@@ -72,7 +68,7 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 	var meta: Dictionary = get_vslice_metadata(song_name, difficulty)
 	var chart: VSliceChart = VSliceChart.new()
 	# set stage to spawn before gameplay.
-	if "songName" in meta: chart.song_name = meta["songName"]
+	if "songName" in meta: chart.name = meta["songName"]
 	if "artist" in meta: chart.artist = meta.artist
 	if "charter" in meta: chart.charter = meta.charter
 	if "playData" in meta:
@@ -93,6 +89,7 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 				var i: int = players.find(prop)
 				var path: String = "res://scenes/gameplay/characters/%s.tscn" % play_data.characters[prop]
 				if ResourceLoader.exists(path): chart.characters[i] = load(path)
+				else: chart.characters[i] = load(path.replace(play_data.characters[prop], Actor2D.PLACEHOLDER_NAME))
 	
 	# set scroll speed
 	var scroll_speed: float = 1.0
@@ -119,6 +116,7 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 			for note: Dictionary in song_notes:
 				var new_note: NoteData = NoteData.from_dictionary(note)
 				if new_note.column > -1:
+					@warning_ignore("integer_division")
 					new_note.side = int(new_note.column / max_columns)
 					new_note.column = int(new_note.column % max_columns)
 					chart.notes.append(new_note)
@@ -156,6 +154,20 @@ static func make_event(time: float, event_name: StringName = &"_", value: Varian
 	var event: TimedEvent = TimedEvent.new()
 	event.time = time * 0.001
 	match event_name:
+		&"PlayAnimation":
+			if value is int or value is float: event.values.v = value
+			elif value is Dictionary: event.values.assign(value)
+			if "target" in event.values:
+				match event.values.target:
+					"boyfriend", "bf", "player", "0": event.values.target = 0
+					"dad", "opponent", "enemy", "1": event.values.target = 1
+					"gf", "dj", "metronome", "2": event.values.target = 2
+					_: event.values.target = event.values.target
+			event.name = &"Play Animation"
+			if not "force" in event.values:
+				event.values.force = false
+			if not "cooldown" in event.values:
+				event.values.cooldown = 0.5
 		&"FocusCamera":
 			if value is int or value is float: event.values.char = value
 			elif value is Dictionary: event.values.assign(value)

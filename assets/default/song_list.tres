@@ -1,7 +1,15 @@
-[gd_resource type="Resource" script_class="SongList" load_steps=14 format=3 uid="uid://cfxu4hd3spw4u"]
+[gd_resource type="Resource" script_class="SongList" load_steps=15 format=3 uid="uid://cfxu4hd3spw4u"]
 
 [ext_resource type="Script" uid="uid://cb8wmjygxeh2h" path="res://scripts/song_list.gd" id="1_ldt5e"]
 [ext_resource type="Script" uid="uid://cfh5aidjsi5bg" path="res://scripts/song_item.gd" id="2_ei7g8"]
+
+[sub_resource type="Resource" id="Resource_qkp7m"]
+script = ExtResource("2_ei7g8")
+name = &"Tutorial"
+folder = "tutorial"
+difficulties = ["easy", "normal", "hard"]
+list_name = &"Main Levels"
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_f5kmj"]
 script = ExtResource("2_ei7g8")
@@ -93,5 +101,5 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [resource]
 script = ExtResource("1_ldt5e")
-list = Array[ExtResource("2_ei7g8")]([SubResource("Resource_f5kmj"), SubResource("Resource_ldt5e"), SubResource("Resource_144s5"), SubResource("Resource_40pmu"), SubResource("Resource_xwn0i"), SubResource("Resource_jb0d5"), SubResource("Resource_8iv7k"), SubResource("Resource_ei7g8"), SubResource("Resource_021w0"), SubResource("Resource_q15lk"), SubResource("Resource_qahuq")])
+list = Array[ExtResource("2_ei7g8")]([SubResource("Resource_qkp7m"), SubResource("Resource_f5kmj"), SubResource("Resource_ldt5e"), SubResource("Resource_144s5"), SubResource("Resource_40pmu"), SubResource("Resource_xwn0i"), SubResource("Resource_jb0d5"), SubResource("Resource_8iv7k"), SubResource("Resource_ei7g8"), SubResource("Resource_021w0"), SubResource("Resource_q15lk"), SubResource("Resource_qahuq")])
 metadata/_custom_type_script = "uid://cb8wmjygxeh2h"

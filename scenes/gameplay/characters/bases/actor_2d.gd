@@ -1,6 +1,8 @@
 class_name Actor2D
 extends Node2D
 
+const PLACEHOLDER_NAME: StringName = &"face"
+
 ## Beat delay for the character to bop its head.
 @export var dance_interval: float = 2.0
 ## Dance Animations for the character to play every dance interval.
@@ -41,6 +43,7 @@ var dance_sequence: Callable = func(beat: float) -> void:
 var camera_offset: Vector2 = Vector2.ZERO
 var pause_sing: bool = false
 var faces_left: bool = false
+var cheering_out: bool = false
 var _last_anim: String = ""
 var _last_dance: int = 0
 
@@ -60,6 +63,7 @@ func _process(delta: float) -> void:
 	if idle_cooldown > 0.0 and not pause_sing:
 		idle_cooldown -= delta / (Conductor.crotchet * sing_duration)
 		if idle_cooldown <= 0.0:
+			if cheering_out: cheering_out = false
 			dance()
 
 func play_animation(animation: String, forced: bool = false, reversed: bool = false, speed: float = 1.0) -> void:
@@ -75,6 +79,9 @@ func dance(forced: bool = false, reversed: bool = false, speed: float = 1.0) -> 
 func sing(direction: int, forced: bool = false, suffix: String = "", reversed: bool = false, speed: float = 1.0) -> void:
 	play_animation(sing_moves[direction % sing_moves.size()] + suffix, forced, reversed, speed)
 	idle_cooldown = 1.0
+
+func has_animation(animation: StringName) -> bool:
+	return anim and anim.has_animation(animation)
 
 func get_anim_position() -> float:
 	return anim.current_animation_position if anim else 0.0

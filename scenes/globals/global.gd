@@ -169,23 +169,28 @@ const DISCORD_RPC_DEFAULT_LI_TEXT: String = ""
 ## Resets the state of the Discord RPC plugin back to the defaults.
 func reset_discord() -> void:
 	DiscordRPC.app_id = DISCORD_RPC_ID
+	if not DiscordRPC.get_is_discord_working():
+		push_warning("Discord Activity couldn't be updated. It could be that Discord isn't running!")
 	update_discord_timestamps(0, 0)
 	update_discord_images()
 
 ## Updates the details and state of Discord RPC.
 func update_discord(state: String, details: String = "") -> void:
+	if not DiscordRPC.get_is_discord_working(): return
 	DiscordRPC.state = state
 	if not details.is_empty(): DiscordRPC.details = details
 	DiscordRPC.refresh()
 
 ## Updates the Discord RPC to add timestamps.
 func update_discord_timestamps(start: int, end: int = -1) -> void:
+	if not DiscordRPC.get_is_discord_working(): return
 	DiscordRPC.start_timestamp = start
 	if end > -1: DiscordRPC.end_timestamp = end
 	DiscordRPC.refresh()
 
 ## Updates the images used in Discord RPC.
 func update_discord_images(large: String = DISCORD_RPC_DEFAULT_LI, small: String = "", large_txt: String = DISCORD_RPC_DEFAULT_LI_TEXT, small_txt: String = "") -> void:
+	if not DiscordRPC.get_is_discord_working(): return
 	DiscordRPC.large_image = large
 	DiscordRPC.large_image_text = large_txt
 	if small and small.length() != 0:

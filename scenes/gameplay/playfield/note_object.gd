@@ -100,7 +100,7 @@ func scroll_ahead() -> void:
 	var next_y: float = secs_until_step * beat_speed * Note.ARROW_SIZE
 	position.y = note_field.global_position.y + next_y * -scroll_mult.y #/ absf(scale.y)
 
-func update_hold(delta: float) -> void:
+func update_hold(_delta: float) -> void:
 	moving = false
 	position.y = note_field.global_position.y
 	if _stupid_visual_bug:

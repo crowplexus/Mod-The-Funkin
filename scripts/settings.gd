@@ -6,7 +6,7 @@ const _IGNORED_PROPERTIES: Array[String] = ["resource_local_to_scene", "resource
 var _was_uncapped: bool = false
 
 ## Defines the Master Volume of the game.
-var master_volume: int = 80
+var master_volume: int = 30
 ## Shortcut setting for muting the whole game.
 var master_mute: bool = false
 ## Alternates between in-game scroll directions.

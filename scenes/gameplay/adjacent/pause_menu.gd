@@ -33,7 +33,7 @@ func _ready() -> void:
 	if Gameplay.current:
 		if "difficulties" in Gameplay.chart.parsed_values:
 			difficulties = Gameplay.chart.parsed_values.difficulties.duplicate()
-		level_label.text = Gameplay.chart.song_name
+		level_label.text = Gameplay.current.song_name
 		if not Gameplay.chart.artist.is_empty():
 			level_label.text += " — %s" % Gameplay.chart.artist
 		var difficulty: String = Gameplay.current.difficulty_name

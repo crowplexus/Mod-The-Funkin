@@ -60,6 +60,9 @@ var should_process_events: bool = true
 var ending: bool = false
 var starting: bool = true
 var has_enemy_track: bool = false
+## This will move the enemy character and hide the dj character[br]
+## Only really used for tutorial.
+var tutorial_dj: bool = true
 
 var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 	set(new_health): health = clampi(new_health, 0, 100)
@@ -88,7 +91,7 @@ func _ready() -> void:
 		scripts.load_song_scripts(chart.parsed_values.folder, chart.parsed_values.file)
 		timed_events = chart.scheduled_events.duplicate()
 		difficulty_name = chart.parsed_values.file
-		song_name = chart.song_name
+		song_name = chart.name
 	add_child(scripts)
 	scripts.call_func("_pack_entered")
 	if chart.assets:
@@ -140,7 +143,6 @@ func restart_song() -> void:
 	should_process_events = not timed_events.is_empty()
 	# kill notes in the note group to not give you damage
 	kill_every_note()
-	await note_group.get_child_count() == 0
 	note_group.list_position = 0
 	note_group.active = true
 	Conductor.play_offset = local_settings.sync_offset
@@ -217,7 +219,7 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 		hud_layer.add_child(instance)
 		get_tree().paused = true
 		return
-	if player_strums and player_strums.player is Player and player:
+	if player_strums and player_strums.player is Player and player and not player.cheering_out:
 		player.pause_sing = player_strums.player.keys_held.has(true)
 
 func process_timed_events() -> void:
@@ -237,6 +239,13 @@ func fire_timed_event(event: TimedEvent) -> void:
 	if not event:
 		return
 	match event.name:
+		&"Play Animation":
+			var actor: Actor2D = get_actor_from_index(event.values.target)
+			if actor and actor.has_animation(event.values.anim):
+				actor.play_animation(event.values.anim, event.values.force)
+				actor.idle_cooldown = event.values.cooldown
+				actor.pause_sing = false
+				actor.cheering_out = true
 		&"Change Camera Focus":
 			if camera:
 				var offset: Vector2 = Vector2(float(event.values.x) if "x" in event.values else 0.0,
@@ -252,8 +261,11 @@ func fire_timed_event(event: TimedEvent) -> void:
 		&"Change Scroll Speed":
 			var immediate: bool = bool(event.values.immediate) if "immediate" in event.values else false
 			for note_field: NoteField in note_fields.get_children():
-				note_field.speed_change_tween = create_tween()
-				note_field.speed_change_tween.tween_property(note_field, "speed", event.values.speed, 1.0)
+				if not immediate:
+					note_field.speed_change_tween = create_tween()
+					note_field.speed_change_tween.tween_property(note_field, "speed", event.values.speed, 1.0)
+				else:
+					note_field.speed = event.values.speed
 				note_group.speed = event.values.speed
 			#print_debug("scroll speed changed to ", event.values.speed, " at ", Conductor.time)
 	event.was_fired = true

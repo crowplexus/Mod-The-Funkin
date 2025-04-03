@@ -1,9 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://4po3ojxk5tt3"]
+[gd_scene load_steps=18 format=3 uid="uid://4po3ojxk5tt3"]
 
 [ext_resource type="Script" uid="uid://cbpwpskaofsru" path="res://scenes/gameplay/characters/bases/actor_2d.gd" id="1_olw6d"]
 [ext_resource type="Texture2D" uid="uid://ckfggl71y85yu" path="res://assets/game/characters/boyfriend/icon.png" id="2_tvlln"]
 [ext_resource type="Script" uid="uid://dovjbyvwk2plh" path="res://scenes/gameplay/characters/bases/health_icon.gd" id="3_kgqrn"]
-[ext_resource type="PackedScene" uid="uid://xjrclwpe5fqq" path="res://scenes/gameplay/characters/bf-dead.tscn" id="4_g2rcx"]
 [ext_resource type="SpriteFrames" path="res://assets/game/characters/boyfriend/regular.res" id="4_kgqrn"]
 
 [sub_resource type="Resource" id="Resource_kgqrn"]
@@ -484,10 +483,6 @@ _data = {
 script = ExtResource("1_olw6d")
 icon = SubResource("Resource_kgqrn")
 is_player = true
-death_skeleton = ExtResource("4_g2rcx")
-death_sound = null
-death_confirm_sound = null
-death_music = null
 
 [node name="animated_sprite_2d" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("4_kgqrn")

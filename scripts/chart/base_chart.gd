@@ -19,7 +19,7 @@ const VELOCITY_EVENTS: Array[StringName] = [
 ## Assets used in the chart (music files, custom hud and noteskin, pause menu, etc)
 @export var assets: ChartAssets
 ## Song Name (to display in menus).
-@export var song_name: StringName = &"Unknown"
+@export var name: StringName = &"Unknown"
 ## Song Artist (to display in menus).
 @export var artist: StringName = &""
 ## Song Charter/Mapper (to display in menus).
