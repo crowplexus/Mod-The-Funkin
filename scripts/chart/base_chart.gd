@@ -34,8 +34,9 @@ const VELOCITY_EVENTS: Array[StringName] = [
 ]
 ## Values extracted when parsing (just in case...)
 @export var parsed_values: Dictionary[String, Variant] = {
-	"folder": "null",
-	"file": "null",
+	"song_name": "null",
+	"difficulty": "null",
+	"variation": "null",
 }
 ## Note counter, only really useful internally
 var note_counts: Array[int] = [0, 0]
@@ -79,13 +80,18 @@ func clear_overlapping_notes() -> void:
 	#	total += 1
 	#print_debug("deleted ", counter, " overlapping notes from ", total, " total notes")
 
+func save_parsing_meta(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> void:
+	var variation: String = ChartAssets.solve_variation(difficulty)
+	parsed_values.folder = Chart.fix_path(song_name)
+	parsed_values.variation = variation
+	parsed_values.rawsong = song_name
+	parsed_values.file = difficulty
+
 ## Detects a chart format and parses it.
 static func detect_and_parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Chart:
 	# TODO: rewerite all of this ig.
 	var variation: String = ChartAssets.solve_variation(difficulty)
-	var path: String = "res://assets/game/songs/%s/%s/%s.json" % [ song_name, variation, difficulty ]
-	if not ResourceLoader.exists(path):
-		path = path.replace("/%s/" % variation, "/default/")
+	var path: String = ChartAssets.song_path(song_name, variation, "/%s.json" % difficulty)
 	
 	var chart: Chart
 	var chart_type: ChartType = ChartType.DUMMY
@@ -104,7 +110,7 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 			chart.scheduled_events.sort_custom(TimedEvent.sort_by_time)
 			chart.clear_overlapping_notes()
 		ChartType.FNF_VSLICE:
-			chart = VSliceChart.parse(song_name, difficulty, true)
+			chart = VSliceChart.parse(song_name, difficulty, true);;;;;
 			print_debug("Parsing new FNF style chart ", song_name, " with difficulty ", difficulty)
 			chart.clear_overlapping_notes()
 		ChartType.FNF_LEGACY:
@@ -115,26 +121,23 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 	if not chart:
 		chart = FNFChart.new() # make an FNFChart to avoid a metric fuckton amount of crashes.
 		chart.scheduled_events.append(TimedEvent.velocity_change(0.0))
-		chart.assets = ChartAssets.get_resource(song_name, difficulty)
 		print_debug("Unable to parse chart, creating a dummy...")
-	chart.parsed_values["folder"] = Chart.fix_path(song_name)
-	chart.parsed_values["file"] = difficulty
+	if not "raw_song" in chart.parsed_values: chart.save_parsing_meta(song_name, difficulty)
+	if not chart.assets: chart.assets = ChartAssets.get_resource(chart)
 	return chart
 
 ## Parses a chart from a resource file containing it.[br]
 ## This method SHOULD be overriden by other parsers.
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
-	var path: String = "res://assets/game/songs/%s/default/%s.tres" % [ song_name, difficulty ]
-	var variation_path: String = path.replace("/default/", "/%s/" % ChartAssets.solve_variation(difficulty))
-	if ResourceLoader.exists(variation_path):
-		path = variation_path
+	var variation: String = ChartAssets.solve_variation(difficulty)
+	var path: String = ChartAssets.song_path(song_name, variation, "/%s.tres" % difficulty)
 	if not ResourceLoader.exists(path) and not skip_checks:
 		path = Chart.fix_path(path) + ".tres"
 		# and then if the lowercase path isn't found, just live with that.
 		if not ResourceLoader.exists(path):
 			return Chart.new()
 	var chart: Chart = load(path)
-	chart.assets = ChartAssets.get_resource(song_name, difficulty)
+	chart.assets = ChartAssets.get_resource(chart)
 	return chart
 
 ## Fixes the chart path if its formatted differently from what charts usually use.

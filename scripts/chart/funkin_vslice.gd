@@ -36,7 +36,7 @@ const DUMMY_METADATA: Dictionary[String, Variant] = {
 ## Parses a chart from a JSON file using the new FNF chart format
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
 	var variation: String = ChartAssets.solve_variation(difficulty)
-	var path: String = ChartAssets.solve_song_path(song_name, variation) + "/chart.json"
+	var path: String = ChartAssets.song_path(song_name, variation, "/chart.json")
 
 	if not ResourceLoader.exists(path) and not skip_checks:
 		path = Chart.fix_path(path) + ".json"
@@ -45,9 +45,7 @@ static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT
 			print_debug("Failed to parse chart \"%s\" [Difficulty: %s]" % [ song_name, difficulty ])
 			return Chart.new()
 	
-	var chart: VSliceChart = VSliceChart.parse_from_string(load(path).data, song_name, difficulty)
-	chart.assets = ChartAssets.get_resource(song_name, difficulty)
-	return chart
+	return VSliceChart.parse_from_string(load(path).data, song_name, difficulty)
 
 static func get_vslice_metadata(song_name: String, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Dictionary:
 	var variation: String = ChartAssets.solve_variation(difficulty)
@@ -79,6 +77,7 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 				chart.stage = load(path)
 			else:
 				print_debug("tried loading stage at ", path, " which leads to a file that doesn't exist.")
+			chart.parsed_values.stage = new_stage
 		# set characters to spawn before gameplay.
 		if "characters" in play_data:
 			var players: PackedStringArray = ["player", "opponent", "girlfriend"]
@@ -86,9 +85,13 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 				if not prop in play_data.characters:
 					continue
 				var i: int = players.find(prop)
-				var path: String = "res://scenes/gameplay/characters/%s.tscn" % play_data.characters[prop]
+				var char_name: StringName = play_data.characters[prop]
+				var path: String = "res://scenes/gameplay/characters/%s.tscn" % char_name
 				if ResourceLoader.exists(path): chart.characters[i] = load(path)
 				else: chart.characters[i] = load(path.replace(play_data.characters[prop], Actor2D.PLACEHOLDER_NAME))
+				# save raw character names for the sake of loading assets later and blah blah blah.
+				if not "characters" in chart.parsed_values: chart.parsed_values.characters = []
+				chart.parsed_values.characters.append(char_name)
 	
 	# set scroll speed
 	var scroll_speed: float = 1.0
