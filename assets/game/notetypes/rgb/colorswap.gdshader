@@ -1,7 +1,7 @@
 shader_type canvas_item;
 instance uniform vec3 new_color: source_color = vec3(1, 1, 1);
 instance uniform bool enabled = false;
-// yoinked https://github.com/CodenameCrew/YoshiCrafterEngine/blob/9d6b4209a855b5b27d52a20d3ea2b1f4c3a51171/source/Shaders.hx#L46
+// yoinked https://github.com/CodenameCrew/YoshiCrafterEngine/blob/9d6b4209a855b5b27d52a20d3ea2b1f4c3a51171/source/NoteShader.hx#L3
 void fragment() {
 	vec4 color = texture(TEXTURE, UV);
 	float diff = color.r - (color.g + color.b) * 0.5;
