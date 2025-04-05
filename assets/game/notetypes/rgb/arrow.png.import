@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c54dktbcbdlm7"
-path="res://.godot/imported/receptor-no-filter.png-9761365b8d043c1a134365baec960c4f.ctex"
+uid="uid://bgkdl6ruyi56h"
+path="res://.godot/imported/arrow.png-4d6103173748327a5e2b7cbfdfd1afea.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/game/notetypes/new-funkin/receptor-no-filter.png"
-dest_files=["res://.godot/imported/receptor-no-filter.png-9761365b8d043c1a134365baec960c4f.ctex"]
+source_file="res://assets/game/notetypes/rgb/arrow.png"
+dest_files=["res://.godot/imported/arrow.png-4d6103173748327a5e2b7cbfdfd1afea.ctex"]
 
 [params]
 

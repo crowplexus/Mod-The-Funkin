@@ -29,7 +29,7 @@ func setup() -> void:
 	keys_held.fill(false)
 	if note_field:
 		for idx: int in note_field.get_child_count():
-			note_field.set_reset_animation(idx, NoteField.RepState.PRESSED)
+			note_field.set_reset_animation(idx, NoteField.RepState.PRESS)
 
 func _process(delta: float) -> void:
 	if not note_group: return
@@ -109,7 +109,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 					note.trip_timer = 0.5 # half a second
 					note._stupid_visual_bug = note.hit_time < 0.0
 		else:
-			note_field.play_animation(idx, NoteField.RepState.PRESSED)
+			note_field.play_animation(idx, NoteField.RepState.PRESS)
 			if not settings.ghost_tapping:
 				miss_note.emit(null, idx)
 

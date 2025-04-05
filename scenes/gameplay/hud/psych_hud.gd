@@ -49,7 +49,6 @@ func update_score_text(missed: bool = false) -> void:
 	if not tally:
 		score_text.text = "%s: 0 | %s: 0 | %s: ?" % [ tr("score", &"gameplay"), tr("combo_breaks", &"gameplay"), tr("rating") ]
 		return
-	var rating: String = "?"
 	_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
 	score_text.text = "%s: {s} | %s: {cb} | %s: {r}" % [ tr("score", &"gameplay"), tr("combo_breaks", &"gameplay"), tr("rating") ]
 	var rating_str: String = rating_string
@@ -69,8 +68,7 @@ func update_score_text(missed: bool = false) -> void:
 		score_text_tween.tween_property(score_text, "scale", Vector2.ONE, 0.2)
 
 func update_rating(accuracy: float) -> void:
-	var acc: float = clampf(accuracy, 0.0, 100.0) # just in case, sometimes this thing hates me.
-	accuracy_history.append(acc)
+	accuracy_history.append(clampf(accuracy, 0.0, 100.0))
 	if accuracy_history.size() > MAX_HISTORY:
 		accuracy_history.pop_front()
 	

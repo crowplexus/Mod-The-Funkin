@@ -15,9 +15,9 @@ func show_all() -> void:
 func reload(p_data: NoteData) -> void:
 	super(p_data)
 	player.play(str(column))
-	if not arrow.visible: arrow.show()
+	if not arrow.visible: arrow.show_all()
 	var is_hold: bool = arrow.sprite_frames and clip_rect and hold_size > 0.0 and hold_body
-	if is_hold: # damn
+	if is_hold:
 		var color: = Note.COLORS[column % Note.COLORS.size()]
 		hold_body.texture = arrow.sprite_frames.get_frame_texture("%s hold piece" % color, 0)
 		hold_tail.texture = arrow.sprite_frames.get_frame_texture("%s hold tail" % color, 0)

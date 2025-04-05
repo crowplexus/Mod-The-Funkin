@@ -4,7 +4,7 @@ class_name NoteField extends Node2D
 
 enum RepState {
 	STATIC = 0,
-	PRESSED = 1,
+	PRESS = 1,
 	CONFIRM = 2,
 }
 

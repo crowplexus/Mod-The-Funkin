@@ -7,7 +7,7 @@
 ##		hold_tail (TextureRect)[br]
 class_name Note extends Node2D
 
-## Default Directions.
+## Default Directions. TODO: replace this
 const COLORS: PackedStringArray = ["purple", "blue", "green", "red"]
 ## Default Note Distance (in pixels).
 const DISTANCE: float = 450.0

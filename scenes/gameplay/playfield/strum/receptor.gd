@@ -2,7 +2,7 @@ class_name Receptor extends Node2D
 
 @onready var parent: NoteField
 @onready var player: AnimationPlayer = $"animation_player"
-@onready var sprite: AnimatedSprite2D = $"sprite"
+@export var sprite: Node2D
 
 var reset_timer: float = 0.0
 var reset_state: int = NoteField.RepState.STATIC
@@ -11,7 +11,9 @@ var speed: float = 1.0
 
 
 func _ready() -> void:
-	parent = get_parent()
+	if not sprite and  has_node("sprite"):
+		sprite = get_node("sprite")
+	if get_parent() is NoteField: parent = get_parent()
 	play_animation(NoteField.RepState.STATIC, true)
 
 
@@ -22,12 +24,11 @@ func _process(delta: float) -> void:
 
 
 func play_animation(state: = NoteField.RepState.STATIC, force: bool = false) -> void:
+	var index: int = get_index()
+	if parent: index = index % parent.get_child_count()
 	if _last_state != state or force:
 		sprite.frame = 0
 		player.seek(0.0)
-	var state_name: String = "static"
-	match state:
-		NoteField.RepState.PRESSED: state_name = "press"
-		NoteField.RepState.CONFIRM: state_name = "confirm"
-	player.play(str(get_index() % get_parent().get_child_count()) + " " + state_name)
+	var state_name: String = NoteField.RepState.keys()[state].to_lower()
+	player.play(str(index) + " " + state_name)
 	_last_state = state
