@@ -10,7 +10,7 @@ class_name FNFChart extends Chart
 ## Parses a chart from a JSON file using the original FNF chart format or similar
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
 	var variation: String = ChartAssets.solve_variation(difficulty)
-	var path: String = ChartAssets.solve_song_path(song_name, variation) + "/%s.json" % difficulty
+	var path: String = ChartAssets.song_path(song_name, variation, "/%s.json" % difficulty)
 
 	if not ResourceLoader.exists(path) and not skip_checks:
 		path = Chart.fix_path(path) + ".json"
@@ -22,9 +22,7 @@ static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT
 			print_debug("Failed to parse chart \"%s\" [Difficulty: %s]" % [ song_name, difficulty ])
 			return Chart.new()
 	
-	var chart: FNFChart = FNFChart.parse_from_string(load(path).data)
-	chart.assets = ChartAssets.get_resource(song_name, difficulty)
-	return chart
+	return FNFChart.parse_from_string(load(path).data)
 
 ## Parses a json string as a chart.
 static func parse_from_string(json: Dictionary) -> FNFChart:
@@ -41,15 +39,20 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			chart.stage = load(path)
 		else:
 			print_debug("tried loading stage at ", path, " which leads to a file that doesn't exist.")
+		chart.parsed_values.stage = new_stage
 	var players: PackedStringArray = ["player1", "player2", "gfVersion"]
 	for prop: String in players:
 		if not prop in chart_dict:
 			continue
 		var i: int = players.find(prop)
-		var path: String = "res://scenes/gameplay/characters/%s.tscn" % chart_dict[prop]
+		var char_name: StringName = chart_dict[prop]
+		var path: String = "res://scenes/gameplay/characters/%s.tscn" % char_name
 		if path.contains("gfVersion") and not ResourceLoader.exists(path): path = path.replace("gfVersion", "player3")
 		if ResourceLoader.exists(path): chart.characters[i] = load(path)
-		else: chart.characters[i] = load(path.replace(chart_dict[prop], Actor2D.PLACEHOLDER_NAME))
+		else: chart.characters[i] = load(path.replace(char_name, Actor2D.PLACEHOLDER_NAME))
+		# save raw character names for the sake of loading assets later and blah blah blah.
+		if not "characters" in chart.parsed_values: chart.parsed_values.characters = []
+		chart.parsed_values.characters.append(char_name)
 	
 	chart.timing_changes[0].bpm = chart_dict.bpm if "bpm" in chart_dict else 100.0
 	chart.name = chart_dict.song
