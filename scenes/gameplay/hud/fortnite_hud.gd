@@ -113,7 +113,7 @@ func countdown_progress() -> void:
 	on_countdown_tick.emit(_countdown_iteration)
 	_countdown_iteration += 1
 
-func update_score_text() -> void:
+func update_score_text(_missed: bool = false) -> void:
 	var tally: bool = game and game.tally
 	var total_misses: int = game.tally.misses + game.tally.breaks
 	var fc_string: String = game.tally.get_tier_grade()

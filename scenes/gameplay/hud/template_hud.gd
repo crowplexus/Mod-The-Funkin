@@ -31,7 +31,7 @@ func start_countdown() -> void:
 	pass
 
 ## Updates the score text to display new stats.
-func update_score_text() -> void:
+func update_score_text(_missed: bool = false) -> void:
 	pass
 
 ## Updates the health bar to display a new value.

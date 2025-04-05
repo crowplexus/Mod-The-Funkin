@@ -10,6 +10,7 @@ enum PlayMode {
 var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
 	"Classic": load("res://scenes/gameplay/hud/classic_hud.tscn"),
 	"Advanced": load("res://scenes/gameplay/hud/fortnite_hud.tscn"),
+	"Psych": load("res://scenes/gameplay/hud/psych_hud.tscn")
 }
 ## Default Pause Menu, used if there's none set in the Chart Assets.
 const DEFAULT_PAUSE_MENU: PackedScene = preload("res://scenes/gameplay/adjacent/pause_menu.tscn")
@@ -120,16 +121,15 @@ func kill_every_note() -> void:
 		note.queue_free()
 
 func restart_song() -> void:
-	ending = false
+	Conductor.reset(chart.get_bpm(), false)
 	starting = true
+	ending = false
 	if music:
 		music.stream_paused = true
 		music.seek(0.0)
 	# disable note spawning and event dispatching.
-	note_group.active = false
 	should_process_events = false
-	# reset Conductor and your score.
-	Conductor.reset(chart.get_bpm(), false)
+	note_group.active = false
 	local_tally.zero()
 	health = Gameplay.DEFAULT_HEALTH_VALUE
 	tally.merge(local_tally)
@@ -154,7 +154,7 @@ func restart_song() -> void:
 	# update hud if possible
 	if hud:
 		hud.update_health(health)
-		hud.update_score_text()
+		hud.update_score_text(true) # pretend its a miss
 	_sync_rpc_timestamp()
 	play_countdown()
 
@@ -392,7 +392,7 @@ func on_note_hit(note: Note) -> void:
 	hud.display_judgement(note.judgement)
 	hud.display_combo(local_tally.combo)
 	tally.merge(local_tally)
-	hud.update_score_text()
+	hud.update_score_text(false)
 	hud.update_health(health)
 	kill_yourself()
 
@@ -404,7 +404,7 @@ func kill_yourself() -> void: # thanks Unholy
 		local_tally.zero()
 		tally.merge(local_tally)
 		hud.update_health(health)
-		hud.update_score_text()
+		hud.update_score_text(true)
 		player.die()
 
 func try_revive() -> void:
@@ -429,7 +429,7 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 		Global.play_sfx(assets.miss_note_sounds.pick_random(), randf_range(0.1, 0.4))
 	#print_debug("Health damaged by ", int(Tally.MISS_POINTS + damage_boost), "%")
 	tally.merge(local_tally)
-	hud.update_score_text()
+	hud.update_score_text(true)
 	hud.update_health(health)
 	kill_yourself()
 

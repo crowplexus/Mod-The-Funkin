@@ -13,13 +13,13 @@ var list_position: int = 0
 var speed: float = 1.0
 
 func _ready() -> void:
+	active = false
 	list_position = 0
 
 func _process(_delta: float) -> void:
-	if not active:
-		return
-	try_spawning()
-	move_present_nodes()
+	if active:
+		try_spawning()
+		move_present_nodes()
 
 
 func spawning_complete() -> bool:

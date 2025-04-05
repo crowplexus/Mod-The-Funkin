@@ -33,8 +33,8 @@ static func calculate_perfect_score(notes: int = 0) -> int:
 
 ## Converts score values to a percentage, needs your current score, the max possible, and the minimum.
 static func calculate_score_percentage(current_score: int, max_score: int, min_score: int) -> float:
-	var percent: float = float(current_score - min_score) / float(max_score - min_score) * 100.0 # like, like Psych Engine… percent… oh mein kott?
-	return clampf(percent, -100.0, 100.0) if max_score > min_score else 0.0 # division by zero can happen, oops.
+	var percent: float = float(current_score - min_score) / float(max_score - min_score) # like, like Psych Engine… percent… oh mein kott?
+	return clampf(percent * 100.0, 0.0, 100.0) if max_score > min_score else 0.0 # division by zero can happen, oops.
 
 ## Resets all counters back to their previous state, or 0 if none specified.[br]
 ## Effectively cleaning the tally altogether if unspecified.

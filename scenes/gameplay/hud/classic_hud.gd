@@ -49,15 +49,8 @@ func _ready() -> void:
 	countdown.hide()
 
 func _process(delta: float) -> void:
-	if health_bar.value != _prev_health:
-		health_bar.value = lerp(health_bar.value, floorf(_prev_health), 0.15)
-	if icon_p1 and icon_p1.scale != default_ip1_scale:
-		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * 13.0 * Conductor.rate))
-		icon_p1.position.x = lerpf(icon_p1.position.x, default_ip1_pos.x + ((health_bar.size.x * default_ip1_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
-	if icon_p2 and icon_p2.scale != default_ip2_scale:
-		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * 13.0 * Conductor.rate))
-		icon_p2.position.x = lerpf(icon_p2.position.x, default_ip2_pos.x + ((health_bar.size.x * default_ip2_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
-		
+	update_health_bar(delta)
+	update_icons(delta)
 
 func _exit_tree() -> void:
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
@@ -152,19 +145,28 @@ func countdown_progress() -> void:
 	on_countdown_tick.emit(_countdown_iteration)
 	_countdown_iteration += 1
 
-func update_score_text() -> void:
+func update_score_text(_missed: bool = false) -> void:
 	var tally: bool = game and game.tally
 	_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
-	score_text.text  = "%s: %s\n%s: %s" % [
-		tr("score", &"gameplay"), ("0" if not tally else Global.separate_thousands(game.tally.score)),
-		tr("breaks", &"gameplay"), (0 if not tally else game.tally.misses + game.tally.breaks),
-	]
+	score_text.text  = "%s: %s" % [ tr("score", &"gameplay"), ("0" if not tally else Global.separate_thousands(game.tally.score)) ]
 
 func update_health(health: int) -> void:
 	_prev_health = health
+
+func update_health_bar(_delta: float) -> void:
+	if health_bar.value != _prev_health:
+		health_bar.value = lerp(health_bar.value, floorf(_prev_health), 0.15)
+
+func update_icons(delta: float) -> void:
+	if icon_p1 and icon_p1.scale != default_ip1_scale:
+		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * 13.0 * Conductor.rate))
+		icon_p1.position.x = lerpf(icon_p1.position.x, default_ip1_pos.x + ((health_bar.size.x * default_ip1_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
+	if icon_p2 and icon_p2.scale != default_ip2_scale:
+		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * 13.0 * Conductor.rate))
+		icon_p2.position.x = lerpf(icon_p2.position.x, default_ip2_pos.x + ((health_bar.size.x * default_ip2_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
 	if game is Gameplay: # this system sucks I may change it later
-		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(_prev_health)
-		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - _prev_health)
+		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(health_bar.value)
+		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - health_bar.value)
 
 func display_judgement(judgement: Judgement) -> void:
 	combo_group.display_judgement(judgement.texture)

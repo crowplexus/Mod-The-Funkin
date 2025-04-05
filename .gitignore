@@ -8,4 +8,4 @@ out/
 *.DS_Store
 desktop.ini
 # Maintainer-specific
-assets/game/scripts/*
+assets/resources/song_list.res
