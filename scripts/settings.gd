@@ -54,10 +54,9 @@ func reload_locale() -> void:
 	var list: = TranslationServer.get_loaded_locales()
 	if language == "auto":
 		var os_lang: String = OS.get_locale_language()
-		if os_lang in list: TranslationServer.set_locale(os_lang)
-		else: TranslationServer.set_locale("en")
-	else:
-		TranslationServer.set_locale(language)
+		if os_lang in list: language = os_lang
+		else: language = "en"
+	TranslationServer.set_locale(language)
 
 ## Reloads the note keybinds.
 func reload_keybinds() -> void:

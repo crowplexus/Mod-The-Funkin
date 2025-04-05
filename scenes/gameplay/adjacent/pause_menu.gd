@@ -74,12 +74,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if axis != 0: change_selection(axis)
 	if accepting:
 		if is_same(list, difficulties):
-			var folder: StringName = Gameplay.current.chart.parsed_values.folder
 			var selected_diff: String = difficulties[selected].dedent().to_snake_case()
 			if selected_diff == "back":
 				load_default_list()
 				reload_options()
 			else:
+				var folder: StringName = Gameplay.current.chart.parsed_values.difficulty
 				Gameplay.chart = Chart.detect_and_parse(folder, selected_diff)
 				Gameplay.chart.parsed_values.difficulties = difficulties
 				close()

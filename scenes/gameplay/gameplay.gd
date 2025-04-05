@@ -86,9 +86,9 @@ func _ready() -> void:
 	scripts.load_global_scripts()
 	if chart:
 		assets = chart.assets
-		scripts.load_song_scripts(chart.parsed_values.folder, chart.parsed_values.file)
+		scripts.load_song_scripts(chart.parsed_values.song_name, chart.parsed_values.difficulty)
 		timed_events = chart.scheduled_events.duplicate()
-		difficulty_name = chart.parsed_values.file
+		difficulty_name = chart.parsed_values.difficulty
 		song_name = chart.name
 	add_child(scripts)
 	scripts.call_func("_pack_entered")
