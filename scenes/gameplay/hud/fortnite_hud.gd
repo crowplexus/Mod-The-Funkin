@@ -1,10 +1,12 @@
 extends TemplateHUD
 
+const POPUP_SCALE: Vector2 = Vector2(1.5, 1.5)
+
 @onready var score_text: Label = $"health_bar/score_text"
 @onready var health_text: Label = $"health_bar/health_percent"
 @onready var accuracy_text: Label = $"accuracy_bar/accuracy_progress"
+@onready var judgement_popup: Label = $"judgement_popup"
 
-@onready var combo_group: Control = $"combo_group"
 @onready var health_bar: ProgressBar = $"%health_bar"
 @onready var shield_bar: ProgressBar = $"%accuracy_bar" # this is accuracy not time btw
 
@@ -14,7 +16,6 @@ extends TemplateHUD
 @onready var countdown_timer: Timer = $"countdown/timer"
 
 var countdown_tween: Tween
-
 var countdown_textures: Array[Texture2D] = []
 var countdown_streams: Array[AudioStream] = []
 var _countdown_iteration: int = 0
@@ -23,6 +24,10 @@ var _prev_health: int = 50
 var _max_score: int = 0
 var _min_score: int = 0
 
+# judgement popup shit #
+var latest_judge: Judgement
+var popup_tween: Tween
+# # # # # # # # #
 var game: Node2D
 
 func _ready() -> void:
@@ -113,10 +118,12 @@ func update_score_text() -> void:
 	var total_misses: int = game.tally.misses + game.tally.breaks
 	var fc_string: String = game.tally.get_tier_grade()
 	score_text.text = tr("info_bar", &"gameplay") % [
-		(Global.separate_thousands(game.tally.score) if tally else str(0)),
-		(game.tally.combo if tally else 0),
-		(fc_string if tally and not fc_string.is_empty() else str(total_misses) if tally else str(0)),
+		Global.separate_thousands(game.tally.score if tally else 0),
+		str(game.tally.combo if tally else 0),
+		str(total_misses if tally else 0),
 	]
+	if fc_string:
+		score_text.text += " [%s]" % fc_string
 	if tally:
 		_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
 		var accuracy_score: float = Tally.calculate_score_percentage(game.tally.score, _max_score, _min_score)
@@ -127,14 +134,22 @@ func update_health(health: int) -> void:
 	health_text.text = "%s%%" % health
 	_prev_health = health
 
-func display_judgement(image: Texture2D) -> void:
-	combo_group.display_judgement(image)
+func display_judgement(judgement: Judgement) -> void:
+	latest_judge = judgement
 
 func display_combo(combo: int = -1) -> void:
-	if combo < 5:
-		# TODO: miss combo
-		return
-	combo_group.display_combo(combo)
+	var new_modulate: Color = latest_judge.color if latest_judge else Color.WHITE
+	if combo < 0:
+		new_modulate = Color.PALE_VIOLET_RED
+	judgement_popup.scale = POPUP_SCALE
+	judgement_popup.modulate = new_modulate
+	judgement_popup.text = "%s\nx%s" % [ latest_judge.name, combo ]
+	if popup_tween: popup_tween.kill()
+	judgement_popup.show()
+	popup_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
+	popup_tween.tween_property(judgement_popup, "scale", Vector2.ONE, 0.3).set_delay(Conductor.crotchet * 0.1)
+	popup_tween.tween_property(judgement_popup, "modulate:a", 0.0, 0.5).set_delay(Conductor.crotchet * 1.0) \
+	.finished.connect(judgement_popup.hide)
 
 func get_bump_lerp(from: float = 2.0, to: float = 1.0, _delta: float = 0) -> float:
 	return lerpf(from, to, 0.05) # TODO: use exp()

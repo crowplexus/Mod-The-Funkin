@@ -154,10 +154,9 @@ func countdown_progress() -> void:
 
 func update_score_text() -> void:
 	var tally: bool = game and game.tally
-	var score: String = "0" if not tally else Global.separate_thousands(game.tally.score)
 	_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
 	score_text.text  = "%s: %s\n%s: %s" % [
-		tr("score", &"gameplay"), score + " (%.2f%%)" % Tally.calculate_score_percentage(game.tally.score, _max_score, _min_score),
+		tr("score", &"gameplay"), ("0" if not tally else Global.separate_thousands(game.tally.score)),
 		tr("breaks", &"gameplay"), (0 if not tally else game.tally.misses + game.tally.breaks),
 	]
 
@@ -167,8 +166,8 @@ func update_health(health: int) -> void:
 		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(_prev_health)
 		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - _prev_health)
 
-func display_judgement(image: Texture2D) -> void:
-	combo_group.display_judgement(image)
+func display_judgement(judgement: Judgement) -> void:
+	combo_group.display_judgement(judgement.texture)
 
 func display_combo(combo: int = -1) -> void:
 	if combo < 0:

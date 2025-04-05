@@ -14,3 +14,4 @@ enum SplashType {
 @export var texture: Texture2D = null
 @export var splash_type: SplashType = SplashType.DISABLED ## Define if the judgement spawns a note splash, and which kind of note splash.
 @export var combo_break: bool = false ## If the judgement causes a combo break.
+@export var color: Color = Color.WHITE

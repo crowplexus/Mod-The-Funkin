@@ -128,12 +128,17 @@ static func judge_time(ms: float) -> int:
 ## Hitting at least 1 tier 3 results in "Pass" 
 func get_tier_grade() -> String:
 	var fc_tier: String = ""
-	#if notes_hit_count == 0:
-	#	fc_tier = "Noplay"
-	#	return fc_tier
+	if notes_hit_count == 0:
+		fc_tier = "NOPLAY"
+		return fc_tier
 	var scores: = self.tiers_scored
-	if scores[3] == 0 and (misses + breaks) == 0:
-		if scores[0] > 0: fc_tier = "PFC" #"Perf" # Epic
-		if scores[1] > 0: fc_tier = "GFC" #"Great" # Sick
-		if scores[2] > 0: fc_tier = "FC" #"Piss" if randf_range(0, 100) < 0.5 else "Pass" # Good, 1/500 chance of saying Piss instead
+	var total: int = misses + breaks
+	if scores[3] == 0 and total == 0:
+		if scores[0] > 0: fc_tier = "PFC" # Epic
+		if scores[1] > 0:
+			fc_tier = "SDG" if scores[1] < 1 else "GFC" # Sick
+		if scores[2] > 0:
+			fc_tier = "FC" # Good
+	elif total > 0 and total < 10:
+		fc_tier = "SDCB"
 	return fc_tier

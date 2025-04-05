@@ -40,7 +40,7 @@ var scroll: int = 0
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
 ## Select a HUD style, or leave "Default" to let the songs decide.
 @export_enum("Default", "Classic", "Advanced")
-var hud_style: String = "Default"
+var hud_style: String = "Advanced"
 ## Changes the UI elements and dialogue language.
 @export_enum("en", "es", "pt", "mk") # English, Spanish, Portuguese, Macedonian
 var language: String = "auto" # "auto" means get OS locale

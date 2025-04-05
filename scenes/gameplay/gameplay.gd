@@ -8,8 +8,8 @@ enum PlayMode {
 
 ## Default HUD scenes to use, mainly for settings and stuff.
 var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
-	"classic": load("res://scenes/gameplay/hud/classic_hud.tscn"),
-	"advanced": load("res://scenes/gameplay/hud/fortnite_hud.tscn"),
+	"Classic": load("res://scenes/gameplay/hud/classic_hud.tscn"),
+	"Advanced": load("res://scenes/gameplay/hud/fortnite_hud.tscn"),
 }
 ## Default Pause Menu, used if there's none set in the Chart Assets.
 const DEFAULT_PAUSE_MENU: PackedScene = preload("res://scenes/gameplay/adjacent/pause_menu.tscn")
@@ -337,7 +337,7 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 		idx = hud_layer.get_node("hud").get_index()
 		hud_layer.get_node("hud").set_process(false) # just in case
 		hud_layer.get_node("hud").queue_free()
-	var hud_type: String = local_settings.hud_style.to_snake_case()
+	var hud_type: String = local_settings.hud_style
 	if hud_type in DEFAULT_HUDS:
 		hud = DEFAULT_HUDS[hud_type].instantiate()
 	else:
@@ -389,7 +389,7 @@ func on_note_hit(note: Note) -> void:
 		local_tally.combo = 0
 	local_tally.update_tier_score(judged_tier)
 	# Update HUD
-	hud.display_judgement(note.judgement.texture)
+	hud.display_judgement(note.judgement)
 	hud.display_combo(local_tally.combo)
 	tally.merge(local_tally)
 	hud.update_score_text()

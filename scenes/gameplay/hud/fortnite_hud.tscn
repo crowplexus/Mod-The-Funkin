@@ -1,20 +1,37 @@
-[gd_scene load_steps=11 format=3 uid="uid://bjkg052ui3mnl"]
+[gd_scene load_steps=12 format=3 uid="uid://bjkg052ui3mnl"]
 
 [ext_resource type="Script" uid="uid://bqen71fvkle87" path="res://scenes/gameplay/hud/fortnite_hud.gd" id="1_vvh1u"]
+[ext_resource type="FontFile" uid="uid://casd318dkyewy" path="res://assets/ui/fonts/lilitaonerus.ttf" id="2_yhk22"]
 [ext_resource type="StyleBox" uid="uid://dhwynnq1ji6ou" path="res://scenes/gameplay/hud/styleboxes/fortnite_bar_bg.tres" id="3_epiwg"]
 [ext_resource type="StyleBox" uid="uid://bdag5e631yhvt" path="res://scenes/gameplay/hud/styleboxes/health_bar_right.tres" id="3_vvh1u"]
-[ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/gameplay/hud/combo_group.gd" id="6_dqqga"]
-[ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="8_vvh1u"]
 [ext_resource type="Texture2D" uid="uid://cw3h68ylrq7fy" path="res://assets/ui/countdown/prepare.png" id="10_ojldb"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="11_x72vp"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhk22"]
+bg_color = Color(0.8, 0.8, 0.8, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 1
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+anti_aliasing = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_8v6dl"]
+font = ExtResource("2_yhk22")
+font_size = 32
+
 [sub_resource type="LabelSettings" id="LabelSettings_3l1f0"]
-font = ExtResource("8_vvh1u")
+font = ExtResource("2_yhk22")
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_it28e"]
-font = ExtResource("8_vvh1u")
+font = ExtResource("2_yhk22")
+font_size = 20
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
 
@@ -28,35 +45,30 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.999695, 1.00043)
 script = ExtResource("1_vvh1u")
 
-[node name="combo_group" type="Control" parent="."]
-modulate = Color(1, 1, 1, 0.8)
+[node name="judgement_popup" type="Label" parent="."]
+visible = false
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = -1
+anchor_left = 0.481
+anchor_top = 0.602
+anchor_right = 0.519
+anchor_bottom = 0.687
+offset_left = -0.180054
+offset_top = 0.059967
+offset_right = 1.17993
+offset_bottom = -0.140015
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("6_dqqga")
-
-[node name="judgement" type="Sprite2D" parent="combo_group"]
-metadata/velocity = Vector2(0, 0)
-metadata/acceleration = Vector2(0, 0)
-
-[node name="combo_digit0" type="Sprite2D" parent="combo_group"]
-metadata/velocity = Vector2(0, 0)
-metadata/acceleration = Vector2(0, 0)
-
-[node name="combo_digit1" type="Sprite2D" parent="combo_group"]
-metadata/velocity = Vector2(0, 0)
-metadata/acceleration = Vector2(0, 0)
-
-[node name="combo_digit2" type="Sprite2D" parent="combo_group"]
-metadata/velocity = Vector2(0, 0)
-metadata/acceleration = Vector2(0, 0)
+pivot_offset = Vector2(25, 30)
+theme_override_styles/normal = SubResource("StyleBoxFlat_yhk22")
+text = "Epic!
+x0"
+label_settings = SubResource("LabelSettings_8v6dl")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="health_bar" type="ProgressBar" parent="."]
 unique_name_in_owner = true
@@ -85,9 +97,9 @@ anchors_preset = -1
 anchor_left = -0.002
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 456.11
+offset_left = 460.902
 offset_top = -2.0
-offset_right = 33.2079
+offset_right = 38.0
 offset_bottom = 8.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -108,7 +120,7 @@ offset_right = -4.39999
 offset_bottom = 24.71
 grow_horizontal = 2
 grow_vertical = 2
-text = "Score: 0 | Combo: 0 | Breaks: 0"
+text = "Score: 0 | Combo: 0 | Breaks: 0 [N/A]"
 label_settings = SubResource("LabelSettings_it28e")
 horizontal_alignment = 1
 
@@ -139,9 +151,9 @@ anchors_preset = -1
 anchor_left = -0.002
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 455.902
+offset_left = 460.902
 offset_top = -6.0
-offset_right = 170.0
+offset_right = 175.0
 offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2

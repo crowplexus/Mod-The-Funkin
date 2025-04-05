@@ -40,7 +40,7 @@ func update_health(_health: int) -> void:
 
 @warning_ignore("unused_parameter")
 ## Displays a judgement sprite on-screen.
-func display_judgement(image: Texture2D) -> void:
+func display_judgement(judgement: Judgement) -> void:
 	pass
 
 @warning_ignore("unused_parameter")
