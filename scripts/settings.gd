@@ -57,7 +57,7 @@ func reload_locale() -> void:
 		if os_lang in list: language = os_lang
 		else: language = "en"
 	TranslationServer.set_locale(language)
-
+	
 ## Reloads the note keybinds.
 func reload_keybinds() -> void:
 	const NOTE_KEYBINDS: Array[String] = ["note_left", "note_down", "note_up", "note_right"]
