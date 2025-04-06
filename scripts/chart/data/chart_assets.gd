@@ -46,7 +46,7 @@ static func song_path(song_name: String, variation: String = "", add: String = "
 ## Will return a a default resource on fail.
 static func get_resource(chart: Chart, fallback: ChartAssets = Global.DEFAULT_CHART_ASSETS) -> ChartAssets:
 	var variation: String = chart.parsed_values.variation
-	var song_name: String = chart.parsed_values.rawsong
+	var song_name: String = chart.parsed_values.song_name
 	var path: String = ChartAssets.song_path(song_name, variation, "/assets.tres")
 	
 	if not ResourceLoader.exists(path):
@@ -65,8 +65,10 @@ static func get_resource(chart: Chart, fallback: ChartAssets = Global.DEFAULT_CH
 					var push_vocal: bool = ResourceLoader.exists(audio_path + i)
 					if not push_vocal and vocal_index < 2:
 						var char_idx: int = vocal_index if vocal_index < 2 else -1
-						if char_idx != -1:
-							i = i.replace("-Player", "-%s" % chart.parsed_values.characters[0]).replace("-Opponent", "-%s" % chart.parsed_values.characters[1])
+						if char_idx != -1 and "characters" in chart.parsed_values:
+							i = i.replace("-Player", "-%s" % chart.parsed_values.characters[0]) \
+								.replace("-Opponent", "-%s" % chart.parsed_values.characters[1]) \
+								.replace("-DJ", "-%s" % chart.parsed_values.characters[2])
 							push_vocal = ResourceLoader.exists(audio_path + i)
 					# add vocal files (if possible)
 					if push_vocal: fb.vocals.append(load(audio_path + i))
