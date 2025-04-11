@@ -1,4 +1,4 @@
-@tool extends Control
+@tool class_name OptionBar extends Control
 
 const INACTIVE_COLOR: Color = Color("#b3b3b3")
 
@@ -22,14 +22,14 @@ var current_value: int = 0
 func _ready() -> void:
 	name_label.text = display_name # safety measure (sometimes it doesn't show)
 	if not settings:
-		if get_tree().current_scene and get_tree().current_scene is Gameplay:
-			settings = get_tree().current_scene.local_settings
-		else:
-			settings = Global.settings
+		settings = Global.settings
+		if Gameplay.current and Gameplay.current.local_settings:
+			settings = Gameplay.current.local_settings
 	if not variable_name.is_empty():
 		var setting = settings.get(variable_name)
 		match typeof(setting):
-			TYPE_INT, TYPE_BOOL: current_value = int(setting)
+			TYPE_INT: current_value = int(setting)
+			TYPE_BOOL: current_value = int(not setting)
 			_: current_value = values.find(str(setting))
 	for i: int in values.size():
 		var bar: ColorRect = value_bar.duplicate()
@@ -49,11 +49,11 @@ func update_value(next: int = 0) -> void:
 func update_setting(next: int = 0) -> void:
 	var setting = settings.get(variable_name)
 	match typeof(setting):
-		TYPE_BOOL: setting = not setting
+		TYPE_BOOL: settings.set(variable_name, bool(1 - current_value))
 		TYPE_STRING, TYPE_STRING_NAME, TYPE_NODE_PATH:
 			var x: int = wrapi(current_value + next, 0, values.size())
-			setting = values[x]
-		TYPE_INT: setting = wrapi(current_value + next, 0, values.size())
+			settings.set(variable_name, values[x])
+		TYPE_INT: settings.set(variable_name, wrapi(current_value + next, 0, values.size()))
 
 func get_value_string() -> String:
 	return str(values[current_value]).replace("true", "ON").replace("false", "OFF")

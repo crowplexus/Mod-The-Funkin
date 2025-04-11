@@ -5,6 +5,7 @@ extends Node
 @onready var sfx: Node = $"%sound_effects"
 @onready var resources: ResourcePreloader = $"%resource_preloader"
 
+var previous_scene_path: String = "res://scenes/menu/lobby.tscn"
 var _was_paused: bool = false
 var settings: Settings
 
@@ -37,9 +38,14 @@ func _notification(what: int) -> void:
 
 #region Utils
 
-func change_scene(next, immediate: bool = false) -> void:
+func rewind_scene(immediate: bool = false) -> void:
+	change_scene(previous_scene_path, immediate, true)
+
+func change_scene(next, immediate: bool = false, rewinding: bool = false) -> void:
+	if is_inside_tree() and not rewinding:
+		previous_scene_path = get_tree().current_scene.scene_file_path
 	# TODO: transition
-	if immediate: await get_tree().create_timer(0.5).timeout
+	#if not immediate: await get_tree().create_timer(0.5).timeout
 	if next is String: get_tree().change_scene_to_file(next)
 	elif next is PackedScene: get_tree().change_scene_to_packed(next)
 

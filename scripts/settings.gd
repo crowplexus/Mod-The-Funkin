@@ -42,8 +42,12 @@ var scroll: int = 0
 @export_enum("Default", "Advanced", "Classic", "Psych")
 var hud_style: String = "Default"
 ## Changes the UI elements and dialogue language.
+# "rus" # Russian
 @export_enum("en", "es", "pt", "mk") # English, Spanish, Portuguese, Macedonian
-var language: String = "auto" # "auto" means get OS locale
+var language: String = "auto": # "auto" means get OS locale
+	set(new_lang):
+		language = new_lang.to_snake_case()
+		reload_locale()
 
 func _init(use_defaults: bool = false) -> void:
 	if not use_defaults: # not a "defaults-only" instance

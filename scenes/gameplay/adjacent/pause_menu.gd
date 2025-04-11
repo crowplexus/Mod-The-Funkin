@@ -100,6 +100,12 @@ func confirm_selection() -> void:
 		"Difficulty":
 			list = difficulties
 			reload_options()
+		"Options":
+			Global.previous_scene_path = game.scene_file_path
+			get_tree().paused = false
+			on_close.emit()
+			await RenderingServer.frame_post_draw
+			Global.change_scene("res://scenes/menu/options/options_tab.tscn")
 		"Exit":
 			Global.change_scene("res://scenes/menu/freeplay_menu.tscn")
 
