@@ -101,7 +101,6 @@ func confirm_selection() -> void:
 			list = difficulties
 			reload_options()
 		"Options":
-			Global.previous_scene_path = game.scene_file_path
 			get_tree().paused = false
 			on_close.emit()
 			await RenderingServer.frame_post_draw
