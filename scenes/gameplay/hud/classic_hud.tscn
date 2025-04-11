@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://d3x8spahvh1je" path="res://assets/game/characters/face/icon.png" id="4_nfsnc"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="5_5abol"]
 [ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/gameplay/hud/combo_group.gd" id="6_xq3v3"]
-[ext_resource type="Texture2D" uid="uid://cw3h68ylrq7fy" path="res://assets/ui/countdown/prepare.png" id="7_fesgn"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="8_7it1m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it28e"]
@@ -25,6 +24,8 @@ paragraph_spacing = -2.0
 font = ExtResource("5_5abol")
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_76xds"]
 
 [node name="classic_hud" type="Control"]
 layout_mode = 3
@@ -147,7 +148,7 @@ metadata/_edit_lock_ = true
 visible = false
 position = Vector2(640, 360)
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("7_fesgn")
+texture = SubResource("PlaceholderTexture2D_76xds")
 
 [node name="sound" type="AudioStreamPlayer" parent="countdown"]
 stream = ExtResource("8_7it1m")

@@ -23,7 +23,7 @@ var default_ip2_scale: Vector2 = Vector2.ONE
 
 var countdown_tween: Tween
 
-var countdown_textures: Array[Texture2D] = []
+var countdown_textures: Array[StringName] = [&"prepare", &"ready", &"set", &"go"]
 var countdown_streams: Array[AudioStream] = []
 var _countdown_iteration: int = 0
 var _prev_health: int = 50
@@ -73,7 +73,6 @@ func init_vars() -> void:
 	if not game.assets:
 		skip_countdown = true
 	else:
-		countdown_textures = game.assets.countdown_textures
 		countdown_streams = game.assets.countdown_sounds
 		if not countdown_sprite:
 			countdown_sprite = Sprite2D.new()
@@ -126,7 +125,8 @@ func countdown_progress() -> void:
 	
 	if _countdown_iteration < countdown_textures.size():
 		const SCALE: Vector2 = Vector2(0.7, 0.7)
-		countdown_sprite.texture = countdown_textures[_countdown_iteration]
+		var count_name: StringName = countdown_textures[_countdown_iteration]
+		countdown_sprite.texture = game.assets.countdown_frames.get_frame_texture(count_name, 0)
 		countdown_sprite.position = Vector2(get_viewport_rect().size.x, get_viewport_rect().size.y) * 0.5
 		countdown_sprite.self_modulate.a = 1.0
 		countdown_sprite.scale = SCALE * 1.05
@@ -169,7 +169,7 @@ func update_icons(delta: float) -> void:
 		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - health_bar.value)
 
 func display_judgement(judgement: Judgement) -> void:
-	combo_group.display_judgement(judgement.texture)
+	combo_group.display_judgement(judgement.name.to_snake_case())
 
 func display_combo(combo: int = -1) -> void:
 	if combo < 0:

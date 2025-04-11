@@ -74,12 +74,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if axis != 0: change_selection(axis)
 	if accepting:
 		if is_same(list, difficulties):
-			var folder: StringName = Gameplay.current.chart.parsed_values.folder
 			var selected_diff: String = difficulties[selected].dedent().to_snake_case()
 			if selected_diff == "back":
 				load_default_list()
 				reload_options()
 			else:
+				var folder: StringName = Gameplay.current.chart.parsed_values.song_name
 				Gameplay.chart = Chart.detect_and_parse(folder, selected_diff)
 				Gameplay.chart.parsed_values.difficulties = difficulties
 				close()
@@ -100,6 +100,11 @@ func confirm_selection() -> void:
 		"Difficulty":
 			list = difficulties
 			reload_options()
+		"Options":
+			get_tree().paused = false
+			on_close.emit()
+			await RenderingServer.frame_post_draw
+			Global.change_scene("res://scenes/menu/options/options_tab.tscn")
 		"Exit":
 			Global.change_scene("res://scenes/menu/freeplay_menu.tscn")
 

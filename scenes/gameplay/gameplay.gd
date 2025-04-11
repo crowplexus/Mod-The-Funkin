@@ -86,9 +86,9 @@ func _ready() -> void:
 	scripts.load_global_scripts()
 	if chart:
 		assets = chart.assets
-		scripts.load_song_scripts(chart.parsed_values.folder, chart.parsed_values.file)
+		scripts.load_song_scripts(chart.parsed_values.song_name, chart.parsed_values.difficulty)
 		timed_events = chart.scheduled_events.duplicate()
-		difficulty_name = chart.parsed_values.file
+		difficulty_name = chart.parsed_values.difficulty
 		song_name = chart.name
 	add_child(scripts)
 	scripts.call_func("_pack_entered")
@@ -102,7 +102,6 @@ func _ready() -> void:
 	setup_note_fields()
 	
 	Conductor.on_beat_hit.connect(on_beat_hit)
-	if hud: hud.init_vars()
 	scripts.call_func("_ready_post")
 	var tick_scripts: Callable = func(tick: int) -> void:
 		scripts.call_func("countdown_tick", [tick])
@@ -153,8 +152,9 @@ func restart_song() -> void:
 			note_field.play_animation(i)
 	# update hud if possible
 	if hud:
-		hud.update_health(health)
+		hud.init_vars()
 		hud.update_score_text(true) # pretend its a miss
+		hud.update_health(health)
 	_sync_rpc_timestamp()
 	play_countdown()
 

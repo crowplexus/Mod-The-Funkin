@@ -10,6 +10,7 @@ var display_digits: Array[Node2D] = []
 var display_tweens: Array[Tween] = []
 var judgement_tween: Tween
 var combo_digits: int = 2
+var assets: ChartAssets
 
 func _calculate_velocity(velocity: Vector2, accel: Vector2, delta: float) -> Vector2:
 	return velocity + accel * delta
@@ -31,6 +32,7 @@ func _ready() -> void:
 			display_digits.append(node)
 			display_tweens.append(null)
 	if Gameplay.current and Gameplay.current.chart:
+		if Gameplay.current.assets: assets = Gameplay.current.assets
 		combo_digits = clampi(str(Gameplay.current.chart.note_counts[0]).length(), 1, 5)
 
 func _process(delta: float) -> void:
@@ -42,12 +44,12 @@ func _process(delta: float) -> void:
 		var vdt: Vector2 = 0.5 * _calculate_velocity(veloc, accel, delta) - veloc
 		i.position += (vdt * delta) * -1
 
-func display_judgement(texture: Texture2D) -> void:
+func display_judgement(judge: String) -> void:
 	var judgement: Sprite2D = get_child(0)
 	judgement.position = Vector2.ZERO
 	judgement.self_modulate.a = 1.0
 	judgement.scale = judge_scale #* randf_range(0.9, 1.1)
-	judgement.texture = texture
+	judgement.texture = assets.popup_frames.get_frame_texture(judge, 0)
 	judgement.position.y = -50
 	judgement.set_meta(ACCELERATION, Vector2(0, 500))
 	judgement.set_meta(VELOCITY, Vector2(randi_range(0, 10), randi_range(140, 175)))
@@ -70,7 +72,7 @@ func display_combo(amnt: int = 0) -> void:
 			display_digits[i].name = "combo_digit%s" % i
 			add_child(display_digits[i])
 		var num_score: Sprite2D = display_digits[i]
-		num_score.texture = load("res://assets/game/hud/combo/funkin/num%s.png" % combo[i])
+		num_score.texture = assets.popup_frames.get_frame_texture("num%s" % combo[i], 0)
 		num_score.position = Vector2(
 			(size.x * 0.5) - (90 * combo_scale.x) * (offset - i) - (combo_digits * 10),
 			(size.y * 0.25) + 25

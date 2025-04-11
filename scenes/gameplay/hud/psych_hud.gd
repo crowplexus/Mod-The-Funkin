@@ -6,6 +6,7 @@ const MAX_HISTORY: int = 20
 @export var zoom_on_hit: bool = true
 ## Default rating string.
 @export var rating_string: String = "?"
+var _rating_string_default: String = rating_string
 ## Scale of the score text when zooming.
 @export var zoom_scale: Vector2 = Vector2(1.075, 1.075)
 var score_text_tween: Tween
@@ -26,8 +27,8 @@ var accuracy_history: Array[float] = []
 var average_accuracy: float = 0.0
 
 func init_vars() -> void:
+	rating_string = _rating_string_default
 	super()
-	score_text.text = "%s: 0 | %s: 0 | %s: ?" % [ tr("score", &"gameplay"), tr("combo_breaks", &"gameplay"), tr("rating") ]
 
 func update_health_bar(_delta: float) -> void:
 	if health_bar.value != _prev_health:

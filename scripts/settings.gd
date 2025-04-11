@@ -39,11 +39,15 @@ var scroll: int = 0
 @export var hud_bump_intensity: int = 100:
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
 ## Select a HUD style, or leave "Default" to let the songs decide.
-@export_enum("Default", "Classic", "Psych", "Advanced")
+@export_enum("Default", "Advanced", "Classic", "Psych")
 var hud_style: String = "Default"
 ## Changes the UI elements and dialogue language.
+# "rus" # Russian
 @export_enum("en", "es", "pt", "mk") # English, Spanish, Portuguese, Macedonian
-var language: String = "auto" # "auto" means get OS locale
+var language: String = "auto": # "auto" means get OS locale
+	set(new_lang):
+		language = new_lang.to_snake_case()
+		reload_locale()
 
 func _init(use_defaults: bool = false) -> void:
 	if not use_defaults: # not a "defaults-only" instance
@@ -54,11 +58,10 @@ func reload_locale() -> void:
 	var list: = TranslationServer.get_loaded_locales()
 	if language == "auto":
 		var os_lang: String = OS.get_locale_language()
-		if os_lang in list: TranslationServer.set_locale(os_lang)
-		else: TranslationServer.set_locale("en")
-	else:
-		TranslationServer.set_locale(language)
-
+		if os_lang in list: language = os_lang
+		else: language = "en"
+	TranslationServer.set_locale(language)
+	
 ## Reloads the note keybinds.
 func reload_keybinds() -> void:
 	const NOTE_KEYBINDS: Array[String] = ["note_left", "note_down", "note_up", "note_right"]
@@ -85,6 +88,7 @@ func update_master_volume() -> void:
 
 ## Updates the Engine's max framerate.
 func update_framerate() -> void:
+	update_vsync()
 	if framerate == 0 and _was_uncapped: _was_uncapped = false
 	if not _was_uncapped and framerate < 30 or framerate > 360:
 		_was_uncapped = true

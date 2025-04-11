@@ -11,13 +11,10 @@ class_name ChartAssets extends Resource
 @export var hud: PackedScene
 ## The Pause Menu scene that will be used for the song, if unspecified, the game will use the default one.
 @export var pause_menu: PackedScene
-## The Countdown Textures that will be used for the early-song countdown.
-@export var countdown_textures: Array[Texture2D] = [
-	preload("res://assets/ui/countdown/prepare.png"),
-	preload("res://assets/ui/countdown/ready.png"),
-	preload("res://assets/ui/countdown/set.png"),
-	preload("res://assets/ui/countdown/go.png"),
-]
+## The Countdown Sprite Frames that will be used for the early-song countdown.
+@export var countdown_frames: SpriteFrames = preload("res://assets/ui/popups/countdown-funkin.res")
+## Judgements + Combo Sprite Frames
+@export var popup_frames: SpriteFrames = preload("res://assets/ui/popups/popup-funkin.res")
 ## The Countdown Sounds that will be used for the early-song countdown.
 @export var countdown_sounds: Array[AudioStream] = [
 	preload("res://assets/sounds/countdown/funkin/3.ogg"),
@@ -46,7 +43,7 @@ static func song_path(song_name: String, variation: String = "", add: String = "
 ## Will return a a default resource on fail.
 static func get_resource(chart: Chart, fallback: ChartAssets = Global.DEFAULT_CHART_ASSETS) -> ChartAssets:
 	var variation: String = chart.parsed_values.variation
-	var song_name: String = chart.parsed_values.rawsong
+	var song_name: String = chart.parsed_values.song_name
 	var path: String = ChartAssets.song_path(song_name, variation, "/assets.tres")
 	
 	if not ResourceLoader.exists(path):
@@ -65,8 +62,10 @@ static func get_resource(chart: Chart, fallback: ChartAssets = Global.DEFAULT_CH
 					var push_vocal: bool = ResourceLoader.exists(audio_path + i)
 					if not push_vocal and vocal_index < 2:
 						var char_idx: int = vocal_index if vocal_index < 2 else -1
-						if char_idx != -1:
-							i = i.replace("-Player", "-%s" % chart.parsed_values.characters[0]).replace("-Opponent", "-%s" % chart.parsed_values.characters[1])
+						if char_idx != -1 and "characters" in chart.parsed_values:
+							i = i.replace("-Player", "-%s" % chart.parsed_values.characters[0]) \
+								.replace("-Opponent", "-%s" % chart.parsed_values.characters[1]) \
+								.replace("-DJ", "-%s" % chart.parsed_values.characters[2])
 							push_vocal = ResourceLoader.exists(audio_path + i)
 					# add vocal files (if possible)
 					if push_vocal: fb.vocals.append(load(audio_path + i))

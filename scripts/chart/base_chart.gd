@@ -81,11 +81,9 @@ func clear_overlapping_notes() -> void:
 	#print_debug("deleted ", counter, " overlapping notes from ", total, " total notes")
 
 func save_parsing_meta(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> void:
-	var variation: String = ChartAssets.solve_variation(difficulty)
-	parsed_values.folder = Chart.fix_path(song_name)
-	parsed_values.variation = variation
-	parsed_values.rawsong = song_name
-	parsed_values.file = difficulty
+	parsed_values.variation = ChartAssets.solve_variation(difficulty)
+	parsed_values.difficulty = difficulty
+	parsed_values.song_name = song_name
 
 ## Detects a chart format and parses it.
 static func detect_and_parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Chart:
@@ -98,7 +96,7 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 	
 	if ResourceLoader.exists(path):
 		chart_type = ChartType.FNF_LEGACY
-	elif ResourceLoader.exists(path.replace("/%s.json" % difficulty, "/chart.json")):
+	if ResourceLoader.exists(path.replace("/%s.json" % difficulty, "/chart.json")):
 		chart_type = ChartType.FNF_VSLICE
 
 	match chart_type:
@@ -108,21 +106,20 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 			chart.notes.sort_custom(NoteData.sort_by_time)
 			chart.timing_changes.sort_custom(SongTimeChange.sort_by_time)
 			chart.scheduled_events.sort_custom(TimedEvent.sort_by_time)
-			chart.clear_overlapping_notes()
 		ChartType.FNF_VSLICE:
-			chart = VSliceChart.parse(song_name, difficulty, true);;;;;
+			chart = VSliceChart.parse(song_name, difficulty, true)
 			print_debug("Parsing new FNF style chart ", song_name, " with difficulty ", difficulty)
-			chart.clear_overlapping_notes()
 		ChartType.FNF_LEGACY:
 			chart = FNFChart.parse(song_name, difficulty, true)
 			print_debug("Parsing old FNF style chart ", song_name, " with difficulty ", difficulty)
-			chart.clear_overlapping_notes()
 	
 	if not chart:
 		chart = FNFChart.new() # make an FNFChart to avoid a metric fuckton amount of crashes.
 		chart.scheduled_events.append(TimedEvent.velocity_change(0.0))
 		print_debug("Unable to parse chart, creating a dummy...")
-	if not "raw_song" in chart.parsed_values: chart.save_parsing_meta(song_name, difficulty)
+	if chart:
+		chart.clear_overlapping_notes()
+		chart.save_parsing_meta(song_name, difficulty)
 	if not chart.assets: chart.assets = ChartAssets.get_resource(chart)
 	return chart
 
