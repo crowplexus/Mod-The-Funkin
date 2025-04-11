@@ -128,13 +128,14 @@ func countdown_progress() -> void:
 		var count_name: StringName = countdown_textures[_countdown_iteration]
 		countdown_sprite.texture = game.assets.countdown_frames.get_frame_texture(count_name, 0)
 		countdown_sprite.position = Vector2(get_viewport_rect().size.x, get_viewport_rect().size.y) * 0.5
+		countdown_sprite.scale = SCALE * (1.0 if game.local_settings.simplify_popups else 1.1)
 		countdown_sprite.self_modulate.a = 1.0
-		countdown_sprite.scale = SCALE * 1.05
 		countdown_sprite.show()
 		
 		if countdown_tween: countdown_tween.stop()
 		countdown_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_parallel(true)
-		countdown_tween.tween_property(countdown_sprite, "scale", SCALE, Conductor.crotchet * 0.9)
+		if countdown_sprite.scale != SCALE:
+			countdown_tween.tween_property(countdown_sprite, "scale", SCALE, Conductor.crotchet * 0.9)
 		countdown_tween.tween_property(countdown_sprite, "self_modulate:a", 0.0, Conductor.crotchet * 0.8)
 		countdown_tween.finished.connect(countdown_sprite.hide)
 	

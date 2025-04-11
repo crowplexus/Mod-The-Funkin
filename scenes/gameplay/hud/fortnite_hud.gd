@@ -1,6 +1,7 @@
 extends TemplateHUD
 
 const POPUP_SCALE: Vector2 = Vector2(1.5, 1.5)
+const SCORE_TRANSLATE_CONTEXT: StringName = &"gameplay"
 
 @onready var score_text: Label = $"health_bar/score_text"
 @onready var health_text: Label = $"health_bar/health_percent"
@@ -96,13 +97,14 @@ func countdown_progress() -> void:
 		var count_name: StringName = countdown_textures[_countdown_iteration]
 		countdown_sprite.texture = game.assets.countdown_frames.get_frame_texture(count_name, 0)
 		countdown_sprite.position = Vector2(get_viewport_rect().size.x, get_viewport_rect().size.y) * 0.5
+		countdown_sprite.scale = SCALE * (1.0 if game.local_settings.simplify_popups else 1.1)
 		countdown_sprite.self_modulate.a = 1.0
-		countdown_sprite.scale = SCALE * 1.1
 		countdown_sprite.show()
 		
 		if countdown_tween: countdown_tween.stop()
 		countdown_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_parallel(true)
-		countdown_tween.tween_property(countdown_sprite, "scale", SCALE, Conductor.crotchet * 0.9)
+		if countdown_sprite.scale != SCALE:
+			countdown_tween.tween_property(countdown_sprite, "scale", SCALE, Conductor.crotchet * 0.9)
 		countdown_tween.tween_property(countdown_sprite, "self_modulate:a", 0.0, Conductor.crotchet * 0.8)
 		countdown_tween.finished.connect(countdown_sprite.hide)
 	
@@ -112,8 +114,6 @@ func countdown_progress() -> void:
 	countdown_timer.start(Conductor.crotchet)
 	on_countdown_tick.emit(_countdown_iteration)
 	_countdown_iteration += 1
-
-const SCORE_TRANSLATE_CONTEXT: StringName = &"gameplay"
 
 func update_score_text(_missed: bool = false) -> void:
 	var tally: bool = game and game.tally
@@ -146,13 +146,14 @@ func display_combo(combo: int = -1) -> void:
 	var new_modulate: Color = latest_judge.color if latest_judge else Color.WHITE
 	if combo < 0:
 		new_modulate = Color.PALE_VIOLET_RED
-	judgement_popup.scale = POPUP_SCALE
 	judgement_popup.modulate = new_modulate
+	if not game.local_settings.simplify_popups: judgement_popup.scale = POPUP_SCALE
 	judgement_popup.text = "%s\nx%s" % [ latest_judge.name, combo ]
 	if popup_tween: popup_tween.kill()
 	judgement_popup.show()
 	popup_tween = create_tween().set_ease(Tween.EASE_IN_OUT)
-	popup_tween.tween_property(judgement_popup, "scale", Vector2.ONE, 0.3).set_delay(Conductor.crotchet * 0.1)
+	if judgement_popup.scale != POPUP_SCALE:
+		popup_tween.tween_property(judgement_popup, "scale", Vector2.ONE, 0.3).set_delay(Conductor.crotchet * 0.1)
 	popup_tween.tween_property(judgement_popup, "modulate:a", 0.0, 0.5).set_delay(Conductor.crotchet * 1.0) \
 	.finished.connect(judgement_popup.hide)
 

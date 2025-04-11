@@ -15,14 +15,25 @@ var _internal_value: Variant = null
 func _ready() -> void:
 	super()
 	_internal_value = settings.get(variable_name)
-	progress.min_value = minv
+	if _internal_value < minv: progress.min_value = _internal_value
+	elif progress.min_value != minv: progress.min_value = minv
 	progress.max_value = maxv
 	update_value()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not is_hovered: return
 	if event.is_pressed():
 		if event.keycode == KEY_SHIFT:
 			_shift_mult = 4.0
+		if event.keycode == KEY_TAB and not values.is_empty():
+			current_value = wrapi(current_value + 1, 0, values.size())
+			var recommended_value = values[current_value]
+			if typeof(recommended_value) == TYPE_INT or typeof(recommended_value) == TYPE_FLOAT:
+				_internal_value = recommended_value
+				# for the framerate option (value 0 is an option)
+				if _internal_value < minv: progress.min_value = _internal_value
+				elif progress.min_value != minv: progress.min_value = minv
+				_update_value()
 	else:
 		_shift_mult = 1.0
 
@@ -30,16 +41,14 @@ func update_value(next: int = 0) -> void:
 	if typeof(_internal_value) == TYPE_INT or typeof(_internal_value) == TYPE_FLOAT:
 		var s: float = round(step) if typeof(_internal_value) == TYPE_INT else step
 		_internal_value = wrap(_internal_value + s * (next * _shift_mult), minv, maxv + 1)
-		progress.value = _internal_value
+		_update_value()
+
+func _update_value() -> void:
+	progress.value = _internal_value
 	value_label.text = (format_string % str(progress.value)) + string_suffix
 
 func update_setting(next: int = 0) -> void:
-	var setting = settings.get(variable_name)
-	match typeof(setting):
-		TYPE_BOOL: settings.set(variable_name, not setting)
-		TYPE_STRING, TYPE_STRING_NAME, TYPE_NODE_PATH:
-			var x: int = wrap(current_value + (next * _shift_mult), 0, values.size())
-			settings.set(variable_name, values[x])
-		TYPE_INT, TYPE_FLOAT:
-			var s: float = round(step) if typeof(setting) == TYPE_INT else step
-			settings.set(variable_name, wrap(setting + s * (next * _shift_mult), minv, maxv + 1))
+	if typeof(_internal_value) == TYPE_INT or typeof(_internal_value) == TYPE_FLOAT:
+		settings.set(variable_name, _internal_value)
+	else:
+		super(next)

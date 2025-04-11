@@ -58,9 +58,12 @@ func change_selection(next: int = 0) -> void:
 	if selected != previous_selected:
 		Global.play_sfx(Global.resources.get_resource("scroll"))
 		var previous_option: Control = current_tab.get_child(previous_selected)
-		if previous_option is OptionBar: previous_option.modulate.v = 1
+		if previous_option is OptionBar:
+			previous_option.is_hovered = false
+			previous_option.modulate.v = 1
 	var selected_option: Control = current_tab.get_child(selected)
 	if selected_option is OptionBar:
+		selected_option.is_hovered = true
 		option_title.text = selected_option.display_name
 		option_infor.text = selected_option.description
 	selected_option.modulate.v = 0.8

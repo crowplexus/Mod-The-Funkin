@@ -38,6 +38,7 @@ var scroll: int = 0
 ## Defines the intensity of the HUD Bump.
 @export var hud_bump_intensity: int = 100:
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
+	
 ## Select a HUD style, or leave "Default" to let the songs decide.
 @export_enum("Default", "Advanced", "Classic", "Psych")
 var hud_style: String = "Default"
@@ -54,6 +55,14 @@ var transition_style: int = 1:
 		match transition_style:
 			2: Global.current_transition = &"default"
 			#3: Global.current_transition = &"sticker"
+## Defines how opaque should the note impact effect be when hitting judgements that display it.
+@export var note_splash_alpha: int = 60:
+	set(new_alpha): note_splash_alpha = clampi(new_alpha, 0, 100)
+## Defines how opaque should the health bar be for HUDs that have it.
+@export var health_bar_alpha: int = 100:
+	set(new_alpha): health_bar_alpha = clampi(new_alpha, 0, 100)
+## Simplifies the in-game pop ups to make them easier to see (maybe less obnoxious).
+@export var simplify_popups: bool = false
 
 var skip_transitions: bool:
 	get: return transition_style < 0

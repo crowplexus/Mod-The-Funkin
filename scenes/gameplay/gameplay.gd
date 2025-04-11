@@ -344,6 +344,8 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 		var next_hud: PackedScene = custom_hud if custom_hud else chart.assets.hud
 		if next_hud: hud = next_hud.instantiate()
 		else: hud = DEFAULT_HUDS.classic.instantiate() # if all else fails, use the classic one.
+	if hud.has_node("health_bar"): # change alpha if there is a health bar.
+		hud.get_node("health_bar").modulate.a = local_settings.health_bar_alpha * 0.01
 	hud_layer.add_child(hud)
 	hud_layer.move_child(hud, idx)
 

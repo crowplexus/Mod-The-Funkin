@@ -5,12 +5,17 @@ extends Note
 @onready var arrow: AnimatedSprite2D = $"arrow"
 
 var loaded_hold: bool = false
+var game: Node2D
 
 func show_all() -> void:
 	if not arrow.visible: arrow.show()
 	var is_hold: bool = clip_rect and hold_size > 0.0
 	if clip_rect: clip_rect.visible = is_hold
 	super()
+
+func _ready() -> void:
+	super()
+	if is_inside_tree(): game = get_tree().current_scene
 
 func reload(p_data: NoteData) -> void:
 	super(p_data)
@@ -51,6 +56,7 @@ func display_splash() -> Node2D:
 		dip.global_position = receptor.global_position
 		dip.top_level = true
 		receptor.add_child(dip)
+	dip.modulate.a = (game.local_settings.note_splash_alpha if Gameplay.current else Global.settings.note_splash_alpha) * 0.01
 	dip.scale = Vector2.ONE * (1.0 if judgement.splash_type == Judgement.SplashType.FULL else 0.8)
 	dip.frame = 0
 	dip.show()

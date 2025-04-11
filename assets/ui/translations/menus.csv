@@ -16,12 +16,17 @@ difficulty_back,Back,Volver,Voltar,Назад
 
 options_tab_gameplay,Gameplay,Jugabilidad,Jogabilidade,Игранйе
 
-option_scroll,Scroll Direction,Dirección de las Notas,Direção das Notas,Насока на белешките
+option_scroll,Scroll Direction,Dirección de las Notas,Direção das Notas,Распоред на белешките
 option_ghost_tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping
+option_use_epics,Use Epics,Permitir Epics,Permitir Epics,Овозможи Epic
+
+options_tab_visuals,Visuals,Visuales,,Изглед
+
 option_framerate,Framerate,Framerate,Framerate,Фрамерате
-
-options_tab_visuals,Visuals,Visuais,Visuales,Изглед
-
-option_use_epics,Use Epics,Permitir Epics,Permitir Epics,Дозволи Epics
-option_hud_style,HUD Style,Estilo de la HUD,Estilo da HUD,Изглед HUD
 option_language,Language,Idioma,Idioma,Йазик
+option_vsync,VSync,VSync,VSync,VSync
+
+option_hud_style,HUD Style,Estilo de la HUD,Estilo da HUD,Изглед HUD
+option_simplify_popups,Simplify Popups,Simplificar Popups,Simplfiicar Pop-ups,Поедноставени Popups
+option_note_splash_alpha,Note Splash Opacity,Opacidad del Note Splash,Opacidade do Note Splash,Слабење на Note Splash
+option_health_bar_alpha,Health Bar Opacity,Opacidad de la Barra de HP,Opacidade da Barra de HP,Слабење на Health Bar

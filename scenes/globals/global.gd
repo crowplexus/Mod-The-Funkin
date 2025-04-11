@@ -84,13 +84,7 @@ func change_scene(next, immediate: bool = false) -> void:
 #region Music
 var music_fade_tween: Tween
 
-## [see]lerpf[/see]
-func lerpv2(v1: Vector2, v2: Vector2, weight: float = 1.0) -> Vector2:
-	return Vector2(
-		lerpf(v1.x, v2.x, weight),
-		lerpf(v1.y, v2.y, weight)
-	)
-##
+## Activates a volume fade tween in [code]player: AudioStreamPlayer[/code].
 func request_audio_fade(player: AudioStreamPlayer, to: float = 0.0, speed: float = 1.0) -> AudioStreamPlayer:
 	if to < 0.0: return
 	if music_fade_tween: music_fade_tween.stop()
@@ -142,6 +136,13 @@ func linear_to_seconds(value: float) -> float: return value - int(value / SECS_M
 func linear_to_log(x: float) -> float: return exp(LOG_MINIMUM * (1 - x))
 ## Maps a logarithmic value [code]x[/code] (i.e: 0.001) back to a linear scale.
 func log_to_linear(x: float) -> float: return 1 - (log(x) / LOG_MINIMUM)
+
+## [see]@GlobalScope.lerpf[/see]
+func lerpv2(v1: Vector2, v2: Vector2, weight: float = 1.0) -> Vector2:
+	return Vector2(
+		lerpf(v1.x, v2.x, weight),
+		lerpf(v1.y, v2.y, weight)
+	)
 #endregion
 
 #region Strings
@@ -159,17 +160,18 @@ func get_paused_string() -> String:
 	return "PAUSED" if get_tree().paused else ""
 
 ## Returns a game mode string based on the integer given.[br]
-## [code]1 = "STORY MODE"[/code][br]
-## [code]2 = "FREEPLAY"[/code][br]
-## [code]3 = "CHARTING"[/code]
+## [code]1 = "Story Mode"[/code][br]
+## [code]2 = "Freeplay"[/code][br]
+## [code]3 = "Charting"[/code][br]
+## Anything else will return [code]"Unknown"[/code]
 func get_mode_string(game_mode: int) -> String:
 	match game_mode:
-		0: return "STORY MODE"
-		1: return "FREEPLAY"
-		2: return "CHARTING"
-		_: return ""
+		0: return "Story Mode"
+		1: return "Freeplay"
+		2: return "Charting"
+		_: return "Unknown"
 
-## Formats a float to a digital clock string, like: 1:10:25[br]
+## Formats a float to a digital clock string, example: 1:10:25[br]
 func format_to_time(value: float, show_milliseconds: bool = false) -> String:
 	var minutes: float = Global.linear_to_minutes(value)
 	var seconds: float = Global.linear_to_seconds(value)
@@ -181,7 +183,7 @@ func format_to_time(value: float, show_milliseconds: bool = false) -> String:
 		formatter += ".%02d" % int((value - int(value)) * 1000)
 	return formatter
 
-## Gets the current weekday as a name
+## Gets the current weekday as a name.
 func get_weekday_string() -> String:
 	var weekday: Time.Weekday = Time.get_date_dict_from_system().weekday
 	match weekday:
@@ -193,6 +195,7 @@ func get_weekday_string() -> String:
 		5: return "Friday"
 		_: return "Unknown"
 
+## Formats an integer to separate the thousand value with [code]separator[/code].
 func separate_thousands(value: int, separator: String = ",") -> String:
 	var vstr: String = str(abs(value))
 	var prefix: String = "-" if value < 0 else ""

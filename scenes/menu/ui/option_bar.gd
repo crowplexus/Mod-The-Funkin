@@ -18,6 +18,7 @@ const INACTIVE_COLOR: Color = Color("#b3b3b3")
 var settings: Settings
 
 var current_value: int = 0
+var is_hovered: bool = false
 
 func _ready() -> void:
 	if has_node("value_group/value_bar"): value_bar = get_node("value_group/value_bar")

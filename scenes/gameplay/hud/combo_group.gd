@@ -11,6 +11,7 @@ var display_tweens: Array[Tween] = []
 var judgement_tween: Tween
 var combo_digits: int = 2
 var assets: ChartAssets
+var settings: Settings
 
 func _calculate_velocity(velocity: Vector2, accel: Vector2, delta: float) -> Vector2:
 	return velocity + accel * delta
@@ -31,9 +32,12 @@ func _ready() -> void:
 		if node.name.begins_with("combo_digit"):
 			display_digits.append(node)
 			display_tweens.append(null)
-	if Gameplay.current and Gameplay.current.chart:
-		if Gameplay.current.assets: assets = Gameplay.current.assets
-		combo_digits = clampi(str(Gameplay.current.chart.note_counts[0]).length(), 1, 5)
+	if Gameplay.current:
+		if Gameplay.current.chart:
+			if Gameplay.current.assets: assets = Gameplay.current.assets
+			combo_digits = clampi(str(Gameplay.current.chart.note_counts[0]).length(), 1, 5)
+		settings = Gameplay.current.local_settings
+	if not settings: settings = Global.settings
 
 func _process(delta: float) -> void:
 	for i: Sprite2D in get_children():
@@ -51,8 +55,9 @@ func display_judgement(judge: String) -> void:
 	judgement.scale = judge_scale #* randf_range(0.9, 1.1)
 	judgement.texture = assets.popup_frames.get_frame_texture(judge, 0)
 	judgement.position.y = -50
-	judgement.set_meta(ACCELERATION, Vector2(0, 500))
-	judgement.set_meta(VELOCITY, Vector2(randi_range(0, 10), randi_range(140, 175)))
+	if not settings.simplify_popups:
+		judgement.set_meta(ACCELERATION, Vector2(0, 500))
+		judgement.set_meta(VELOCITY, Vector2(randi_range(0, 10), randi_range(140, 175)))
 	judgement.visible = true
 	if judgement_tween: judgement_tween.stop()
 	judgement_tween = create_tween().set_parallel(true)
@@ -80,8 +85,9 @@ func display_combo(amnt: int = 0) -> void:
 		num_score.scale = combo_scale
 		#num_score.scale.x *= 1.5
 		num_score.self_modulate.a = 1.0
-		num_score.set_meta(ACCELERATION, Vector2(0, randi_range(250, 300)))
-		num_score.set_meta(VELOCITY, Vector2(randi_range(-5, 5), randi_range(130, 150)))
+		if not settings.simplify_popups:
+			num_score.set_meta(ACCELERATION, Vector2(0, randi_range(250, 300)))
+			num_score.set_meta(VELOCITY, Vector2(randi_range(-5, 5), randi_range(130, 150)))
 		num_score.show()
 		display_tweens[i] = create_tween().set_parallel(true)
 		if num_score.scale != combo_scale:
