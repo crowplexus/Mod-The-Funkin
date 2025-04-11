@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://baunqnsnu3gmb"]
+[gd_scene load_steps=3 format=3 uid="uid://baunqnsnu3gmb"]
 
 [ext_resource type="Script" uid="uid://dir4cbe24ow57" path="res://scenes/menu/ui/number_option.gd" id="1_sgnto"]
+[ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="2_n76a4"]
 
 [node name="number_bar" type="Control"]
 layout_mode = 3
@@ -15,6 +16,7 @@ layout_mode = 1
 offset_left = 5.0
 offset_right = 245.0
 offset_bottom = 50.0
+theme_override_fonts/font = ExtResource("2_n76a4")
 text = "Setting"
 vertical_alignment = 1
 
@@ -53,6 +55,7 @@ offset_right = 19.5
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_n76a4")
 theme_override_font_sizes/font_size = 20
 text = "N/A"
 horizontal_alignment = 1

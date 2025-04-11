@@ -1,7 +1,10 @@
 extends Control
 
+const OPTION_TRANSLATE_CONTEXT: StringName = &"options"
+
 @onready var option_title: Label = $"description/option"
 @onready var option_infor: RichTextLabel = $"description/info"
+@onready var tab_name: Label = $"tabs/tab_name"
 @onready var tabs_control: Control = $"tabs"
 
 var selected: int = 0
@@ -14,11 +17,13 @@ var settings: Settings
 
 func _ready() -> void:
 	settings = Global.settings
+	get_tree().paused = false
 	#if Gameplay.current and Gameplay.current.local_settings:
 	#	settings = Gameplay.current.local_settings
 	for tab: Control in tabs_control.get_children():
 		if tab is BoxContainer and tab.get_child_count() != 0:
 			tabs.append(tab.name)
+	reload_labels()
 	switch_tabs()
 
 func _unhandled_input(_event: InputEvent) -> void:
@@ -66,6 +71,7 @@ func switch_tabs(next: int = 0) -> void:
 	if selected_tab != previous_tab:
 		Global.play_sfx(Global.resources.get_resource("scroll"))
 		visible_tab = tabs[selected_tab]
+	tab_name.text = "< %s >" % [ tr("options_tab_%s" % visible_tab, OPTION_TRANSLATE_CONTEXT) ]
 	update_visible_tabs()
 
 func update_visible_tabs() -> void:
@@ -94,3 +100,12 @@ func update_hover() -> void:
 		# PLACEHOLDER ↓ ↓ ↓
 		option.get_child(0).modulate = Color.CYAN if changing_option else Color.WHITE
 		option.get_child(1).get_child(0).modulate = Color.CYAN if changing_option else Color.WHITE
+
+func reload_labels() -> void:
+	tab_name.text = tr("options_tab_%s" % visible_tab, OPTION_TRANSLATE_CONTEXT)
+	for tab: Control in tabs_control.get_children():
+		if tab is BoxContainer and tab.get_child_count() != 0:
+			tabs.append(tab.name)
+			for i: Control in tab.get_children():
+				if i is OptionBar: # translate labels.
+					i.name_label.text = tr("option_%s" % i.variable_name)

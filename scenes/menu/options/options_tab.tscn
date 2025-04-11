@@ -1,9 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://gulb1ge3va36"]
+[gd_scene load_steps=7 format=3 uid="uid://gulb1ge3va36"]
 
 [ext_resource type="Script" uid="uid://dcbyww3fravuq" path="res://scenes/menu/options/options_tab.gd" id="1_s4ceo"]
-[ext_resource type="PackedScene" uid="uid://cn5qxa5uqvf8r" path="res://scenes/menu/ui/options_bar.tscn" id="2_7tf5q"]
+[ext_resource type="PackedScene" uid="uid://cn5qxa5uqvf8r" path="res://scenes/menu/ui/option_bar.tscn" id="2_7tf5q"]
 [ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="2_p4q55"]
 [ext_resource type="PackedScene" uid="uid://baunqnsnu3gmb" path="res://scenes/menu/ui/number_bar.tscn" id="3_5nl4s"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6dip2"]
+font = ExtResource("2_p4q55")
+font_size = 24
+font_color = Color(0.48, 0.861333, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_5nl4s"]
 font = ExtResource("2_p4q55")
@@ -21,9 +26,21 @@ script = ExtResource("1_s4ceo")
 
 [node name="tabs" type="Control" parent="."]
 anchors_preset = 0
+offset_top = 35.0
 offset_right = 600.0
 offset_bottom = 720.0
-metadata/_edit_lock_ = true
+
+[node name="tab_name" type="Label" parent="tabs"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -32.0
+offset_bottom = -1.0
+grow_horizontal = 2
+text = "< Gameplay Settings >"
+label_settings = SubResource("LabelSettings_6dip2")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="gameplay" type="BoxContainer" parent="tabs"]
 layout_mode = 1
@@ -119,7 +136,9 @@ description = "Changes the UI elements and dialogue language.
 
 \"pt\" is based on Brazilian Portuguese, which contains vastly different grammatical rules if compared to the other dialects.
 
-\"mk\" is based on the Standard North Macedonia language."
+\"mk\" is based on the Standard North Macedonia language.
+
+Takes effect after leaving this menu!"
 metadata/_edit_lock_ = true
 
 [node name="description" type="Control" parent="."]

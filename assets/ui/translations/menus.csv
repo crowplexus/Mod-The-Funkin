@@ -1,8 +1,8 @@
 key,en,es,pt-BR,mk
 
 pause_resume,Resume,Continuar,Prosseguir,Продолжи
-pause_restart,Restart,Reiniciar,Reiniciar,Рестартираjте
-pause_difficulty,Difficulty,Dificultad,Dificuldade,Тешкотија
+pause_restart,Restart,Reiniciar,Reiniciar,Рестартирайте
+pause_difficulty,Difficulty,Dificultad,Dificuldade,Тешкотийа
 pause_options,Options,Opciones,Opções,Опции
 pause_exit,Exit,Salir,Sair,Излезете
 
@@ -13,3 +13,15 @@ difficulty_erect,Erect,Ereto,Ereto,Ерекциjа
 difficulty_nightmare,Nightmare,Pesadilla,Pesadelo,Кошмар
 difficulty_flaccid,Flaccid,Flácido,Flácido,Флакцидно
 difficulty_back,Back,Volver,Voltar,Назад
+
+options_tab_gameplay,Gameplay,Jugabilidad,Jogabilidade,Игранйе
+
+option_scroll,Scroll Direction,Dirección de las Notas,Direção das Notas,Насока на белешките
+option_ghost_tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping
+option_framerate,Framerate,Framerate,Framerate,Фрамерате
+
+options_tab_visuals,Visuals,Visuais,Visuales,Изглед
+
+option_use_epics,Use Epics,Permitir Epics,Permitir Epics,Дозволи Epics
+option_hud_style,HUD Style,Estilo de la HUD,Estilo da HUD,Изглед HUD
+option_language,Language,Idioma,Idioma,Йазик
