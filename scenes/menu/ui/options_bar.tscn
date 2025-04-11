@@ -4,31 +4,29 @@
 
 [node name="options_bar" type="Control"]
 layout_mode = 3
-anchor_right = 0.327
+anchor_right = 0.516
 anchor_bottom = 0.069
-offset_right = 251.44
+offset_right = -0.480042
 offset_bottom = 0.319996
 script = ExtResource("1_jnjws")
 
 [node name="name_label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = 16.0
-offset_top = 24.0
-offset_right = 123.0
-offset_bottom = 24.0
-grow_vertical = 2
+offset_left = 5.0
+offset_right = 245.0
+offset_bottom = 50.0
 text = "Setting"
 vertical_alignment = 1
 
 [node name="value_group" type="Control" parent="."]
-custom_minimum_size = Vector2(316, 50)
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 1
-anchors_preset = 0
-offset_left = 364.0
-offset_right = 680.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
 offset_bottom = 50.0
+grow_horizontal = 0
 
 [node name="value_name" type="Label" parent="value_group"]
 custom_minimum_size = Vector2(0, 40)
@@ -57,6 +55,7 @@ anchor_bottom = 1.0
 offset_left = -25.0
 offset_top = -4.0
 offset_right = 25.0
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -67,8 +66,9 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 100.0
 offset_top = -4.0
+offset_right = -100.0
 offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
-alignment = 1

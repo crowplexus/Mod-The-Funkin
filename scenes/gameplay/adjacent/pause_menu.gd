@@ -83,7 +83,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				Gameplay.chart = Chart.detect_and_parse(folder, selected_diff)
 				Gameplay.chart.parsed_values.difficulties = difficulties
 				close()
-				get_tree().reload_current_scene()
+				Global.reload_scene()
 		else:
 			confirm_selection()
 

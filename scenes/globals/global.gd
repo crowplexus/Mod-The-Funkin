@@ -1,9 +1,16 @@
 extends Node
 
+const TRANSITIONS: Dictionary[String, PackedScene] = {
+	"default": preload("res://scenes/globals/transition/wipe_top_bottom.tscn"),
+	#"sticker": preload("res://scenes/globals/transition/funkin_stickers.tscn"),
+}
+var current_transition: StringName = &"default"
+
 #region Node Tree
 @onready var bgm: AudioStreamPlayer = $"%background_music"
 @onready var sfx: Node = $"%sound_effects"
 @onready var resources: ResourcePreloader = $"%resource_preloader"
+@onready var transition: CanvasLayer = $"%transition_layer"
 
 var previous_scene_path: String = "res://scenes/menu/lobby.tscn"
 var _was_paused: bool = false
@@ -38,17 +45,40 @@ func _notification(what: int) -> void:
 
 #region Utils
 
-func rewind_scene(immediate: bool = false) -> void:
-	change_scene(previous_scene_path, immediate, true)
+func change_transition_style(next: StringName = &"default") -> void:
+	if next in TRANSITIONS: current_transition = next
 
-func change_scene(next, immediate: bool = false, rewinding: bool = false) -> void:
-	if is_inside_tree() and not rewinding:
+func play_transition() -> Control:
+	var trans: Control = TRANSITIONS[current_transition].instantiate()
+	trans.finished.connect(func() -> void: trans.queue_free())
+	transition.add_child(trans)
+	trans.play()
+	return trans
+
+func reload_scene(immediate: bool = false) -> void:
+	var transit: bool = not immediate and not settings.skip_transitions
+	if not current_transition in TRANSITIONS:
+		transit = false
+	if transit:
+		var trans: = play_transition()
+		await get_tree().create_timer(trans.duration * 0.35).timeout
+	get_tree().reload_current_scene()
+	if transit: play_transition()
+
+func rewind_scene(immediate: bool = false) -> void:
+	change_scene(previous_scene_path, immediate)
+
+func change_scene(next, immediate: bool = false) -> void:
+	if is_inside_tree() and next != previous_scene_path:
 		previous_scene_path = get_tree().current_scene.scene_file_path
-	# TODO: transition
-	#if not immediate: await get_tree().create_timer(0.5).timeout
+	var transit: bool = not immediate and not settings.skip_transitions
+	if not current_transition in TRANSITIONS:
+		transit = false
+	if transit:
+		var trans: = play_transition()
+		await get_tree().create_timer(trans.duration * 0.35).timeout
 	if next is String: get_tree().change_scene_to_file(next)
 	elif next is PackedScene: get_tree().change_scene_to_packed(next)
-
 #endregion
 
 #region Music

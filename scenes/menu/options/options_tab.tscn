@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://gulb1ge3va36"]
+[gd_scene load_steps=6 format=3 uid="uid://gulb1ge3va36"]
 
 [ext_resource type="Script" uid="uid://dcbyww3fravuq" path="res://scenes/menu/options/options_tab.gd" id="1_s4ceo"]
 [ext_resource type="PackedScene" uid="uid://cn5qxa5uqvf8r" path="res://scenes/menu/ui/options_bar.tscn" id="2_7tf5q"]
 [ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="2_p4q55"]
+[ext_resource type="PackedScene" uid="uid://baunqnsnu3gmb" path="res://scenes/menu/ui/number_bar.tscn" id="3_5nl4s"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5nl4s"]
 font = ExtResource("2_p4q55")
@@ -24,14 +25,15 @@ offset_right = 600.0
 offset_bottom = 720.0
 metadata/_edit_lock_ = true
 
-[node name="gameplay" type="VBoxContainer" parent="tabs"]
+[node name="gameplay" type="BoxContainer" parent="tabs"]
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.469
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -0.320007
+grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 50
+vertical = true
 metadata/_edit_lock_ = true
 
 [node name="scroll" parent="tabs/gameplay" instance=ExtResource("2_7tf5q")]
@@ -62,15 +64,16 @@ description = "Enables an extra 5th judgement
 In most other rhythm games, this is >NOT< an option and instead is built-in, but in [color=YELLOW]this[/color] case, if you don't like the new Epic judgement, you can just disable it."
 metadata/_edit_lock_ = true
 
-[node name="visuals" type="VBoxContainer" parent="tabs"]
+[node name="visuals" type="BoxContainer" parent="tabs"]
 visible = false
 layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.469
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -0.320007
+grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 50
+vertical = true
 metadata/_edit_lock_ = true
 
 [node name="hud_style" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
@@ -89,6 +92,20 @@ description = "Changes the style of the HUD
 [color=PURPLE]Psych[/color] is a recreation of the same HUD for Psych Engine (0.4.2), it displays Score, Combo Breaks, Accuracy, and Health."
 metadata/_edit_lock_ = true
 
+[node name="framerate" parent="tabs/visuals" instance=ExtResource("3_5nl4s")]
+layout_mode = 2
+maxv = 360.0
+step = 1.0
+string_suffix = " FPS"
+values = [0, 30, 60, 120, 240, 360]
+display_name = &"Framerate"
+variable_name = &"framerate"
+description = "How many frames per second should the game run at.
+
+If set to 0, the framerate will be unlimited.
+
+This can be affected by VSync."
+
 [node name="language" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
 values = [&"en", &"es", &"pt", &"mk"]
@@ -103,16 +120,6 @@ description = "Changes the UI elements and dialogue language.
 \"pt\" is based on Brazilian Portuguese, which contains vastly different grammatical rules if compared to the other dialects.
 
 \"mk\" is based on the Standard North Macedonia language."
-metadata/_edit_lock_ = true
-
-[node name="controls" type="VBoxContainer" parent="tabs"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 metadata/_edit_lock_ = true
 
 [node name="description" type="Control" parent="."]

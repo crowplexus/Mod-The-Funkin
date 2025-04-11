@@ -45,13 +45,30 @@ var hud_style: String = "Default"
 # "rus" # Russian
 @export_enum("en", "es", "pt", "mk") # English, Spanish, Portuguese, Macedonian
 var language: String = "auto": # "auto" means get OS locale
-	set(new_lang):
-		language = new_lang.to_snake_case()
-		reload_locale()
+	set(new_lang): language = new_lang.to_snake_case()
+## Defines the transition type, or disables it altogether.
+@export_enum("None:0", "Default:1", "Wipe:2")#, "Sticker:3")
+var transition_style: int = 1:
+	set(new_trans):
+		transition_style = new_trans
+		match transition_style:
+			2: Global.current_transition = &"default"
+			#3: Global.current_transition = &"sticker"
+
+var skip_transitions: bool:
+	get: return transition_style < 0
 
 func _init(use_defaults: bool = false) -> void:
 	if not use_defaults: # not a "defaults-only" instance
 		reload_custom_settings()
+
+## Upadtes every setting that really needs it.
+func update_all() -> void:
+	for blah: String in get_settings().keys():
+		match blah:
+			"framerate": update_framerate()
+			"keybinds": reload_keybinds()
+			"language": reload_locale()
 
 ## Reloads the current display language.
 func reload_locale() -> void:

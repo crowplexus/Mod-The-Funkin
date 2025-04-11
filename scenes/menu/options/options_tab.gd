@@ -21,11 +21,7 @@ func _ready() -> void:
 			tabs.append(tab.name)
 	switch_tabs()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_echo():
-		return
-	#var opt_axis: int = int(Input.get_axis("ui_up", "ui_down"))
-	#if opt_axis != 0: change_option(opt_axis)
+func _unhandled_input(_event: InputEvent) -> void:
 	var tab_axis: int = int(Input.get_axis("ui_left", "ui_right"))
 	var opt_axis: int = int(Input.get_axis("ui_up", "ui_down"))
 	if tab_axis != 0:
@@ -87,6 +83,7 @@ func change_altered_settings() -> void:
 			for i: Control in tab.get_children():
 				if i is OptionBar and settings:
 					i.update_setting()
+	settings.update_all()
 
 func save_to_disk() -> void:
 	pass

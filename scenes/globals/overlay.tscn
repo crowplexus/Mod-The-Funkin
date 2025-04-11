@@ -4,6 +4,7 @@
 
 [node name="overlay" type="CanvasLayer"]
 process_mode = 3
+layer = 128
 script = ExtResource("1_alel3")
 
 [node name="fps_label" type="Label" parent="."]
