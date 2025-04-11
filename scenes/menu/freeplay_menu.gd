@@ -7,7 +7,7 @@ const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a R
 ## Song to play if the audio file for the hovered one couldn't be found.
 @export var default_song: AudioStream = preload("res://assets/music/freeplayRandom.ogg")
 ## List of songs to display on-screen.
-@export var songs: SongList = preload("res://assets/resources/song_list.tres")
+@export var songs: SongPlaylist = preload("res://assets/resources/song_list.tres").duplicate()
 
 @onready var song_container: Control = $"song_container"
 @onready var item_template: Control = $"song_container/random".duplicate()
@@ -31,6 +31,9 @@ func _ready() -> void:
 	for i: SongItem in songs.list:
 		if not i.list_name in lists:
 			lists.append(i.list_name)
+			if not i.shown_in_freeplay:
+				var index: int = songs.list.find(i)
+				songs.list.remove_at(index)
 	Global.update_discord("Menus", "Selecting a Song in Freeplay")
 	if get_tree().paused: get_tree().paused = false
 	Global.play_bgm(default_song, 0.7)

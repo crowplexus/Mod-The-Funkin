@@ -12,7 +12,7 @@ var selected_tab: int = 0
 var visible_tab: StringName = &"gameplay"
 var changing_option: bool = false
 var tabs: PackedStringArray = []
-var current_tab: Control
+var current_tab: Array[Control] = []
 var settings: Settings
 
 func _ready() -> void:
@@ -33,7 +33,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 		if not changing_option:
 			switch_tabs(tab_axis)
 		else:
-			var selected_option: Control = current_tab.get_child(selected)
+			var selected_option: Control = current_tab[selected]
 			if selected_option is OptionBar:
 				selected_option.update_value(tab_axis)
 	if opt_axis != 0 and not changing_option:
@@ -51,22 +51,22 @@ func _unhandled_input(_event: InputEvent) -> void:
 			Global.rewind_scene()
 
 func change_selection(next: int = 0) -> void:
-	if not current_tab:
+	if current_tab.is_empty():
 		return
 	var previous_selected: int = selected
-	selected = wrapi(selected + next, 0, current_tab.get_child_count())
+	selected = wrapi(selected + next, 0, current_tab.size())
 	if selected != previous_selected:
 		Global.play_sfx(Global.resources.get_resource("scroll"))
-		var previous_option: Control = current_tab.get_child(previous_selected)
+		var previous_option: Control = current_tab[previous_selected]
 		if previous_option is OptionBar:
 			previous_option.is_hovered = false
 			previous_option.modulate.v = 1
-	var selected_option: Control = current_tab.get_child(selected)
+	var selected_option: Control = current_tab[selected]
 	if selected_option is OptionBar:
 		selected_option.is_hovered = true
 		option_title.text = selected_option.display_name
 		option_infor.text = selected_option.description
-	selected_option.modulate.v = 0.8
+		selected_option.modulate.v = 0.8
 
 func switch_tabs(next: int = 0) -> void:
 	var previous_tab: int = selected_tab
@@ -78,27 +78,28 @@ func switch_tabs(next: int = 0) -> void:
 	update_visible_tabs()
 
 func update_visible_tabs() -> void:
+	current_tab.clear()
 	for tab: Control in tabs_control.get_children():
 		if tab is BoxContainer and tab.get_child_count() != 0:
 			tab.visible = false
 			if tab.name == visible_tab:
 				tab.visible = true
-				current_tab = tab
+				for i: Control in tab.get_children():
+					if i is OptionBar: current_tab.append(i)
 	change_selection()
 
 func change_altered_settings() -> void:
 	for tab: Control in tabs_control.get_children():
 		if tab is BoxContainer and tab.get_child_count() != 0:
 			for i: Control in tab.get_children():
-				if i is OptionBar and settings:
-					i.update_setting()
+				if i is OptionBar: i.update_setting()
 	settings.update_all()
 
 func save_to_disk() -> void:
 	pass
 
 func update_hover() -> void:
-	var option: Control = current_tab.get_child(selected)
+	var option: Control = current_tab[selected]
 	if option is OptionBar:
 		# PLACEHOLDER ↓ ↓ ↓
 		option.get_child(0).modulate = Color.CYAN if changing_option else Color.WHITE

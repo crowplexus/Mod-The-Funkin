@@ -1,11 +1,16 @@
 ## Resource for a list of songs.[br]
 ## Used mainly in freeplay.
-class_name SongList extends Resource
+class_name SongPlaylist extends Resource
 
-## List of songs to load to a menu.
-@export var list: Array[SongItem] = []
+@export var list: Array[SongItem] = [] ## List of songs to load.
+@export var tagline: StringName = "Unknown" ## Tagline shown in Campaign Mode.
+## Difficulties specifically in Campaign Mode.[br]
+## make sure all of the songs have the difficulties specified here.
+@export var campaign_difficulties: Array[String] = ["easy", Global.DEFAULT_DIFFICULTY, "hard"]
+@export var show_in_campaign: bool = true ## Toggles if this playlist is able to be shown in Campaign Mode.
+@export var show_in_freeplay: bool = true ## Toggles if this playlist is able to be shown in Freeplay Mode.
 
-## Returns a random element from the array. Generates an error and returns null if the array is empty.
+## Returns a random element from the array. Genertates an error and returns null if the array is empty.
 func pick_random() -> SongItem: return list.pick_random()
 ## Sorts the array using a custom [Callable].
 func sort_custom(fun: Callable) -> void: list.sort_custom(fun)
