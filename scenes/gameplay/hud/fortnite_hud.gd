@@ -16,7 +16,7 @@ const POPUP_SCALE: Vector2 = Vector2(1.5, 1.5)
 @onready var countdown_timer: Timer = $"countdown/timer"
 
 var countdown_tween: Tween
-var countdown_textures: Array[Texture2D] = []
+var countdown_textures: Array[StringName] = [&"prepare", &"ready", &"set", &"go"]
 var countdown_streams: Array[AudioStream] = []
 var _countdown_iteration: int = 0
 var _prev_health: int = 50
@@ -63,7 +63,6 @@ func init_vars() -> void:
 	if not game.assets:
 		skip_countdown = true
 	else:
-		countdown_textures = game.assets.countdown_textures
 		countdown_streams = game.assets.countdown_sounds
 		if not countdown_sprite:
 			countdown_sprite = Sprite2D.new()
@@ -94,10 +93,11 @@ func countdown_progress() -> void:
 	
 	if _countdown_iteration < countdown_textures.size():
 		const SCALE: Vector2 = Vector2(0.7, 0.7)
-		countdown_sprite.texture = countdown_textures[_countdown_iteration]
+		var count_name: StringName = countdown_textures[_countdown_iteration]
+		countdown_sprite.texture = game.assets.countdown_frames.get_frame_texture(count_name, 0)
 		countdown_sprite.position = Vector2(get_viewport_rect().size.x, get_viewport_rect().size.y) * 0.5
 		countdown_sprite.self_modulate.a = 1.0
-		countdown_sprite.scale = SCALE * 1.05
+		countdown_sprite.scale = SCALE * 1.1
 		countdown_sprite.show()
 		
 		if countdown_tween: countdown_tween.stop()
@@ -113,17 +113,22 @@ func countdown_progress() -> void:
 	on_countdown_tick.emit(_countdown_iteration)
 	_countdown_iteration += 1
 
+const SCORE_TRANSLATE_CONTEXT: StringName = &"gameplay"
+
 func update_score_text(_missed: bool = false) -> void:
 	var tally: bool = game and game.tally
 	var total_misses: int = game.tally.misses + game.tally.breaks
 	var fc_string: String = game.tally.get_tier_grade()
-	score_text.text = tr("info_bar", &"gameplay") % [
+	var info_content: Array = [
 		Global.separate_thousands(game.tally.score if tally else 0),
 		str(game.tally.combo if tally else 0),
-		str(total_misses if tally else 0),
+		str(total_misses if tally else 0)
 	]
-	if fc_string:
-		score_text.text += " [%s]" % fc_string
+	score_text.text = "{1}: %s | {2}: %s ({3}: %s)" % info_content
+	score_text.text = score_text.text.replace("{1}", tr("score", SCORE_TRANSLATE_CONTEXT)) \
+		.replace("{2}", tr("combo", SCORE_TRANSLATE_CONTEXT)) \
+		.replace("{3}", tr("breaks", SCORE_TRANSLATE_CONTEXT))
+	if fc_string: score_text.text += " | %s" % fc_string
 	if tally:
 		_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
 		var accuracy_score: float = Tally.calculate_score_percentage(game.tally.score, _max_score, _min_score)

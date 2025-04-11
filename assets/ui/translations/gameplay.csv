@@ -6,5 +6,3 @@ combo,Combo,Combo,Combo,Комбо
 breaks,Breaks,Rotos,Quebras,Паузи
 combo_breaks,Combo Breaks,Combo Rotos,Combo Breaks,Комбо Паузи
 rating,Rating,Clasificación,Classificação,Рејтинг
-info_bar,Score: %s | Combo: %s | Breaks: %s,Puntos: %s | Combo: %s | Rotos: %s,Pontos: %s | Combo: %s | Quebras: %s,Поен: %s | Комбо: %s | Паузи: %s
-info_bar_nomiss,Score: %s | Combo: %s,Puntos: %s | Combo: %s,Pontos: %s | Combo: %s,Поен: %s | Комбо: %s

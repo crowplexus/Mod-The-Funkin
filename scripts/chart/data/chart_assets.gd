@@ -11,13 +11,10 @@ class_name ChartAssets extends Resource
 @export var hud: PackedScene
 ## The Pause Menu scene that will be used for the song, if unspecified, the game will use the default one.
 @export var pause_menu: PackedScene
-## The Countdown Textures that will be used for the early-song countdown.
-@export var countdown_textures: Array[Texture2D] = [
-	preload("res://assets/ui/countdown/prepare.png"),
-	preload("res://assets/ui/countdown/ready.png"),
-	preload("res://assets/ui/countdown/set.png"),
-	preload("res://assets/ui/countdown/go.png"),
-]
+## The Countdown Sprite Frames that will be used for the early-song countdown.
+@export var countdown_frames: SpriteFrames = preload("res://assets/ui/popups/countdown-funkin.res")
+## Judgements + Combo Sprite Frames
+@export var popup_frames: SpriteFrames = preload("res://assets/ui/popups/popup-funkin.res")
 ## The Countdown Sounds that will be used for the early-song countdown.
 @export var countdown_sounds: Array[AudioStream] = [
 	preload("res://assets/sounds/countdown/funkin/3.ogg"),

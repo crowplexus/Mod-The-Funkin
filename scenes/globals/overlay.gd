@@ -29,7 +29,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			Global.settings.update_master_volume()
 
 func update_overlay() -> void:
-	fps_label.text = "%s FPS\n" % Engine.get_frames_per_second()
+	fps_label.text = "%s FPS | " % Engine.get_frames_per_second()
 	if OS.is_debug_build():
 		fps_label.text += "%s RAM" % String.humanize_size(OS.get_static_memory_usage())
 

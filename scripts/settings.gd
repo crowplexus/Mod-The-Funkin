@@ -39,7 +39,7 @@ var scroll: int = 0
 @export var hud_bump_intensity: int = 100:
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
 ## Select a HUD style, or leave "Default" to let the songs decide.
-@export_enum("Default", "Classic", "Psych", "Advanced")
+@export_enum("Default", "Advanced", "Classic", "Psych")
 var hud_style: String = "Default"
 ## Changes the UI elements and dialogue language.
 @export_enum("en", "es", "pt", "mk") # English, Spanish, Portuguese, Macedonian
@@ -84,6 +84,7 @@ func update_master_volume() -> void:
 
 ## Updates the Engine's max framerate.
 func update_framerate() -> void:
+	update_vsync()
 	if framerate == 0 and _was_uncapped: _was_uncapped = false
 	if not _was_uncapped and framerate < 30 or framerate > 360:
 		_was_uncapped = true
