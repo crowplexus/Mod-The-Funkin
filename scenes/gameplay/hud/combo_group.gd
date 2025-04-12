@@ -24,7 +24,10 @@ func _ready() -> void:
 		get_child(0).name = "judgement"
 	if Gameplay.current:
 		if Gameplay.current.chart:
-			if Gameplay.current.assets: assets = Gameplay.current.assets
+			if Gameplay.current.assets:
+				assets = Gameplay.current.assets
+				judge_scale = assets.judgement_scale
+				combo_scale = assets.combo_scale
 			combo_digits = clampi(str(Gameplay.current.chart.note_counts[0]).length(), 1, 5)
 			for i: int in combo_digits:
 				display_tweens.insert(i, null)
