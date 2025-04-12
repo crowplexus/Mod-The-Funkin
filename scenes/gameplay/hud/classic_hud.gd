@@ -23,7 +23,7 @@ var default_ip2_scale: Vector2 = Vector2.ONE
 
 var countdown_tween: Tween
 
-var countdown_textures: Array[StringName] = [&"prepare", &"ready", &"set", &"go"]
+var countdown_textures: Array[Texture2D] = []
 var countdown_streams: Array[AudioStream] = []
 var _countdown_iteration: int = 0
 var _prev_health: int = 50
@@ -73,6 +73,7 @@ func init_vars() -> void:
 	if not game.assets:
 		skip_countdown = true
 	else:
+		countdown_textures = game.assets.countdown_assets
 		countdown_streams = game.assets.countdown_sounds
 		if not countdown_sprite:
 			countdown_sprite = Sprite2D.new()
@@ -124,18 +125,17 @@ func countdown_progress() -> void:
 		return
 	
 	if _countdown_iteration < countdown_textures.size():
-		const SCALE: Vector2 = Vector2(0.7, 0.7)
-		var count_name: StringName = countdown_textures[_countdown_iteration]
-		countdown_sprite.texture = game.assets.countdown_frames.get_frame_texture(count_name, 0)
+		var count_scale: Vector2 = game.assets.countdown_scale if game and game.assets else Vector2(0.7, 0.7)
+		countdown_sprite.texture = countdown_textures[_countdown_iteration]
 		countdown_sprite.position = Vector2(get_viewport_rect().size.x, get_viewport_rect().size.y) * 0.5
-		countdown_sprite.scale = SCALE * (1.0 if game.local_settings.simplify_popups else 1.1)
+		countdown_sprite.scale = count_scale * (1.0 if game.local_settings.simplify_popups else 1.1)
 		countdown_sprite.self_modulate.a = 1.0
 		countdown_sprite.show()
 		
 		if countdown_tween: countdown_tween.stop()
 		countdown_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_parallel(true)
-		if countdown_sprite.scale != SCALE:
-			countdown_tween.tween_property(countdown_sprite, "scale", SCALE, Conductor.crotchet * 0.9)
+		if countdown_sprite.scale != count_scale:
+			countdown_tween.tween_property(countdown_sprite, "scale", count_scale, Conductor.crotchet * 0.9)
 		countdown_tween.tween_property(countdown_sprite, "self_modulate:a", 0.0, Conductor.crotchet * 0.8)
 		countdown_tween.finished.connect(countdown_sprite.hide)
 	

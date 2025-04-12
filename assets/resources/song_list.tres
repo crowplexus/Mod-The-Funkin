@@ -9,6 +9,7 @@ name = &"Tutorial"
 folder = "tutorial"
 difficulties = ["easy", "normal", "hard"]
 list_name = &"Main Levels"
+show_in_campaign = true
 shown_in_freeplay = true
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
@@ -18,6 +19,7 @@ name = &"Lit Up (BF Mix)"
 folder = "lit-up-bf"
 difficulties = ["easy", "normal", "hard"]
 list_name = &"Main Levels"
+show_in_campaign = true
 shown_in_freeplay = true
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
@@ -27,6 +29,7 @@ name = &"Stress (Pico Mix)"
 folder = "stress-pico"
 difficulties = ["easy", "normal", "hard"]
 list_name = &"Main Levels"
+show_in_campaign = true
 shown_in_freeplay = true
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
@@ -36,6 +39,7 @@ name = &"Combat"
 folder = "combat"
 difficulties = ["easy", "normal", "hard"]
 list_name = &"Main Levels"
+show_in_campaign = true
 shown_in_freeplay = true
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 

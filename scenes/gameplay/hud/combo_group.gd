@@ -22,20 +22,14 @@ func _ready() -> void:
 		get_child(0).set_meta(VELOCITY, Vector2.ZERO)
 		get_child(0).set_meta(ACCELERATION, Vector2.ZERO)
 		get_child(0).name = "judgement"
-	if not has_node("combo_digit0"):
-		for i: Node2D in display_digits:
-			i.set_meta(VELOCITY, Vector2.ZERO)
-			i.set_meta(ACCELERATION, Vector2.ZERO)
-			i.name = "combo_digit%s" % display_digits.find(i)
-			add_child(i)
-	for node: Node in get_children():
-		if node.name.begins_with("combo_digit"):
-			display_digits.append(node)
-			display_tweens.append(null)
 	if Gameplay.current:
 		if Gameplay.current.chart:
 			if Gameplay.current.assets: assets = Gameplay.current.assets
 			combo_digits = clampi(str(Gameplay.current.chart.note_counts[0]).length(), 1, 5)
+			for i: int in combo_digits:
+				display_tweens.insert(i, null)
+				display_digits.insert(i, setup_digit(i))
+				display_digits[i].hide()
 		settings = Gameplay.current.local_settings
 	if not settings: settings = Global.settings
 
@@ -53,7 +47,7 @@ func display_judgement(judge: String) -> void:
 	judgement.position = Vector2.ZERO
 	judgement.self_modulate.a = 1.0
 	judgement.scale = judge_scale #* randf_range(0.9, 1.1)
-	judgement.texture = assets.popup_frames.get_frame_texture(judge, 0)
+	judgement.texture = assets.judgement_assets[judge]
 	judgement.position.y = -50
 	if not settings.simplify_popups:
 		judgement.set_meta(ACCELERATION, Vector2(0, 500))
@@ -68,16 +62,18 @@ func display_judgement(judge: String) -> void:
 
 func display_combo(amnt: int = 0) -> void:
 	hide_digits()
-	var combo: Array = str(amnt).pad_zeros(combo_digits).split("")
-	var offset: float = combo.size() - 3
-	for i: int in combo.size():
+	var combo: String = str(amnt)
+	var digits: Array = combo.pad_zeros(combo_digits).split("")
+	var offset: float = digits.size() - 3
+	for i: int in digits.size():
 		if (i + 1) > display_digits.size():
 			display_tweens.insert(i, null)
-			display_digits.insert(i, Sprite2D.new())
-			display_digits[i].name = "combo_digit%s" % i
+			display_digits.insert(i, setup_digit(i))
 			add_child(display_digits[i])
 		var num_score: Sprite2D = display_digits[i]
-		num_score.texture = assets.popup_frames.get_frame_texture("num%s" % combo[i], 0)
+		num_score.texture = assets.combo_numbers.duplicate()
+		num_score.hframes = 10
+		num_score.frame = int(digits[i])
 		num_score.position = Vector2(
 			(size.x * 0.5) - (90 * combo_scale.x) * (offset - i) - (combo_digits * 10),
 			(size.y * 0.25) + 25
@@ -95,16 +91,21 @@ func display_combo(amnt: int = 0) -> void:
 		display_tweens[i].tween_property(num_score, "self_modulate:a", 0.0, 0.45).set_delay(Conductor.crotchet * 0.5)
 		display_tweens[i].finished.connect(num_score.hide)
 
-
 func compute_velocity(vel: float, accel: float, delta: float) -> float:
 	var dt: float = 0.0 if accel <= 0.0 else delta
 	return vel + accel * dt
-
 
 func is_moving(node: Node) -> bool:
 	return node.get_meta(VELOCITY, Vector2.ZERO) != Vector2.ZERO or \
 		node.get_meta(ACCELERATION, Vector2.ZERO) != Vector2.ZERO
 
+func setup_digit(digit: int) -> Sprite2D:
+	var dn: String = "combo_digit%s" % digit
+	var sprite: Sprite2D = get_node(dn) if has_node(dn) else dn
+	if not has_node(dn): sprite.name = "combo_digit%s" % digit
+	sprite.texture = assets.combo_numbers.duplicate()
+	sprite.hframes = 10
+	return sprite
 
 func hide_digits() -> void:
 	for i: Tween in display_tweens: if i: i.stop()

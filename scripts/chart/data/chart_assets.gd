@@ -1,20 +1,34 @@
 ## Assets used for the charts, inspired by what-is-a-git/FunkinGodot
 class_name ChartAssets extends Resource
 
-## The chart's song instrumental
-@export var instrumental: AudioStream
-## The chart's song vocals (if any)
-@export var vocals: Array[AudioStream] = []
-## The noteskin used in the song.
-@export var note_skin: NoteSkin = preload("res://assets/resources/noteskin.tres")
-## The HUD scene that will be used for the song, if unspecified, the game will use the default one.
-@export var hud: PackedScene
-## The Pause Menu scene that will be used for the song, if unspecified, the game will use the default one.
-@export var pause_menu: PackedScene
+@export var instrumental: AudioStream ## The chart's song instrumental
+@export var vocals: Array[AudioStream] = [] ## The chart's song vocals (if any)
+@export var note_skin: NoteSkin = preload("res://assets/resources/noteskin.tres") ## The noteskin used in the song.
+@export var hud: PackedScene ## The HUD scene that will be used for the song, if unspecified, the game will use the default one.
+@export var pause_menu: PackedScene ## The Pause Menu scene that will be used for the song, if unspecified, the game will use the default one.
+
 ## The Countdown Sprite Frames that will be used for the early-song countdown.
-@export var countdown_frames: SpriteFrames = preload("res://assets/ui/popups/countdown-funkin.res")
-## Judgements + Combo Sprite Frames
-@export var popup_frames: SpriteFrames = preload("res://assets/ui/popups/popup-funkin.res")
+@export var countdown_assets: Array[Texture2D] = [
+	preload("res://assets/ui/popups/funkin/prepare.png"),
+	preload("res://assets/ui/popups/funkin/ready.png"),
+	preload("res://assets/ui/popups/funkin/set.png"),
+	preload("res://assets/ui/popups/funkin/go.png"),
+]
+## Textures to display for each judgement.
+@export var judgement_assets: Dictionary[String, Texture2D] = {
+	"epic": preload("res://assets/ui/popups/funkin/epic.png"),
+	"sick": preload("res://assets/ui/popups/funkin/sick.png"),
+	"good": preload("res://assets/ui/popups/funkin/good.png"),
+	"bad" : preload("res://assets/ui/popups/funkin/bad.png"),
+	"shit": preload("res://assets/ui/popups/funkin/shit.png"),
+}
+## Texture to be used for the combo numbers, must be a full spritesheet with 10 frames.
+@export var combo_numbers: Texture2D = preload("res://assets/ui/popups/funkin/score_numbers.png")
+
+@export var countdown_scale: Vector2 = Vector2(0.7, 0.7) ## Scale for the countdown popup.
+@export var judgement_scale: Vector2 = Vector2(0.65, 0.65) ## Scale for the judgement sprite popup.
+@export var combo_scale: Vector2 = Vector2(0.45, 0.45) ## Scale for the combo number popup.
+
 ## The Countdown Sounds that will be used for the early-song countdown.
 @export var countdown_sounds: Array[AudioStream] = [
 	preload("res://assets/sounds/countdown/funkin/3.ogg"),

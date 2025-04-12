@@ -1,18 +1,26 @@
-[gd_resource type="Resource" script_class="ChartAssets" load_steps=14 format=3 uid="uid://cp25ehrc4xvy2"]
+[gd_resource type="Resource" script_class="ChartAssets" load_steps=22 format=3 uid="uid://cp25ehrc4xvy2"]
 
-[ext_resource type="SpriteFrames" uid="uid://b27j7i6j8s88n" path="res://assets/ui/popups/countdown-funkin.res" id="1_4kh0h"]
+[ext_resource type="Texture2D" uid="uid://eoyumqwmgfpq" path="res://assets/ui/popups/funkin/prepare.png" id="1_8nmsk"]
+[ext_resource type="Texture2D" uid="uid://cyni3widg3lqh" path="res://assets/ui/popups/funkin/score_numbers.png" id="1_avqpl"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="1_s7xu8"]
 [ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/chart/data/chart_assets.gd" id="1_sw5gl"]
 [ext_resource type="AudioStream" uid="uid://c4y5bwvxdkv4o" path="res://assets/sounds/countdown/funkin/2.ogg" id="2_5i8fv"]
 [ext_resource type="Resource" uid="uid://dxhq200ow8ypp" path="res://assets/resources/noteskin.tres" id="2_7t4i5"]
+[ext_resource type="Texture2D" uid="uid://our5ag8vgeit" path="res://assets/ui/popups/funkin/ready.png" id="2_avqpl"]
+[ext_resource type="Texture2D" uid="uid://c171hewdxpuy4" path="res://assets/ui/popups/funkin/set.png" id="3_nscln"]
 [ext_resource type="AudioStream" uid="uid://c72s73suuam2n" path="res://assets/sounds/countdown/funkin/1.ogg" id="3_pjkj3"]
+[ext_resource type="Texture2D" uid="uid://c5ncodoxcgphl" path="res://assets/ui/popups/funkin/go.png" id="4_8cuh8"]
 [ext_resource type="AudioStream" uid="uid://177yqxrxg1hf" path="res://assets/sounds/countdown/funkin/go.ogg" id="4_g323n"]
 [ext_resource type="PackedScene" uid="uid://br6ornbfmuj7l" path="res://scenes/gameplay/hud/classic_hud.tscn" id="9_y0kxw"]
 [ext_resource type="AudioStream" uid="uid://1ahkreqvoty3" path="res://assets/sounds/miss/funkin/miss1.ogg" id="10_y0kxw"]
 [ext_resource type="PackedScene" uid="uid://bpmp1nmibtels" path="res://scenes/gameplay/adjacent/pause_menu.tscn" id="11_pjkj3"]
 [ext_resource type="AudioStream" uid="uid://c1pqgmd00h20b" path="res://assets/sounds/miss/funkin/miss2.ogg" id="11_wc8np"]
 [ext_resource type="AudioStream" uid="uid://j4gb0khptavt" path="res://assets/sounds/miss/funkin/miss3.ogg" id="12_kvquv"]
-[ext_resource type="SpriteFrames" uid="uid://dk8j1j0q81ujd" path="res://assets/ui/popups/popup-funkin.res" id="12_xk4c4"]
+[ext_resource type="Texture2D" uid="uid://bjyr01qah5nj3" path="res://assets/ui/popups/funkin/epic.png" id="15_q7mb6"]
+[ext_resource type="Texture2D" uid="uid://bbso4bx4gyag5" path="res://assets/ui/popups/funkin/sick.png" id="16_1nvi1"]
+[ext_resource type="Texture2D" uid="uid://ln8kwo702lx6" path="res://assets/ui/popups/funkin/good.png" id="17_cg71a"]
+[ext_resource type="Texture2D" uid="uid://oc4gpybrbw7r" path="res://assets/ui/popups/funkin/bad.png" id="18_qr5u1"]
+[ext_resource type="Texture2D" uid="uid://bdvlysb4ywney" path="res://assets/ui/popups/funkin/shit.png" id="19_0t5l1"]
 
 [resource]
 script = ExtResource("1_sw5gl")
@@ -20,8 +28,15 @@ vocals = Array[AudioStream]([])
 note_skin = ExtResource("2_7t4i5")
 hud = ExtResource("9_y0kxw")
 pause_menu = ExtResource("11_pjkj3")
-countdown_frames = ExtResource("1_4kh0h")
-popup_frames = ExtResource("12_xk4c4")
+countdown_assets = Array[Texture2D]([ExtResource("1_8nmsk"), ExtResource("2_avqpl"), ExtResource("3_nscln"), ExtResource("4_8cuh8")])
+judgement_assets = Dictionary[String, Texture2D]({
+"bad": ExtResource("18_qr5u1"),
+"epic": ExtResource("15_q7mb6"),
+"good": ExtResource("17_cg71a"),
+"shit": ExtResource("19_0t5l1"),
+"sick": ExtResource("16_1nvi1")
+})
+combo_numbers = ExtResource("1_avqpl")
 countdown_sounds = Array[AudioStream]([ExtResource("1_s7xu8"), ExtResource("2_5i8fv"), ExtResource("3_pjkj3"), ExtResource("4_g323n")])
 miss_note_sounds = Array[AudioStream]([ExtResource("10_y0kxw"), ExtResource("11_wc8np"), ExtResource("12_kvquv")])
 metadata/_custom_type_script = "uid://ba0wwnyur88ga"
