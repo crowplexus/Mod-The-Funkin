@@ -11,7 +11,7 @@ const PLACEHOLDER_NAME: StringName = &"face"
 @export var sing_moves: Array[String] = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
 ## How long it takes for a character to stop singing after doing so.
 @export var sing_duration: float = 2.0
-## Icon shown on the health bar.
+## Icon shown on the health bar (if the HUD has one).
 @export var icon: HealthIcon
 ## Mark the character as a player (flips certain animations when its used as an opponent).
 @export var is_player: bool = false

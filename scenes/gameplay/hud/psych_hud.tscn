@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://chxabingjikr6"]
+[gd_scene load_steps=13 format=3 uid="uid://chxabingjikr6"]
 
 [ext_resource type="Script" uid="uid://dnsm2qjmkir2q" path="res://scenes/gameplay/hud/psych_hud.gd" id="1_fpm36"]
 [ext_resource type="StyleBox" uid="uid://bb871j4np30b4" path="res://scenes/gameplay/hud/styleboxes/health_bar_left.tres" id="2_lbgla"]
@@ -9,12 +9,13 @@
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="8_6nv5g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it28e"]
+resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 1)
 draw_center = false
-border_width_left = 4
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
 border_color = Color(0, 0, 0, 1)
 corner_detail = 1
 anti_aliasing = false
@@ -24,6 +25,14 @@ font = ExtResource("5_wtbdw")
 font_size = 20
 outline_size = 6
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7n24"]
+bg_color = Color(0, 0, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpm36"]
+bg_color = Color(1, 1, 1, 1)
+anti_aliasing = false
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_q7n24"]
 
@@ -64,8 +73,10 @@ anchor_left = -0.007
 anchor_top = -0.3
 anchor_right = 1.005
 anchor_bottom = 1.3
-offset_left = 0.13
-offset_right = 1.04999
+offset_left = -0.87
+offset_top = -2.0
+offset_right = 3.04999
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_it28e")
@@ -102,6 +113,57 @@ text = "Score: 0 | Combo Breaks: 0 | Rating: ?"
 label_settings = SubResource("LabelSettings_fpm36")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="time_bar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 19.0
+offset_right = 200.0
+offset_bottom = 29.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_q7n24")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fpm36")
+value = 50.0
+show_percentage = false
+
+[node name="panel" type="Panel" parent="time_bar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.007
+anchor_top = -0.3
+anchor_right = 1.005
+anchor_bottom = 1.3
+offset_left = -0.87
+offset_top = -2.0
+offset_right = 3.04999
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_it28e")
+
+[node name="time_text" type="Label" parent="time_bar"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.5
+offset_bottom = 9.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(223, 12)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("5_wtbdw")
+theme_override_font_sizes/font_size = 32
+text = "0:00"
+horizontal_alignment = 1
 
 [node name="combo_group" type="Control" parent="."]
 layout_mode = 1

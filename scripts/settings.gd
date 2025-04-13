@@ -63,6 +63,9 @@ var transition_style: int = 1:
 	set(new_alpha): health_bar_alpha = clampi(new_alpha, 0, 100)
 ## Simplifies the in-game pop ups to make them easier to see (maybe less obnoxious).
 @export var simplify_popups: bool = false
+## Changes the style of any present HUD timers.
+@export_enum("Hidden:0", "Time Left:1", "Time Elapsed:2", "Song Name:3", "Elapsed / Total:4")
+var timer_style: int = 0
 
 var skip_transitions: bool:
 	get: return transition_style < 0

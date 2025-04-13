@@ -176,12 +176,14 @@ func format_to_time(value: float, show_milliseconds: bool = false) -> String:
 	var minutes: float = Global.linear_to_minutes(value)
 	var seconds: float = Global.linear_to_seconds(value)
 	var hours: int = Global.linear_to_hours(value)
-	var formatter: String = "%2d:%02d" % [minutes, seconds]
-	if hours != 0: # append hours if needed
-		formatter += ":02d" % [hours, minutes, seconds]
+	var content: Array = [hours, minutes, seconds]
+	if hours <= 0: content.remove_at(0)
+	var time_string: String = "%2d:%02d"
+	if hours > 0: time_string += ":%02d"
 	if show_milliseconds:
-		formatter += ".%02d" % int((value - int(value)) * 1000)
-	return formatter
+		time_string += ".%03d"
+		content.append(int((value - int(value)) * 1000))
+	return time_string % content
 
 ## Gets the current weekday as a name.
 func get_weekday_string() -> String:

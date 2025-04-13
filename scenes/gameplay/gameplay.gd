@@ -274,7 +274,7 @@ func load_stage(stage_path: PackedScene = null) -> void:
 		var dummy_stage: ColorRect = ColorRect.new()
 		dummy_stage.size = get_viewport_rect().size * 5.0
 		dummy_stage.position = -dummy_stage.size * 0.5
-		dummy_stage.color = Color.BLACK
+		dummy_stage.color = Color.DIM_GRAY
 		stage_bg.add_child(dummy_stage)
 		var dummy_camera: Camera2D = Camera2D.new()
 		dummy_camera.global_position = get_viewport_rect().size * 0.5

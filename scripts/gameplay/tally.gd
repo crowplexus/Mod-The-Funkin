@@ -122,11 +122,8 @@ static func judge_time(ms: float) -> int:
 		if can_return: return i
 	return TIMINGS.find(TIMINGS.back())
 
-## Returns a string with an grade, depends on what judgements have been hit in the tier list given.[br]
-## Hitting only tier 1s results in "Perf"[br]
-## Hitting at least 1 tier 2 results in "Great"[br]
-## Hitting at least 1 tier 3 results in "Pass" 
-func get_tier_grade() -> String:
+## Returns a string with an clear flag, depends on what judgements have been hit in the tier list given.[br]
+func get_clear_flag() -> String:
 	var fc_tier: String = ""
 	if notes_hit_count == 0:
 		fc_tier = "NOPLAY"

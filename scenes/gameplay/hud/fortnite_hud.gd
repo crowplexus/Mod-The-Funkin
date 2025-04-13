@@ -96,7 +96,7 @@ func countdown_progress() -> void:
 func update_score_text(_missed: bool = false) -> void:
 	var tally: bool = game and game.tally
 	var total_misses: int = game.tally.misses + game.tally.breaks
-	var fc_string: String = game.tally.get_tier_grade()
+	var fc_string: String = game.tally.get_clear_flag()
 	var info_content: Array = [
 		Global.separate_thousands(game.tally.score if tally else 0),
 		str(game.tally.combo if tally else 0),

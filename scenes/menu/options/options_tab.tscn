@@ -156,7 +156,7 @@ description = "Changes the style of the HUD
 
 [color=PLUM]Classic[/color] is often the fallback, it resembles the Base Game of FNF, displays only Score and Health
 
-[color=PURPLE]Psych[/color] is a recreation of the same HUD for Psych Engine (0.4.2), it displays Score, Combo Breaks, Accuracy, and Health."
+[color=PURPLE]Psych[/color] is a recreation of the same HUD for Psych Engine, it displays Score, Combo Breaks, Accuracy, Health, and Time."
 
 [node name="simplify_popups" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
@@ -165,6 +165,15 @@ variable_name = &"simplify_popups"
 description = "Simplifies the in-game pop ups to make them easier to see (maybe less obnoxious)
 
 Countdown"
+
+[node name="timer_style" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
+layout_mode = 2
+values = ["Hidden", "Time Left", "Time Elapsed", "Song Name", "Elapsed / Total"]
+display_name = &"Timer Style"
+variable_name = &"timer_style"
+description = "Changes the style of any present HUD timers.
+
+Mostly used for the Psych HUD Option, but is also useful for any other Custom HUDs that also have a timer and support for this setting."
 
 [node name="note_splash_alpha" parent="tabs/visuals" instance=ExtResource("3_5nl4s")]
 layout_mode = 2

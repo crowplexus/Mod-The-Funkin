@@ -2,6 +2,9 @@ extends "res://scenes/gameplay/hud/classic_hud.gd"
 
 const MAX_HISTORY: int = 20
 
+@onready var time_bar: ProgressBar = $"time_bar"
+@onready var time_text: Label = $"time_bar/time_text"
+
 ## If the score text should zoom when hitting notes.
 @export var zoom_on_hit: bool = true
 ## Default rating string.
@@ -10,6 +13,7 @@ var _rating_string_default: String = rating_string
 ## Scale of the score text when zooming.
 @export var zoom_scale: Vector2 = Vector2(1.075, 1.075)
 var score_text_tween: Tween
+var timer_tween: Tween
 
 var rating_array: Array = [
 	["AA", 100], # Perfect
@@ -25,10 +29,52 @@ var rating_array: Array = [
 # For averaging the value of accuracy
 var accuracy_history: Array[float] = []
 var average_accuracy: float = 0.0
+var settings: Settings
+
+func _ready() -> void:
+	settings = Gameplay.current.local_settings if Gameplay.current else Global.settings
+	super()
 
 func init_vars() -> void:
+	time_bar.modulate.a = 0.0
+	combo_group.position.y -= 60
+	if settings.timer_style > 0:
+		if timer_tween: timer_tween.kill()
+		timer_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+		timer_tween.tween_property(time_bar, "modulate:a", 1.0, 0.5).set_delay(Conductor.crotchet)
 	rating_string = _rating_string_default
 	super()
+
+func _on_settings_changed(settings: Settings = Global.settings) -> void:
+	if not settings: return
+	match settings.scroll:
+		0:
+			if Gameplay.current and Gameplay.current.note_fields:
+				Gameplay.current.note_fields.position.y = 0
+			health_bar.position.y = 660
+			time_bar.position.y = 19
+		1:
+			if Gameplay.current and Gameplay.current.note_fields:
+				Gameplay.current.note_fields.position.y = 500
+			health_bar.position.y = 65
+			time_bar.position.y = 676
+	match settings.timer_style:
+		0: time_bar.modulate.a = 0.0
+		1, 2:
+			if time_text.get_theme_font_size("font_size") != 32:
+				time_text.add_theme_font_size_override("font_size", 32)
+		3: # Song Name text is bigger for some reason
+			if time_text.get_theme_font_size("font_size") != 24:
+				time_text.add_theme_font_size_override("font_size", 24)
+	if settings.timer_style > 0 and time_bar.modulate.a <= 0.0:
+		if timer_tween: timer_tween.kill()
+		timer_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
+		timer_tween.tween_property(time_bar, "modulate:a", 1.0, 0.5).set_delay(Conductor.crotchet)
+
+func _process(delta: float) -> void:
+	super(delta)
+	if time_bar.visible and time_bar.modulate.a > 0.0:
+		update_time_text()
 
 func update_health_bar(_delta: float) -> void:
 	if health_bar.value != _prev_health:
@@ -52,12 +98,19 @@ func update_score_text(missed: bool = false) -> void:
 		return
 	_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
 	score_text.text = "%s: {s} | %s: {cb} | %s: {r}" % [ tr("score", &"gameplay"), tr("combo_breaks", &"gameplay"), tr("rating") ]
+	var misses: int = game.tally.misses + game.tally.breaks
 	var rating_str: String = rating_string
 	var max_avg: float = Tally.calculate_perfect_score(game.tally.notes_hit_count)
-	var min_avg: float = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
+	var min_avg: float = Tally.calculate_worst_score(game.tally.notes_hit_count, misses)
 	update_rating(Tally.calculate_score_percentage(game.tally.score, max_avg, min_avg))
 	if game.tally.notes_hit_count > 0:
 		rating_str = "%s (%.2f%%)" % [ rating_string, average_accuracy ]
+		if misses < 10:
+			var clear_flag: String = game.tally.get_clear_flag()
+			if not clear_flag.is_empty() and clear_flag != "NOPLAY":
+				rating_str += " - " + clear_flag
+		else:
+			rating_str += " - Clear"
 	score_text.text = score_text.text.replace("{s}", str(game.tally.score)) \
 		.replace("{cb}", str(game.tally.misses + game.tally.breaks)) \
 		.replace("{r}", rating_str)
@@ -83,3 +136,19 @@ func update_rating(accuracy: float) -> void:
 			rating_string = rating[0]
 			best_threshold = rating[1]
 			break
+
+func update_time_text() -> void:
+	if not time_bar.visible or time_bar.modulate.a <= 0.0:
+		return
+	var calc: float = clampf(Conductor.time / Conductor.length, 0.0, Conductor.length)
+	var time: float = clampf(Conductor.time, 0.0, Conductor.length)
+	time_bar.value = calc * time_bar.max_value
+	match settings.timer_style:
+		1: # Time Left
+			time_text.text = "%s" % Global.format_to_time(absf(time - Conductor.length))
+		2: # Time Elapsed
+			time_text.text = "%s" % Global.format_to_time(time)
+		3: # Song Name
+			time_text.text = "%s" % Gameplay.chart.name
+		4: # Elapsed / Total
+			time_text.text = "%s / %s" % [ Global.format_to_time(time), Global.format_to_time(Conductor.length) ]
