@@ -131,11 +131,17 @@ func get_clear_flag() -> String:
 	var scores: = self.tiers_scored
 	var total: int = misses + breaks
 	if scores[3] == 0 and total == 0:
-		if scores[0] > 0: fc_tier = "PFC" # Epic
-		if scores[1] > 0:
-			fc_tier = "SDG" if scores[1] < 1 else "GFC" # Sick
-		if scores[2] > 0:
-			fc_tier = "FC" # Good
+		if scores[2] == 0 and scores[3] == 0 and scores[4] == 0: # technically I don't need to check for Bad/Shit here but…
+			if scores[0] > 0: fc_tier = "MFC" # Marvelous (Epic) Full Combo
+			if scores[1] > 0: # Sick
+				if not use_epics:
+					fc_tier = "PFC" # Perfect (Sick) Full Combo
+				else: # "SDS" and "SFC" nah, that *makes* sense.
+					if scores[1] < 10: fc_tier = "SDP" # Single Digit Perfect (Sick)
+					else: fc_tier = "PFC" # Perfect (Sick) Full Combo
+		else:
+			fc_tier = "FC" # Full Combo
 	elif total > 0 and total < 10:
-		fc_tier = "SDCB"
+		if total == 1: fc_tier = "MF" # Miss Flag
+		else: fc_tier = "SDCB" # Single Digit Combo Break
 	return fc_tier

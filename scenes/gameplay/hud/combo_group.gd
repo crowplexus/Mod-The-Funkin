@@ -104,7 +104,7 @@ func is_moving(node: Node) -> bool:
 
 func setup_digit(digit: int) -> Sprite2D:
 	var dn: String = "combo_digit%s" % digit
-	var sprite: Sprite2D = get_node(dn) if has_node(dn) else dn
+	var sprite: Sprite2D = get_node(dn) if has_node(dn) else Sprite2D.new()
 	if not has_node(dn): sprite.name = "combo_digit%s" % digit
 	sprite.texture = assets.combo_numbers.duplicate()
 	sprite.hframes = 10

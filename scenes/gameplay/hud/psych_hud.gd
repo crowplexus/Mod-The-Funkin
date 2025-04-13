@@ -45,9 +45,9 @@ func init_vars() -> void:
 	rating_string = _rating_string_default
 	super()
 
-func _on_settings_changed(settings: Settings = Global.settings) -> void:
-	if not settings: return
-	match settings.scroll:
+func _on_settings_changed(s: Settings = Global.settings) -> void:
+	if not s: return
+	match s.scroll:
 		0:
 			if Gameplay.current and Gameplay.current.note_fields:
 				Gameplay.current.note_fields.position.y = 0
@@ -55,10 +55,10 @@ func _on_settings_changed(settings: Settings = Global.settings) -> void:
 			time_bar.position.y = 19
 		1:
 			if Gameplay.current and Gameplay.current.note_fields:
-				Gameplay.current.note_fields.position.y = 500
+				Gameplay.current.note_fields.position.y = 510
 			health_bar.position.y = 65
-			time_bar.position.y = 676
-	match settings.timer_style:
+			time_bar.position.y = 693
+	match s.timer_style:
 		0: time_bar.modulate.a = 0.0
 		1, 2:
 			if time_text.get_theme_font_size("font_size") != 32:
@@ -66,7 +66,7 @@ func _on_settings_changed(settings: Settings = Global.settings) -> void:
 		3: # Song Name text is bigger for some reason
 			if time_text.get_theme_font_size("font_size") != 24:
 				time_text.add_theme_font_size_override("font_size", 24)
-	if settings.timer_style > 0 and time_bar.modulate.a <= 0.0:
+	if s.timer_style > 0 and time_bar.modulate.a <= 0.0:
 		if timer_tween: timer_tween.kill()
 		timer_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC)
 		timer_tween.tween_property(time_bar, "modulate:a", 1.0, 0.5).set_delay(Conductor.crotchet)
@@ -102,6 +102,7 @@ func update_score_text(missed: bool = false) -> void:
 	var rating_str: String = rating_string
 	var max_avg: float = Tally.calculate_perfect_score(game.tally.notes_hit_count)
 	var min_avg: float = Tally.calculate_worst_score(game.tally.notes_hit_count, misses)
+	@warning_ignore("narrowing_conversion") # actually shut the fuck up.
 	update_rating(Tally.calculate_score_percentage(game.tally.score, max_avg, min_avg))
 	if game.tally.notes_hit_count > 0:
 		rating_str = "%s (%.2f%%)" % [ rating_string, average_accuracy ]
