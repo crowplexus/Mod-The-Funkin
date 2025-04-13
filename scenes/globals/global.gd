@@ -183,7 +183,8 @@ func format_to_time(value: float, show_milliseconds: bool = false) -> String:
 	if show_milliseconds:
 		time_string += ".%03d"
 		content.append(int((value - int(value)) * 1000))
-	return time_string % content
+	var result: String = time_string.dedent() % content
+	return result.dedent()
 
 ## Gets the current weekday as a name.
 func get_weekday_string() -> String:
