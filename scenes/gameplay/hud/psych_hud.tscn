@@ -116,7 +116,6 @@ vertical_alignment = 1
 
 [node name="time_bar" type="ProgressBar" parent="."]
 unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 5
@@ -159,7 +158,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(223, 12)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("5_wtbdw")
 theme_override_font_sizes/font_size = 32
 text = "0:00"
