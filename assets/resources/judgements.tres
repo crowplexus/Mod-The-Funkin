@@ -31,7 +31,7 @@ metadata/_custom_type_script = ExtResource("1_spwge")
 script = ExtResource("1_spwge")
 name = &"Bad"
 splash_type = 0
-combo_break = true
+combo_break = false
 color = Color(0.858824, 0.454902, 0.529412, 1)
 metadata/_custom_type_script = ExtResource("1_spwge")
 
