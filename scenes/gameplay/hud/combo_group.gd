@@ -3,13 +3,23 @@ extends Control
 const ACCELERATION: String = "acceleration"
 const VELOCITY: String = "velocity"
 
-@export var judge_scale: Vector2 = Vector2(0.65, 0.65)
-@export var combo_scale: Vector2 = Vector2(0.45, 0.45)
+## Minimum amount of digits which should be displayed when hitting combo.[br]
+## Keep it as 0 or less for the game to figure out by itself.
+## Capped at 16 for *obvious* reasons.
+@export var min_digits: int = 0:
+	set(nmd): min_digits = clampi(nmd, 0, 16)
+## Scale of the judgement sprites, leave it as [code]Vector2.ZERO[/code] for it to depend on the chart assets.
+@export var judge_scale: Vector2 = Vector2.ZERO
+## Scale of the combo sprites, leave it as [code]Vector2.ZERO[/code] for it to depend on the chart assets.
+@export var combo_scale: Vector2 = Vector2.ZERO
+
+# TODO: add combo stacking
+#@export var combo_stacking: bool = true
 
 var display_digits: Array[Node2D] = []
 var display_tweens: Array[Tween] = []
 var judgement_tween: Tween
-var combo_digits: int = 2
+var combo_digits: int = 3
 var assets: ChartAssets
 var settings: Settings
 
@@ -26,13 +36,16 @@ func _ready() -> void:
 		if Gameplay.current.chart:
 			if Gameplay.current.assets:
 				assets = Gameplay.current.assets
-				judge_scale = assets.judgement_scale
-				combo_scale = assets.combo_scale
-			combo_digits = clampi(str(Gameplay.current.chart.note_counts[0]).length(), 1, 5)
-			for i: int in combo_digits:
-				display_tweens.insert(i, null)
-				display_digits.insert(i, setup_digit(i))
-				display_digits[i].hide()
+				if judge_scale == Vector2.ZERO: judge_scale = assets.judgement_scale
+				if combo_scale == Vector2.ZERO: combo_scale = assets.combo_scale
+			if min_digits <= 0:
+				combo_digits = clampi(str(Gameplay.current.chart.note_counts[0]).length(), 1, 5)
+			else:
+				combo_digits = min_digits	
+			display_tweens.resize(5)
+			display_digits.resize(5)
+			for i: int in display_digits.size():
+				setup_digit(i)
 		settings = Gameplay.current.local_settings
 	if not settings: settings = Global.settings
 
@@ -69,13 +82,10 @@ func display_combo(amnt: int = 0) -> void:
 	var digits: Array = combo.pad_zeros(combo_digits).split("")
 	var offset: float = digits.size() - 3
 	for i: int in digits.size():
-		if (i + 1) > display_digits.size():
-			display_tweens.insert(i, null)
-			display_digits.insert(i, setup_digit(i))
-			add_child(display_digits[i])
+		if i > display_digits.size() - 1:
+			display_tweens.append(null)
+			setup_digit(i)
 		var num_score: Sprite2D = display_digits[i]
-		num_score.texture = assets.combo_numbers.duplicate()
-		num_score.hframes = 10
 		num_score.frame = int(digits[i])
 		num_score.position = Vector2(
 			(size.x * 0.5) - (90 * combo_scale.x) * (offset - i) - (combo_digits * 10),
@@ -88,26 +98,29 @@ func display_combo(amnt: int = 0) -> void:
 			num_score.set_meta(ACCELERATION, Vector2(0, randi_range(250, 300)))
 			num_score.set_meta(VELOCITY, Vector2(randi_range(-5, 5), randi_range(130, 150)))
 		num_score.show()
-		display_tweens[i] = create_tween().set_parallel(true)
+		display_tweens[i] = create_tween().set_parallel(true).bind_node(num_score)
 		if num_score.scale != combo_scale:
 			display_tweens[i].tween_property(num_score, "scale", combo_scale, 0.1)
 		display_tweens[i].tween_property(num_score, "self_modulate:a", 0.0, 0.45).set_delay(Conductor.crotchet * 0.5)
 		display_tweens[i].finished.connect(num_score.hide)
 
 func compute_velocity(vel: float, accel: float, delta: float) -> float:
-	var dt: float = 0.0 if accel <= 0.0 else delta
-	return vel + accel * dt
+	return vel + accel * (0.0 if accel <= 0.0 else delta)
 
 func is_moving(node: Node) -> bool:
 	return node.get_meta(VELOCITY, Vector2.ZERO) != Vector2.ZERO or \
 		node.get_meta(ACCELERATION, Vector2.ZERO) != Vector2.ZERO
 
 func setup_digit(digit: int) -> Sprite2D:
-	var dn: String = "combo_digit%s" % digit
-	var sprite: Sprite2D = get_node(dn) if has_node(dn) else Sprite2D.new()
-	if not has_node(dn): sprite.name = "combo_digit%s" % digit
-	sprite.texture = assets.combo_numbers.duplicate()
-	sprite.hframes = 10
+	var digit_name: String = "combo_digit%s" % digit
+	var sprite: Sprite2D = get_node(digit_name) if has_node(digit_name) else Sprite2D.new()
+	sprite.modulate.a = 1.0
+	if not sprite.texture:
+		sprite.texture = assets.combo_numbers.duplicate()
+		sprite.hframes = 10
+	sprite.hide()
+	display_digits[digit] = sprite
+	add_child(sprite)
 	return sprite
 
 func hide_digits() -> void:
