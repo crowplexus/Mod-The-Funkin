@@ -26,10 +26,12 @@ func _ready() -> void:
 	reset_discord()
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if event.pressed:
-		if not event.is_echo() and event.is_action("fullscreen"):
+	if event.pressed and not event.is_echo():
+		if event.is_action("fullscreen"):
 			var is_full: bool = get_window().mode == Window.Mode.MODE_FULLSCREEN
 			get_window().mode = Window.MODE_WINDOWED if is_full else Window.MODE_FULLSCREEN
+		if OS.is_debug_build() and event.keycode == KEY_P:
+			get_tree().paused = not get_tree().paused
 
 func _notification(what: int) -> void:
 	match what:

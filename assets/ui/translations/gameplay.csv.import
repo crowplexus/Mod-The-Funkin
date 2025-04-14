@@ -6,10 +6,10 @@ uid="uid://0khsm6idmdow"
 
 [deps]
 
-files=["res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.pt_BR.translation", "res://assets/ui/translations/gameplay.mk.translation"]
+files=["res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.pt_BR.translation", "res://assets/ui/translations/gameplay.rus.translation", "res://assets/ui/translations/gameplay.mk.translation"]
 
 source_file="res://assets/ui/translations/gameplay.csv"
-dest_files=["res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.pt_BR.translation", "res://assets/ui/translations/gameplay.mk.translation"]
+dest_files=["res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.pt_BR.translation", "res://assets/ui/translations/gameplay.rus.translation", "res://assets/ui/translations/gameplay.mk.translation"]
 
 [params]
 

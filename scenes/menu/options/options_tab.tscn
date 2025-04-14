@@ -112,7 +112,7 @@ Press TAB to cycle through recommended values."
 
 [node name="language" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
-values = [&"en", &"es", &"pt", &"mk"]
+values = [&"en", &"es", &"pt", &"rus", &"mk"]
 display_name = &"Language"
 variable_name = &"language"
 description = "Changes the UI elements and dialogue language.
@@ -122,6 +122,8 @@ description = "Changes the UI elements and dialogue language.
 \"es\" is based on Castillian Spanish from Spain.
 
 \"pt\" is based on Brazilian Portuguese, which contains vastly different grammatical rules if compared to the other dialects.
+
+\"rus\" is based on Russian, from Moscow — Russia.
 
 \"mk\" is based on the Standard North Macedonia language.
 
@@ -192,6 +194,7 @@ layout_mode = 2
 maxv = 100.0
 step = 1.0
 string_suffix = "%"
+values = [0, 30, 50, 100]
 display_name = &"Health Bar Opacity"
 variable_name = &"health_bar_alpha"
 description = "Defines how opaque should the health bar be for HUDs that have it."
@@ -233,5 +236,3 @@ theme_override_fonts/normal_font = ExtResource("2_p4q55")
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "Description"
-fit_content = true
-scroll_active = false
