@@ -120,7 +120,7 @@ func setup_digit(digit: int) -> Sprite2D:
 		sprite.hframes = 10
 	sprite.hide()
 	display_digits[digit] = sprite
-	add_child(sprite)
+	if not has_node(digit_name): add_child(sprite)
 	return sprite
 
 func hide_digits() -> void:

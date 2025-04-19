@@ -13,7 +13,7 @@ var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
 	"Psych": load("res://scenes/gameplay/hud/psych_hud.tscn")
 }
 ## Default Pause Menu, used if there's none set in the Chart Assets.
-const DEFAULT_PAUSE_MENU: PackedScene = preload("res://scenes/gameplay/adjacent/pause_menu.tscn")
+const DEFAULT_PAUSE_MENU: PackedScene = preload("res://scenes/gameplay/overlays/pause_menu.tscn")
 ## Default Health Percentage.
 const DEFAULT_HEALTH_VALUE: int = 50
 ## Default Health Weight (how much should it be multiplied by when gaining)
@@ -52,8 +52,8 @@ var game_mode: PlayMode = PlayMode.FREEPLAY
 var game_mode_name: String = Global.get_mode_string(game_mode)
 var judgements: JudgementList = preload("res://assets/resources/judgements.tres")
 var timed_events: Array[TimedEvent] = []
-var event_position: int = 0
 var should_process_events: bool = true
+var event_position: int = 0
 
 var ending: bool = false
 var starting: bool = true
@@ -198,9 +198,13 @@ func _process(delta: float) -> void:
 		hud_layer.offset.y = (hud_layer.scale.y - 1.0) * -(get_viewport_rect().size.y * 0.5)
 
 func _unhandled_key_input(_event: InputEvent) -> void:
-	if _event.pressed and _event.keycode == KEY_END and not starting and OS.is_debug_build():
-		music.stop()
-		Conductor.time = Conductor.length
+	if OS.is_debug_build() and _event.pressed and not starting and _event.is_echo():
+		match _event.keycode:
+			KEY_END:
+				music.stop()
+				note_group.active = false
+				should_process_events = false
+				Conductor.time = Conductor.length
 	
 	if Input.is_action_just_pressed("ui_pause"):
 		var pause_menu: PackedScene
@@ -216,8 +220,8 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 		hud_layer.add_child(instance)
 		get_tree().paused = true
 		return
-	if player_strums and player_strums.player is Player and player and not player.cheering_out:
-		player.pause_sing = player_strums.player.keys_held.has(true)
+	if player_strums and player_strums.player is Player and player:
+		player.lock_on_sing = player_strums.player.keys_held.has(true)
 
 func process_timed_events() -> void:
 	#var idx: int = timed_events.find(current_event) # if i need it...
@@ -240,9 +244,12 @@ func fire_timed_event(event: TimedEvent) -> void:
 			var actor: Actor2D = get_actor_from_index(event.values.target)
 			if actor and actor.has_animation(event.values.anim):
 				actor.play_animation(event.values.anim, event.values.force)
-				actor.idle_cooldown = event.values.cooldown
-				actor.pause_sing = false
-				actor.cheering_out = true
+				if is_zero_approx(event.values.cooldown):
+					actor.idle_cooldown = actor.get_anim_length(0.5) + 0.1
+				else:
+					actor.idle_cooldown = event.values.cooldown
+				actor.able_to_sing = false
+				actor.lock_on_sing = false
 		&"Change Camera Focus":
 			if camera:
 				var offset: Vector2 = Vector2(float(event.values.x) if "x" in event.values else 0.0,
@@ -254,7 +261,10 @@ func fire_timed_event(event: TimedEvent) -> void:
 					if actor:
 						camera.global_position = actor.global_position + actor.camera_offset
 						camera.global_position += offset
-						
+		&"Change Camera Zoom":
+			if camera:
+				# TODO: add duration, easing, and mode.
+				camera.zoom = Vector2(float(event.values.zoom), float(event.values.zoom))
 		&"Change Scroll Speed":
 			var immediate: bool = bool(event.values.immediate) if "immediate" in event.values else false
 			for note_field: NoteField in note_fields.get_children():
@@ -376,7 +386,7 @@ func on_note_hit(note: Note) -> void:
 	var abs_diff: float = absf(note.time - Conductor.playhead) * 1000.0
 	var judged_tier: int = Tally.judge_time(abs_diff)
 	note.judgement = judgements.list[judged_tier]
-	if player and note.side == 0:
+	if player and note.side == 0 and player.able_to_sing:
 		player.sing(note.column, note.arrow.visible)
 		if music: music.stream.set_sync_stream_volume(1, linear_to_db(1.0))
 	if note.can_splash(): note.display_splash()

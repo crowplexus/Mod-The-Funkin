@@ -14,7 +14,7 @@ config/name="Mod The Funkin'"
 config/description="A 4k Rhythm Game Engine, based on Friday Night Funkin'"
 config/version="0.1.0"
 config/tags=PackedStringArray("2d", "modding", "rhythm", "tool")
-run/main_scene="uid://81sm66x3qr7k"
+run/main_scene="uid://c5qnedjs8xhcw"
 config/features=PackedStringArray("4.4", "Mobile")
 run/max_fps=144
 run/low_processor_mode=true
@@ -29,6 +29,10 @@ Global="*res://scenes/globals/global.tscn"
 Overlay="*res://scenes/globals/overlay.tscn"
 Conductor="*res://scenes/globals/conductor.tscn"
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
+
+[debug]
+
+gdscript/warnings/integer_division=0
 
 [display]
 

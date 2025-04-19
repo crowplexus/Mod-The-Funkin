@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://d0a6dlj2togbt"]
 
-[ext_resource type="Script" uid="uid://jev6cw5f4mtd" path="res://scenes/gameplay/playfield/note_field.gd" id="1_n8xoy"]
+[ext_resource type="Script" uid="uid://jev6cw5f4mtd" path="res://scenes/gameplay/playfield/note_field.gd" id="1_jlrbr"]
 [ext_resource type="PackedScene" uid="uid://cmgwmgu7ltg4g" path="res://scenes/gameplay/playfield/strum/receptor.tscn" id="2_1qf5m"]
 
 [node name="4k" type="Node2D"]
 scale = Vector2(0.7, 0.7)
-script = ExtResource("1_n8xoy")
+script = ExtResource("1_jlrbr")
 
 [node name="1" parent="." instance=ExtResource("2_1qf5m")]
 

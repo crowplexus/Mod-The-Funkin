@@ -117,7 +117,7 @@ func on_note_hit(note: Note) -> void:
 func on_note_miss(note: Note = null, idx: int = -1) -> void:
 	if game is Gameplay: game.on_note_miss(note, idx)
 func on_hold_hit(note: Note) -> void:
-	if actor and not actor.cheering_out:
+	if actor and actor.able_to_sing:
 		actor.sing(note.column, actor.get_anim_position() > 0.1)
 
 func get_action_id(event: InputEvent) -> int:

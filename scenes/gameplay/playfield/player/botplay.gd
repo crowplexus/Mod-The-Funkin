@@ -44,5 +44,5 @@ func on_note_hit(note: Note) -> void:
 		game.music.stream.set_sync_stream_volume(1, linear_to_db(1.0))
 
 func on_hold_hit(note: Note) -> void:
-	if actor and not actor.cheering_out:
+	if actor and actor.able_to_sing:
 		actor.sing(note.column, actor.get_anim_position() > 0.1)

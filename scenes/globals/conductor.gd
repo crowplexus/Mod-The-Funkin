@@ -2,12 +2,8 @@
 ## Do not use this for evil.
 extends Node
 
-## Signal fired every beat hit
-signal on_beat_hit(beat: float)
-## Signal fired every bar / measure hit
-signal on_bar_hit(bar: float)
-
-const BEAT_EPSILON: float = 0.0001
+signal on_beat_hit(beat: float) ## Signal fired every beat hit
+signal on_bar_hit(bar: float) ## Signal fired every bar / measure hit
 
 @onready var metronome: AudioStreamPlayer = $%"metronome"
 ## I wonder what this could be.
@@ -44,16 +40,11 @@ var timing_changes: Array[SongTimeChange] = [
 	SongTimeChange.make(0.0, 100.0) # DUMMY
 ]
 
-## Current song beat.
-var current_beat: float = 0.0
-	#get: return snappedf(current_beat, 0.01)
-## Current song bar.
-var current_bar: float = 0.0
-	#get: return snappedf(current_bar, 0.01)
+var current_beat: float = 0.0 ## Current song beat.
+var current_bar: float = 0.0 ## Current song bar / measure.
 
 var _prev_beat: float = 0.0
 var _prev_time: float = 0.0
-
 
 ## Resets the Conductor's values, call only when needed,
 ## as it can cause issues otherwise.
@@ -68,7 +59,6 @@ func set_time(new_time: float) -> void:
 	current_beat = (new_time * bpm) / 60.0
 	current_bar = 0.0#current_beat * 4.0
 	_prev_beat = current_beat
-
 
 func update(new_time: float) -> void:
 	time = new_time # usually would be incremented by delta but I need this to be *set* for synching purposes
@@ -104,13 +94,25 @@ func get_timed_change(timestamp: float) -> SongTimeChange:
 			break
 	return change
 
+## Converts time (in seconds) to a beat value.
+func get_beat(p_time: float = Conductor.time, p_bpm: float = Conductor.bpm) -> float:
+	return (p_time * p_bpm) / 60.0
+
+## Converts time (in seconds) to a 16th notes (semiquaver).
+func get_16th(p_time: float = Conductor.time, p_bpm: float = Conductor.bpm) -> float:
+	return get_beat(p_time, p_bpm) * 0.25
+
+## Snaps time to the nearest N-th note (e.g., 4 = quarter, 8 = eighth).
+func snap_to_beat(p_time: float, p_bpm: float, subdiv: int = 4) -> float:
+	return roundf(get_beat(p_time, p_bpm) * subdiv) / subdiv
+
 ## Converts Beats per minute to seconds.
-func get_bps(bpm_value: float) -> float:
-	return 60.0 / bpm_value
+func get_bps(p_bpm: float = Conductor.bpm) -> float:
+	return 60.0 / p_bpm
 
 ## Returns the maximum amount of beats depending on the length given
-func get_total_beats(song_length: float = 0.0, beats_per_minute: float = 100.0) -> float:
-	return (beats_per_minute / 60.0) * song_length
+func get_total_beats(p_length: float = Conductor.length, p_bpm: float = Conductor.bpm) -> float:
+	return (p_bpm / 60.0) * p_length
 
 func _ready() -> void:
 	set_process_input(false)

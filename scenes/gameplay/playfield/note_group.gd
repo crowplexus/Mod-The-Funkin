@@ -3,7 +3,9 @@ extends Node2D
 signal on_note_spawned(data: NoteData, note: Note)
 signal on_note_deleted(note: Note)
 
-const TEMPLATE_NOTE: PackedScene = preload("res://scenes/gameplay/playfield/notes/normal_note.tscn")
+const TEMPLATE_NOTES: Dictionary[String, PackedScene] = {
+	"_": preload("res://scenes/gameplay/playfield/notes/normal_note.tscn"),
+}
 
 @export var active: bool = true
 
@@ -21,10 +23,8 @@ func _process(_delta: float) -> void:
 		try_spawning()
 		move_present_nodes()
 
-
 func spawning_complete() -> bool:
 	return note_list.size() == 0 or list_position >= note_list.size()
-
 
 func move_present_nodes() -> void:
 	for node: Node in get_children():
@@ -43,7 +43,6 @@ func move_present_nodes() -> void:
 			node.hide_all()
 			on_note_deleted.emit(node)
 
-
 func try_spawning() -> void:
 	while list_position < note_list.size():
 		var note_data: NoteData = note_list[list_position]
@@ -54,14 +53,13 @@ func try_spawning() -> void:
 		if new_note.note_field:
 			new_note.visible = new_note.note_field.visible
 		new_note.reload(note_data)
-		list_position += 1
-
+		list_position = note_list.find(note_data) + 1
 
 func get_note() -> Node:
 	#for node: Node in get_children():
 	#	if not node.visible:
 	#		return node
-	var duped: = TEMPLATE_NOTE.instantiate()
+	var duped: = TEMPLATE_NOTES._.instantiate()
 	duped.name = "note%s" % list_position
 	#duped.hide_all()
 	add_child(duped)

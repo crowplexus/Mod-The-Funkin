@@ -13,7 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://177yqxrxg1hf" path="res://assets/sounds/countdown/funkin/go.ogg" id="4_g323n"]
 [ext_resource type="PackedScene" uid="uid://br6ornbfmuj7l" path="res://scenes/gameplay/hud/classic_hud.tscn" id="9_y0kxw"]
 [ext_resource type="AudioStream" uid="uid://1ahkreqvoty3" path="res://assets/sounds/miss/funkin/miss1.ogg" id="10_y0kxw"]
-[ext_resource type="PackedScene" uid="uid://bpmp1nmibtels" path="res://scenes/gameplay/adjacent/pause_menu.tscn" id="11_pjkj3"]
+[ext_resource type="PackedScene" uid="uid://bpmp1nmibtels" path="res://scenes/gameplay/overlays/pause_menu.tscn" id="11_pjkj3"]
 [ext_resource type="AudioStream" uid="uid://c1pqgmd00h20b" path="res://assets/sounds/miss/funkin/miss2.ogg" id="11_wc8np"]
 [ext_resource type="AudioStream" uid="uid://j4gb0khptavt" path="res://assets/sounds/miss/funkin/miss3.ogg" id="12_kvquv"]
 [ext_resource type="Texture2D" uid="uid://bjyr01qah5nj3" path="res://assets/ui/popups/funkin/epic.png" id="15_q7mb6"]
