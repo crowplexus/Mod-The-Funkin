@@ -38,16 +38,48 @@ var scroll: int = 0
 ## Defines the intensity of the HUD Bump.
 @export var hud_bump_intensity: int = 100:
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
+	
 ## Select a HUD style, or leave "Default" to let the songs decide.
-@export_enum("Default", "Classic", "Psych", "Advanced")
+@export_enum("Default", "Advanced", "Classic", "Psych")
 var hud_style: String = "Default"
 ## Changes the UI elements and dialogue language.
-@export_enum("en", "es", "pt", "mk") # English, Spanish, Portuguese, Macedonian
-var language: String = "auto" # "auto" means get OS locale
+@export_enum("en", "es", "pt", "rus", "mk") # English, Spanish, Portuguese, Russian, Macedonian
+var language: String = "auto": # "auto" means get OS locale
+	set(new_lang): language = new_lang.to_snake_case()
+## Defines the transition type, or disables it altogether.
+@export_enum("None:0", "Default:1", "Wipe:2")#, "Sticker:3")
+var transition_style: int = 1:
+	set(new_trans):
+		transition_style = new_trans
+		match transition_style:
+			2: Global.current_transition = &"default"
+			#3: Global.current_transition = &"sticker"
+## Defines how opaque should the note impact effect be when hitting judgements that display it.
+@export var note_splash_alpha: int = 60:
+	set(new_alpha): note_splash_alpha = clampi(new_alpha, 0, 100)
+## Defines how opaque should the health bar be for HUDs that have it.
+@export var health_bar_alpha: int = 100:
+	set(new_alpha): health_bar_alpha = clampi(new_alpha, 0, 100)
+## Simplifies the in-game pop ups to make them easier to see (maybe less obnoxious).
+@export var simplify_popups: bool = false
+## Changes the style of any present HUD timers.
+@export_enum("Hidden:0", "Time Left:1", "Time Elapsed:2", "Song Name:3", "Elapsed / Total:4")
+var timer_style: int = 0
+
+var skip_transitions: bool:
+	get: return transition_style < 0
 
 func _init(use_defaults: bool = false) -> void:
 	if not use_defaults: # not a "defaults-only" instance
 		reload_custom_settings()
+
+## Upadtes every setting that really needs it.
+func update_all() -> void:
+	for blah: String in get_settings().keys():
+		match blah:
+			"framerate": update_framerate()
+			"keybinds": reload_keybinds()
+			"language": reload_locale()
 
 ## Reloads the current display language.
 func reload_locale() -> void:
@@ -57,7 +89,7 @@ func reload_locale() -> void:
 		if os_lang in list: language = os_lang
 		else: language = "en"
 	TranslationServer.set_locale(language)
-
+	
 ## Reloads the note keybinds.
 func reload_keybinds() -> void:
 	const NOTE_KEYBINDS: Array[String] = ["note_left", "note_down", "note_up", "note_right"]
@@ -84,6 +116,7 @@ func update_master_volume() -> void:
 
 ## Updates the Engine's max framerate.
 func update_framerate() -> void:
+	update_vsync()
 	if framerate == 0 and _was_uncapped: _was_uncapped = false
 	if not _was_uncapped and framerate < 30 or framerate > 360:
 		_was_uncapped = true

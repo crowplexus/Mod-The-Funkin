@@ -1,22 +1,76 @@
-[gd_scene load_steps=2 format=3 uid="uid://i5g45da4c14o"]
+[gd_scene load_steps=5 format=3 uid="uid://i5g45da4c14o"]
 
 [ext_resource type="Script" uid="uid://ctb4gh4xj2fwd" path="res://scenes/globals/overlay.gd" id="1_alel3"]
+[ext_resource type="AudioStream" uid="uid://c732jy0inr3bb" path="res://assets/sounds/scroll.ogg" id="2_w53nh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w53nh"]
+bg_color = Color(0.416667, 0.5, 0.25, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.241667, 0.29, 0.145, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2e11e"]
+bg_color = Color(0.166667, 0, 0.5, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.0999999, 0, 0.3, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 1
+anti_aliasing = false
 
 [node name="overlay" type="CanvasLayer"]
 process_mode = 3
+layer = 128
 script = ExtResource("1_alel3")
+
+[node name="volume_slider" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -125.0
+offset_top = 8.0
+offset_right = 125.0
+offset_bottom = 35.0
+grow_horizontal = 2
+theme_override_constants/outline_size = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_w53nh")
+theme_override_styles/fill = SubResource("StyleBoxFlat_2e11e")
+value = 50.0
 
 [node name="fps_label" type="Label" parent="."]
 unique_name_in_owner = true
-offset_left = 1174.0
-offset_top = 195.0
-offset_right = 1252.0
-offset_bottom = 242.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -86.0
+offset_right = -8.0
+offset_bottom = 47.0
+grow_horizontal = 0
 theme_override_constants/line_spacing = -5
 theme_override_font_sizes/font_size = 14
-text = "N/A FPS
-N/A RAM"
+text = "N/A FPS | N/A RAM"
 horizontal_alignment = 2
 
 [node name="update_timer" type="Timer" parent="."]
 unique_name_in_owner = true
+
+[node name="volume_sound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("2_w53nh")
+volume_db = -6.021
+max_polyphony = 50

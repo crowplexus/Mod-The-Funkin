@@ -4,7 +4,8 @@ extends Receptor
 
 func play_animation(state: = NoteField.RepState.STATIC, force: bool = false) -> void:
 	var state_changed: bool = _last_state != state
-	var index: int = get_index() % parent.get_child_count()
+	var index: int = get_index()
+	if parent: index = index % parent.get_child_count()
 	var enable_shader: bool = state_changed and state != NoteField.RepState.STATIC
 	if state_changed or force:
 		if sprite:

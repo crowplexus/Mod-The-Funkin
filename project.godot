@@ -14,7 +14,7 @@ config/name="Mod The Funkin'"
 config/description="A 4k Rhythm Game Engine, based on Friday Night Funkin'"
 config/version="0.1.0"
 config/tags=PackedStringArray("2d", "modding", "rhythm", "tool")
-run/main_scene="uid://81sm66x3qr7k"
+run/main_scene="uid://c5qnedjs8xhcw"
 config/features=PackedStringArray("4.4", "Mobile")
 run/max_fps=144
 run/low_processor_mode=true
@@ -26,9 +26,13 @@ config/icon="uid://dskmlhhqpvkkc"
 [autoload]
 
 Global="*res://scenes/globals/global.tscn"
-Conductor="*res://scenes/globals/conductor.tscn"
 Overlay="*res://scenes/globals/overlay.tscn"
+Conductor="*res://scenes/globals/conductor.tscn"
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
+
+[debug]
+
+gdscript/warnings/integer_division=0
 
 [display]
 
@@ -44,7 +48,7 @@ naming/script_name_casing=2
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/discord-rpc-gd/plugin.cfg", "res://addons/gdanimate/plugin.cfg")
+enabled=PackedStringArray("res://addons/discord-rpc-gd/plugin.cfg", "res://addons/fancy_editor_sounds/plugin.cfg", "res://addons/gdanimate/plugin.cfg")
 
 [file_customization]
 
@@ -100,9 +104,10 @@ fullscreen={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.mk.translation", "res://assets/ui/translations/gameplay.pt_BR.translation", "res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.mk.translation", "res://assets/ui/translations/menus.pt_BR.translation", "res://assets/ui/translations/secrets.en.translation", "res://assets/ui/translations/secrets.es.translation", "res://assets/ui/translations/secrets.mk.translation", "res://assets/ui/translations/secrets.pt_BR.translation")
+locale/translations=PackedStringArray("res://assets/ui/translations/gameplay.en.translation", "res://assets/ui/translations/gameplay.es.translation", "res://assets/ui/translations/gameplay.mk.translation", "res://assets/ui/translations/gameplay.pt_BR.translation", "res://assets/ui/translations/gameplay.rus.translation", "res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.mk.translation", "res://assets/ui/translations/menus.pt_BR.translation", "res://assets/ui/translations/menus.rus.translation", "res://assets/ui/translations/secrets.en.translation", "res://assets/ui/translations/secrets.es.translation", "res://assets/ui/translations/secrets.mk.translation", "res://assets/ui/translations/secrets.pt_BR.translation", "res://assets/ui/translations/secrets.rus.translation")
 locale/locale_filter_mode=1
 
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

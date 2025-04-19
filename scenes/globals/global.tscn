@@ -21,3 +21,6 @@ unique_name_in_owner = true
 [node name="resource_preloader" type="ResourcePreloader" parent="."]
 unique_name_in_owner = true
 resources = [PackedStringArray("cancel", "confirm", "fav", "scroll", "unfav"), [ExtResource("4_fh08h"), ExtResource("3_8rvg3"), ExtResource("4_iyfwb"), ExtResource("2_iyfwb"), ExtResource("6_8rvg3")]]
+
+[node name="transition_layer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true

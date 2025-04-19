@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c5qnedjs8xhcw"]
+[gd_scene load_steps=7 format=3 uid="uid://c5qnedjs8xhcw"]
 
 [ext_resource type="Script" uid="uid://dqt5jghej6xdr" path="res://scenes/menu/freeplay_menu.gd" id="1_ttjym"]
 [ext_resource type="Texture2D" uid="uid://ciwp55vsaghii" path="res://assets/ui/menu/menuDesat.png" id="2_f7icd"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="3_i0mk5"]
 [ext_resource type="PackedScene" uid="uid://b5vnpx4av4rx" path="res://scenes/menu/freeplay/capsule.tscn" id="3_s6l1l"]
+[ext_resource type="Script" uid="uid://baapgcfj1sapp" path="res://scenes/menu/ui/lerp_box_container.gd" id="4_5h24w"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5h24w"]
 font = ExtResource("3_i0mk5")
@@ -65,6 +66,9 @@ anchors_preset = 0
 offset_top = 30.0
 offset_right = 1280.0
 offset_bottom = 690.0
+script = ExtResource("4_5h24w")
+move_x = false
+spacing = Vector2(50, 55)
 
 [node name="random" parent="song_container" instance=ExtResource("3_s6l1l")]
 text = "Random"

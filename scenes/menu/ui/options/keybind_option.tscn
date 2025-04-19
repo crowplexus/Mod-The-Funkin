@@ -1,0 +1,78 @@
+[gd_scene load_steps=3 format=3 uid="uid://dawmh0rsbqxix"]
+
+[ext_resource type="Script" uid="uid://br718eijetu3x" path="res://scenes/menu/ui/options/option_bar.gd" id="1_4tbai"]
+[ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="2_4lacv"]
+
+[node name="keybind_option" type="Control"]
+layout_mode = 3
+anchor_right = 0.516
+anchor_bottom = 0.069
+offset_right = -0.480042
+offset_bottom = 0.319996
+script = ExtResource("1_4tbai")
+display_name = &"Key (Name)"
+
+[node name="name_label" type="Label" parent="."]
+layout_mode = 1
+offset_left = 5.0
+offset_right = 245.0
+offset_bottom = 50.0
+theme_override_fonts/font = ExtResource("2_4lacv")
+text = "Key (Name)"
+vertical_alignment = 1
+
+[node name="value_group" type="BoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 45.0
+offset_right = 6.10352e-05
+offset_bottom = 50.0
+grow_horizontal = 0
+theme_override_constants/separation = 80
+alignment = 1
+
+[node name="primary" type="ColorRect" parent="value_group"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="value" type="Label" parent="value_group/primary"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = -42.0
+offset_right = 20.0
+offset_bottom = -2.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_4lacv")
+theme_override_font_sizes/font_size = 20
+text = "N/A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="secondary" type="ColorRect" parent="value_group"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="value" type="Label" parent="value_group/secondary"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = -42.0
+offset_right = 20.0
+offset_bottom = -2.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_4lacv")
+theme_override_font_sizes/font_size = 20
+text = "N/A"
+horizontal_alignment = 1
+vertical_alignment = 1

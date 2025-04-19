@@ -4,7 +4,6 @@
 [ext_resource type="FontFile" uid="uid://casd318dkyewy" path="res://assets/ui/fonts/lilitaonerus.ttf" id="2_yhk22"]
 [ext_resource type="StyleBox" uid="uid://dhwynnq1ji6ou" path="res://scenes/gameplay/hud/styleboxes/fortnite_bar_bg.tres" id="3_epiwg"]
 [ext_resource type="StyleBox" uid="uid://bdag5e631yhvt" path="res://scenes/gameplay/hud/styleboxes/health_bar_right.tres" id="3_vvh1u"]
-[ext_resource type="Texture2D" uid="uid://cw3h68ylrq7fy" path="res://assets/ui/countdown/prepare.png" id="10_ojldb"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="11_x72vp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhk22"]
@@ -37,6 +36,8 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvh1u"]
 bg_color = Color(0, 0.625916, 0.994639, 1)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_kxj68"]
 
 [node name="default_hud" type="Control"]
 layout_mode = 3
@@ -120,7 +121,7 @@ offset_right = -4.39999
 offset_bottom = 24.71
 grow_horizontal = 2
 grow_vertical = 2
-text = "Score: 0 | Combo: 0 | Breaks: 0 [N/A]"
+text = "Score: 0 | Combo: 0 (Breaks: 0) [N/A]"
 label_settings = SubResource("LabelSettings_it28e")
 horizontal_alignment = 1
 
@@ -173,7 +174,7 @@ metadata/_edit_lock_ = true
 visible = false
 position = Vector2(640, 360)
 scale = Vector2(0.7, 0.7)
-texture = ExtResource("10_ojldb")
+texture = SubResource("PlaceholderTexture2D_kxj68")
 
 [node name="sound" type="AudioStreamPlayer" parent="countdown"]
 stream = ExtResource("11_x72vp")

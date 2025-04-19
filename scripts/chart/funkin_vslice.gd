@@ -116,10 +116,8 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 			var fake_timer: float = 0.0
 			var signature: float = 4.0
 			for note: Dictionary in song_notes:
-				var new_note: NoteData = NoteData.from_dictionary(note)
+				var new_note: NoteData = NoteData.from_dictionary(note, max_columns)
 				if new_note.column > -1:
-					@warning_ignore("integer_division")
-					new_note.side = int(new_note.column / max_columns)
 					new_note.column = int(new_note.column % max_columns)
 					if new_note.side > chart.note_counts.size():
 						chart.note_counts.append(0)
@@ -172,12 +170,17 @@ static func make_event(time: float, event_name: StringName = &"_", value: Varian
 			if not "force" in event.values:
 				event.values.force = false
 			if not "cooldown" in event.values:
-				event.values.cooldown = 0.5
+				event.values.cooldown = 0.0
 		&"FocusCamera":
 			if value is int or value is float: event.values.char = value
 			elif value is Dictionary: event.values.assign(value)
 			if "char" in event.values: event.values.char = int(event.values.char)
 			event.name = &"Change Camera Focus"
+		&"ZoomCamera":
+			if value is float: event.values.zoom = value
+			elif value is Dictionary: event.values.assign(value)
+			if "zoom" in event.values: event.values.zoom = float(event.values.zoom)
+			event.name = &"Change Camera Zoom"
 		_:
 			event.name = event_name
 			if value is Dictionary: event.values.assign(value)

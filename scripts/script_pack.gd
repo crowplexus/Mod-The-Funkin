@@ -33,4 +33,5 @@ func push_scripts_only(path: String) -> void:
 		if file.get_extension() == "gd":
 			var script: GDScript = load(path.path_join(file))
 			if script: add_child(script.new())
+			print_debug("loading script ", path.path_join(file))
 	cleanup()

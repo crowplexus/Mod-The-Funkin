@@ -8,12 +8,9 @@ enum RepState {
 	CONFIRM = 2,
 }
 
-## Player Node attached to this note field, will try to set automatically if null.
-@export var player: Player
-## Note Speed for this particular note field, is affected by the chart, may be increased by timed events.
-@export var speed: float = 1.0
+@export var player: Player ## Player Node attached to this note field, will try to set automatically if null.
+@export var speed: float = 1.0 ## Note Speed for this particular note field, is affected by the chart, may be increased by timed events.
 var speed_change_tween: Tween
-
 
 func _ready() -> void:
 	if not player and has_node("player"):

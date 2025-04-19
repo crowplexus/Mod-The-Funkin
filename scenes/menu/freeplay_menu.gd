@@ -7,7 +7,7 @@ const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a R
 ## Song to play if the audio file for the hovered one couldn't be found.
 @export var default_song: AudioStream = preload("res://assets/music/freeplayRandom.ogg")
 ## List of songs to display on-screen.
-@export var songs: SongList = preload("res://assets/resources/song_list.tres")
+@export var songs: SongPlaylist = preload("res://assets/resources/song_list.tres").duplicate()
 
 @onready var song_container: Control = $"song_container"
 @onready var item_template: Control = $"song_container/random".duplicate()
@@ -31,6 +31,9 @@ func _ready() -> void:
 	for i: SongItem in songs.list:
 		if not i.list_name in lists:
 			lists.append(i.list_name)
+			if not i.shown_in_freeplay:
+				var index: int = songs.list.find(i)
+				songs.list.remove_at(index)
 	Global.update_discord("Menus", "Selecting a Song in Freeplay")
 	if get_tree().paused: get_tree().paused = false
 	Global.play_bgm(default_song, 0.7)
@@ -38,13 +41,6 @@ func _ready() -> void:
 	#Global.request_audio_fade(Global.bgm, 1.0, 0.3)
 	change_category()
 	change_difficulty()
-
-func _process(_delta: float) -> void:
-	for item: Control in song_container.get_children():
-		var index: int = item.get_index()
-		#var scaled_y: float = remap(index, 0, 1, 0, 1.3)
-		#item.position.x = lerpf(item.position.x, item.size.x + (60 * sin(index - selected)), exp(delta * 10))
-		item.position.y = lerpf(item.position.y, index * ((650 * (item.size.y * item.scale.y) / get_viewport_rect().size.y) + 10), 0.15)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if exiting: return
@@ -56,7 +52,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if axis_diff != 0: change_difficulty(axis_diff)
 	if axis != 0: change_selection(axis)
-	if not event.is_echo() and event.pressed:
+	if event is InputEventKey and not event.is_echo() and event.pressed:
 		match event.keycode:
 			KEY_Q: change_category(-1)
 			KEY_E: change_category(1)
@@ -71,7 +67,10 @@ func go_to_gameplay() -> void:
 	exiting = true
 	Global.request_audio_fade(Global.bgm, 0.0, 0.5)
 	var song_to_pick: SongItem = songs.list[song_selected]
-	Gameplay.chart = Chart.detect_and_parse(song_to_pick.folder, difficulty_name)
+	var parse: bool = true
+	if Gameplay.chart and Gameplay.chart.parsed_values.song_name == song_to_pick.folder:
+		parse = false # same chart, don't parse what's already parsed.
+	if parse: Gameplay.chart = Chart.detect_and_parse(song_to_pick.folder, difficulty_name)
 	if Gameplay.chart:
 		Gameplay.chart.parsed_values.difficulties = song_to_pick.difficulties
 	Global.change_scene("res://scenes/gameplay/gameplay.tscn")

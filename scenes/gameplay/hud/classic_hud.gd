@@ -73,7 +73,7 @@ func init_vars() -> void:
 	if not game.assets:
 		skip_countdown = true
 	else:
-		countdown_textures = game.assets.countdown_textures
+		countdown_textures = game.assets.countdown_assets
 		countdown_streams = game.assets.countdown_sounds
 		if not countdown_sprite:
 			countdown_sprite = Sprite2D.new()
@@ -125,16 +125,17 @@ func countdown_progress() -> void:
 		return
 	
 	if _countdown_iteration < countdown_textures.size():
-		const SCALE: Vector2 = Vector2(0.7, 0.7)
+		var count_scale: Vector2 = game.assets.countdown_scale if game and game.assets else Vector2(0.7, 0.7)
 		countdown_sprite.texture = countdown_textures[_countdown_iteration]
 		countdown_sprite.position = Vector2(get_viewport_rect().size.x, get_viewport_rect().size.y) * 0.5
+		countdown_sprite.scale = count_scale * (1.0 if game.local_settings.simplify_popups else 1.1)
 		countdown_sprite.self_modulate.a = 1.0
-		countdown_sprite.scale = SCALE * 1.05
 		countdown_sprite.show()
 		
 		if countdown_tween: countdown_tween.stop()
 		countdown_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_parallel(true)
-		countdown_tween.tween_property(countdown_sprite, "scale", SCALE, Conductor.crotchet * 0.9)
+		if countdown_sprite.scale != count_scale:
+			countdown_tween.tween_property(countdown_sprite, "scale", count_scale, Conductor.crotchet * 0.9)
 		countdown_tween.tween_property(countdown_sprite, "self_modulate:a", 0.0, Conductor.crotchet * 0.8)
 		countdown_tween.finished.connect(countdown_sprite.hide)
 	
@@ -169,7 +170,7 @@ func update_icons(delta: float) -> void:
 		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - health_bar.value)
 
 func display_judgement(judgement: Judgement) -> void:
-	combo_group.display_judgement(judgement.texture)
+	combo_group.display_judgement(judgement.name.to_snake_case())
 
 func display_combo(combo: int = -1) -> void:
 	if combo < 0:

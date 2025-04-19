@@ -6,10 +6,10 @@ uid="uid://pykjvjtpgw1p"
 
 [deps]
 
-files=["res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.pt_BR.translation", "res://assets/ui/translations/menus.mk.translation"]
+files=["res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.pt_BR.translation", "res://assets/ui/translations/menus.rus.translation", "res://assets/ui/translations/menus.mk.translation"]
 
 source_file="res://assets/ui/translations/menus.csv"
-dest_files=["res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.pt_BR.translation", "res://assets/ui/translations/menus.mk.translation"]
+dest_files=["res://assets/ui/translations/menus.en.translation", "res://assets/ui/translations/menus.es.translation", "res://assets/ui/translations/menus.pt_BR.translation", "res://assets/ui/translations/menus.rus.translation", "res://assets/ui/translations/menus.mk.translation"]
 
 [params]
 

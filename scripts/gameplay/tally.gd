@@ -122,23 +122,28 @@ static func judge_time(ms: float) -> int:
 		if can_return: return i
 	return TIMINGS.find(TIMINGS.back())
 
-## Returns a string with an grade, depends on what judgements have been hit in the tier list given.[br]
-## Hitting only tier 1s results in "Perf"[br]
-## Hitting at least 1 tier 2 results in "Great"[br]
-## Hitting at least 1 tier 3 results in "Pass" 
-func get_tier_grade() -> String:
+## Returns a string with an clear flag, depends on what judgements have been hit in the tier list given.[br]
+func get_clear_flag() -> String:
 	var fc_tier: String = ""
 	if notes_hit_count == 0:
 		fc_tier = "NOPLAY"
 		return fc_tier
 	var scores: = self.tiers_scored
-	var total: int = misses + breaks
-	if scores[3] == 0 and total == 0:
-		if scores[0] > 0: fc_tier = "PFC" # Epic
-		if scores[1] > 0:
-			fc_tier = "SDG" if scores[1] < 1 else "GFC" # Sick
-		if scores[2] > 0:
-			fc_tier = "FC" # Good
-	elif total > 0 and total < 10:
-		fc_tier = "SDCB"
+	var oopsies: int = misses + breaks
+	if oopsies == 0:
+		fc_tier = "FC" # Full Combo
+		if scores[3] == 0 and scores[4] == 0: # technically I don't need to check for Bad/Shit here but…
+			if scores[2] > 0: # Good
+				if scores[2] < 10: fc_tier = "SDG" # Single Digit Great (Good)
+				else: fc_tier = "GFC" # Great (Good) Full Combo
+			elif scores[1] > 0: # Sick
+				if use_epics: # "SDS" and "SFC" nah, that *makes* sense.
+					if scores[1] < 10: fc_tier = "SDP" # Single Digit Perfect (Sick)
+					else: fc_tier = "PFC" # Perfect (Sick) Full Combo
+				else:
+					fc_tier = "PFC" # Perfect (Sick) Full Combo
+			elif scores[0] > 0: fc_tier = "MFC" # Marvelous (Epic) Full Combo
+	elif oopsies > 0 and oopsies < 10:
+		if oopsies == 1: fc_tier = "MF" # Miss Flag
+		else: fc_tier = "SDCB" # Single Digit Combo Break
 	return fc_tier

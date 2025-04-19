@@ -1,15 +1,33 @@
-key,en,es,pt-BR,mk
+key,en,es,pt-BR,rus,mk
 
-pause_resume,Resume,Continuar,Prosseguir,Продолжи
-pause_restart,Restart,Reiniciar,Reiniciar,Рестартираjте
-pause_difficulty,Difficulty,Dificultad,Dificuldade,Тешкотија
-pause_options,Options,Opciones,Opções,Опции
-pause_exit,Exit,Salir,Sair,Излезете
+pause_resume,Resume,Continuar,Prosseguir,Продолжить,Продолжи
+pause_restart,Restart,Reiniciar,Reiniciar,Перезагрузка,Рестартирайте
+pause_difficulty,Difficulty,Dificultad,Dificuldade,Сложность,Тешкотийа
+pause_options,Options,Opciones,Opções,Предпочтения,Опции
+pause_exit,Exit,Salir,Sair,Уезжать,Излезете
 
-difficulty_easy,Easy,Fácil,Fácil,Лесно
-difficulty_normal,Normal,Normal,Normal,Нормал
-difficulty_hard,Hard,Difícil,Durão,Тешка
-difficulty_erect,Erect,Ereto,Ereto,Ерекциjа
-difficulty_nightmare,Nightmare,Pesadilla,Pesadelo,Кошмар
-difficulty_flaccid,Flaccid,Flácido,Flácido,Флакцидно
-difficulty_back,Back,Volver,Voltar,Назад
+difficulty_easy,Easy,Fácil,Fácil,Легкий,Лесно
+difficulty_normal,Normal,Normal,Normal,Нормаль,Нормал
+difficulty_hard,Hard,Difícil,Durão,Хард,Тешка
+difficulty_erect,Erect,Ereto,Ereto,Ерект,Ерекциjа
+difficulty_nightmare,Nightmare,Pesadilla,Pesadelo,Кошмар,Кошмар
+difficulty_flaccid,Flaccid,Flácido,Flácido,Дряблый,Флакцидно
+difficulty_back,Back,Volver,Voltar,Назад,Назад
+
+options_tab_gameplay,Gameplay,Jugabilidad,Jogabilidade,Gameplay,Игранйе
+
+option_scroll,Scroll Direction,Dirección de las Notas,Direção das Notas,Scroll Direction,Распоред на белешките
+option_ghost_tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping
+option_use_epics,Show 'Epic' Judgement,Mostrar Calificación 'Epic',Mostrar Classificação 'Epic',Show 'Epic' Judgement,Прикажи 'Epic' рејтинг
+
+options_tab_visuals,Visuals,Visuales,Visuais,Visuals,Изглед
+
+option_framerate,Framerate,Framerate,Framerate,Framerate,Фрамерате
+option_language,Language,Idioma,Idioma,Язык,Йазик
+option_vsync,VSync,VSync,VSync,VSync,VSync
+
+option_hud_style,HUD Style,Estilo de la HUD,Estilo da HUD,HUD Style,Изглед HUD
+option_simplify_popups,Simplify Popups,Simplificar Popups,Simplfiicar Pop-ups,Simplify Popups,Поедноставени Popups
+option_timer_style,Timer Style,Estilo del Timer,Estilo do Timer,Таимер Стиль,Таимер Стиль
+option_note_splash_alpha,Note Splash Opacity,Opacidad del Note Splash,Opacidade do Note Splash,Note Splash Opacity,Слабење на Note Splash
+option_health_bar_alpha,Health Bar Opacity,Opacidad de la Barra de HP,Opacidade da Barra de HP,Health Bar Opacity,Слабење на Health Bar

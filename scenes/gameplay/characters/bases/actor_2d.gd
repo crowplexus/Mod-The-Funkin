@@ -11,7 +11,7 @@ const PLACEHOLDER_NAME: StringName = &"face"
 @export var sing_moves: Array[String] = ["singLEFT", "singDOWN", "singUP", "singRIGHT"]
 ## How long it takes for a character to stop singing after doing so.
 @export var sing_duration: float = 2.0
-## Icon shown on the health bar.
+## Icon shown on the health bar (if the HUD has one).
 @export var icon: HealthIcon
 ## Mark the character as a player (flips certain animations when its used as an opponent).
 @export var is_player: bool = false
@@ -41,9 +41,9 @@ var dance_sequence: Callable = func(beat: float) -> void:
 		dance()
 
 var camera_offset: Vector2 = Vector2.ZERO
-var pause_sing: bool = false
+var lock_on_sing: bool = false
+var able_to_sing: bool = true
 var faces_left: bool = false
-var cheering_out: bool = false
 var _last_anim: String = ""
 var _last_dance: int = 0
 
@@ -53,17 +53,17 @@ func _ready() -> void:
 		camera_offset = get_node("camera_offset").position
 		if faces_left: camera_offset.x *= -1
 	if dance_sequence: Conductor.on_beat_hit.connect(dance_sequence)
-	if not is_player and faces_left:
+	if is_player and not faces_left:
 		scale.x *= -1
 
 func _exit_tree() -> void:
 	if dance_sequence: Conductor.on_beat_hit.disconnect(dance_sequence)
 
 func _process(delta: float) -> void:
-	if idle_cooldown > 0.0 and not pause_sing:
+	if idle_cooldown > 0.0 and not lock_on_sing:
 		idle_cooldown -= delta / (Conductor.crotchet * sing_duration)
 		if idle_cooldown <= 0.0:
-			if cheering_out: cheering_out = false
+			if not able_to_sing: able_to_sing = true
 			dance()
 
 func play_animation(animation: String, forced: bool = false, reversed: bool = false, speed: float = 1.0) -> void:
@@ -85,6 +85,9 @@ func has_animation(animation: StringName) -> bool:
 
 func get_anim_position() -> float:
 	return anim.current_animation_position if anim else 0.0
+
+func get_anim_length(fallback: float = 1.0) -> float:
+	return anim.current_animation_length if anim else fallback
 
 func die() -> void:
 	if not death_skeleton:

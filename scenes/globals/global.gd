@@ -1,10 +1,18 @@
 extends Node
 
+const TRANSITIONS: Dictionary[String, PackedScene] = {
+	"default": preload("res://scenes/globals/transition/wipe_top_bottom.tscn"),
+	#"sticker": preload("res://scenes/globals/transition/funkin_stickers.tscn"),
+}
+var current_transition: StringName = &"default"
+
 #region Node Tree
 @onready var bgm: AudioStreamPlayer = $"%background_music"
 @onready var sfx: Node = $"%sound_effects"
 @onready var resources: ResourcePreloader = $"%resource_preloader"
+@onready var transition: CanvasLayer = $"%transition_layer"
 
+var previous_scene_path: String = "res://scenes/menu/lobby.tscn"
 var _was_paused: bool = false
 var settings: Settings
 
@@ -18,10 +26,12 @@ func _ready() -> void:
 	reset_discord()
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if event.pressed:
-		if not event.is_echo() and event.is_action("fullscreen"):
+	if event.pressed and not event.is_echo():
+		if event.is_action("fullscreen"):
 			var is_full: bool = get_window().mode == Window.Mode.MODE_FULLSCREEN
 			get_window().mode = Window.MODE_WINDOWED if is_full else Window.MODE_FULLSCREEN
+		if OS.is_debug_build() and event.keycode == KEY_P:
+			get_tree().paused = not get_tree().paused
 
 func _notification(what: int) -> void:
 	match what:
@@ -37,24 +47,46 @@ func _notification(what: int) -> void:
 
 #region Utils
 
+func change_transition_style(next: StringName = &"default") -> void:
+	if next in TRANSITIONS: current_transition = next
+
+func play_transition() -> Control:
+	var trans: Control = TRANSITIONS[current_transition].instantiate()
+	trans.finished.connect(func() -> void: trans.queue_free())
+	transition.add_child(trans)
+	trans.play()
+	return trans
+
+func reload_scene(immediate: bool = false) -> void:
+	var transit: bool = not immediate and not settings.skip_transitions
+	if not current_transition in TRANSITIONS:
+		transit = false
+	if transit:
+		var trans: = play_transition()
+		await get_tree().create_timer(trans.duration * 0.35).timeout
+	get_tree().reload_current_scene()
+	if transit: play_transition()
+
+func rewind_scene(immediate: bool = false) -> void:
+	change_scene(previous_scene_path, immediate)
+
 func change_scene(next, immediate: bool = false) -> void:
-	# TODO: transition
-	if immediate: await get_tree().create_timer(0.5).timeout
+	if is_inside_tree() and next != previous_scene_path:
+		previous_scene_path = get_tree().current_scene.scene_file_path
+	var transit: bool = not immediate and not settings.skip_transitions
+	if not current_transition in TRANSITIONS:
+		transit = false
+	if transit:
+		var trans: = play_transition()
+		await get_tree().create_timer(trans.duration * 0.35).timeout
 	if next is String: get_tree().change_scene_to_file(next)
 	elif next is PackedScene: get_tree().change_scene_to_packed(next)
-
 #endregion
 
 #region Music
 var music_fade_tween: Tween
 
-## [see]lerpf[/see]
-func lerpv2(v1: Vector2, v2: Vector2, weight: float = 1.0) -> Vector2:
-	return Vector2(
-		lerpf(v1.x, v2.x, weight),
-		lerpf(v1.y, v2.y, weight)
-	)
-##
+## Activates a volume fade tween in [code]player: AudioStreamPlayer[/code].
 func request_audio_fade(player: AudioStreamPlayer, to: float = 0.0, speed: float = 1.0) -> AudioStreamPlayer:
 	if to < 0.0: return
 	if music_fade_tween: music_fade_tween.stop()
@@ -106,6 +138,13 @@ func linear_to_seconds(value: float) -> float: return value - int(value / SECS_M
 func linear_to_log(x: float) -> float: return exp(LOG_MINIMUM * (1 - x))
 ## Maps a logarithmic value [code]x[/code] (i.e: 0.001) back to a linear scale.
 func log_to_linear(x: float) -> float: return 1 - (log(x) / LOG_MINIMUM)
+
+## [see]@GlobalScope.lerpf[/see]
+func lerpv2(v1: Vector2, v2: Vector2, weight: float = 1.0) -> Vector2:
+	return Vector2(
+		lerpf(v1.x, v2.x, weight),
+		lerpf(v1.y, v2.y, weight)
+	)
 #endregion
 
 #region Strings
@@ -123,29 +162,33 @@ func get_paused_string() -> String:
 	return "PAUSED" if get_tree().paused else ""
 
 ## Returns a game mode string based on the integer given.[br]
-## [code]1 = "STORY MODE"[/code][br]
-## [code]2 = "FREEPLAY"[/code][br]
-## [code]3 = "CHARTING"[/code]
+## [code]1 = "Story Mode"[/code][br]
+## [code]2 = "Freeplay"[/code][br]
+## [code]3 = "Charting"[/code][br]
+## Anything else will return [code]"Unknown"[/code]
 func get_mode_string(game_mode: int) -> String:
 	match game_mode:
-		0: return "STORY MODE"
-		1: return "FREEPLAY"
-		2: return "CHARTING"
-		_: return ""
+		0: return "Story Mode"
+		1: return "Freeplay"
+		2: return "Charting"
+		_: return "Unknown"
 
-## Formats a float to a digital clock string, like: 1:10:25[br]
+## Formats a float to a digital clock string, example: 1:10:25[br]
 func format_to_time(value: float, show_milliseconds: bool = false) -> String:
 	var minutes: float = Global.linear_to_minutes(value)
 	var seconds: float = Global.linear_to_seconds(value)
 	var hours: int = Global.linear_to_hours(value)
-	var formatter: String = "%2d:%02d" % [minutes, seconds]
-	if hours != 0: # append hours if needed
-		formatter += ":02d" % [hours, minutes, seconds]
+	var content: Array = [hours, minutes, seconds]
+	if hours <= 0: content.remove_at(0)
+	var time_string: String = "%2d:%02d"
+	if hours > 0: time_string += ":%02d"
 	if show_milliseconds:
-		formatter += ".%02d" % int((value - int(value)) * 1000)
-	return formatter
+		time_string += ".%03d"
+		content.append(int((value - int(value)) * 1000))
+	var result: String = time_string.dedent() % content
+	return result.dedent()
 
-## Gets the current weekday as a name
+## Gets the current weekday as a name.
 func get_weekday_string() -> String:
 	var weekday: Time.Weekday = Time.get_date_dict_from_system().weekday
 	match weekday:
@@ -157,6 +200,7 @@ func get_weekday_string() -> String:
 		5: return "Friday"
 		_: return "Unknown"
 
+## Formats an integer to separate the thousand value with [code]separator[/code].
 func separate_thousands(value: int, separator: String = ",") -> String:
 	var vstr: String = str(abs(value))
 	var prefix: String = "-" if value < 0 else ""

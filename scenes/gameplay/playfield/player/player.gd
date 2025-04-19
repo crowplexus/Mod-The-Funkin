@@ -85,40 +85,39 @@ func _get_note_old(idx: int) -> Note:
 	return note
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	var idx: int = get_action_id(event)
-	if not note_group or not note_field or force_disable_input or idx == -1:
+	var idx: int = get_action_id(event) % keys_held.size()
+	if event.is_echo() or not note_group or not note_field or force_disable_input or idx == -1:
 		return
 	var action: String = controls[idx]
-	keys_held[idx % keys_held.size()] = Input.is_action_pressed(action)
-	if not event.is_echo() and event.is_action(action) and event.is_released():
+	keys_held[idx] = Input.is_action_pressed(action)
+	if event.is_released():
 		note_field.play_animation(idx, NoteField.RepState.STATIC)
 		if note_field.get_receptor(idx).reset_timer > 0.0:
 			note_field.set_reset_timer(idx, 0.0)
 		return
-	if not event.is_echo() and event.is_action(action):
-		var note: Note = _get_note(idx)
-		if note and note.is_hittable(settings.max_hit_window):
-			hit_note.emit(note)
-			if note.was_hit:
-				note.hit_time = note.time - Conductor.playhead
-				if note.hold_size <= 0.0:
-					if not note.die_later: note.hide_all()
-					note_field.play_animation(idx, NoteField.RepState.CONFIRM)
-					note_field.set_reset_timer(idx, 0.2)
-				else:
-					note.trip_timer = 0.5 # half a second
-					note._stupid_visual_bug = note.hit_time < 0.0
-		else:
-			note_field.play_animation(idx, NoteField.RepState.PRESS)
-			if not settings.ghost_tapping:
-				miss_note.emit(null, idx)
+	var note: Note = _get_note(idx)
+	if note and note.is_hittable(settings.max_hit_window):
+		hit_note.emit(note)
+		if note.was_hit:
+			note.hit_time = note.time - Conductor.playhead
+			if note.hold_size <= 0.0:
+				if not note.die_later: note.hide_all()
+				note_field.play_animation(idx, NoteField.RepState.CONFIRM)
+				note_field.set_reset_timer(idx, 0.2)
+			else:
+				note.trip_timer = 0.5 # half a second
+				note._stupid_visual_bug = note.hit_time < 0.0
+	else:
+		note_field.play_animation(idx, NoteField.RepState.PRESS)
+		if not settings.ghost_tapping:
+			miss_note.emit(null, idx)
 
 func on_note_hit(note: Note) -> void:
 	if game is Gameplay: game.on_note_hit(note)
 func on_note_miss(note: Note = null, idx: int = -1) -> void:
 	if game is Gameplay: game.on_note_miss(note, idx)
 func on_hold_hit(note: Note) -> void:
-	if actor and not actor.cheering_out:
+	if actor and actor.able_to_sing:
 		actor.sing(note.column, actor.get_anim_position() > 0.1)
 
 func get_action_id(event: InputEvent) -> int:
@@ -132,7 +131,6 @@ func get_action_id(event: InputEvent) -> int:
 
 func get_action_name(event: InputEvent) -> String:
 	var id: String
-	if event.is_echo(): return id
 	for garlic_bread: String in controls:
 		if event.is_action(garlic_bread):
 			id = garlic_bread

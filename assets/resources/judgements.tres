@@ -1,17 +1,11 @@
-[gd_resource type="Resource" script_class="JudgementList" load_steps=13 format=3 uid="uid://fj361lysi7nc"]
+[gd_resource type="Resource" script_class="JudgementList" load_steps=8 format=3 uid="uid://fj361lysi7nc"]
 
 [ext_resource type="Script" uid="uid://dbw748sm1yw4l" path="res://scripts/gameplay/judgement.gd" id="1_spwge"]
-[ext_resource type="Texture2D" uid="uid://bgw0e2tdhqqht" path="res://assets/game/hud/judgments/funkin/epic.png" id="2_bo766"]
 [ext_resource type="Script" uid="uid://s7btyev2xf6m" path="res://scripts/gameplay/judgement_list.gd" id="2_ka624"]
-[ext_resource type="Texture2D" uid="uid://bmi6m72fh3nvo" path="res://assets/game/hud/judgments/funkin/sick.png" id="3_4ogmi"]
-[ext_resource type="Texture2D" uid="uid://bp5xrqbowyutx" path="res://assets/game/hud/judgments/funkin/good.png" id="4_xqy8v"]
-[ext_resource type="Texture2D" uid="uid://by66t1noky260" path="res://assets/game/hud/judgments/funkin/bad.png" id="5_xkcep"]
-[ext_resource type="Texture2D" uid="uid://nqyr5d0pfcsq" path="res://assets/game/hud/judgments/funkin/shit.png" id="6_02ne8"]
 
 [sub_resource type="Resource" id="Resource_spwge"]
 script = ExtResource("1_spwge")
 name = &"Epic"
-texture = ExtResource("2_bo766")
 splash_type = 2
 combo_break = false
 color = Color(1, 0.603922, 0, 1)
@@ -20,7 +14,6 @@ metadata/_custom_type_script = ExtResource("1_spwge")
 [sub_resource type="Resource" id="Resource_ka624"]
 script = ExtResource("1_spwge")
 name = &"Sick"
-texture = ExtResource("3_4ogmi")
 splash_type = 1
 combo_break = false
 color = Color(0.627451, 1, 1, 1)
@@ -29,7 +22,6 @@ metadata/_custom_type_script = ExtResource("1_spwge")
 [sub_resource type="Resource" id="Resource_ya0cj"]
 script = ExtResource("1_spwge")
 name = &"Good"
-texture = ExtResource("4_xqy8v")
 splash_type = 0
 combo_break = false
 color = Color(0.611765, 1, 0.643137, 1)
@@ -38,16 +30,14 @@ metadata/_custom_type_script = ExtResource("1_spwge")
 [sub_resource type="Resource" id="Resource_i6s6j"]
 script = ExtResource("1_spwge")
 name = &"Bad"
-texture = ExtResource("5_xkcep")
 splash_type = 0
-combo_break = true
+combo_break = false
 color = Color(0.858824, 0.454902, 0.529412, 1)
 metadata/_custom_type_script = ExtResource("1_spwge")
 
 [sub_resource type="Resource" id="Resource_xs71s"]
 script = ExtResource("1_spwge")
 name = &"Shit"
-texture = ExtResource("6_02ne8")
 splash_type = 0
 combo_break = true
 color = Color(0.52549, 0.152941, 0.223529, 1)
