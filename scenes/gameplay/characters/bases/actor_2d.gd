@@ -53,7 +53,7 @@ func _ready() -> void:
 		camera_offset = get_node("camera_offset").position
 		if faces_left: camera_offset.x *= -1
 	if dance_sequence: Conductor.on_beat_hit.connect(dance_sequence)
-	if not is_player and faces_left:
+	if is_player and not faces_left:
 		scale.x *= -1
 
 func _exit_tree() -> void:
