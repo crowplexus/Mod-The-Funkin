@@ -79,7 +79,11 @@ func _unhandled_input(event: InputEvent) -> void:
 				load_default_list()
 				reload_options()
 			else:
+<<<<<<< HEAD:scenes/gameplay/adjacent/pause_menu.gd
+				var folder: StringName = Gameplay.current.chart.parsed_values.difficulty
+=======
 				var folder: StringName = Gameplay.current.chart.parsed_values.song_name
+>>>>>>> f2b8e104c52349d2b940d1102037bf1cfc1949e5:scenes/gameplay/overlays/pause_menu.gd
 				Gameplay.chart = Chart.detect_and_parse(folder, selected_diff)
 				Gameplay.chart.parsed_values.difficulties = difficulties
 				close()
