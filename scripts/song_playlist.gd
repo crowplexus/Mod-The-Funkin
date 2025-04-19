@@ -10,7 +10,7 @@ class_name SongPlaylist extends Resource
 @export var show_in_campaign: bool = true ## Toggles if this playlist is able to be shown in Campaign Mode.
 @export var show_in_freeplay: bool = true ## Toggles if this playlist is able to be shown in Freeplay Mode.
 
-## Returns a random element from the array. Genertates an error and returns null if the array is empty.
+## Returns a random element from the array. Generates an error and returns null if the array is empty.
 func pick_random() -> SongItem: return list.pick_random()
 ## Sorts the array using a custom [Callable].
 func sort_custom(fun: Callable) -> void: list.sort_custom(fun)
