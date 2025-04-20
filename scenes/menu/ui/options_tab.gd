@@ -17,10 +17,10 @@ var settings: Settings
 
 func _ready() -> void:
 	if not settings:
-		if Gameplay.current:
-			settings = Gameplay.current.local_settings
-		else:
-			settings = Global.settings
+		#if Gameplay.current:
+		#	settings = Gameplay.current.local_settings
+		#else:
+		settings = Global.settings
 	for tab: Control in tabs_control.get_children():
 		if tab is BoxContainer and tab.get_child_count() != 0:
 			tabs.append(tab.name)

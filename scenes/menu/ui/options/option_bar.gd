@@ -25,10 +25,10 @@ func _ready() -> void:
 	if has_node("value_group/values"): value_box = get_node("value_group/values")
 	name_label.text = display_name # safety measure (sometimes it doesn't show)
 	if not settings:
-		if Gameplay.current and Gameplay.current.local_settings:
-			settings = Gameplay.current.local_settings
-		else:
-			settings = Global.settings
+		#if Gameplay.current and Gameplay.current.local_settings:
+		#	settings = Gameplay.current.local_settings
+		#else:
+		settings = Global.settings
 	if not variable_name.is_empty():
 		var setting = settings.get(variable_name)
 		match typeof(setting):
