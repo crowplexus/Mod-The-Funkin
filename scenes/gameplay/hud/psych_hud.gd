@@ -1,4 +1,4 @@
-extends "uid://cj82y7wjxiftj"
+extends "res://scenes/gameplay/hud/classic_hud.gd"
 
 const MAX_HISTORY: int = 20
 
