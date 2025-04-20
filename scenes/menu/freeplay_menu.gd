@@ -5,9 +5,9 @@ extends Node2D
 const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a Random Song"
 
 ## Song to play if the audio file for the hovered one couldn't be found.
-@export var default_song: AudioStream = preload("res://assets/music/freeplayRandom.ogg")
+@export var default_song: AudioStream = preload("uid://dsvj7ue46k0fd")
 ## List of songs to display on-screen.
-@export var songs: SongPlaylist = preload("res://assets/resources/song_list.tres").duplicate()
+@export var songs: SongPlaylist = preload("uid://cfxu4hd3spw4u").duplicate()
 
 @onready var song_container: Control = $"song_container"
 @onready var item_template: Control = $"song_container/random".duplicate()
@@ -59,9 +59,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if accepting:
 		go_to_gameplay()
-	if backing_out:
-		exiting = true
-		#Global.change_scene("res://scenes/menu/lobby.tscn")
+	#if backing_out:
+	#	exiting = true
+	#	Global.change_scene("")
 
 func go_to_gameplay() -> void:
 	exiting = true

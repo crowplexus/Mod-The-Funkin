@@ -8,12 +8,12 @@ enum PlayMode {
 
 ## Default HUD scenes to use, mainly for settings and stuff.
 var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
-	"Classic": load("res://scenes/gameplay/hud/classic_hud.tscn"),
-	"Advanced": load("res://scenes/gameplay/hud/fortnite_hud.tscn"),
-	"Psych": load("res://scenes/gameplay/hud/psych_hud.tscn")
+	"Classic": load("uid://br6ornbfmuj7l"),
+	"Advanced": load("uid://bjkg052ui3mnl"),
+	"Psych": load("uid://chxabingjikr6")
 }
 ## Default Pause Menu, used if there's none set in the Chart Assets.
-const DEFAULT_PAUSE_MENU: PackedScene = preload("res://scenes/gameplay/overlays/pause_menu.tscn")
+const DEFAULT_PAUSE_MENU: PackedScene = preload("uid://bpmp1nmibtels")
 ## Default Health Percentage.
 const DEFAULT_HEALTH_VALUE: int = 50
 ## Default Health Weight (how much should it be multiplied by when gaining)
@@ -50,7 +50,7 @@ var dj: Actor2D
 
 var game_mode: PlayMode = PlayMode.FREEPLAY
 var game_mode_name: String = Global.get_mode_string(game_mode)
-var judgements: JudgementList = preload("res://assets/resources/judgements.tres")
+var judgements: JudgementList = preload("uid://fj361lysi7nc")
 var timed_events: Array[TimedEvent] = []
 var should_process_events: bool = true
 var event_position: int = 0
@@ -456,4 +456,4 @@ func exit_game() -> void:
 	if tally: # NOTE: save tally before ending later.
 		#tally.save()
 		tally = null
-	Global.change_scene("res://scenes/menu/freeplay_menu.tscn")
+	Global.change_scene("uid://c5qnedjs8xhcw")

@@ -1,7 +1,7 @@
 extends Node2D
 
-const CONTINUE_SECRET: AudioStream = preload("res://assets/music/gameover/secret/continue.mp3")
-const GAME_OVER_SECRET: AudioStream = preload("res://assets/music/gameover/secret/game_over.mp3")
+const CONTINUE_SECRET: AudioStream = preload("uid://cmkobjpbrxyyr")
+const GAME_OVER_SECRET: AudioStream = preload("uid://b7mw26sr5hnq5")
 const TOTAL_SECRET_MESSAGES: int = 3
 
 @export var skeleton: Actor2D
@@ -121,7 +121,7 @@ func _selected_nyet() -> void:
 	music.stop()
 	if not oops:
 		get_tree().paused = false
-		Global.change_scene("res://scenes/menu/freeplay_menu.tscn")
+		Global.change_scene("uid://c5qnedjs8xhcw")
 		return
 	bg.modulate.a = 1.0
 	if not bg.visible: bg.show()
@@ -140,7 +140,7 @@ func _selected_nyet() -> void:
 	gore.hide()
 	secret_message.hide()
 	await get_tree().create_timer(0.5).timeout
-	Global.change_scene("res://scenes/menu/freeplay_menu.tscn", true)
+	Global.change_scene("uid://c5qnedjs8xhcw", true)
 
 func _selected_da() -> void:
 	music.stop()
@@ -174,4 +174,4 @@ func _selected_da() -> void:
 		self.queue_free()
 	else:
 		get_tree().paused = false
-		Global.change_scene(load("res://scenes/gameplay/gameplay.tscn"))
+		Global.change_scene(load("uid://cvf84mr6iepcs"))

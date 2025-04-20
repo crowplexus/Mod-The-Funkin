@@ -5,7 +5,7 @@ extends Node2D
 
 func _ready() -> void:
 	Conductor.active = false
-	Global.play_bgm(load("res://assets/music/artisticExpression.ogg"))
+	Global.play_bgm(load("uid://cdhsknlt31ako"))
 	Global.update_discord("Creative", "Editing an Unknown Track")
 
 func _process(delta: float) -> void:

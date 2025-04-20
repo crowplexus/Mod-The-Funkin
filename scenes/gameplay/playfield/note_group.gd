@@ -4,7 +4,7 @@ signal on_note_spawned(data: NoteData, note: Note)
 signal on_note_deleted(note: Note)
 
 const TEMPLATE_NOTES: Dictionary[String, PackedScene] = {
-	"_": preload("res://scenes/gameplay/playfield/notes/normal_note.tscn"),
+	"_": preload("uid://gib0vewis1qh"),
 }
 
 @export var active: bool = true

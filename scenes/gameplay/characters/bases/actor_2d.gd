@@ -20,16 +20,16 @@ const PLACEHOLDER_NAME: StringName = &"face"
 ## "deathStart" -> plays when the game over sequence shows up.[br]
 ## "deathLoop" -> plays while no buttons are being pressed after the first death animation.[br]
 ## "deathConfirm" -> plays after pressing accept to end the game over sequence.[br]
-@export var death_skeleton: PackedScene = preload("res://scenes/gameplay/characters/bf-dead.tscn")
+@export var death_skeleton: PackedScene = preload("uid://xjrclwpe5fqq")
 ## Sound played when the character dies and gets sent to the game over sequence.[br]
 ## Keep in mind, change this in the skeleton scene itself, not in its parent.
-@export var death_sound: AudioStream = preload("res://assets/sounds/gameover/fnf_loss_sfx.ogg")
+@export var death_sound: AudioStream = preload("uid://dtiwjcupp17r0")
 ## Sound played when the you press enter to retry in the game over sequence.[br]
 ## Keep in mind, change this in the skeleton scene itself, not in its parent.
-@export var death_confirm_sound: AudioStream = preload("res://assets/music/gameover/gameOverEnd.ogg")
+@export var death_confirm_sound: AudioStream = preload("uid://qoua0klod6ou")
 ## Music to play in the background for the game over sequence.[br]
 ## Keep in mind, change this in the skeleton scene itself, not in its parent.
-@export var death_music: AudioStream = preload("res://assets/music/gameover/gameOver.ogg")
+@export var death_music: AudioStream = preload("uid://bdeobuhlm3uxh")
 ## Animation Player attached to the Actor, prevents animations from playing altogether if null.
 var anim: AnimationPlayer
 ## Time (in seconds) to snap the character back to its idle animations.
@@ -93,7 +93,7 @@ func die() -> void:
 	if not death_skeleton:
 		return
 	hide()
-	var game_over_screen: PackedScene = load("res://scenes/gameplay/adjacent/game_over.tscn")
+	var game_over_screen: PackedScene = load("uid://dbnioh46qdgeu")
 	var instance: Node2D = game_over_screen.instantiate()
 	instance.process_mode = Node.PROCESS_MODE_ALWAYS
 	# spawn skeleton

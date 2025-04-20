@@ -3,27 +3,27 @@ class_name ChartAssets extends Resource
 
 @export var instrumental: AudioStream ## The chart's song instrumental
 @export var vocals: Array[AudioStream] = [] ## The chart's song vocals (if any)
-@export var note_skin: NoteSkin = preload("res://assets/resources/noteskin.tres") ## The noteskin used in the song.
+@export var note_skin: NoteSkin = preload("uid://dxhq200ow8ypp") ## The noteskin used in the song.
 @export var hud: PackedScene ## The HUD scene that will be used for the song, if unspecified, the game will use the default one.
 @export var pause_menu: PackedScene ## The Pause Menu scene that will be used for the song, if unspecified, the game will use the default one.
 
 ## The Countdown Sprite Frames that will be used for the early-song countdown.
 @export var countdown_assets: Array[Texture2D] = [
-	preload("res://assets/ui/popups/funkin/prepare.png"),
-	preload("res://assets/ui/popups/funkin/ready.png"),
-	preload("res://assets/ui/popups/funkin/set.png"),
-	preload("res://assets/ui/popups/funkin/go.png"),
+	preload("uid://eoyumqwmgfpq"),
+	preload("uid://our5ag8vgeit"),
+	preload("uid://c171hewdxpuy4"),
+	preload("uid://c5ncodoxcgphl"),
 ]
 ## Textures to display for each judgement.
 @export var judgement_assets: Dictionary[String, Texture2D] = {
-	"epic": preload("res://assets/ui/popups/funkin/epic.png"),
-	"sick": preload("res://assets/ui/popups/funkin/sick.png"),
-	"good": preload("res://assets/ui/popups/funkin/good.png"),
-	"bad" : preload("res://assets/ui/popups/funkin/bad.png"),
-	"shit": preload("res://assets/ui/popups/funkin/shit.png"),
+	"epic": preload("uid://bjyr01qah5nj3"),
+	"sick": preload("uid://bbso4bx4gyag5"),
+	"good": preload("uid://ln8kwo702lx6"),
+	"bad" : preload("uid://oc4gpybrbw7r"),
+	"shit": preload("uid://bdvlysb4ywney"),
 }
 ## Texture to be used for the combo numbers, must be a full spritesheet with 10 frames.
-@export var combo_numbers: Texture2D = preload("res://assets/ui/popups/funkin/score_numbers.png")
+@export var combo_numbers: Texture2D = preload("uid://cyni3widg3lqh")
 
 @export var countdown_scale: Vector2 = Vector2(0.7, 0.7) ## Scale for the countdown popup.
 @export var judgement_scale: Vector2 = Vector2(0.65, 0.65) ## Scale for the judgement sprite popup.
@@ -31,16 +31,16 @@ class_name ChartAssets extends Resource
 
 ## The Countdown Sounds that will be used for the early-song countdown.
 @export var countdown_sounds: Array[AudioStream] = [
-	preload("res://assets/sounds/countdown/funkin/3.ogg"),
-	preload("res://assets/sounds/countdown/funkin/2.ogg"),
-	preload("res://assets/sounds/countdown/funkin/1.ogg"),
-	preload("res://assets/sounds/countdown/funkin/go.ogg"),
+	preload("uid://cs4y7h8cnhhwm"),
+	preload("uid://c4y5bwvxdkv4o"),
+	preload("uid://c72s73suuam2n"),
+	preload("uid://177yqxrxg1hf"),
 ]
 ## Miss Sounds that will be used when missing notes.
 @export var miss_note_sounds: Array[AudioStream] = [
-	preload("res://assets/sounds/miss/funkin/miss1.ogg"),
-	preload("res://assets/sounds/miss/funkin/miss2.ogg"),
-	preload("res://assets/sounds/miss/funkin/miss3.ogg"),
+	preload("uid://1ahkreqvoty3"),
+	preload("uid://c1pqgmd00h20b"),
+	preload("uid://j4gb0khptavt"),
 ]
 
 ## Returns the song path (with variation included) if possible.

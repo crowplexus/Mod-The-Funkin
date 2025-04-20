@@ -1,8 +1,7 @@
 extends Node
 
 const TRANSITIONS: Dictionary[String, PackedScene] = {
-	"default": preload("res://scenes/globals/transition/wipe_top_bottom.tscn"),
-	#"sticker": preload("res://scenes/globals/transition/funkin_stickers.tscn"),
+	"default": preload("uid://dmkymcq7pnoa5"),
 }
 var current_transition: StringName = &"default"
 
@@ -12,7 +11,7 @@ var current_transition: StringName = &"default"
 @onready var resources: ResourcePreloader = $"%resource_preloader"
 @onready var transition: CanvasLayer = $"%transition_layer"
 
-var previous_scene_path: String = "res://scenes/menu/lobby.tscn"
+var previous_scene_path: String = "uid://c5qnedjs8xhcw"
 var _was_paused: bool = false
 var settings: Settings
 
@@ -218,7 +217,7 @@ const DISCORD_RPC_ID: int = 1328904269151338507
 ## Default Large Image that shows up on Discord.
 const DISCORD_RPC_DEFAULT_LI: String = "default"
 ## Default assets for charts, used in case "assets.tres" is missing in the chart folder.
-const DEFAULT_CHART_ASSETS: ChartAssets = preload("res://assets/resources/chart_assets.tres")
+const DEFAULT_CHART_ASSETS: ChartAssets = preload("uid://cp25ehrc4xvy2")
 ## Default Text that shows up when you hover over the large image on Discord.
 const DISCORD_RPC_DEFAULT_LI_TEXT: String = ""
 
