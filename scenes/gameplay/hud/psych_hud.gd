@@ -45,7 +45,7 @@ func init_vars() -> void:
 	rating_string = _rating_string_default
 	super()
 
-func _on_settings_changed(s: Settings = Global.settings) -> void:
+func settings_changed(s: Settings = Global.settings) -> void:
 	if not s: return
 	match s.scroll:
 		0:
@@ -58,6 +58,9 @@ func _on_settings_changed(s: Settings = Global.settings) -> void:
 				Gameplay.current.note_fields.position.y = 510
 			health_bar.position.y = 65
 			time_bar.position.y = 693
+	health_bar.self_modulate.a = settings.health_bar_alpha * 0.01
+	icon_p1.self_modulate.a = settings.health_bar_alpha * 0.01
+	icon_p2.self_modulate.a = settings.health_bar_alpha * 0.01
 	match s.timer_style:
 		0: time_bar.modulate.a = 0.0
 		1, 2:
@@ -83,10 +86,10 @@ func update_health_bar(_delta: float) -> void:
 func update_icons(delta: float) -> void:
 	if icon_p1 and icon_p1.scale != default_ip1_scale:
 		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * 9.0 * Conductor.rate))
-		icon_p1.position.x = default_ip1_pos.x + ((health_bar.size.x ) * 0.5) - (_prev_health * 6.0)
+		icon_p1.position.x = default_ip1_pos.x + ((health_bar.size.x) * 0.5) - (_prev_health * 6.0)
 	if icon_p2 and icon_p2.scale != default_ip2_scale:
 		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * 9.0 * Conductor.rate))
-		icon_p2.position.x = default_ip2_pos.x + ((health_bar.size.x ) * 0.5) - (_prev_health * 6.0)
+		icon_p2.position.x = default_ip2_pos.x + ((health_bar.size.x) * 0.5) - (_prev_health * 6.0)
 	if game is Gameplay: # this system sucks I may change it later
 		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(health_bar.value)
 		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - health_bar.value)

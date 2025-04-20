@@ -43,7 +43,7 @@ func _ready() -> void:
 		default_ip2_scale = icon_p2.scale
 		default_ip2_pos = icon_p2.position
 	if game is Gameplay:
-		_on_settings_changed(game.local_settings)
+		settings_changed(game.local_settings)
 		_max_score = Tally.calculate_perfect_score(Gameplay.chart.note_counts[0])
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	countdown.hide()
@@ -55,7 +55,7 @@ func _process(delta: float) -> void:
 func _exit_tree() -> void:
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
 
-func _on_settings_changed(settings: Settings = Global.settings) -> void:
+func settings_changed(settings: Settings = Global.settings) -> void:
 	if not settings: return
 	match settings.scroll:
 		0:
@@ -68,6 +68,9 @@ func _on_settings_changed(settings: Settings = Global.settings) -> void:
 				game.note_fields.position.y = 500
 			combo_group.position.y = 650
 			health_bar.position.y = 65
+	health_bar.self_modulate.a = settings.health_bar_alpha * 0.01
+	icon_p1.self_modulate.a = settings.health_bar_alpha * 0.01
+	icon_p2.self_modulate.a = settings.health_bar_alpha * 0.01
 
 func init_vars() -> void:
 	if not game.assets:

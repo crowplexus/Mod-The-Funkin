@@ -76,15 +76,21 @@ func show_all() -> void: show()
 func can_splash() -> bool:
 	return false
 
+var _old_sm: Vector2 = Vector2.ZERO
+
 func _ready() -> void:
-	if is_inside_tree():
-		var game: = get_tree().current_scene
-		scroll_mult = Note.get_scroll_as_vector(game.local_settings.scroll if game is Gameplay else Global.settings.scroll)
 	if has_node("clip_rect"):
 		clip_rect = get_node("clip_rect")
 		if has_node("clip_rect/hold_body"): hold_body = get_node("clip_rect/hold_body")
 		if has_node("clip_rect/hold_tail"): hold_tail = get_node("clip_rect/hold_tail")
+	reset_scroll()
+
+func reset_scroll() -> void:
+	var game: Gameplay = Gameplay.current
+	scroll_mult = Note.get_scroll_as_vector(game.local_settings.scroll if game else Global.settings.scroll)
+	if clip_rect and scroll_mult != _old_sm:
 		clip_rect.scale *= -scroll_mult
+	_old_sm = scroll_mult
 
 func get_total_speed() -> float:
 	var speed: float = note_field.speed * note_field.get_receptor(column).speed

@@ -16,10 +16,11 @@ var current_tab: Array[Control] = []
 var settings: Settings
 
 func _ready() -> void:
-	settings = Global.settings
-	get_tree().paused = false
-	#if Gameplay.current and Gameplay.current.local_settings:
-	#	settings = Gameplay.current.local_settings
+	if not settings:
+		if Gameplay.current:
+			settings = Gameplay.current.local_settings
+		else:
+			settings = Global.settings
 	for tab: Control in tabs_control.get_children():
 		if tab is BoxContainer and tab.get_child_count() != 0:
 			tabs.append(tab.name)
@@ -48,7 +49,10 @@ func _unhandled_input(_event: InputEvent) -> void:
 			update_hover()
 		else:
 			change_altered_settings()
-			Global.rewind_scene()
+			if Gameplay.current:
+				queue_free()
+			else:
+				Global.rewind_scene()
 
 func change_selection(next: int = 0) -> void:
 	if current_tab.is_empty():

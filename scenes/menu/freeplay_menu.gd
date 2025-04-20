@@ -61,7 +61,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		go_to_gameplay()
 	if backing_out:
 		exiting = true
-		Global.change_scene("res://scenes/menu/lobby.tscn")
+		#Global.change_scene("res://scenes/menu/lobby.tscn")
 
 func go_to_gameplay() -> void:
 	exiting = true
@@ -73,7 +73,7 @@ func go_to_gameplay() -> void:
 	if parse: Gameplay.chart = Chart.detect_and_parse(song_to_pick.folder, difficulty_name)
 	if Gameplay.chart:
 		Gameplay.chart.parsed_values.difficulties = song_to_pick.difficulties
-	Global.change_scene("res://scenes/gameplay/gameplay.tscn")
+	Global.change_scene("uid://cvf84mr6iepcs")
 
 ## Changes the index of the selection cursor
 func change_selection(next: int = 0) -> void:

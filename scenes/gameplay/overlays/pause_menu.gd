@@ -15,6 +15,7 @@ const LISTS: Dictionary[String, PackedStringArray] = {
 @onready var menu_options: Control = $"panel/options"
 @onready var progress_bar: ProgressBar = $"panel/progress_bar"
 @onready var progress_label: Label = $"panel/progress_bar/label"
+@onready var options_menu: CanvasLayer = $"options_menu"
 
 var list: PackedStringArray = []
 var difficulties: PackedStringArray = []
@@ -89,23 +90,33 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func confirm_selection() -> void:
 	var game: = get_tree().current_scene
-	match list[selected].dedent():
-		"Resume":
+	match list[selected].dedent().to_lower():
+		"resume":
 			if game is Gameplay and not game.starting and not game.ending:
 				game.music.play(Conductor.time)
 			close()
-		"Restart":
+		"restart":
 			if game is Gameplay: game.restart_song()
 			close()
-		"Difficulty":
+		"difficulty":
 			list = difficulties
 			reload_options()
-		"Options":
+		"options":
 			on_close.emit()
-			await RenderingServer.frame_post_draw
-			Global.change_scene("res://scenes/menu/ui/options_tab.tscn")
-		"Exit":
-			Global.change_scene("res://scenes/menu/freeplay_menu.tscn")
+			can_control = false
+			var fuck: Control = load("uid://gulb1ge3va36").instantiate()
+			add_child(fuck)
+			await fuck.tree_exited
+			if Gameplay.current:
+				if Gameplay.current.hud:
+					Gameplay.current.hud.settings_changed(Gameplay.current.local_settings)
+				if Gameplay.current.note_group:
+					for note: Note in Gameplay.current.note_group.get_children():
+						note.reset_scroll()
+					Gameplay.current.note_group.move_present_nodes()
+			can_control = true
+		"exit":
+			Global.change_scene("uid://c5qnedjs8xhcw")
 
 ## Changes the index of the selection cursor
 func change_selection(next: int = 0) -> void:

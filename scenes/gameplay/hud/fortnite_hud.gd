@@ -34,7 +34,7 @@ func _ready() -> void:
 	if get_tree().current_scene and get_tree().current_scene is Node2D:
 		game = get_tree().current_scene
 	if game is Gameplay:
-		_on_settings_changed(game.local_settings)
+		settings_changed(game.local_settings)
 		if Gameplay.chart:
 			# minimum score wasn't really necessary, but eh.
 			_max_score = Tally.calculate_perfect_score(Gameplay.chart.note_counts[0])
@@ -45,7 +45,7 @@ func _process(_delta: float) -> void:
 	if health_bar.value != _prev_health:
 		health_bar.value = lerp(health_bar.value, floorf(_prev_health), 0.05)
 
-func _on_settings_changed(settings: Settings = Global.settings) -> void:
+func settings_changed(settings: Settings = Global.settings) -> void:
 	if not settings: return
 	match settings.scroll:
 		0:
@@ -58,6 +58,7 @@ func _on_settings_changed(settings: Settings = Global.settings) -> void:
 				game.note_fields.position.y = 500
 			health_bar.position.y = 50
 			shield_bar.position.y = 35
+	health_bar.self_modulate.a = settings.health_bar_alpha * 0.01
 
 func init_vars() -> void:
 	if not game.assets:

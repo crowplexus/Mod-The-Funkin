@@ -53,9 +53,9 @@ func display_splash() -> Node2D:
 		dip = splash.duplicate()
 		dip.name = "splash_%s" % receptor.get_child_count()
 		dip.animation_finished.connect(dip.hide)
-		dip.global_position = receptor.global_position
 		dip.top_level = true
 		receptor.add_child(dip)
+	dip.global_position = receptor.global_position
 	dip.modulate.a = (game.local_settings.note_splash_alpha if Gameplay.current else Global.settings.note_splash_alpha) * 0.01
 	dip.scale = Vector2.ONE * (1.0 if judgement.splash_type == Judgement.SplashType.FULL else 0.8)
 	dip.frame = 0

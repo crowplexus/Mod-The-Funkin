@@ -10,6 +10,9 @@ signal on_countdown_end()
 ## Use this if you want to skip the default hud countdown.
 @export var skip_countdown: bool = false
 
+func settings_changed(_settings: Settings) -> void:
+	pass
+			
 ## Returns the lerp value used for decreasing the hud scale for beat zooms.
 func get_bump_lerp(_from: float = 2.0, to: float = 1.0, _delta: float = 0) -> float:
 	return to

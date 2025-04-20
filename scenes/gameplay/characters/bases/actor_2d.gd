@@ -49,7 +49,7 @@ var _last_dance: int = 0
 
 func _ready() -> void:
 	if has_node("animation_player"): anim = get_node("animation_player")
-	if has_node("camera_offset"):
+	if has_node("camera_oftfset"):
 		camera_offset = get_node("camera_offset").position
 		if faces_left: camera_offset.x *= -1
 	if dance_sequence: Conductor.on_beat_hit.connect(dance_sequence)
