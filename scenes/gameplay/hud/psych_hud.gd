@@ -85,11 +85,11 @@ func update_health_bar(_delta: float) -> void:
 
 func update_icons(delta: float) -> void:
 	if icon_p1 and icon_p1.scale != default_ip1_scale:
-		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * 9.0 * Conductor.rate))
-		icon_p1.position.x = default_ip1_pos.x + ((health_bar.size.x) * 0.5) - (_prev_health * 6.0)
+		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
+		icon_p1.position.x = default_ip1_pos.x + ((health_bar.size.x * default_ip1_scale.x) * 0.5) - (_prev_health * 6.0)
 	if icon_p2 and icon_p2.scale != default_ip2_scale:
-		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * 9.0 * Conductor.rate))
-		icon_p2.position.x = default_ip2_pos.x + ((health_bar.size.x) * 0.5) - (_prev_health * 6.0)
+		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
+		icon_p2.position.x = default_ip2_pos.x + ((health_bar.size.x * default_ip2_scale.x) * 0.5) - (_prev_health * 6.0)
 	if game is Gameplay: # this system sucks I may change it later
 		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(health_bar.value)
 		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - health_bar.value)
@@ -129,11 +129,11 @@ func update_rating(accuracy: float) -> void:
 	accuracy_history.append(clampf(accuracy, 0.0, 100.0))
 	if accuracy_history.size() > MAX_HISTORY:
 		accuracy_history.pop_front()
-	
+
 	average_accuracy = 0.0
 	if not accuracy_history.is_empty():
 		average_accuracy = accuracy_history.reduce(func(acc: float, val: float) -> float: return acc + val) / accuracy_history.size()
-	
+
 	var best_threshold: float = 0.0
 	for rating in rating_array:
 		if rating[1] <= average_accuracy and rating[1] >= best_threshold:

@@ -84,14 +84,14 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_it28e")
 [node name="icon_p1" type="Sprite2D" parent="health_bar"]
 position = Vector2(300, 0)
 texture = ExtResource("4_lal55")
-offset = Vector2(30, 0)
+offset = Vector2(45, 0)
 flip_h = true
 hframes = 2
 
 [node name="icon_p2" type="Sprite2D" parent="health_bar"]
 position = Vector2(300, 0)
 texture = ExtResource("4_lal55")
-offset = Vector2(-35, 0)
+offset = Vector2(-45, 0)
 hframes = 2
 
 [node name="score_text" type="Label" parent="health_bar"]

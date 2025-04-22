@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://i5g45da4c14o"]
+[gd_scene load_steps=6 format=3 uid="uid://i5g45da4c14o"]
 
 [ext_resource type="Script" uid="uid://ctb4gh4xj2fwd" path="res://scenes/globals/overlay.gd" id="1_alel3"]
+[ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="2_2e11e"]
 [ext_resource type="AudioStream" uid="uid://c732jy0inr3bb" path="res://assets/sounds/scroll.ogg" id="2_w53nh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w53nh"]
@@ -54,17 +55,14 @@ value = 50.0
 
 [node name="fps_label" type="Label" parent="."]
 unique_name_in_owner = true
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -86.0
-offset_right = -8.0
-offset_bottom = 47.0
-grow_horizontal = 0
-theme_override_constants/line_spacing = -5
-theme_override_font_sizes/font_size = 14
-text = "N/A FPS | N/A RAM"
-horizontal_alignment = 2
+modulate = Color(1, 1, 1, 0.588235)
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 135.0
+offset_bottom = 52.0
+theme_override_fonts/font = ExtResource("2_2e11e")
+theme_override_font_sizes/font_size = 12
+text = "FPS: 0"
 
 [node name="update_timer" type="Timer" parent="."]
 unique_name_in_owner = true

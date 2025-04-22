@@ -72,14 +72,14 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_it28e")
 
 [node name="icon_p1" type="Sprite2D" parent="health_bar"]
-position = Vector2(300, 0)
+position = Vector2(310, 0)
 texture = ExtResource("4_nfsnc")
 offset = Vector2(30, 0)
 flip_h = true
 hframes = 2
 
 [node name="icon_p2" type="Sprite2D" parent="health_bar"]
-position = Vector2(300, 0)
+position = Vector2(280, 0)
 texture = ExtResource("4_nfsnc")
 offset = Vector2(-35, 0)
 hframes = 2

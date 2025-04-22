@@ -7,6 +7,7 @@ extends CanvasLayer
 
 var vstwn: Tween
 var muted: bool = false
+var rid_once: bool = false
 
 func _ready() -> void:
 	volume_slider.modulate.a = 0.0
@@ -19,6 +20,11 @@ func _ready() -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event.pressed: return
 	match event.keycode:
+		KEY_F3:
+			fps_label.visible = not fps_label.visible
+			if not rid_once:
+				rid_once = true
+				update_overlay()
 		KEY_EQUAL, KEY_KP_MULTIPLY:
 			if Global.settings.master_mute:
 				Global.settings.master_mute = false
@@ -36,9 +42,22 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			Global.settings.update_master_volume()
 
 func update_overlay() -> void:
-	fps_label.text = "%s FPS | " % Engine.get_frames_per_second()
-	if OS.is_debug_build():
-		fps_label.text += "%s RAM" % String.humanize_size(OS.get_static_memory_usage())
+	if OS.is_debug_build(): # I had fun.
+		fps_label.text = "————Prototype Build————"
+		fps_label.text += "\nFramerate: %.0f" % Engine.get_frames_per_second()
+		fps_label.text += "\nMemory: %s" % String.humanize_size(OS.get_static_memory_usage())
+		fps_label.text += "\n————Current Scene————"
+		fps_label.text += "\nName: %s" % get_tree().current_scene.name
+		fps_label.text += "\nNodes: %s" % get_tree().root.get_child_count()
+		fps_label.text += "\n————Current System————"
+		fps_label.text += "\nRunning: %s" % OS.get_distribution_name()
+		fps_label.text += "\nProgramm Process ID: %s" % OS.get_process_id()
+		fps_label.text += "\nLanguage: %s (OS) %s (GAME)" % [ OS.get_locale_language(), Global.settings.language ]
+		fps_label.text += "\n——————————————————"
+	else:
+		fps_label.text += "Framerate: %.0f" % Engine.get_frames_per_second()
+		fps_label.text += " | Memory: %s" % String.humanize_size(OS.get_static_memory_usage())
+	if not rid_once: fps_label.text += "\nF3 TO HIDE"
 
 func update_master_volume(bhm: int = 0) -> void:
 	Global.settings.master_volume += bhm

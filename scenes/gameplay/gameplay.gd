@@ -58,6 +58,7 @@ var event_position: int = 0
 var ending: bool = false
 var starting: bool = true
 var has_enemy_track: bool = false
+var hud_is_built_in: bool = true
 ## This will move the enemy character and hide the dj character[br]
 ## Only really used for tutorial.
 var tutorial_dj: bool = true
@@ -74,6 +75,7 @@ func _sync_rpc_timestamp() -> void:
 
 func _ready() -> void:
 	current = self
+	get_tree().paused = false
 	local_settings = Global.settings.duplicate()
 	local_tally = Tally.new()
 	scripts = ScriptPack.new()
@@ -150,11 +152,6 @@ func restart_song() -> void:
 			note_field.player.note_group = note_group
 		for i: int in note_field.get_child_count():
 			note_field.play_animation(i)
-	# update hud if possible
-	if hud:
-		hud.init_vars()
-		hud.update_score_text(true) # pretend its a miss
-		hud.update_health(health)
 	_sync_rpc_timestamp()
 	play_countdown()
 
@@ -192,7 +189,7 @@ func _process(delta: float) -> void:
 			end_song()
 		
 	# hud bumping #
-	if hud_layer.is_inside_tree() and hud_layer.scale != Vector2.ONE:
+	if hud and hud_layer.is_inside_tree() and hud_layer.scale != Vector2.ONE:
 		hud_layer.scale = hud.get_bump_lerp_vector(hud_layer.scale, default_hud_scale, delta)
 		hud_layer.offset.x = (hud_layer.scale.x - 1.0) * -(get_viewport_rect().size.x * 0.5)
 		hud_layer.offset.y = (hud_layer.scale.y - 1.0) * -(get_viewport_rect().size.y * 0.5)
@@ -343,19 +340,35 @@ func load_characters() -> void:
 
 func reload_hud(custom_hud: PackedScene = null) -> void:
 	var idx: int = 0
+	var huds: Array = []
+	if hud: huds.append(hud)
 	if hud_layer.has_node("hud"):
 		idx = hud_layer.get_node("hud").get_index()
-		hud_layer.get_node("hud").set_process(false) # just in case
-		hud_layer.get_node("hud").queue_free()
+		huds.append(hud_layer.get_node("hud"))
+	for hud_node: Control in huds:
+		hud_node.set_process(false) # just in case
+		hud_node.queue_free()
 	var hud_type: String = local_settings.hud_style
-	if hud_type in DEFAULT_HUDS:
-		hud = DEFAULT_HUDS[hud_type].instantiate()
-	else:
+	var fallback: bool = false
+	if hud_type.to_snake_case() == "default":
 		var next_hud: PackedScene = custom_hud if custom_hud else chart.assets.hud
-		if next_hud: hud = next_hud.instantiate()
-		else: hud = DEFAULT_HUDS.classic.instantiate() # if all else fails, use the classic one.
+		if next_hud:
+			hud = next_hud.instantiate()
+		else:
+			fallback = true
+			hud_is_built_in = true
+	else:
+		if fallback: hud_type = "Classic"
+		if hud_type in DEFAULT_HUDS:
+			hud = DEFAULT_HUDS[hud_type].instantiate()
+			hud_is_built_in = true
 	hud_layer.add_child(hud)
 	hud_layer.move_child(hud, idx)
+	# update hud if possible
+	if hud:
+		hud.init_vars()
+		hud.update_score_text(true) # pretend its a miss
+		hud.update_health(health)
 
 func load_streams() -> void:
 	if chart.assets and chart.assets.instrumental:
@@ -399,11 +412,12 @@ func on_note_hit(note: Note) -> void:
 		local_tally.combo = 0
 	local_tally.update_tier_score(judged_tier)
 	# Update HUD
-	hud.display_judgement(note.judgement)
-	hud.display_combo(local_tally.combo)
 	tally.merge(local_tally)
-	hud.update_score_text(false)
-	hud.update_health(health)
+	if hud:
+		hud.display_judgement(note.judgement)
+		hud.display_combo(local_tally.combo)
+		hud.update_score_text(false)
+		hud.update_health(health)
 	kill_yourself()
 
 func kill_yourself() -> void: # thanks Unholy
@@ -413,8 +427,9 @@ func kill_yourself() -> void: # thanks Unholy
 		print_debug("Died with a MA of ", tally.calculate_epic_ratio(), " and a PA of ", tally.calculate_sick_ratio())
 		local_tally.zero()
 		tally.merge(local_tally)
-		hud.update_health(health)
-		hud.update_score_text(true)
+		if hud:
+			hud.update_health(health)
+			hud.update_score_text(true)
 		player.die()
 
 func try_revive() -> void:
@@ -439,12 +454,13 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 		Global.play_sfx(assets.miss_note_sounds.pick_random(), randf_range(0.1, 0.4))
 	#print_debug("Health damaged by ", int(Tally.MISS_POINTS + damage_boost), "%")
 	tally.merge(local_tally)
-	hud.update_score_text(true)
-	hud.update_health(health)
+	if hud:
+		hud.update_score_text(true)
+		hud.update_health(health)
 	kill_yourself()
 
 func on_beat_hit(beat: float) -> void:
-	if int(beat) > 0 and int(beat) % 4 == 0:
+	if hud and int(beat) > 0 and int(beat) % 4 == 0:
 		hud_layer.scale += Vector2(hud.get_bump_scale(), hud.get_bump_scale())
 
 func end_song() -> void:

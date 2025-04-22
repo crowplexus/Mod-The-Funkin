@@ -94,9 +94,11 @@ func confirm_selection() -> void:
 		"resume":
 			if game is Gameplay and not game.starting and not game.ending:
 				game.music.play(Conductor.time)
+			get_tree().paused = false
 			close()
 		"restart":
 			if game is Gameplay: game.restart_song()
+			get_tree().paused = false
 			close()
 		"difficulty":
 			list = difficulties
@@ -114,6 +116,10 @@ func confirm_selection() -> void:
 					for note: Note in Gameplay.current.note_group.get_children():
 						note.reset_scroll()
 					Gameplay.current.note_group.move_present_nodes()
+				# swap the huds if we can.
+				if Gameplay.current.hud_is_built_in == true and Gameplay.current.local_settings.hud_style != Global.settings.hud_style:
+					Gameplay.current.local_settings.hud_style = Global.settings.hud_style
+					Gameplay.current.reload_hud()
 			can_control = true
 		"exit":
 			Global.change_scene("uid://c5qnedjs8xhcw")
@@ -143,6 +149,5 @@ func reload_options() -> void:
 ## Closes the pause menu.
 func close() -> void:
 	can_control = false
-	get_tree().paused = false
 	on_close.emit()
 	self.queue_free()

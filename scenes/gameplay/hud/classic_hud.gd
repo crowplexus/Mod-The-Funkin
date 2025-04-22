@@ -15,6 +15,8 @@ extends TemplateHUD
 @onready var icon_p1: Sprite2D = $"health_bar/icon_p1"
 @onready var icon_p2: Sprite2D = $"health_bar/icon_p2"
 
+@export var icon_zoom_mult: float = 13.0
+
 var default_ip1_pos: Vector2 = Vector2.ZERO
 var default_ip2_pos: Vector2 = Vector2.ZERO
 
@@ -91,7 +93,8 @@ func init_vars() -> void:
 			countdown_timer.name = "timer"
 			countdown_timer.one_shot = true
 			countdown.add_child(countdown_timer)
-		countdown_timer.timeout.connect(countdown_progress)
+		if not countdown_timer.timeout.is_connected(countdown_progress):
+			countdown_timer.timeout.connect(countdown_progress)
 	setup_icons()
 
 func setup_icons() -> void:
@@ -158,15 +161,15 @@ func update_health(health: int) -> void:
 	_prev_health = health
 
 func update_health_bar(_delta: float) -> void:
-	if health_bar.value != _prev_health:
-		health_bar.value = lerp(health_bar.value, floorf(_prev_health), 0.15)
+	if _prev_health != health_bar.value:
+		health_bar.value = lerpf(floorf(_prev_health), health_bar.value, 0.15)
 
 func update_icons(delta: float) -> void:
 	if icon_p1 and icon_p1.scale != default_ip1_scale:
-		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * 13.0 * Conductor.rate))
+		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
 		icon_p1.position.x = lerpf(icon_p1.position.x, default_ip1_pos.x + ((health_bar.size.x * default_ip1_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
 	if icon_p2 and icon_p2.scale != default_ip2_scale:
-		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * 13.0 * Conductor.rate))
+		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
 		icon_p2.position.x = lerpf(icon_p2.position.x, default_ip2_pos.x + ((health_bar.size.x * default_ip2_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
 	if game is Gameplay: # this system sucks I may change it later
 		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(health_bar.value)
