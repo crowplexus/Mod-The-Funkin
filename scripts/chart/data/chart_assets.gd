@@ -47,7 +47,8 @@ class_name ChartAssets extends Resource
 static func song_path(song_name: String, variation: String = "", add: String = "") -> String:
 	var ret: String = "res://assets/game/songs/" + song_name
 	# make sure variation gets appended to the path, if not, append default
-	if not ResourceLoader.exists(ret + "/" + variation):
+	if not DirAccess.dir_exists_absolute(ret + "/" + variation):
+		#print_debug("using default path because ", ret + "/" + variation, " doesn't exist")
 		variation = "default"
 	ret += "/" + variation + "/"
 	if not DirAccess.dir_exists_absolute(ret):
