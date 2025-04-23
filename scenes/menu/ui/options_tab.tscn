@@ -1,9 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://gulb1ge3va36"]
+[gd_scene load_steps=9 format=3 uid="uid://gulb1ge3va36"]
 
 [ext_resource type="Script" uid="uid://dcbyww3fravuq" path="res://scenes/menu/ui/options_tab.gd" id="1_s4ceo"]
 [ext_resource type="PackedScene" uid="uid://cn5qxa5uqvf8r" path="res://scenes/menu/ui/options/option_bar.tscn" id="2_7tf5q"]
 [ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="2_p4q55"]
 [ext_resource type="PackedScene" uid="uid://baunqnsnu3gmb" path="res://scenes/menu/ui/options/number_option.tscn" id="3_5nl4s"]
+
+[sub_resource type="Gradient" id="Gradient_80t53"]
+colors = PackedColorArray(0, 0.0583333, 0.1, 1, 0, 0.133333, 0.231373, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rnuv3"]
+gradient = SubResource("Gradient_80t53")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_6dip2"]
 font = ExtResource("2_p4q55")
@@ -24,6 +33,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s4ceo")
 metadata/_edit_lock_ = true
+
+[node name="background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_rnuv3")
 
 [node name="tabs" type="Control" parent="."]
 anchors_preset = 0
@@ -137,14 +155,6 @@ description = "Locks framerate to your monitor's refresh rate
 
 May help reducing screen tearing."
 
-[node name="separator_hud" type="Label" parent="tabs/visuals"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_p4q55")
-theme_override_font_sizes/font_size = 24
-text = "HUD"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="hud_style" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
 values = [&"Default", &"Advanced", &"Classic", &"Psych"]
@@ -158,15 +168,9 @@ description = "Changes the style of the HUD
 
 [color=PLUM]Classic[/color] is often the fallback, it resembles the Base Game of FNF, displays only Score and Health
 
-[color=PURPLE]Psych[/color] is a recreation of the same HUD for Psych Engine, it displays Score, Combo Breaks, Accuracy, Health, and Time."
+[color=PURPLE]Psych[/color] is a recreation of the same HUD for Psych Engine, it displays Score, Combo Breaks, Accuracy, Health, and Time.
 
-[node name="simplify_popups" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
-layout_mode = 2
-display_name = &"Simplify Popups"
-variable_name = &"simplify_popups"
-description = "Simplifies the in-game pop ups to make them easier to see (maybe less obnoxious)
-
-Countdown"
+Won't work if the song forces the usage of a custom HUD."
 
 [node name="timer_style" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
@@ -198,6 +202,14 @@ values = [0, 30, 50, 100]
 display_name = &"Health Bar Opacity"
 variable_name = &"health_bar_alpha"
 description = "Defines how opaque should the health bar be for HUDs that have it."
+
+[node name="simplify_popups" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
+layout_mode = 2
+display_name = &"Simplify Popups"
+variable_name = &"simplify_popups"
+description = "Simplifies the in-game pop ups to make them easier to see (maybe less obnoxious)
+
+Objects affected include the Countdown and Judgement Popups."
 
 [node name="description" type="Control" parent="."]
 layout_mode = 1

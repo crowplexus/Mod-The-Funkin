@@ -18,6 +18,7 @@ offset_right = 245.0
 offset_bottom = 50.0
 theme_override_fonts/font = ExtResource("2_n76a4")
 text = "Setting"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="value_group" type="Control" parent="."]

@@ -33,7 +33,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				# for the framerate option (value 0 is an option)
 				if _internal_value < minv: progress.min_value = _internal_value
 				elif progress.min_value != minv: progress.min_value = minv
-				_update_value()
+				_refresh_value()
 	else:
 		_shift_mult = 1.0
 
@@ -41,9 +41,9 @@ func update_value(next: int = 0) -> void:
 	if typeof(_internal_value) == TYPE_INT or typeof(_internal_value) == TYPE_FLOAT:
 		var s: float = round(step) if typeof(_internal_value) == TYPE_INT else step
 		_internal_value = wrap(_internal_value + s * (next * _shift_mult), minv, maxv + 1)
-		_update_value()
+		_refresh_value()
 
-func _update_value() -> void:
+func _refresh_value() -> void:
 	progress.value = _internal_value
 	value_label.text = (format_string % str(progress.value)) + string_suffix
 
