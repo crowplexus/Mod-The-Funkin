@@ -1,8 +1,8 @@
 {
     "song": {
-        "player1": "bf-car",
-        "player2": "mom-car",
-        "gfVersion": "gf-car",
+        "player1": "bf",
+        "player2": "mom",
+        "gfVersion": "gf",
         "stage": "limo-ride",
         "song": "High (C-Sides)",
         "needsVoices": true,

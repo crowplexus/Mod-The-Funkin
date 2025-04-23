@@ -1,15 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://dx2mqmr5mbyw5"]
+[gd_scene load_steps=13 format=3 uid="uid://cw105foaa2cuo"]
 
-[ext_resource type="Script" uid="uid://b44gkei3dumkj" path="res://scenes/gameplay/characters/face.gd" id="1_tdqao"]
-[ext_resource type="Script" uid="uid://dovjbyvwk2plh" path="res://scenes/gameplay/characters/bases/health_icon.gd" id="2_7vnim"]
-[ext_resource type="Texture2D" uid="uid://bt1c2s8eti01f" path="res://assets/game/characters/enemies/icons/dad.png" id="3_4a6d1"]
-[ext_resource type="SpriteFrames" path="res://assets/game/characters/enemies/daddyDearest.res" id="4_7vnim"]
+[ext_resource type="Script" uid="uid://b44gkei3dumkj" path="res://scenes/gameplay/characters/face.gd" id="1_g42y4"]
+[ext_resource type="Script" uid="uid://dovjbyvwk2plh" path="res://scenes/gameplay/characters/bases/health_icon.gd" id="2_j7pdr"]
+[ext_resource type="Texture2D" uid="uid://qriswhk76spi" path="res://assets/game/characters/enemies/icons/mom.png" id="3_g42y4"]
+[ext_resource type="SpriteFrames" path="res://assets/game/characters/enemies/Mom.res" id="4_g42y4"]
 
 [sub_resource type="Resource" id="Resource_dmv11"]
-script = ExtResource("2_7vnim")
-texture = ExtResource("3_4a6d1")
-color = Color(0.686275, 0.4, 0.807843, 1)
-hframes = 1
+script = ExtResource("2_j7pdr")
+texture = ExtResource("3_g42y4")
+color = Color(0.847059, 0.333333, 0.556863, 1)
+hframes = 2
 vframes = 1
 metadata/_custom_type_script = "uid://dovjbyvwk2plh"
 
@@ -27,7 +27,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"idle"]
+"values": [&"Mom Idle"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -39,7 +39,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.541667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0, 12]
+"values": [0, 13]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -68,7 +68,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"idle"]
+"values": [&"Mom Idle"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -80,7 +80,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.541667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0, 12]
+"values": [0, 13]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -97,7 +97,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_7smad"]
 resource_name = "singDOWN"
-length = 0.625005
+length = 0.583338
 step = 0.0416667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -109,7 +109,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"singDOWN"]
+"values": [&"Mom Down Pose"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -118,10 +118,10 @@ tracks/1/path = NodePath("animated_sprite_2d:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.625),
+"times": PackedFloat32Array(0, 0.583333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0, 15]
+"values": [0, 14]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -133,12 +133,12 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-26, 13)]
+"values": [Vector2(-10, 103)]
 }
 
 [sub_resource type="Animation" id="Animation_5d8l5"]
 resource_name = "singLEFT"
-length = 0.625005
+length = 0.375004
 step = 0.0416667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -150,7 +150,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"singLEFT"]
+"values": [&"Mom Left Pose"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -159,10 +159,10 @@ tracks/1/path = NodePath("animated_sprite_2d:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.625),
+"times": PackedFloat32Array(0, 0.375),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0, 15]
+"values": [0, 9]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -174,12 +174,12 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-45, 3)]
+"values": [Vector2(-65, 8)]
 }
 
 [sub_resource type="Animation" id="Animation_yab3x"]
 resource_name = "singRIGHT"
-length = 0.625005
+length = 0.375004
 step = 0.0416667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -191,7 +191,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"singRIGHT"]
+"values": [&"Mom Right Pose"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -200,10 +200,10 @@ tracks/1/path = NodePath("animated_sprite_2d:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.625),
+"times": PackedFloat32Array(0, 0.375),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0, 15]
+"values": [0, 9]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -215,12 +215,12 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-15, -2)]
+"values": [Vector2(50, 30)]
 }
 
 [sub_resource type="Animation" id="Animation_skpw8"]
 resource_name = "singUP"
-length = 0.625005
+length = 0.583338
 step = 0.0416667
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -232,7 +232,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [&"singUP"]
+"values": [&"Mom Up Pose"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -241,10 +241,10 @@ tracks/1/path = NodePath("animated_sprite_2d:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.625),
+"times": PackedFloat32Array(0, 0.583333),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0, 15]
+"values": [0, 14]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -256,7 +256,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-30, -8)]
+"values": [Vector2(-50, -10)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7smad"]
@@ -269,13 +269,13 @@ _data = {
 &"singUP": SubResource("Animation_skpw8")
 }
 
-[node name="dad" type="Node2D"]
-script = ExtResource("1_tdqao")
+[node name="mom" type="Node2D"]
+script = ExtResource("1_g42y4")
 icon = SubResource("Resource_dmv11")
 
 [node name="animated_sprite_2d" type="AnimatedSprite2D" parent="."]
-sprite_frames = ExtResource("4_7vnim")
-animation = &"idle"
+sprite_frames = ExtResource("4_g42y4")
+animation = &"Mom Idle"
 
 [node name="animation_player" type="AnimationPlayer" parent="."]
 libraries = {

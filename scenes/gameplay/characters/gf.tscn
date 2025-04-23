@@ -9,7 +9,7 @@
 script = ExtResource("2_40d5q")
 texture = ExtResource("3_6xe0f")
 color = Color(0.647059, 0, 0.301961, 1)
-hframes = 2
+hframes = 1
 vframes = 1
 metadata/_custom_type_script = "uid://dovjbyvwk2plh"
 

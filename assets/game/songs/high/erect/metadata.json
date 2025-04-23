@@ -6,9 +6,9 @@
   "playData": {
     "difficulties": ["erect", "nightmare"],
     "characters": {
-      "player": "bf-car",
-      "girlfriend": "gf-car",
-      "opponent": "mom-car",
+      "player": "bf",
+      "girlfriend": "gf",
+      "opponent": "mom",
       "instrumental": "erect"
     },
     "stage": "limoRideErect",
