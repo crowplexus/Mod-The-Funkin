@@ -89,7 +89,8 @@ func update_visible_tabs() -> void:
 			if tab.name == visible_tab:
 				tab.visible = true
 				for i: Control in tab.get_children():
-					if i is OptionBar: current_tab.append(i)
+					if i.visible and i is OptionBar:
+						current_tab.append(i)
 	if selected > current_tab.size(): selected = 0
 	change_selection()
 
@@ -97,7 +98,8 @@ func change_altered_settings() -> void:
 	for tab: Control in tabs_control.get_children():
 		if tab is BoxContainer and tab.get_child_count() != 0:
 			for i: Control in tab.get_children():
-				if i is OptionBar: i.update_setting()
+				if i.visible and i is OptionBar:
+					i.update_setting()
 	settings.update_all()
 
 func save_to_disk() -> void:

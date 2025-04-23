@@ -43,7 +43,7 @@ var scroll: int = 0
 @export_enum("Default", "Advanced", "Classic", "Psych")
 var hud_style: String = "Default"
 ## Changes the UI elements and dialogue language.
-@export_enum("en", "es", "pt", "rus", "mk") # English, Spanish, Portuguese, Russian, Macedonian
+@export_enum("en")
 var language: String = "auto": # "auto" means get OS locale
 	set(new_lang): language = new_lang.to_snake_case()
 ## Defines the transition type, or disables it altogether.
@@ -84,12 +84,12 @@ func update_all() -> void:
 ## Reloads the current display language.
 func reload_locale() -> void:
 	var list: = TranslationServer.get_loaded_locales()
-	if language == "auto":
-		var os_lang: String = OS.get_locale_language()
-		if os_lang in list: language = os_lang
-		else: language = "en"
-	TranslationServer.set_locale(language)
-	
+	var new_lang: String = "en"
+	if language == "auto": new_lang = OS.get_locale_language()
+	if new_lang in list: language = new_lang
+	TranslationServer.set_locale(new_lang)
+	language = new_lang
+
 ## Reloads the note keybinds.
 func reload_keybinds() -> void:
 	const NOTE_KEYBINDS: Array[String] = ["note_left", "note_down", "note_up", "note_right"]

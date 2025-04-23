@@ -95,7 +95,7 @@ func change_difficulty(next: int = 0) -> void:
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	var diff: String = songs.list[song_selected].difficulties[difficulty]
 	var tr_diff: String = tr("difficulty_%s" % diff.to_lower(), &"menus")
-	diff_text.text = "< %s >" % tr_diff if not tr_diff.begins_with("difficulty_") else diff
+	diff_text.text = "« %s »" % [ tr_diff if not tr_diff.begins_with("difficulty_") else diff ]
 	difficulty_name = diff
 
 ## Changes the index of the current category

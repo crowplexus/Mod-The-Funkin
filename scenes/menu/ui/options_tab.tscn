@@ -129,6 +129,7 @@ This can be affected by VSync.
 Press TAB to cycle through recommended values."
 
 [node name="language" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
+visible = false
 layout_mode = 2
 values = [&"en", &"es", &"pt", &"rus", &"mk"]
 display_name = &"Language"
