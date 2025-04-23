@@ -46,9 +46,10 @@ func update_overlay() -> void:
 		fps_label.text = "————Prototype Build————"
 		fps_label.text += "\nFramerate: %.0f" % Engine.get_frames_per_second()
 		fps_label.text += "\nMemory: %s" % String.humanize_size(OS.get_static_memory_usage())
-		fps_label.text += "\n————Current Scene————"
-		fps_label.text += "\nName: %s" % get_tree().current_scene.name
-		fps_label.text += "\nNodes: %s" % get_tree().root.get_child_count()
+		if is_inside_tree():
+			fps_label.text += "\n————Current Scene————"
+			fps_label.text += "\nName: %s" % get_tree().current_scene.name
+			fps_label.text += "\nNodes: %s" % get_tree().root.get_child_count()
 		fps_label.text += "\n————Current System————"
 		fps_label.text += "\nRunning: %s" % OS.get_distribution_name()
 		fps_label.text += "\nProgramm Process ID: %s" % OS.get_process_id()

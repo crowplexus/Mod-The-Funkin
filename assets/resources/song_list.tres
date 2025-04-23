@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SongPlaylist" load_steps=7 format=3 uid="uid://cfxu4hd3spw4u"]
+[gd_resource type="Resource" script_class="SongPlaylist" load_steps=9 format=3 uid="uid://cfxu4hd3spw4u"]
 
 [ext_resource type="Script" uid="uid://cfh5aidjsi5bg" path="res://scripts/song_item.gd" id="1_tqjcx"]
 [ext_resource type="Script" uid="uid://cb8wmjygxeh2h" path="res://scripts/song_playlist.gd" id="2_d7ujs"]
@@ -35,8 +35,28 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [sub_resource type="Resource" id="Resource_m5gpq"]
 script = ExtResource("1_tqjcx")
-name = &"Combat"
-folder = "combat"
+name = &"Satin Panties (C-Sides)"
+folder = "satin-panties-c"
+difficulties = ["easy", "normal", "hard"]
+list_name = &"Main Levels"
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_hjkgw"]
+script = ExtResource("1_tqjcx")
+name = &"High (C-Sides)"
+folder = "high-c"
+difficulties = ["easy", "normal", "hard"]
+list_name = &"Main Levels"
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_3ahjm"]
+script = ExtResource("1_tqjcx")
+name = &"M.I.L.F (C-Sides)"
+folder = "milf-c"
 difficulties = ["easy", "normal", "hard"]
 list_name = &"Main Levels"
 show_in_campaign = true
@@ -45,7 +65,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [resource]
 script = ExtResource("2_d7ujs")
-list = Array[ExtResource("1_tqjcx")]([SubResource("Resource_qkp7m"), SubResource("Resource_tqjcx"), SubResource("Resource_d7ujs"), SubResource("Resource_m5gpq")])
+list = Array[ExtResource("1_tqjcx")]([SubResource("Resource_qkp7m"), SubResource("Resource_tqjcx"), SubResource("Resource_d7ujs"), SubResource("Resource_m5gpq"), SubResource("Resource_hjkgw"), SubResource("Resource_3ahjm")])
 tagline = &"Freeplay Songs"
 campaign_difficulties = Array[String](["easy", "normal", "hard"])
 show_in_campaign = false

@@ -35,23 +35,17 @@ const DUMMY_METADATA: Dictionary[String, Variant] = {
 
 ## Parses a chart from a JSON file using the new FNF chart format
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
-	var variation: String = ChartAssets.solve_variation(difficulty)
-	var path: String = ChartAssets.song_path(song_name, variation, "/chart.json")
-
+	var path: String = ChartAssets.song_path(song_name, ChartAssets.solve_variation(difficulty), "chart.json")
 	if not ResourceLoader.exists(path) and not skip_checks:
 		path = Chart.fix_path(path) + ".json"
 		# and then if the lowercase path isn't found, just live with that.
 		if not ResourceLoader.exists(path):
 			print_debug("Failed to parse chart \"%s\" [Difficulty: %s]" % [ song_name, difficulty ])
 			return Chart.new()
-	
 	return VSliceChart.parse_from_string(load(path).data, song_name, difficulty)
 
 static func get_vslice_metadata(song_name: String, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Dictionary:
-	var variation: String = ChartAssets.solve_variation(difficulty)
-	var path: String = "res://assets/game/songs/%s/%s/metadata.json" % [ song_name, variation ]
-	if not ResourceLoader.exists(path):
-		path = path.replace("/%s/" % variation, "/default/")
+	var path: String = ChartAssets.song_path(song_name, ChartAssets.solve_variation(difficulty), "metadata.json")
 	if not ResourceLoader.exists(path):
 		path = Chart.fix_path(path) + ".json"
 		if not ResourceLoader.exists(path):

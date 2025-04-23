@@ -89,7 +89,7 @@ func save_parsing_meta(song_name: StringName, difficulty: StringName = Global.DE
 static func detect_and_parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Chart:
 	# TODO: rewerite all of this ig.
 	var variation: String = ChartAssets.solve_variation(difficulty)
-	var path: String = ChartAssets.song_path(song_name, variation, "/%s.json" % difficulty)
+	var path: String = ChartAssets.song_path(song_name, variation, difficulty + ".json")
 	
 	var chart: Chart
 	var chart_type: ChartType = ChartType.DUMMY
@@ -116,7 +116,7 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 	if not chart:
 		chart = FNFChart.new() # make an FNFChart to avoid a metric fuckton amount of crashes.
 		chart.scheduled_events.append(TimedEvent.velocity_change(0.0))
-		print_debug("Unable to parse chart, creating a dummy...")
+		print_debug("Unable to parse chart (", path, "), creating a dummy...")
 	if chart:
 		chart.clear_overlapping_notes()
 		chart.save_parsing_meta(song_name, difficulty)
@@ -127,7 +127,7 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 ## This method SHOULD be overriden by other parsers.
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:
 	var variation: String = ChartAssets.solve_variation(difficulty)
-	var path: String = ChartAssets.song_path(song_name, variation, "/%s.tres" % difficulty)
+	var path: String = ChartAssets.song_path(song_name, variation, difficulty + ".tres")
 	if not ResourceLoader.exists(path) and not skip_checks:
 		path = Chart.fix_path(path) + ".tres"
 		# and then if the lowercase path isn't found, just live with that.

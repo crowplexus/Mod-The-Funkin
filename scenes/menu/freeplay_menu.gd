@@ -46,7 +46,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if exiting: return
 	
 	var accepting: bool = Input.is_action_just_pressed("ui_accept")
-	var backing_out: bool = Input.is_action_just_released("ui_cancel")
+	#var backing_out: bool = Input.is_action_just_released("ui_cancel")
 	var axis_diff: int = int(Input.get_axis("ui_left", "ui_right"))
 	var axis: int = int(Input.get_axis("ui_up", "ui_down"))
 	
