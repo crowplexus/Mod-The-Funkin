@@ -73,7 +73,7 @@ func clear_overlapping_notes() -> void:
 		var prev: NoteData = notes[i - 1]
 		const epsilon: float = 1e-12
 		if prev and absf(cur.time - prev.time) < epsilon and cur.column == prev.column and cur.side == prev.side:
-			print_debug("removed note 	at ", prev.time, " (", cur.time, ")")
+			#print_debug("removed note 	at ", prev.time, " (", cur.time, ")")
 			notes.remove_at(i)
 			counter += 1
 		total += 1
