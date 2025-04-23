@@ -80,7 +80,10 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			was_must_hit = must_hit_section
 			var focus_change: = TimedEvent.new()
 			focus_change.name = &"Change Camera Focus"
-			focus_change.values.char = was_must_hit
+			if "gfSection" in measure and measure["gfSection"] == true:
+				focus_change.values.char = 2 # Center (GF)
+			else:
+				focus_change.values.char = was_must_hit
 			focus_change.time = fake_timer
 			chart.scheduled_events.append(focus_change)
 		
