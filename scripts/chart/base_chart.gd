@@ -64,21 +64,20 @@ func get_velocity_change(timestamp: float) -> TimedEvent:
 
 ## Clear every overlapping note from the chart, only really used for fnf charts.
 func clear_overlapping_notes() -> void:
-	pass
-	#var counter: int = 0
-	#var total: int = 0
-	#for i: int in notes.size():
-	#	if i == 0 or i >= notes.size():
-	#		continue
-	#	var cur: NoteData = notes[i]
-	#	var prev: NoteData = notes[i - 1]
-	#	const epsilon: float = 1e-12
-	#	if prev and absf(cur.time - prev.time) < epsilon and cur.column == prev.column:
-	#		print_debug("removed note 	at ", prev.time, " (", cur.time, ")")
-	#		notes.remove_at(i)
-	#		counter += 1
-	#	total += 1
-	#print_debug("deleted ", counter, " overlapping notes from ", total, " total notes")
+	var counter: int = 0
+	var total: int = 0
+	for i: int in notes.size():
+		if i == 0 or i >= notes.size():
+			continue
+		var cur: NoteData = notes[i]
+		var prev: NoteData = notes[i - 1]
+		const epsilon: float = 1e-12
+		if prev and absf(cur.time - prev.time) < epsilon and cur.column == prev.column and cur.side == prev.side:
+			print_debug("removed note 	at ", prev.time, " (", cur.time, ")")
+			notes.remove_at(i)
+			counter += 1
+		total += 1
+	print_debug("deleted ", counter, " overlapping notes from ", total, " total notes")
 
 func save_parsing_meta(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> void:
 	parsed_values.variation = ChartAssets.solve_variation(difficulty)
