@@ -56,8 +56,7 @@ func update_overlay() -> void:
 		fps_label.text += "\nLanguage: %s (OS) %s (GAME)" % [ OS.get_locale_language(), Global.settings.language ]
 		fps_label.text += "\n——————————————————"
 	else:
-		fps_label.text += "Framerate: %.0f" % Engine.get_frames_per_second()
-		fps_label.text += " | Memory: %s" % String.humanize_size(OS.get_static_memory_usage())
+		fps_label.text = "Framerate: %.0f" % Engine.get_frames_per_second()
 	if not rid_once: fps_label.text += "\nF3 TO HIDE"
 
 func update_master_volume(bhm: int = 0) -> void:
