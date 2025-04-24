@@ -8,6 +8,7 @@ extends CanvasLayer
 var vstwn: Tween
 var muted: bool = false
 var rid_once: bool = false
+var show_debug: bool = false
 
 func _ready() -> void:
 	volume_slider.modulate.a = 0.0
@@ -20,6 +21,9 @@ func _ready() -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not event.pressed: return
 	match event.keycode:
+		KEY_F1 when OS.is_debug_build():
+			show_debug = not show_debug
+			update_overlay()
 		KEY_F3:
 			fps_label.visible = not fps_label.visible
 			if not rid_once:
@@ -42,9 +46,11 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			Global.settings.update_master_volume()
 
 func update_overlay() -> void:
-	if OS.is_debug_build(): # I had fun.
+	var fps_count: float = Engine.get_frames_per_second()
+	if fps_count < 30: fps_count = 60
+	if show_debug and OS.is_debug_build(): # I had fun.
 		fps_label.text = "————Prototype Build————"
-		fps_label.text += "\nFramerate: %.0f" % Engine.get_frames_per_second()
+		fps_label.text += "\nFramerate: %.0f" % fps_count
 		fps_label.text += "\nMemory: %s" % String.humanize_size(OS.get_static_memory_usage())
 		if is_inside_tree() and get_tree().current_scene:
 			fps_label.text += "\n————Current Scene————"
@@ -56,8 +62,10 @@ func update_overlay() -> void:
 		fps_label.text += "\nLanguage: %s (OS) %s (GAME)" % [ OS.get_locale_language(), Global.settings.language ]
 		fps_label.text += "\n——————————————————"
 	else:
-		fps_label.text = "Framerate: %.0f" % Engine.get_frames_per_second()
-	if not rid_once: fps_label.text += "\nF3 TO HIDE"
+		fps_label.text = "Framerate: %.0f" % fps_count
+	if not rid_once:
+		if OS.is_debug_build(): fps_label.text += "\nF1 TO SHOW MORE | "
+		fps_label.text += "F3 TO HIDE\n(F3 will hide this hint forever!)"
 
 func update_master_volume(bhm: int = 0) -> void:
 	Global.settings.master_volume += bhm
