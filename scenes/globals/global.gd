@@ -80,6 +80,26 @@ func change_scene(next, immediate: bool = false) -> void:
 		await get_tree().create_timer(trans.duration * 0.35).timeout
 	if next is String: get_tree().change_scene_to_file(next)
 	elif next is PackedScene: get_tree().change_scene_to_packed(next)
+
+func begin_flicker(node: CanvasItem, duration: float = 1.0, interval: float = 0.04,
+	end_vis: bool = false, force: bool = false, finish_callable: Callable = func() -> void: pass) -> void:
+	####
+	if node == null: return
+	if force:
+		node.modulate.a = 1.0
+		node.self_modulate.a = 1.0
+		node.visible = true
+	var twn: Tween = create_tween()
+	twn.set_loops(int(duration/interval))
+	twn.bind_node(node)
+	twn.finished.connect(func() -> void:
+		node.visible = end_vis
+		if finish_callable != null:
+			finish_callable.call()
+	)
+	twn.tween_callback(func() -> void:
+		node.visible = not node.visible
+	).set_delay(interval)
 #endregion
 
 #region Music
@@ -137,14 +157,6 @@ func linear_to_seconds(value: float) -> float: return value - int(value / SECS_M
 func linear_to_log(x: float) -> float: return exp(LOG_MINIMUM * (1 - x))
 ## Maps a logarithmic value [code]x[/code] (i.e: 0.001) back to a linear scale.
 func log_to_linear(x: float) -> float: return 1 - (log(x) / LOG_MINIMUM)
-
-## [see]@GlobalScope.lerpf[/see]
-func lerpv2(v1: Vector2, v2: Vector2, weight: float = 1.0) -> Vector2:
-	return Vector2(
-		lerpf(v1.x, v2.x, weight),
-		lerpf(v1.y, v2.y, weight)
-	)
-#endregion
 
 #region Strings
 ## Default Chart Difficulty.

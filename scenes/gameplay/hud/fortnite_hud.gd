@@ -139,6 +139,6 @@ func display_combo(combo: int = -1) -> void:
 func get_bump_lerp(from: float = 2.0, to: float = 1.0, _delta: float = 0) -> float:
 	return lerpf(from, to, 0.05) # TODO: use exp()
 func get_bump_lerp_vector(from: Vector2 = Vector2.ONE, to: Vector2 = Vector2.ONE, _delta: float = 0) -> Vector2:
-	return Global.lerpv2(from, to, 0.05) # TODO: use exp()
+	return lerp(from, to, 0.05) # TODO: use exp()
 func get_bump_scale() -> float:
 	return 0.03

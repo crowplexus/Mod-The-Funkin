@@ -85,10 +85,10 @@ func update_health_bar(_delta: float) -> void:
 
 func update_icons(delta: float) -> void:
 	if icon_p1 and icon_p1.scale != default_ip1_scale:
-		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
+		icon_p1.scale = lerp(default_ip1_scale, icon_p1.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
 		icon_p1.position.x = default_ip1_pos.x + ((health_bar.size.x * default_ip1_scale.x) * 0.5) - (_prev_health * 6.0)
 	if icon_p2 and icon_p2.scale != default_ip2_scale:
-		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
+		icon_p2.scale = lerp(default_ip2_scale, icon_p2.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
 		icon_p2.position.x = default_ip2_pos.x + ((health_bar.size.x * default_ip2_scale.x) * 0.5) - (_prev_health * 6.0)
 	if game is Gameplay: # this system sucks I may change it later
 		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(health_bar.value)

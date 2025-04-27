@@ -166,10 +166,10 @@ func update_health_bar(_delta: float) -> void:
 
 func update_icons(delta: float) -> void:
 	if icon_p1 and icon_p1.scale != default_ip1_scale:
-		icon_p1.scale = Global.lerpv2(default_ip1_scale, icon_p1.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
+		icon_p1.scale = lerp(default_ip1_scale, icon_p1.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
 		icon_p1.position.x = lerpf(icon_p1.position.x, default_ip1_pos.x + ((health_bar.size.x * default_ip1_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
 	if icon_p2 and icon_p2.scale != default_ip2_scale:
-		icon_p2.scale = Global.lerpv2(default_ip2_scale, icon_p2.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
+		icon_p2.scale = lerp(default_ip2_scale, icon_p2.scale, exp(-delta * icon_zoom_mult * Conductor.rate))
 		icon_p2.position.x = lerpf(icon_p2.position.x, default_ip2_pos.x + ((health_bar.size.x * default_ip2_scale.x) * 0.5) - (_prev_health * 6.0), 0.05)
 	if game is Gameplay: # this system sucks I may change it later
 		if game.player and game.player.icon: icon_p1.frame = game.player.icon.get_frame(health_bar.value)
@@ -191,6 +191,6 @@ func on_beat_hit(beat: float) -> void:
 func get_bump_lerp(from: float = 2.0, to: float = 1.0, _delta: float = 0) -> float:
 	return lerpf(from, to, 0.05) # TODO: use exp()
 func get_bump_lerp_vector(from: Vector2 = Vector2.ONE, to: Vector2 = Vector2.ONE, _delta: float = 0) -> Vector2:
-	return Global.lerpv2(from, to, 0.05) # TODO: use exp()
+	return lerp(from, to, 0.05) # TODO: use exp()
 func get_bump_scale() -> float:
 	return 0.03

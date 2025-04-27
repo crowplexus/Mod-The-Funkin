@@ -3,8 +3,10 @@
 [ext_resource type="Script" uid="uid://dqt5jghej6xdr" path="res://scenes/menu/freeplay_menu.gd" id="1_ttjym"]
 [ext_resource type="Texture2D" uid="uid://ciwp55vsaghii" path="res://assets/ui/menu/menuDesat.png" id="2_f7icd"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="3_i0mk5"]
-[ext_resource type="PackedScene" uid="uid://b5vnpx4av4rx" path="res://scenes/menu/freeplay/capsule.tscn" id="3_s6l1l"]
-[ext_resource type="Script" uid="uid://baapgcfj1sapp" path="res://scenes/menu/ui/lerp_box_container.gd" id="4_5h24w"]
+[ext_resource type="PackedScene" uid="uid://co3up3e2jn4f6" path="res://scenes/menu/ui/alphabet_menu.tscn" id="4_i0mk5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0mk5"]
+bg_color = Color(0, 0, 0, 0.529412)
 
 [sub_resource type="LabelSettings" id="LabelSettings_5h24w"]
 font = ExtResource("3_i0mk5")
@@ -14,7 +16,7 @@ font_size = 24
 script = ExtResource("1_ttjym")
 
 [node name="background" type="Sprite2D" parent="."]
-modulate = Color(0, 0.134167, 0.23, 1)
+modulate = Color(0.8, 0.8, 0.8, 1)
 position = Vector2(643, 365)
 texture = ExtResource("2_f7icd")
 
@@ -29,6 +31,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="tip_text" type="Label" parent="ui"]
+visible = false
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -51,24 +54,19 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -197.0
-offset_bottom = 22.0
+offset_left = -225.0
+offset_bottom = 50.0
 grow_horizontal = 0
-text = "< Difficulty >"
+theme_override_styles/normal = SubResource("StyleBoxFlat_i0mk5")
+text = "-= WIP =-
+« Difficulty »"
 label_settings = SubResource("LabelSettings_5h24w")
 horizontal_alignment = 1
-vertical_alignment = 1
-uppercase = true
+vertical_alignment = 2
 
-[node name="song_container" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_top = 30.0
+[node name="song_container" parent="." instance=ExtResource("4_i0mk5")]
 offset_right = 1280.0
-offset_bottom = 690.0
-script = ExtResource("4_5h24w")
-move_x = false
-spacing = Vector2(50, 55)
-
-[node name="random" parent="song_container" instance=ExtResource("3_s6l1l")]
-text = "Random"
+offset_bottom = 720.0
+distance = Vector2(20, 156)
+offset = Vector2(100, 300)
+metadata/_edit_lock_ = true

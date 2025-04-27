@@ -26,7 +26,7 @@ func initialize_camera_2d() -> void:
 func reset_camera_bump(_delta: float) -> void:
 	if not camera or not auto_zoom: return
 	if camera.zoom != camera_zoom:
-		camera.zoom = Global.lerpv2(camera.zoom, camera_zoom, 0.05) # TODO: use exp()
+		camera.zoom = lerp(camera.zoom, camera_zoom, 0.05) # TODO: use exp()
 
 func on_beat_hit(beat: float) -> void:
 	if camera and auto_zoom: bump_camera(beat)

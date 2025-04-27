@@ -10,7 +10,6 @@ const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a R
 @export var songs: SongPlaylist = preload("uid://cfxu4hd3spw4u").duplicate()
 
 @onready var song_container: Control = $"song_container"
-@onready var item_template: Control = $"song_container/random".duplicate()
 @onready var bg: Sprite2D = $"background"
 
 @onready var diff_text: Label = $"ui/diff_text"
@@ -19,6 +18,7 @@ const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a R
 var selected: int = 0
 var song_selected: int = 0
 var selectables: Array[int] = []
+var _harcoded_entries: Array[String] = []
 var difficulty: int = 1 # NORMAL
 var current_list: int = 0 # Ungrouped / Main Levels
 var difficulty_name: String = Global.DEFAULT_DIFFICULTY
@@ -27,7 +27,9 @@ var exiting: bool = false
 var cursor_tween: Tween
 
 func _ready() -> void:
-	$"song_container/random".queue_free()
+	_harcoded_entries.append_array(song_container.items)
+	song_container.item_created.connect(func(item: Control) -> void:
+		item.modulate.a = 0.6 if item.get_index() != selected else 1.0)
 	for i: SongItem in songs.list:
 		if not i.list_name in lists:
 			lists.append(i.list_name)
@@ -41,6 +43,9 @@ func _ready() -> void:
 	#Global.request_audio_fade(Global.bgm, 1.0, 0.3)
 	change_category()
 	change_difficulty()
+
+func _process(delta: float) -> void:
+	song_container.position_lerp = clamp(delta * 9.6, 0.0, 1.0)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if exiting: return
@@ -56,9 +61,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		match event.keycode:
 			KEY_Q: change_category(-1)
 			KEY_E: change_category(1)
-	
 	if accepting:
-		go_to_gameplay()
+		Global.play_sfx(Global.resources.get_resource("confirm"))
+		highlight_selected()
 	#if backing_out:
 	#	exiting = true
 	#	Global.change_scene("")
@@ -75,17 +80,26 @@ func go_to_gameplay() -> void:
 		Gameplay.chart.parsed_values.difficulties = song_to_pick.difficulties
 	Global.change_scene("uid://cvf84mr6iepcs")
 
+func highlight_selected() -> void:
+	for song: CanvasItem in song_container.get_children():
+		if song.get_index() != selected:
+			var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC).set_parallel(true)
+			tween.tween_property(song, "position:x", -get_viewport_rect().size.x, 0.6)
+			tween.tween_property(song, "modulate:a", 0.0, 0.5)
+	Global.begin_flicker(song_container.get_child(selected), 1.0, 0.04, true, true, go_to_gameplay)
+
 ## Changes the index of the selection cursor
 func change_selection(next: int = 0) -> void:
 	var item: Control = song_container.get_child(selected)
 	
-	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back() + 1)
+	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back())
 	selected = wrapi(selected + next, 0, song_container.get_child_count())
 	
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
-	if item: item.label.modulate.a = 0.6
+	if item: item.modulate.a = 0.6
 	item = song_container.get_child(selected)
-	item.label.modulate.a = 1.0
+	item.modulate.a = 1.0
+	song_container.target_offset = selected
 	if songs.list[song_selected].difficulties.find(difficulty_name) == -1:
 		change_difficulty()
 
@@ -95,34 +109,28 @@ func change_difficulty(next: int = 0) -> void:
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	var diff: String = songs.list[song_selected].difficulties[difficulty]
 	var tr_diff: String = tr("difficulty_%s" % diff.to_lower(), &"menus")
-	diff_text.text = "« %s »" % [ tr_diff if not tr_diff.begins_with("difficulty_") else diff ]
+	diff_text.text = "-= WIP =-\n« %s »" % [ tr_diff if not tr_diff.begins_with("difficulty_") else diff ]
 	difficulty_name = diff
 
 ## Changes the index of the current category
 func change_category(next: int = 0) -> void:
 	current_list = wrapi(current_list + next, 0, lists.size())
-	tip_text.text = "[ %s ]\n%s" % [ lists[current_list], TIP_BUTTONS ]
+	#tip_text.text = "[ %s ]\n%s" % [ lists[current_list], TIP_BUTTONS ]
 	if next != 0: Global.play_sfx(Global.resources.get_resource("fav"))
 	reload_song_items()
 
 ## Reloads every item in the menu.
 func reload_song_items() -> void:
 	selectables.clear()
-	for i: Control in song_container.get_children(): i.queue_free()
+	song_container.items.clear()
+	# in case your hardcode any buttons and whatnot.
+	song_container.items.append_array(_harcoded_entries)
 	for song: SongItem in songs.list:
 		if not song or (not song.list_name.is_empty() and song.list_name != lists[current_list]):
 			continue
-		var i: int = songs.list.find(song)
-		var item: Control = item_template.duplicate()
-		song_container.add_child(item)
-		item.name = song.folder
-		item.text = song.name
-		selectables.append(i)
-		item.song = song
+		selectables.append(songs.list.find(song))
+		song_container.items.append(song.name)
 	song_selected = selectables.front()
 	selected = selectables.find(song_selected)
-	for i: int in song_container.get_child_count(): # offset here
-		var item: Control = song_container.get_child(i)
-		item.label.modulate.a = 1.0 if i == song_selected else 0.6
-		item.position.y += (item.size.y + 5) * i
+	song_container.regen_list()
 	change_selection()
