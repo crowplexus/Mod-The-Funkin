@@ -92,7 +92,7 @@ func highlight_selected() -> void:
 func change_selection(next: int = 0) -> void:
 	var item: Control = song_container.get_child(selected)
 	
-	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back())
+	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back() + 1)
 	selected = wrapi(selected + next, 0, song_container.get_child_count())
 	
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
