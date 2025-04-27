@@ -6,6 +6,7 @@ enum CharacterType {
 }
 
 const PLACEHOLDER_CHARACTER: String = "question mark"
+const PLACEHOLDER_OFFSET: Vector2 = Vector2(5, 0)
 
 const LATIN_LETTERS: String = "abcdefghijklmnopqrstuvwxyz"
 const LATIN_ACCENTS: String = "áéíóúýàèìòùâêîôûãõñçäëïöüÿ"
@@ -68,10 +69,7 @@ func generate_character(char: String, type: CharacterType = variant) -> Animated
 				if char.to_lower() == char:
 					char_anim = char.to_lower() + " lowercase"
 	else:
-		match char.to_snake_case():
-			"?":
-				char_anim = "question mark"
-				char_offset = Vector2(5, -10)
+		match char.to_snake_case(): # offsets really only apply for Bold variant for nows…
 			"!":
 				char_anim = "exclamation point"
 				char_offset = Vector2(-10, -10)
@@ -79,7 +77,7 @@ func generate_character(char: String, type: CharacterType = variant) -> Animated
 			",": char_anim = "comma"
 			".":
 				char_anim = "period"
-				char_offset = Vector2(-5, 15)
+				char_offset = Vector2(-10, 25)
 			"/":
 				char_anim = "forward slash"
 			"♥":
@@ -97,7 +95,7 @@ func generate_character(char: String, type: CharacterType = variant) -> Animated
 				char_offset.y = 25
 	if not sprite_frames.has_animation(char_anim):
 		character.animation = PLACEHOLDER_CHARACTER
-		character.offset = Vector2.ZERO
+		character.offset = PLACEHOLDER_OFFSET
 		return character
 	else:
 		character.animation = char_anim
