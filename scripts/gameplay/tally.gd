@@ -1,20 +1,23 @@
 ## Class to calculate and keep player scores.
 class_name Tally extends Resource
 
-@export var score: int = 0 ## Score accumulated from hitting notes.
-@export var misses: int = 0 ## Misses accumulated from missing notes.
-@export var combo: int = 0 ## Combo accumulated from hitting notes consecutively, resets to 0 if you miss.
-@export var breaks: int = 0 ## Combo Breaks, obtained whenever the combo counter resets to 0.
-
 const MAX_SCORE: int = 500 ## Maximum score a note can receive.
 const MISS_SCORE: int = -50 ## Score penalty per miss (negative to subtract from total).
 const DEVIATION_MULT: float = 7.1045825 ## Score Deviation scale (higher = stricter timing).
 const PENALTY_CURVE: float = 1.5 ## Penalty curve (worse judgments hurt more).
 const TIMINGS: Array[float] = [ 18.9, 37.8, 75.6, 113.4, 180.0 ] ## Temporary, will be replaced with settings.
+
 static var use_epics: bool = true ## Checks if epics are enabled in-game.
+
+@export var score: int = 0 ## Score accumulated from hitting notes.
+@export var misses: int = 0 ## Misses accumulated from missing notes.
+@export var combo: int = 0 ## Combo accumulated from hitting notes consecutively, resets to 0 if you miss.
+@export var breaks: int = 0 ## Combo Breaks, obtained whenever the combo counter resets to 0.
 
 var notes_hit_count: int = 0 ## Counts how many notes were hit in total.
 var tiers_scored: Array[int] = [0, 0, 0, 0, 0] ## Counts how many of (tier judgement) you've hit.
+var is_valid: bool = true ## If the Tally can be saved or not (won't be the case if you cheated).
+var date: String = "YYYY-MM-DDTHH:MM:SS" ## When the tally got saved.
 
 ## Worst-case scenario score (all hits have max penalty + misses).[br]
 ## depends on values passed to the function.
@@ -36,6 +39,36 @@ static func calculate_score_percentage(current_score: int, max_score: int, min_s
 	var percent: float = float(current_score - min_score) / float(max_score - min_score) # like, like Psych Engine… percent… oh mein kott?
 	return clampf(percent * 100.0, 0.0, 100.0) if max_score > min_score else 0.0 # division by zero can happen, oops.
 
+## Returns a highscore Tally from a song (if possible).
+static func get_record(song: String, difficulty: StringName = "unknown") -> Dictionary:
+	var path: String = "user://mtf_highscores.json"
+	var record_name: String = song + "-" + difficulty
+	var record: Dictionary = {}
+	if ResourceLoader.exists(path):
+		var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+		if file:
+			var json = JSON.parse_string(file.get_as_text())
+			if json:
+				file.close() # just making sure.
+				if record_name in json:
+					record = json[record_name].front()
+	if record.is_empty(): record = empty_highscore()
+	return record
+
+## Returns an empty highscore Tally.
+static func empty_highscore() -> Dictionary:
+	return {
+		score = int(0),
+		misses = int(0),
+		combo = int(0),
+		breaks = int(0),
+		completion = float(0.00),
+		total_notes_hit = int(0),
+		judgement_counts = PackedInt32Array([0, 0, 0, 0, 0]),
+		used_epics = false,
+		date = "NO RECORD",
+	}
+
 ## Resets all counters back to their previous state, or 0 if none specified.[br]
 ## Effectively cleaning the tally altogether if unspecified.
 func zero(previous_tally: Tally = null) -> void:
@@ -48,11 +81,47 @@ func zero(previous_tally: Tally = null) -> void:
 		var has: bool = previous_tally and (i + 1) < previous_tally.tiers_scored.size()
 		tiers_scored[i] = previous_tally.tiers_scored[i] if has else 0
 
-## Saves this tally as a resource.
-func save() -> void:
-	var path: String = "user://highscores/%s.res" % [ Gameplay.current.song_name ]
-	var copy: Tally = self.duplicate()
-	return ResourceSaver.save(copy, path, ResourceSaver.FLAG_OMIT_EDITOR_PROPERTIES)
+## Saves this Tally as a dictionary.
+func to_dictionary() -> Dictionary:
+	var complete: float = calculate_score_percentage(self.score,
+		calculate_perfect_score(Gameplay.chart.note_counts[0]),
+		calculate_worst_score(notes_hit_count, misses + breaks))
+	return {
+		score = int(self.score),
+		misses = int(self.misses),
+		combo = int(self.combo),
+		breaks = int(self.breaks),
+		completion = float(complete),
+		total_notes_hit = int(self.notes_hit_count),
+		judgement_counts = PackedInt32Array(self.tiers_scored),
+		used_epics = bool(Tally.use_epics),
+		date = String(self.date),
+	}
+
+## Saves this Tally to a list of highscores.
+func save_record(song: String, difficulty: StringName = "unknown") -> void:
+	date = Time.get_datetime_string_from_system(true)
+	# TODO: use an encrypted file.
+	var path: String = "user://mtf_highscores.json"
+	var scores: Dictionary = {}
+	
+	if ResourceLoader.exists(path):
+		var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+		if file:
+			var json = JSON.parse_string(file.get_as_text())
+			if json:
+				scores = json
+				file.close() # just making sure.
+	var record_name: String = song + "-" + difficulty
+	if not record_name in scores:
+		scores[record_name] = [ self.to_dictionary() ]
+	else:
+		scores[record_name].append(self.to_dictionary())
+	var save: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+	if save:
+		save.store_string(JSON.stringify(scores, "\t"))
+		save.close()
+	scores.clear()
 
 ## Merges a Tally with another.[br]
 func merge(other: Tally, increase: bool = false) -> void:

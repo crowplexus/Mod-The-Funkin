@@ -214,7 +214,7 @@ func get_weekday_string() -> String:
 ## Formats an integer to separate the thousand value with [code]separator[/code].
 func separate_thousands(value: int, separator: String = ",") -> String:
 	var vstr: String = str(abs(value))
-	var prefix: String = "-" if value < 0 else ""
+	var prefix: String = "-" if sign(value) == -1 else ""
 	# regex to insert a separator every 3 digits to the right
 	var regex = RegEx.new()
 	regex.compile("(\\d)(?=(\\d{3})+$)")

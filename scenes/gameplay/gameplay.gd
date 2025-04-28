@@ -195,12 +195,14 @@ func _process(delta: float) -> void:
 		hud_layer.offset.y = (hud_layer.scale.y - 1.0) * -(get_viewport_rect().size.y * 0.5)
 
 func _unhandled_key_input(_event: InputEvent) -> void:
-	if OS.is_debug_build() and _event.pressed and not starting and _event.is_echo():
+	if OS.is_debug_build() and not starting and _event.pressed and not _event.is_echo():
 		match _event.keycode:
 			KEY_END:
 				music.stop()
 				note_group.active = false
 				should_process_events = false
+				tally.merge(local_tally) # just in case
+				tally.is_valid = false
 				Conductor.time = Conductor.length
 	
 	if Input.is_action_just_pressed("ui_pause"):
@@ -470,6 +472,6 @@ func end_song() -> void:
 
 func exit_game() -> void:
 	if tally: # NOTE: save tally before ending later.
-		#tally.save()
+		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty)
 		tally = null
 	Global.change_scene("uid://c5qnedjs8xhcw")

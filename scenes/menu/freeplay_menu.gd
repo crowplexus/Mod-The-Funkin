@@ -5,23 +5,27 @@ extends Node2D
 const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a Random Song"
 
 ## Song to play if the audio file for the hovered one couldn't be found.
-@export var default_song: AudioStream = preload("uid://dsvj7ue46k0fd")
+@export var default_song: AudioStream = preload("uid://bcfbl3fi4h6xu")
 ## List of songs to display on-screen.
 @export var songs: SongPlaylist = preload("uid://cfxu4hd3spw4u").duplicate()
 
 @onready var song_container: Control = $"song_container"
 @onready var bg: Sprite2D = $"background"
 
-@onready var diff_text: Label = $"ui/diff_text"
+@onready var score_text: Label = $"ui/score_text"
+@onready var diff_text: Label = $"ui/score_text/diff_text"
 @onready var tip_text: Label = $"ui/tip_text"
 
 var selected: int = 0
 var song_selected: int = 0
+var current_list: int = 0 # Ungrouped / Main Levels
+var difficulty: int = 1 # NORMAL
+var lerp_score: float = 0
+
 var selectables: Array[int] = []
 var _harcoded_entries: Array[String] = []
-var difficulty: int = 1 # NORMAL
-var current_list: int = 0 # Ungrouped / Main Levels
 var difficulty_name: String = Global.DEFAULT_DIFFICULTY
+var display_score: Dictionary = Tally.empty_highscore()
 var lists: Array[String] = []
 var exiting: bool = false
 var cursor_tween: Tween
@@ -38,14 +42,22 @@ func _ready() -> void:
 				songs.list.remove_at(index)
 	Global.update_discord("Menus", "Selecting a Song in Freeplay")
 	if get_tree().paused: get_tree().paused = false
-	Global.play_bgm(default_song, 0.7)
-	Conductor.bpm = default_song.bpm
-	#Global.request_audio_fade(Global.bgm, 1.0, 0.3)
+	if default_song:
+		Global.play_bgm(default_song, 0.7)
+		Conductor.bpm = default_song.bpm
 	change_category()
 	change_difficulty()
 
 func _process(delta: float) -> void:
-	song_container.position_lerp = clamp(delta * 9.6, 0.0, 1.0)
+	var lerp_value: float = clamp(delta * 9.6, 0.0, 1.0)
+	song_container.position_lerp = lerp_value
+	
+	# update score lerp and shit
+	if score_text:
+		lerp_score = lerp(lerp_score, float(display_score.score), lerp_value) # placeholder
+		if abs(lerp_score - display_score.score) < 0.01:
+			lerp_score = display_score.score
+		score_text.text = "HIGH SCORE: %s" % Global.separate_thousands(lerp_score)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if exiting: return
@@ -53,10 +65,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	var accepting: bool = Input.is_action_just_pressed("ui_accept")
 	#var backing_out: bool = Input.is_action_just_released("ui_cancel")
 	var axis_diff: int = int(Input.get_axis("ui_left", "ui_right"))
-	var axis: int = int(Input.get_axis("ui_up", "ui_down"))
+	var axis_song: int = int(Input.get_axis("ui_up", "ui_down"))
 	
 	if axis_diff != 0: change_difficulty(axis_diff)
-	if axis != 0: change_selection(axis)
+	if axis_song != 0: change_selection(axis_song)
 	if event is InputEventKey and not event.is_echo() and event.pressed:
 		match event.keycode:
 			KEY_Q: change_category(-1)
@@ -94,6 +106,7 @@ func change_selection(next: int = 0) -> void:
 	
 	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back() + 1)
 	selected = wrapi(selected + next, 0, song_container.get_child_count())
+	refresh_display_score()
 	
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	if item: item.modulate.a = 0.6
@@ -106,10 +119,11 @@ func change_selection(next: int = 0) -> void:
 ## Changes the index of the difficulty cursor
 func change_difficulty(next: int = 0) -> void:
 	difficulty = wrapi(difficulty + next, 0, songs.list[song_selected].difficulties.size())
+	refresh_display_score()
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	var diff: String = songs.list[song_selected].difficulties[difficulty]
 	var tr_diff: String = tr("difficulty_%s" % diff.to_lower(), &"menus")
-	diff_text.text = "-= WIP =-\n« %s »" % [ tr_diff if not tr_diff.begins_with("difficulty_") else diff ]
+	diff_text.text = "\n« %s »" % [ tr_diff if not tr_diff.begins_with("difficulty_") else diff ]
 	difficulty_name = diff
 
 ## Changes the index of the current category
@@ -134,3 +148,8 @@ func reload_song_items() -> void:
 	selected = selectables.find(song_selected)
 	song_container.regen_list()
 	change_selection()
+
+func refresh_display_score() -> void:
+	var song: String = songs.list[song_selected].folder
+	var diff: String = songs.list[song_selected].difficulties[difficulty]
+	display_score = Tally.get_record(song, diff)
