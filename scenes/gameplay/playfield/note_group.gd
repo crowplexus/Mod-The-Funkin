@@ -46,7 +46,7 @@ func move_present_nodes() -> void:
 func try_spawning() -> void:
 	while list_position < note_list.size():
 		var note_data: NoteData = note_list[list_position]
-		if absf(note_data.time - Conductor.playhead + offset) > (1.25 / speed):
+		if absf((note_data.time + offset) - Conductor.playhead) > (1.25 / speed):
 			break
 		var new_note: Note = get_note()
 		on_note_spawned.emit(note_data, new_note)
