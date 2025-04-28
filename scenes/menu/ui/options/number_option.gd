@@ -15,8 +15,7 @@ var _internal_value: Variant = null
 func _ready() -> void:
 	super()
 	_internal_value = settings.get(variable_name)
-	if _internal_value < minv: progress.min_value = _internal_value
-	elif progress.min_value != minv: progress.min_value = minv
+	progress.min_value = minv
 	progress.max_value = maxv
 	update_value()
 
@@ -30,9 +29,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			var recommended_value = values[current_value]
 			if typeof(recommended_value) == TYPE_INT or typeof(recommended_value) == TYPE_FLOAT:
 				_internal_value = recommended_value
-				# for the framerate option (value 0 is an option)
-				if _internal_value < minv: progress.min_value = _internal_value
-				elif progress.min_value != minv: progress.min_value = minv
 				_refresh_value()
 	else:
 		_shift_mult = 1.0

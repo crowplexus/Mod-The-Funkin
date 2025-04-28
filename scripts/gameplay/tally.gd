@@ -51,7 +51,7 @@ static func get_record(song: String, difficulty: StringName = "unknown") -> Dict
 			if json:
 				file.close() # just making sure.
 				var final_record: Dictionary = {}
-				if record_name in json: final_record = json[record_name].front()
+				if record_name in json: final_record = json[record_name].back()
 				if not final_record.is_empty() and final_record.used_epics == Tally.use_epics:
 					record = final_record
 	if record.is_empty(): record = empty_highscore()
@@ -118,7 +118,9 @@ func save_record(song: String, difficulty: StringName = "unknown") -> void:
 	if not record_name in scores:
 		scores[record_name] = [ self.to_dictionary() ]
 	else:
-		scores[record_name].append(self.to_dictionary())
+		print_debug("new record? ", self.score > scores[record_name].back().score)
+		if self.score > scores[record_name].back().score:
+			scores[record_name].append(self.to_dictionary())
 	var save: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	if save:
 		save.store_string(JSON.stringify(scores, "\t"))

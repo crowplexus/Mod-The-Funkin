@@ -29,9 +29,13 @@ var scroll: int = 0
 @export var framerate: int = 120
 ## Decides if the game should pause if the window loses focus.
 @export var auto_pause: bool = true
-## Locks framerate to your monitor's refresh rate[br]
-## May help reducing screen tearing.
-@export var vsync: bool = false
+## Changes how framerate updates in the engine.[br][br]
+## Capped will use whatever value is in the framerate setting.
+## Unlimited won't use any values at all, instead, the framerate will be updated based on hardware limits.[br]
+## Mailbox locks the framerate to your monitor's refresh rate, which may help reducing screen tearing.[br]
+## Adaptive adjusts the framerate if it's high, or if it's dropping, essentially balacing the drawbacks of VSync with the benefits.
+@export_enum("Capped:0", "Unlimited:1", "Mailbox:2", "Adaptive:3")
+var vsync_mode: int = 0
 ## Defines the intensity of the Camera Bump.
 @export var bump_intensity: int = 100:
 	set(new_bi): bump_intensity = clampi(new_bi, 0, 100)
@@ -78,6 +82,8 @@ func update_all() -> void:
 	for blah: String in get_settings().keys():
 		match blah:
 			"framerate": update_framerate()
+			"vsync_mode": update_vsync_mode()
+			"master_volume": update_master_volume()
 			"keybinds": reload_keybinds()
 			"language": reload_locale()
 
@@ -116,19 +122,24 @@ func update_master_volume() -> void:
 
 ## Updates the Engine's max framerate.
 func update_framerate() -> void:
-	update_vsync()
-	if framerate == 0 and _was_uncapped: _was_uncapped = false
-	if not _was_uncapped and framerate < 30 or framerate > 360:
-		_was_uncapped = true
-		Engine.max_fps = 0
-		framerate = 0
-		return
+	update_vsync_mode()
 	Engine.max_fps = clampi(framerate, 30, 360)
 	framerate = Engine.max_fps
 
 ## Updates the Engine's Display Server to enable/disable VSync.
-func update_vsync() -> void:
-	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ADAPTIVE if vsync else DisplayServer.VSYNC_DISABLED)
+func update_vsync_mode() -> void:
+	var vsync: bool = DisplayServer.window_get_vsync_mode(0)
+	match vsync_mode:
+		0: # Capped
+			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+			Engine.max_fps = framerate
+		1: # Uncapped
+			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+			Engine.max_fps = 0
+		2: # Mailbox
+			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_MAILBOX)
+		3: # Adaptive
+			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ADAPTIVE)
 
 ## Reloads your own custom settings (if any).
 func reload_custom_settings() -> void:

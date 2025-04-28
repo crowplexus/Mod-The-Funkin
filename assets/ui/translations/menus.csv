@@ -24,7 +24,7 @@ options_tab_visuals,Visuals,Visuales,Visuais,Visuals,Изглед
 
 option_framerate,Framerate,Framerate,Framerate,Framerate,Фрамерате
 option_language,Language,Idioma,Idioma,Язык,Йазик
-option_vsync,VSync,VSync,VSync,VSync,VSync
+option_vsync_mode,VSync Mode,Tipo de VSync,Tipo de VSync,Тип VSync,Тип VSync
 
 option_hud_style,HUD Style,Estilo de la HUD,Estilo da HUD,HUD Style,Изглед HUD
 option_simplify_popups,Simplify Popups,Simplificar Popups,Simplfiicar Pop-ups,Simplify Popups,Поедноставени Popups

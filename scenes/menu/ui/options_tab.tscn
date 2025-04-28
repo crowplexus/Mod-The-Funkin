@@ -148,13 +148,20 @@ description = "Changes the UI elements and dialogue language.
 
 Takes effect after leaving this menu!"
 
-[node name="vsync" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
+[node name="vsync_mode" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
-display_name = &"VSync"
-variable_name = &"vsync"
-description = "Locks framerate to your monitor's refresh rate
+values = ["Capped", "Unlimited", "Mailbox", "Adaptive"]
+display_name = &"VSync Mode"
+variable_name = &"vsync_mode"
+description = "Changes how framerate updates in the engine.
 
-May help reducing screen tearing."
+Capped will use whatever value is in the framerate setting.
+
+Unlimited won't use any values at all, instead, the framerate will be updated based on hardware limits.
+
+Mailbox locks the framerate to your monitor's refresh rate, which may help reducing screen tearing.
+
+Adaptive VSync adjusts the framerate if it's high, or if it's dropping, essentially balacing the drawbacks of VSync with the benefits."
 
 [node name="hud_style" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2

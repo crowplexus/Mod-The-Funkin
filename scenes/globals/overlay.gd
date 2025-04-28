@@ -47,7 +47,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func update_overlay() -> void:
 	var fps_count: float = Engine.get_frames_per_second()
-	if fps_count < 30: fps_count = 60
+	if fps_count < 30: fps_count = 30
 	if show_debug and OS.is_debug_build(): # I had fun.
 		fps_label.text = "————Prototype Build————"
 		fps_label.text += "\nFramerate: %.0f" % fps_count
