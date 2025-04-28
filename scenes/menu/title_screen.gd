@@ -40,6 +40,7 @@ func _process(_delta: float) -> void:
 		if not pressed_enter:
 			var interpolated_color: Color = enter_text_colors[0].lerp(enter_text_colors[1], timer)
 			confirm_label.add_theme_color_override("font_outline_color", interpolated_color)
+			confirm_label.add_theme_color_override("font_color", interpolated_color.darkened(0.6))
 		else:
 			confirm_label.add_theme_color_override("font_color", Color.WHITE)
 			confirm_label.add_theme_color_override("font_outline_color", Color.WHITE)
