@@ -474,4 +474,5 @@ func exit_game() -> void:
 	if tally:
 		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty)
 		tally = null
+	Global.play_bgm(chart.assets.instrumental, 0.7)
 	Global.change_scene("uid://c5qnedjs8xhcw")

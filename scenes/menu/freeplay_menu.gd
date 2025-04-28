@@ -43,6 +43,7 @@ func _ready() -> void:
 	if Global.DEFAULT_SONG and not Global.bgm.playing:
 		Global.play_bgm(Global.DEFAULT_SONG, 0.7)
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
+	Global.bgm.volume_linear = 0.7
 	change_category()
 	change_difficulty()
 
