@@ -1,11 +1,15 @@
 extends Node2D
 
+var credits_thing: PackedScene = load("uid://wh2umjjgf2f6")
+
 @onready var background: Sprite2D = $"background"
 @onready var buttons: BoxContainer = $"ui/buttons"
 @onready var copyright_text: Label = $"ui/color_rect/copyright_text"
 @onready var copyright_rect: ColorRect = $"ui/color_rect"
+
 static var saw_copyright: bool = false
 var moving_copyright: bool = false
+var can_input: bool = true
 
 var selected: int = 0
 var copyright_tween: Tween
@@ -39,12 +43,14 @@ func _process(delta: float) -> void:
 			saw_copyright = true
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not event.is_echo():
+	if can_input and not event.is_echo():
 		var item_axis: int = int(Input.get_axis("ui_up", "ui_down"))
 		if item_axis != 0: change_selection(item_axis)
 		if Input.is_action_just_pressed("ui_accept"):
+			can_input = false
 			confirm_selection()
 		if Input.is_action_just_pressed("ui_cancel"):
+			can_input = false
 			Global.change_scene("uid://ce22u68qyw5bs")
 
 func change_selection(next: int = 0) -> void:
@@ -71,8 +77,22 @@ func confirm_selection() -> void:
 		"options":
 			saw_copyright = true
 			Global.change_scene("uid://gulb1ge3va36")
+		"credits":
+			can_input = false
+			var display_credits: Control = credits_thing.instantiate()
+			display_credits.size = get_viewport_rect().size
+			display_credits.z_index = 500 # good enough.
+			add_child(display_credits)
+			await display_credits.tree_exited
+			can_input = true
+			default_confirm()
 		_:
-			ps.modulate.a = 0.0
-			ps.show()
-			for button: CanvasItem in buttons.get_children():
-				create_tween().set_ease(Tween.EASE_IN).tween_property(button, "modulate:a", 1.0, 0.6)
+			default_confirm()
+
+func default_confirm() -> void:
+	buttons.get_child(selected).modulate.a = 0.0
+	buttons.get_child(selected).show()
+	background.show()
+	can_input = true
+	for button: CanvasItem in buttons.get_children():
+		create_tween().set_ease(Tween.EASE_IN).tween_property(button, "modulate:a", 1.0, 0.6)

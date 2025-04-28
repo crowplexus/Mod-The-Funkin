@@ -13,7 +13,7 @@ var current_transition: StringName = &"default"
 @onready var resources: ResourcePreloader = $"%resource_preloader"
 @onready var transition: CanvasLayer = $"%transition_layer"
 
-var previous_scene_path: String = "uid://c5qnedjs8xhcw"
+var previous_scene_path: String = "uid://ce22u68qyw5bs"
 var _was_paused: bool = false
 var settings: Settings
 
@@ -32,10 +32,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _notification(what: int) -> void:
 	match what:
-		NOTIFICATION_APPLICATION_FOCUS_OUT when settings.auto_pause:
+		NOTIFICATION_APPLICATION_FOCUS_OUT when settings.auto_pause and Gameplay.current:
 			_was_paused = get_tree().paused
 			get_tree().paused = true
-		NOTIFICATION_APPLICATION_FOCUS_IN when settings.auto_pause:
+		NOTIFICATION_APPLICATION_FOCUS_IN when settings.auto_pause and Gameplay.current:
 			get_tree().paused = _was_paused
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			settings.save_settings()
@@ -105,12 +105,11 @@ var music_fade_tween: Tween
 
 ## Activates a volume fade tween in [code]player: AudioStreamPlayer[/code].
 func request_audio_fade(player: AudioStreamPlayer, to: float = 0.0, speed: float = 1.0) -> AudioStreamPlayer:
-	if to < 0.0: return
-	if music_fade_tween: music_fade_tween.stop()
-	var new_vol: float = linear_to_db(to)
-	var cur_vol: float = db_to_linear(player.volume_db)
-	music_fade_tween = create_tween().set_ease(Tween.EASE_IN if new_vol > cur_vol else Tween.EASE_OUT)
-	music_fade_tween.tween_property(player, "volume_db", new_vol, speed)
+	if to < 0.0: return player
+	var cur_vol: float = player.volume_linear
+	if music_fade_tween: music_fade_tween.kill()
+	music_fade_tween = create_tween()#.set_ease(Tween.EASE_IN if new_vol > cur_vol else Tween.EASE_OUT)
+	music_fade_tween.tween_property(player, "volume_linear", to, speed)
 	return player
 
 ## Plays background music (remember to stop it if you're switching to a scene that has custom music nodes).
