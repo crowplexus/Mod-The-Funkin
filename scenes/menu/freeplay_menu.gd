@@ -53,7 +53,7 @@ func _process(delta: float) -> void:
 	song_container.position_lerp = lerp_value
 	
 	# update score lerp and shit
-	if score_text:
+	if score_text and display_score and "score" in display_score:
 		lerp_score = lerp(lerp_score, float(display_score.score), lerp_value) # placeholder
 		if abs(lerp_score - display_score.score) < 0.01:
 			lerp_score = display_score.score
@@ -150,6 +150,8 @@ func reload_song_items() -> void:
 	change_selection()
 
 func refresh_display_score() -> void:
+	if Tally.use_epics != Global.settings.use_epics:
+		Tally.use_epics = Global.settings.use_epics
 	var song: String = songs.list[song_selected].folder
 	var diff: String = songs.list[song_selected].difficulties[difficulty]
 	display_score = Tally.get_record(song, diff)
