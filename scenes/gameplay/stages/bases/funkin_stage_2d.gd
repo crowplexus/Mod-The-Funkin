@@ -26,7 +26,7 @@ func initialize_camera_2d() -> void:
 func reset_camera_bump(_delta: float) -> void:
 	if not camera or not auto_zoom: return
 	if camera.zoom != camera_zoom:
-		camera.zoom = lerp(camera.zoom, camera_zoom, 0.05) # TODO: use exp()
+		camera.zoom = lerp(camera.zoom, camera_zoom, _delta * 5.0)
 
 func on_beat_hit(beat: float) -> void:
 	if camera and auto_zoom: bump_camera(beat)
@@ -34,5 +34,5 @@ func on_beat_hit(beat: float) -> void:
 func bump_camera(beat: float) -> void:
 	if int(beat) < 0: return
 	#var digits: int = str(zoom_interval).split("").size()
-	if absf(beat - zoom_interval) < 0.00001:
+	if fmod(snappedf(beat, 0.01), zoom_interval) <= zoom_interval:
 		camera.zoom += Vector2(zoom_intensity, zoom_intensity)

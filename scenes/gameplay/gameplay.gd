@@ -447,7 +447,7 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 		local_tally.combo = 0
 	#else: # decrease for miss combo
 	#	local_tally.combo -= 1
-	local_tally.score += Tally.MISS_SCORE # TODO: is this necessary anymore?
+	local_tally.score += Tally.MISS_SCORE
 	local_tally.increase_misses(1) # increase by one
 	player.sing(idx, true, "miss")
 	health += int(-5 + damage_boost)
@@ -471,7 +471,7 @@ func end_song() -> void:
 	exit_game()
 
 func exit_game() -> void:
-	if tally: # NOTE: save tally before ending later.
+	if tally:
 		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty)
 		tally = null
 	Global.change_scene("uid://c5qnedjs8xhcw")

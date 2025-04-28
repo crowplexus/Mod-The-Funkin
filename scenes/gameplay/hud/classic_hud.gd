@@ -189,8 +189,8 @@ func on_beat_hit(beat: float) -> void:
 	if icon_p2: icon_p2.scale = default_ip2_scale * 1.3
 
 func get_bump_lerp(from: float = 2.0, to: float = 1.0, _delta: float = 0) -> float:
-	return lerpf(from, to, 0.05) # TODO: use exp()
+	return lerpf(from, to, _delta * 5.0)
 func get_bump_lerp_vector(from: Vector2 = Vector2.ONE, to: Vector2 = Vector2.ONE, _delta: float = 0) -> Vector2:
-	return lerp(from, to, 0.05) # TODO: use exp()
+	return lerp(from, to, _delta * 5.0)
 func get_bump_scale() -> float:
 	return 0.03
