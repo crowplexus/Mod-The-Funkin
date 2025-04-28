@@ -128,7 +128,6 @@ func update_framerate() -> void:
 
 ## Updates the Engine's Display Server to enable/disable VSync.
 func update_vsync_mode() -> void:
-	var vsync: bool = DisplayServer.window_get_vsync_mode(0)
 	match vsync_mode:
 		0: # Capped
 			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
