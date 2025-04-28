@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://o7xomaue60ma"
-path="res://.godot/imported/credits.png-b0eecce6b12d7251906c95d9ee8930ef.ctex"
+uid="uid://h78g2ub37g4"
+path="res://.godot/imported/newgrounds_logo_animated.png-5e551d9e237a5535d875c5b62f0d2557.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/menu/main/credits.png"
-dest_files=["res://.godot/imported/credits.png-b0eecce6b12d7251906c95d9ee8930ef.ctex"]
+source_file="res://assets/ui/menu/title/newgrounds_logo_animated.png"
+dest_files=["res://.godot/imported/newgrounds_logo_animated.png-5e551d9e237a5535d875c5b62f0d2557.ctex"]
 
 [params]
 

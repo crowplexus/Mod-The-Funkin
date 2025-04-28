@@ -2,8 +2,6 @@ class_name Settings extends Resource
 
 const _IGNORED_PROPERTIES: Array[String] = ["resource_local_to_scene", "resource_scene_unique_id", "resource_name", "resource_path", "script"]
 
-var _was_uncapped: bool = false
-
 ## Defines the Master Volume of the game.
 var master_volume: int = 30
 ## Shortcut setting for muting the whole game.

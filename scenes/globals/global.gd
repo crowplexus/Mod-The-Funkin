@@ -1,5 +1,7 @@
 extends Node
 
+## Song to play in the menus by default.
+const DEFAULT_SONG: AudioStream = preload("uid://bcfbl3fi4h6xu")
 const TRANSITIONS: Dictionary[String, PackedScene] = {
 	"default": preload("uid://dmkymcq7pnoa5"),
 }

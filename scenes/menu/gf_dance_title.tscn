@@ -1,0 +1,160 @@
+[gd_scene load_steps=10 format=3 uid="uid://ci64dha75wctw"]
+
+[ext_resource type="Script" uid="uid://b44gkei3dumkj" path="res://scenes/gameplay/characters/face.gd" id="1_4uipw"]
+[ext_resource type="Script" uid="uid://dovjbyvwk2plh" path="res://scenes/gameplay/characters/bases/health_icon.gd" id="2_qn23q"]
+[ext_resource type="Texture2D" uid="uid://bl328tof6rxpc" path="res://assets/game/characters/djs/icon.png" id="3_r0cv3"]
+[ext_resource type="SpriteFrames" path="res://assets/ui/menu/title/gfDanceTitle.res" id="4_711xs"]
+
+[sub_resource type="Resource" id="Resource_dmv11"]
+script = ExtResource("2_qn23q")
+texture = ExtResource("3_r0cv3")
+color = Color(0.647059, 0, 0.301961, 1)
+hframes = 1
+vframes = 1
+metadata/_custom_type_script = "uid://dovjbyvwk2plh"
+
+[sub_resource type="Animation" id="Animation_711xs"]
+resource_name = "RESET"
+length = 1.20834
+step = 0.0416667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("animated_sprite_2d:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0416667, 1.20833),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 29]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("animated_sprite_2d:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0416667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"gfDance"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("animated_sprite_2d:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.0416667),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_j84c3"]
+resource_name = "danceLeft"
+length = 0.583338
+step = 0.0416667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("animated_sprite_2d:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0416667, 0.583333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 14]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("animated_sprite_2d:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0416667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"gfDance"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("animated_sprite_2d:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.0416667),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_h4snh"]
+resource_name = "danceRight"
+length = 0.625004
+step = 0.0416667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("animated_sprite_2d:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0416667, 0.625),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [14, 29]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("animated_sprite_2d:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0416667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"gfDance"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("animated_sprite_2d:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.0416667),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7smad"]
+_data = {
+&"RESET": SubResource("Animation_711xs"),
+&"danceLeft": SubResource("Animation_j84c3"),
+&"danceRight": SubResource("Animation_h4snh")
+}
+
+[node name="gf" type="Node2D"]
+script = ExtResource("1_4uipw")
+dance_interval = 1.0
+dance_moves = Array[String](["danceLeft", "danceRight"])
+icon = SubResource("Resource_dmv11")
+
+[node name="animated_sprite_2d" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("4_711xs")
+animation = &"gfDance"
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_7smad")
+}
+autoplay = "RESET"

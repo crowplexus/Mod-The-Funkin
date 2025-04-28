@@ -4,15 +4,13 @@ extends Node2D
 
 const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a Random Song"
 
-## Song to play if the audio file for the hovered one couldn't be found.
-@export var default_song: AudioStream = preload("uid://bcfbl3fi4h6xu")
 ## List of songs to display on-screen.
 @export var songs: SongPlaylist = preload("uid://cfxu4hd3spw4u").duplicate()
 
-@onready var song_container: Control = $"song_container"
 @onready var bg: Sprite2D = $"background"
 
 @onready var score_text: Label = $"ui/score_text"
+@onready var song_menu: Control = $"song_menu"
 @onready var diff_text: Label = $"ui/score_text/diff_text"
 @onready var tip_text: Label = $"ui/tip_text"
 
@@ -31,8 +29,8 @@ var exiting: bool = false
 var cursor_tween: Tween
 
 func _ready() -> void:
-	_harcoded_entries.append_array(song_container.items)
-	song_container.item_created.connect(func(item: Control) -> void:
+	_harcoded_entries.append_array(song_menu.items)
+	song_menu.item_created.connect(func(item: Control) -> void:
 		item.modulate.a = 0.6 if item.get_index() != selected else 1.0)
 	for i: SongItem in songs.list:
 		if not i.list_name in lists:
@@ -42,43 +40,39 @@ func _ready() -> void:
 				songs.list.remove_at(index)
 	Global.update_discord("Menus", "Selecting a Song in Freeplay")
 	if get_tree().paused: get_tree().paused = false
-	if default_song:
-		Global.play_bgm(default_song, 0.7)
-		Conductor.bpm = default_song.bpm
+	if Global.DEFAULT_SONG and not Global.bgm.playing:
+		Global.play_bgm(Global.DEFAULT_SONG, 0.7)
+		Conductor.bpm = Global.DEFAULT_SONG.bpm
 	change_category()
 	change_difficulty()
 
 func _process(delta: float) -> void:
 	var lerp_value: float = clamp(delta * 9.6, 0.0, 1.0)
-	song_container.position_lerp = lerp_value
+	song_menu.position_lerp = lerp_value
 	
 	# update score lerp and shit
 	if score_text and display_score and "score" in display_score:
 		lerp_score = lerp(lerp_score, float(display_score.score), lerp_value) # placeholder
 		if abs(lerp_score - display_score.score) < 0.01:
 			lerp_score = display_score.score
-		score_text.text = "HIGH SCORE: %s" % Global.separate_thousands(lerp_score)
+		score_text.text = "HIGH SCORE: %s" % Global.separate_thousands(int(lerp_score))
 
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	if exiting: return
 	
 	var accepting: bool = Input.is_action_just_pressed("ui_accept")
-	#var backing_out: bool = Input.is_action_just_released("ui_cancel")
+	var backing_out: bool = Input.is_action_just_released("ui_cancel")
 	var axis_diff: int = int(Input.get_axis("ui_left", "ui_right"))
 	var axis_song: int = int(Input.get_axis("ui_up", "ui_down"))
 	
 	if axis_diff != 0: change_difficulty(axis_diff)
 	if axis_song != 0: change_selection(axis_song)
-	if event is InputEventKey and not event.is_echo() and event.pressed:
-		match event.keycode:
-			KEY_Q: change_category(-1)
-			KEY_E: change_category(1)
 	if accepting:
 		Global.play_sfx(Global.resources.get_resource("confirm"))
 		highlight_selected()
-	#if backing_out:
-	#	exiting = true
-	#	Global.change_scene("")
+	if backing_out:
+		exiting = true
+		Global.change_scene("uid://c6hgxbdiwb6yn")
 
 func go_to_gameplay() -> void:
 	exiting = true
@@ -93,26 +87,26 @@ func go_to_gameplay() -> void:
 	Global.change_scene("uid://cvf84mr6iepcs")
 
 func highlight_selected() -> void:
-	for song: CanvasItem in song_container.get_children():
+	for song: CanvasItem in song_menu.get_children():
 		if song.get_index() != selected:
 			var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC).set_parallel(true)
 			tween.tween_property(song, "position:x", -get_viewport_rect().size.x, 0.6)
 			tween.tween_property(song, "modulate:a", 0.0, 0.5)
-	Global.begin_flicker(song_container.get_child(selected), 1.0, 0.04, true, true, go_to_gameplay)
+	Global.begin_flicker(song_menu.get_child(selected), 1.0, 0.04, true, true, go_to_gameplay)
 
 ## Changes the index of the selection cursor
 func change_selection(next: int = 0) -> void:
-	var item: Control = song_container.get_child(selected)
+	var item: Control = song_menu.get_child(selected)
 	
 	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back() + 1)
-	selected = wrapi(selected + next, 0, song_container.get_child_count())
+	selected = wrapi(selected + next, 0, song_menu.get_child_count())
 	refresh_display_score()
 	
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	if item: item.modulate.a = 0.6
-	item = song_container.get_child(selected)
-	item.modulate.a = 1.0
-	song_container.target_offset = selected
+	item = song_menu.get_child(selected)
+	if item: item.modulate.a = 1.0
+	song_menu.target_offset = selected
 	if songs.list[song_selected].difficulties.find(difficulty_name) == -1:
 		change_difficulty()
 
@@ -136,17 +130,17 @@ func change_category(next: int = 0) -> void:
 ## Reloads every item in the menu.
 func reload_song_items() -> void:
 	selectables.clear()
-	song_container.items.clear()
+	song_menu.items.clear()
 	# in case your hardcode any buttons and whatnot.
-	song_container.items.append_array(_harcoded_entries)
+	song_menu.items.append_array(_harcoded_entries)
 	for song: SongItem in songs.list:
 		if not song or (not song.list_name.is_empty() and song.list_name != lists[current_list]):
 			continue
 		selectables.append(songs.list.find(song))
-		song_container.items.append(song.name)
+		song_menu.items.append(song.name)
 	song_selected = selectables.front()
 	selected = selectables.find(song_selected)
-	song_container.regen_list()
+	song_menu.regen_list()
 	change_selection()
 
 func refresh_display_score() -> void:

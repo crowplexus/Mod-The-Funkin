@@ -1,4 +1,4 @@
-@tool class_name AnimatedLabel2D extends Control
+class_name AnimatedLabel2D extends Control
 
 enum CharacterType {
 	BOLD = 0,
@@ -26,50 +26,75 @@ const CYRILLIC_LETTERS: String = "абвгдеёжзийклмнопрстуфх
 		display_letters()
 ## Current variant of the charaters.
 @export var variant: CharacterType = CharacterType.BOLD
+@export_enum("Left:0", "Center:1", "Right:2")#, "Fill:3")
+var alignment: int = 0:
+	set(new_alignment):
+		alignment = new_alignment
+		update_alignment()
+@export var auto_scale: bool = true ## Lines will scale themselves if too big.
 
 func display_letters() -> void:
 	if not sprite_frames:
 		push_error("No SpriteFrames are set for this AnimatedLabel2D! please set the SpriteFrames variable!")
 		return
 	
-	for i: Node in get_children():
-		remove_child(i)
+	for i: Control in get_children():
+		for v: Node in i.get_children():
+			v.queue_free()
 		i.queue_free()
 	
-	var next_offset: Vector2 = Vector2.ZERO
+	var next_offset: Vector2 = Vector2(0, 35)
+	var line: Control = Control.new()
+	line.name = "line%s" % get_child_count()
 	for idx: int in text.length():
-		var char: String = text[idx]
-		if char == "\n":
+		var tchar: String = text[idx]
+		var is_space: bool = tchar == " "
+		var line_break: bool = tchar == "\n"
+		if line_break:
+			if auto_scale and line.size.x > size.x:
+				line.scale.x = size.x / line.size.x
+			add_child(line)
+			line = Control.new()
+			line.name = "line%s" % get_child_count()
 			next_offset.x = 0
 			next_offset.y += spacing.y
 			continue
-		if char == " ":
+		if is_space:
 			next_offset.x += spacing.x
 			continue
 		if sprite_frames:
-			var new_char: AnimatedSprite2D = generate_character(char)
-			var width: float = sprite_frames.get_frame_texture(new_char.animation, 0).get_width()
-			new_char.position += next_offset
-			add_child(new_char)
-			next_offset.x += width + new_char.offset.x
+			var new_char: AnimatedSprite2D = generate_character(tchar)
+			var texture: Texture2D = sprite_frames.get_frame_texture(new_char.animation, 0)
+			if texture:
+				var width: float = sprite_frames.get_frame_texture(new_char.animation, 0).get_width()
+				#var height: float = sprite_frames.get_frame_texture(new_char.animation, 0).get_height()
+				var add_size_x: float = width + new_char.offset.x
+				new_char.position += next_offset
+				next_offset.x += add_size_x
+				line.size.x = next_offset.x
+			line.add_child(new_char)
+	if auto_scale and line.size.x > size.x:
+		line.scale.x = size.x / line.size.x
+	add_child(line)
+	update_alignment()
 
-func generate_character(char: String, type: CharacterType = variant) -> AnimatedSprite2D:
+func generate_character(tchar: String, type: CharacterType = variant) -> AnimatedSprite2D:
 	var offset: Vector2 = Vector2.ZERO
 	var character: AnimatedSprite2D = AnimatedSprite2D.new()
 	character.sprite_frames = sprite_frames
-	var is_letter: bool = LATIN_LETTERS.contains(char.to_lower()) #or CYRILLIC_LETTERS.contains(char.to_lower())
-	var char_anim: String = char.to_snake_case()
+	var is_letter: bool = LATIN_LETTERS.contains(tchar.to_lower()) #or CYRILLIC_LETTERS.contains(char.to_lower())
+	var char_anim: String = tchar.to_snake_case()
 	var char_offset: Vector2 = Vector2.ZERO
 	if is_letter:
 		match type:
 			CharacterType.BOLD:
-				char_anim = char.to_upper() + " bold"
+				char_anim = tchar.to_upper() + " bold"
 			CharacterType.NORMAL:
-				char_anim = char.to_upper() + " capital"
-				if char.to_lower() == char:
-					char_anim = char.to_lower() + " lowercase"
+				char_anim = tchar.to_upper() + " capital"
+				if tchar.to_lower() == tchar:
+					char_anim = tchar.to_lower() + " lowercase"
 	else:
-		match char.to_snake_case(): # offsets really only apply for Bold variant for nows…
+		match tchar.to_snake_case(): # offsets really only apply for Bold variant for nows…
 			"!":
 				char_anim = "exclamation point"
 				char_offset = Vector2(-10, -10)
@@ -101,3 +126,13 @@ func generate_character(char: String, type: CharacterType = variant) -> Animated
 		character.animation = char_anim
 		character.offset = char_offset
 	return character
+
+func update_alignment() -> void:
+	for line: Control in get_children():
+		line.position = Vector2.ZERO
+		var scaled_width: float = line.size.x * line.scale.x
+		#var scaled_heght: float = line.size.y * line.scale.y
+		match alignment:
+			0: line.position.x = 0
+			1: line.position.x = ((size.x - scaled_width) * 0.5)
+			2: line.position.x = (size.x - scaled_width)

@@ -1,0 +1,78 @@
+extends Node2D
+
+@onready var background: Sprite2D = $"background"
+@onready var buttons: BoxContainer = $"ui/buttons"
+@onready var copyright_text: Label = $"ui/color_rect/copyright_text"
+@onready var copyright_rect: ColorRect = $"ui/color_rect"
+static var saw_copyright: bool = false
+var moving_copyright: bool = false
+
+var selected: int = 0
+var copyright_tween: Tween
+
+func _ready() -> void:
+	if Global.DEFAULT_SONG and not Global.bgm.playing:
+		Global.play_bgm(Global.DEFAULT_SONG, 0.7)
+		Conductor.bpm = Global.DEFAULT_SONG.bpm
+	
+	if not saw_copyright:
+		var start_moving: Callable = func() -> void:
+			if not moving_copyright:
+				await get_tree().create_timer(1.0).timeout
+				moving_copyright = true
+		var pos_y: float = copyright_rect.position.y
+		copyright_tween = create_tween().set_ease(Tween.EASE_IN)
+		copyright_tween.tween_property(copyright_rect, "position:y", pos_y + 60, 0.5).set_delay(0.5)
+		copyright_tween.finished.connect(start_moving)
+	
+	change_selection()
+
+func _process(delta: float) -> void:
+	if moving_copyright:
+		copyright_text.position.x -= delta * 100
+		if copyright_text.position.x < -copyright_text.size.x - 50:
+			var pos_y: float = copyright_rect.position.y
+			if copyright_tween: copyright_tween.kill()
+			copyright_tween = create_tween().set_ease(Tween.EASE_OUT)
+			copyright_tween.tween_property(copyright_rect, "position:y", pos_y - 60, 0.6)
+			moving_copyright = false
+			saw_copyright = true
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event.is_echo():
+		var item_axis: int = int(Input.get_axis("ui_up", "ui_down"))
+		if item_axis != 0: change_selection(item_axis)
+		if Input.is_action_just_pressed("ui_accept"):
+			confirm_selection()
+		if Input.is_action_just_pressed("ui_cancel"):
+			Global.change_scene("uid://ce22u68qyw5bs")
+
+func change_selection(next: int = 0) -> void:
+	var ps: AnimatedSprite2D = buttons.get_child(selected)
+	if ps: ps.play("%s idle" % ps.name)
+	selected = wrapi(selected + next, 0, buttons.get_child_count())
+	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
+	ps = buttons.get_child(selected)
+	if ps: ps.play("%s selected" % ps.name)
+
+func confirm_selection() -> void:
+	var ps: = buttons.get_child(selected)
+	Global.begin_flicker(background, 0.6, 0.1)
+	Global.begin_flicker(ps, 0.6, 0.06)
+	Global.play_sfx(Global.resources.get_resource("confirm"))
+	for button: CanvasItem in buttons.get_children():
+		if button.get_index() != selected:
+			create_tween().set_ease(Tween.EASE_IN).tween_property(button, "modulate:a", 0.0, 0.6)
+	await get_tree().create_timer(0.7).timeout
+	match ps.name:
+		"freeplay":
+			saw_copyright = true
+			Global.change_scene("uid://c5qnedjs8xhcw")
+		"options":
+			saw_copyright = true
+			Global.change_scene("uid://gulb1ge3va36")
+		_:
+			ps.modulate.a = 0.0
+			ps.show()
+			for button: CanvasItem in buttons.get_children():
+				create_tween().set_ease(Tween.EASE_IN).tween_property(button, "modulate:a", 1.0, 0.6)

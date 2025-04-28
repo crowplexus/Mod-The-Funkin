@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://c5qnedjs8xhcw"]
+[gd_scene load_steps=8 format=3 uid="uid://c5qnedjs8xhcw"]
 
 [ext_resource type="Script" uid="uid://dqt5jghej6xdr" path="res://scenes/menu/freeplay_menu.gd" id="1_ttjym"]
 [ext_resource type="Texture2D" uid="uid://ciwp55vsaghii" path="res://assets/ui/menu/menuDesat.png" id="2_f7icd"]
+[ext_resource type="Script" uid="uid://dy6vubwf3s2n6" path="res://scenes/menu/ui/alphabet_menu.gd" id="3_5h24w"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="3_i0mk5"]
-[ext_resource type="PackedScene" uid="uid://co3up3e2jn4f6" path="res://scenes/menu/ui/alphabet_menu.tscn" id="4_i0mk5"]
+[ext_resource type="SpriteFrames" uid="uid://ff2pwik2h4tp" path="res://assets/ui/fonts/alphabet.res" id="4_5h24w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0mk5"]
 bg_color = Color(0, 0, 0, 0.529412)
@@ -20,7 +21,8 @@ modulate = Color(0.8, 0.8, 0.8, 1)
 position = Vector2(643, 365)
 texture = ExtResource("2_f7icd")
 
-[node name="ui" type="Control" parent="."]
+[node name="song_menu" type="Control" parent="."]
+clip_contents = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,6 +31,18 @@ offset_right = 1280.0
 offset_bottom = 720.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("3_5h24w")
+distance = Vector2(25, 115)
+offset = Vector2(100, 200)
+sprite_frames = ExtResource("4_5h24w")
+metadata/_custom_type_script = "uid://73nl8weocxpd"
+
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+metadata/_edit_lock_ = true
 
 [node name="tip_text" type="Label" parent="ui"]
 visible = false
@@ -78,10 +92,3 @@ text = "« Difficulty »"
 label_settings = SubResource("LabelSettings_5h24w")
 horizontal_alignment = 1
 vertical_alignment = 2
-
-[node name="song_container" parent="." instance=ExtResource("4_i0mk5")]
-offset_right = 1280.0
-offset_bottom = 720.0
-distance = Vector2(20, 156)
-offset = Vector2(100, 300)
-metadata/_edit_lock_ = true
