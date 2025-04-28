@@ -50,9 +50,9 @@ static func get_record(song: String, difficulty: StringName = "unknown") -> Dict
 			var json = JSON.parse_string(file.get_as_text())
 			if json:
 				file.close() # just making sure.
-				var final_record: Dictionary = {used_epics = false}
+				var final_record: Dictionary = {}
 				if record_name in json: final_record = json[record_name].front()
-				if final_record.used_epics == Tally.use_epics:
+				if not final_record.is_empty() and final_record.used_epics == Tally.use_epics:
 					record = final_record
 	if record.is_empty(): record = empty_highscore()
 	return record
