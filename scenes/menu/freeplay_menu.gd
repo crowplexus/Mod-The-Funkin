@@ -100,7 +100,6 @@ func change_selection(next: int = 0) -> void:
 	
 	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back() + 1)
 	selected = wrapi(selected + next, 0, song_menu.get_child_count())
-	refresh_display_score()
 	
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	if item: item.modulate.a = 0.6
@@ -109,6 +108,7 @@ func change_selection(next: int = 0) -> void:
 	song_menu.target_offset = selected
 	if songs.list[song_selected].difficulties.find(difficulty_name) == -1:
 		change_difficulty()
+	refresh_display_score()
 
 ## Changes the index of the difficulty cursor
 func change_difficulty(next: int = 0) -> void:
