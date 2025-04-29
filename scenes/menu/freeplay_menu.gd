@@ -29,6 +29,7 @@ var exiting: bool = false
 var cursor_tween: Tween
 
 func _ready() -> void:
+	Global.change_transition_style()
 	_harcoded_entries.append_array(song_menu.items)
 	song_menu.item_created.connect(func(item: Control) -> void:
 		item.modulate.a = 0.6 if item.get_index() != selected else 1.0)
@@ -49,7 +50,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	var lerp_value: float = clamp(delta * 9.6, 0.0, 1.0)
-	song_menu.position_lerp = lerp_value
+	song_menu.scroll_lerp = lerp_value
 	
 	# update score lerp and shit
 	if score_text and display_score and "score" in display_score:
@@ -77,6 +78,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 func go_to_gameplay() -> void:
 	exiting = true
+	Global.change_transition_style(&"alternate")
 	Global.request_audio_fade(Global.bgm, 0.0, 0.5)
 	var song_to_pick: SongItem = songs.list[song_selected]
 	var parse: bool = true
@@ -106,7 +108,7 @@ func change_selection(next: int = 0) -> void:
 	if item: item.modulate.a = 0.6
 	item = song_menu.get_child(selected)
 	if item: item.modulate.a = 1.0
-	song_menu.target_offset = selected
+	song_menu.scroll_offset = selected
 	if songs.list[song_selected].difficulties.find(difficulty_name) == -1:
 		change_difficulty()
 	refresh_display_score()

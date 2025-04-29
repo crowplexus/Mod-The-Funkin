@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmkymcq7pnoa5"]
+[gd_scene load_steps=7 format=3 uid="uid://be5sp5nyxuhjw"]
 
-[ext_resource type="Script" uid="uid://cv8hplrs2f5ep" path="res://scenes/globals/transition/wipe_top_bottom.gd" id="1_krslv"]
+[ext_resource type="Script" uid="uid://cv8hplrs2f5ep" path="res://scenes/globals/transition/wipe_top_bottom.gd" id="1_i6fbm"]
 
 [sub_resource type="Gradient" id="Gradient_krslv"]
 offsets = PackedFloat32Array(0, 0.2, 0.35, 0.5, 0.65, 0.8, 1)
@@ -8,7 +8,8 @@ colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_cqyd4"]
 gradient = SubResource("Gradient_krslv")
-fill_to = Vector2(0, 1)
+fill_from = Vector2(1, 0)
+fill_to = Vector2(0, 0)
 
 [sub_resource type="Animation" id="Animation_cqyd4"]
 length = 0.001
@@ -39,7 +40,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5, 1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, -1300), Vector2(0, 0), Vector2(0, 1100)]
+"values": [Vector2(-2000, 0), Vector2(0, 0), Vector2(1300, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cqyd4"]
@@ -48,25 +49,24 @@ _data = {
 &"transition": SubResource("Animation_krslv")
 }
 
-[node name="wipe_top_bottom" type="Control"]
+[node name="wipe_left_right" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_krslv")
+script = ExtResource("1_i6fbm")
 
 [node name="texture_rect" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 490.0
+offset_right = 720.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_cqyd4")
-metadata/_edit_lock_ = true
 
 [node name="animation_player" type="AnimationPlayer" parent="."]
 libraries = {

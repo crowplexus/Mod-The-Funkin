@@ -68,7 +68,7 @@ func change_selection(next: int = 0) -> void:
 	var selected_option: Control = current_tab[selected]
 	if selected_option is OptionBar:
 		selected_option.is_hovered = true
-		option_title.text = selected_option.display_name
+		option_title.text = tr("option_%s" % selected_option.variable_name)
 		option_infor.text = selected_option.description
 		selected_option.modulate.v = 0.8
 

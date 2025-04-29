@@ -4,6 +4,7 @@ extends Node
 const DEFAULT_SONG: AudioStream = preload("uid://bcfbl3fi4h6xu")
 const TRANSITIONS: Dictionary[String, PackedScene] = {
 	"default": preload("uid://dmkymcq7pnoa5"),
+	"alternate": preload("uid://be5sp5nyxuhjw"),
 }
 var current_transition: StringName = &"default"
 

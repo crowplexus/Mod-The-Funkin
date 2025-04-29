@@ -11,6 +11,7 @@ var index: int = 0
 var label_tween: Tween
 var ended: bool = false
 var og_vol: float = 1.0
+var og_pos: float = 0.0
 
 func _ready() -> void:
 	advance()
@@ -18,6 +19,7 @@ func _ready() -> void:
 		og_vol = Global.bgm.volume_linear
 		Global.request_audio_fade(Global.bgm, 0.0, 1.0)
 		await Global.music_fade_tween.finished
+		og_pos = Global.bgm.get_playback_position()
 		Global.bgm.stop()
 	Conductor.bpm = bgm.stream.bpm
 	bgm.play()
@@ -48,5 +50,5 @@ func restore_audio(duration: float = 1.0) -> void:
 	Global.request_audio_fade(bgm, 0.0, duration)
 	await Global.music_fade_tween.finished
 	Conductor.bpm = Global.bgm.stream.bpm
-	Global.bgm.volume_linear = og_vol
-	Global.bgm.play(0.0)
+	Global.request_audio_fade(Global.bgm, og_vol, 0.5)
+	Global.bgm.play(og_pos)

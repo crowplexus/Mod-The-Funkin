@@ -94,7 +94,7 @@ description = "Prevents the game from punishing you for pushing buttons while no
 
 [node name="use_epics" parent="tabs/gameplay" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
-display_name = &"Use Epics"
+display_name = &"Show \'Epic\' Judgement"
 variable_name = &"use_epics"
 description = "Enables an extra 5th judgement
 

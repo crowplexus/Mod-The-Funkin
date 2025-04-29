@@ -85,6 +85,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			else:
 				focus_change.values.char = was_must_hit
 			focus_change.time = fake_timer
+			focus_change.efire = func() -> void: TimedEvent.focus_camera_event(focus_change.values.char)
 			chart.scheduled_events.append(focus_change)
 		
 		for song_note: Array in measure["sectionNotes"]:
@@ -113,8 +114,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		fake_timer += fake_crotchet * section_beats
 	
 	var speed: float = chart_dict.speed if "speed" in chart_dict else 1.0
-	var scroll_speed_event: = TimedEvent.velocity_change(-2.0, speed)
-	scroll_speed_event.values.immediate = true
+	var scroll_speed_event: = TimedEvent.velocity_change(-2.0, speed, true)
 	chart.scheduled_events.append(scroll_speed_event)
 	
 	chart.notes.sort_custom(NoteData.sort_by_time)

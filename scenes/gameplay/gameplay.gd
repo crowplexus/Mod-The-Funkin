@@ -66,12 +66,12 @@ var tutorial_dj: bool = true
 var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 	set(new_health): health = clampi(new_health, 0, 100)
 
-func _default_rpc() -> void:
-	Global.update_discord(game_mode_name, "Playing %s (%s)" % [ song_name, difficulty_name.to_upper() ])
-	_sync_rpc_timestamp()
-
-func _sync_rpc_timestamp() -> void:
-	Global.update_discord_timestamps(int(Conductor.time), int(Conductor.length))
+static func play_inst_outside() -> void:
+	if Gameplay.chart and Gameplay.chart.assets:
+		Global.play_bgm(Gameplay.chart.assets.instrumental, 0.01)
+		var length: float = Gameplay.chart.assets.instrumental.get_length()
+		Global.bgm.seek(randf_range(0, length * 0.5))
+		Global.request_audio_fade(Global.bgm, 0.7, 1.0)
 
 func _ready() -> void:
 	current = self
@@ -229,8 +229,7 @@ func process_timed_events() -> void:
 		if Conductor.time < current_event.time:
 			return
 		if not current_event.was_fired:
-			if current_event.efire: current_event.efire.call()
-			else: fire_timed_event(current_event) # hardcoded events
+			fire_timed_event(current_event)
 		event_position += 1
 		if event_position >= timed_events.size():
 			should_process_events = false
@@ -238,42 +237,10 @@ func process_timed_events() -> void:
 func fire_timed_event(event: TimedEvent) -> void:
 	if not event:
 		return
-	match event.name:
-		&"Play Animation":
-			var actor: Actor2D = get_actor_from_index(event.values.target)
-			if actor and actor.has_animation(event.values.anim):
-				actor.play_animation(event.values.anim, event.values.force)
-				if is_zero_approx(event.values.cooldown):
-					actor.idle_cooldown = actor.get_anim_length(0.5) + 0.1
-				else:
-					actor.idle_cooldown = event.values.cooldown
-				actor.able_to_sing = false
-				actor.lock_on_sing = false
-		&"Change Camera Focus":
-			if camera:
-				var offset: Vector2 = Vector2(float(event.values.x) if "x" in event.values else 0.0,
-					float(event.values.y) if "y" in event.values else 0.0)
-				if event.values.char == -1:
-					camera.global_position = offset
-				else:
-					var actor: Actor2D = get_actor_from_index(event.values.char)
-					if actor:
-						camera.global_position = actor.global_position + actor.camera_offset
-						camera.global_position += offset
-		&"Change Camera Zoom":
-			if camera:
-				# TODO: add duration, easing, and mode.
-				camera.zoom = Vector2(float(event.values.zoom), float(event.values.zoom))
-		&"Change Scroll Speed":
-			var immediate: bool = bool(event.values.immediate) if "immediate" in event.values else false
-			for note_field: NoteField in note_fields.get_children():
-				if not immediate:
-					note_field.speed_change_tween = create_tween()
-					note_field.speed_change_tween.tween_property(note_field, "speed", event.values.speed, 1.0)
-				else:
-					note_field.speed = event.values.speed
-				note_group.speed = event.values.speed
-			#print_debug("scroll speed changed to ", event.values.speed, " at ", Conductor.time)
+	if event.efire:
+		event.efire.call()
+	else: # TODO: call a script here?
+		pass
 	event.was_fired = true
 
 func load_stage(stage_path: PackedScene = null) -> void:
@@ -474,5 +441,12 @@ func exit_game() -> void:
 	if tally:
 		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty)
 		tally = null
-	Global.play_bgm(chart.assets.instrumental, 0.7)
+	Gameplay.play_inst_outside()
 	Global.change_scene("uid://c5qnedjs8xhcw")
+
+func _default_rpc() -> void:
+	Global.update_discord(game_mode_name, "Playing %s (%s)" % [ song_name, difficulty_name.to_upper() ])
+	_sync_rpc_timestamp()
+
+func _sync_rpc_timestamp() -> void:
+	Global.update_discord_timestamps(int(Conductor.time), int(Conductor.length))

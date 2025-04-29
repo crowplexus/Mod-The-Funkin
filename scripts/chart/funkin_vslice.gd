@@ -95,8 +95,7 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 			scroll_difficulty = "default"
 		if scroll_difficulty in json["scrollSpeed"]:
 			scroll_speed = float(json["scrollSpeed"][scroll_difficulty])
-	chart.scheduled_events.append(TimedEvent.velocity_change(-2.0, scroll_speed)) # default speed
-	chart.scheduled_events[-1].values.immediate = true
+	chart.scheduled_events.append(TimedEvent.velocity_change(-2.0, scroll_speed, true)) # default speed
 	# create notes.
 	var note_difficulty: String = difficulty.to_lower().strip_escapes().strip_edges()
 	if not note_difficulty in json.notes:
@@ -152,29 +151,33 @@ static func make_event(time: float, event_name: StringName = &"_", value: Varian
 	event.time = time * 0.001
 	match event_name:
 		&"PlayAnimation":
-			if value is int or value is float: event.values.v = value
+			event.name = &"Play Animation"
+			if value is int or value is float: event.values.target = int(value)
 			elif value is Dictionary: event.values.assign(value)
 			if "target" in event.values:
 				match event.values.target:
 					"boyfriend", "bf", "player", "0": event.values.target = 0
 					"dad", "opponent", "enemy", "1": event.values.target = 1
 					"gf", "dj", "metronome", "2": event.values.target = 2
-					_: event.values.target = event.values.target
-			event.name = &"Play Animation"
-			if not "force" in event.values:
-				event.values.force = false
-			if not "cooldown" in event.values:
-				event.values.cooldown = 0.0
+			if not "force" in event.values: event.values.force = false
+			if not "cooldown" in event.values: event.values.cooldown = 0.0
+			event.efire = func() -> void:
+				TimedEvent.play_animation_event(event.values.anim,
+					event.values.force, event.values.target, event.values.cooldown)
 		&"FocusCamera":
+			event.name = &"Change Camera Focus"
 			if value is int or value is float: event.values.char = value
 			elif value is Dictionary: event.values.assign(value)
 			if "char" in event.values: event.values.char = int(event.values.char)
-			event.name = &"Change Camera Focus"
+			var x_pos: float = 0.0 if not "x" in event.values else event.values.x
+			var y_pos: float = 0.0 if not "y" in event.values else event.values.y
+			event.efire = func() -> void: TimedEvent.focus_camera_event(event.values.char, x_pos, y_pos)
 		&"ZoomCamera":
+			event.name = &"Change Camera Zoom"
 			if value is float: event.values.zoom = value
 			elif value is Dictionary: event.values.assign(value)
 			if "zoom" in event.values: event.values.zoom = float(event.values.zoom)
-			event.name = &"Change Camera Zoom"
+			event.efire = func() -> void: TimedEvent.zoom_camera_event(event.values.zoom)
 		_:
 			event.name = event_name
 			if value is Dictionary: event.values.assign(value)

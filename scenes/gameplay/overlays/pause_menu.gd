@@ -122,10 +122,7 @@ func confirm_selection() -> void:
 					Gameplay.current.reload_hud()
 			can_control = true
 		"exit":
-			if Gameplay.chart and Gameplay.chart.assets:
-				Global.play_bgm(Gameplay.chart.assets.instrumental, 0.7)
-				if Conductor.time < Conductor.length:
-					Global.bgm.seek(Conductor.time)
+			Gameplay.play_inst_outside()
 			Global.change_scene("uid://c5qnedjs8xhcw")
 
 ## Changes the index of the selection cursor

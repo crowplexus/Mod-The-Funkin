@@ -44,6 +44,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_0, KEY_KP_0:
 			Global.settings.master_mute = not Global.settings.master_mute
 			Global.settings.update_master_volume()
+			display_volume_slider()
 
 func update_overlay() -> void:
 	var fps_count: float = Engine.get_frames_per_second()
@@ -73,6 +74,8 @@ func update_master_volume(bhm: int = 0) -> void:
 func display_volume_slider() -> void:
 	if vstwn: vstwn.kill()
 	volume_slider.value = Global.settings.master_volume
+	if Global.settings.master_mute:
+		volume_slider.value = 0
 	volume_slider.modulate.a = 1.0
 	vstwn = create_tween().set_ease(Tween.EASE_OUT)
 	vstwn.tween_property(volume_slider, "modulate:a", 0.0, 0.5).set_delay(0.5)

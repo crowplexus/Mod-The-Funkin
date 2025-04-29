@@ -8,21 +8,28 @@ signal item_created(item: Control)
 @export var offset: Vector2 = Vector2.ZERO ## General offset of all items.
 @export var change_x: bool = true ## Updates the X-axis of each item.
 @export var change_y: bool = true ## Updates the Y-axis of each item.
-var target_offset: int = 0 ## Selected item offset.
-var position_lerp: float = 0.15 ## Lerp for all the items.
+var start_positions: Array[Vector2] = [] ## List of positions the items start at.
+var scroll_lerp: float = 0.15 ## Value used for lerp weight.
+var scroll_offset: int = 0: ## Menu scroll offset.
+	get: return clamp(scroll_offset, 0, items.size()) # just making sure.
 
 func _process(_delta: float) -> void:
 	if not active:
 		return
 	for i: Control in get_children():
-		update_item(i)
+		scroll_item(i)
 
-func update_item(item: Control,) -> void:
-	var index: int = item.get_index() - target_offset
-	var target_pos: Vector2 = Vector2.ZERO
-	if change_x: target_pos.x = index * distance.x
-	if change_y: target_pos.y = index * distance.y
-	item.position = item.position.lerp(target_pos + offset, position_lerp)
+func scroll_item(item: Control) -> void:
+	if not change_x and not change_y:
+		return
+	var index: int = item.get_index()
+	var pos: Vector2 = start_positions[index] + offset
+	var selected: int = (index - scroll_offset)
+	var fscale: Vector2 = item.scale * scale
+	item.position = item.position.lerp(Vector2(
+		pos.x + (selected * distance.x) * int(change_x),
+		pos.y + (selected * distance.y) * int(change_y)),
+	scroll_lerp)
 
 func regen_list() -> void:
 	for i: Node in get_children():
@@ -37,8 +44,11 @@ func regen_list() -> void:
 		if idx < items.size() - 1:
 			final_text += "\n"
 	self.text = final_text.dedent()
+	# children are generated after setting the text
+	# each "line" is an entry on the menu, hence why we just set the text before.
 	for line: Control in get_children():
 		item_created.emit(line)
+		start_positions.append(line.position)
 
 #region Array Functions
 
