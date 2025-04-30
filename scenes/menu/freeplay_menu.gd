@@ -16,7 +16,6 @@ const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a R
 
 var selected: int = 0
 var song_selected: int = 0
-var current_list: int = 0 # Ungrouped / Main Levels
 var difficulty: int = 1 # NORMAL
 var lerp_score: float = 0
 
@@ -33,19 +32,13 @@ func _ready() -> void:
 	_harcoded_entries.append_array(song_menu.items)
 	song_menu.item_created.connect(func(item: Control) -> void:
 		item.modulate.a = 0.6 if item.get_index() != selected else 1.0)
-	for i: SongItem in songs.list:
-		if not i.list_name in lists:
-			lists.append(i.list_name)
-			if not i.shown_in_freeplay:
-				var index: int = songs.list.find(i)
-				songs.list.remove_at(index)
 	Global.update_discord("Menus", "Selecting a Song in Freeplay")
 	if get_tree().paused: get_tree().paused = false
 	if Global.DEFAULT_SONG and not Global.bgm.playing:
 		Global.play_bgm(Global.DEFAULT_SONG, 0.7)
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
 	Global.bgm.volume_linear = 0.7
-	change_category()
+	reload_song_items()
 	change_difficulty()
 
 func _process(delta: float) -> void:
@@ -70,6 +63,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 	if axis_diff != 0: change_difficulty(axis_diff)
 	if axis_song != 0: change_selection(axis_song)
 	if accepting:
+		exiting = true
 		Global.play_sfx(Global.resources.get_resource("confirm"))
 		highlight_selected()
 	if backing_out:
@@ -80,13 +74,14 @@ func go_to_gameplay() -> void:
 	exiting = true
 	Global.change_transition_style(&"alternate")
 	Global.request_audio_fade(Global.bgm, 0.0, 0.5)
-	var song_to_pick: SongItem = songs.list[song_selected]
 	var parse: bool = true
-	if Gameplay.chart and Gameplay.chart.parsed_values.song_name == song_to_pick.folder:
+	var selected_song: SongItem = songs.list[song_selected]
+	if Gameplay.chart and Gameplay.chart.parsed_values.song_name == selected_song.folder:
 		parse = false # same chart, don't parse what's already parsed.
-	if parse: Gameplay.chart = Chart.detect_and_parse(song_to_pick.folder, difficulty_name)
+	if parse: Gameplay.set_playlist([selected_song.folder], difficulty_name)
 	if Gameplay.chart:
-		Gameplay.chart.parsed_values.difficulties = song_to_pick.difficulties
+		Gameplay.chart.parsed_values.difficulties = selected_song.difficulties
+	Gameplay.set_game_mode(Gameplay.GameMode.FREEPLAY)
 	Global.change_scene("uid://cvf84mr6iepcs")
 
 func highlight_selected() -> void:
@@ -123,13 +118,6 @@ func change_difficulty(next: int = 0) -> void:
 	diff_text.text = "\n« %s »" % [ tr_diff if not tr_diff.begins_with("difficulty_") else diff ]
 	difficulty_name = diff
 
-## Changes the index of the current category
-func change_category(next: int = 0) -> void:
-	current_list = wrapi(current_list + next, 0, lists.size())
-	#tip_text.text = "[ %s ]\n%s" % [ lists[current_list], TIP_BUTTONS ]
-	if next != 0: Global.play_sfx(Global.resources.get_resource("fav"))
-	reload_song_items()
-
 ## Reloads every item in the menu.
 func reload_song_items() -> void:
 	selectables.clear()
@@ -137,7 +125,7 @@ func reload_song_items() -> void:
 	# in case your hardcode any buttons and whatnot.
 	song_menu.items.append_array(_harcoded_entries)
 	for song: SongItem in songs.list:
-		if not song or (not song.list_name.is_empty() and song.list_name != lists[current_list]):
+		if songs.visible == 1 | 3:
 			continue
 		selectables.append(songs.list.find(song))
 		song_menu.items.append(song.name)

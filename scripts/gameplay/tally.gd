@@ -84,7 +84,7 @@ func zero(previous_tally: Tally = null) -> void:
 		tiers_scored[i] = previous_tally.tiers_scored[i] if has else 0
 
 ## Saves this Tally as a dictionary.
-func to_dictionary() -> Dictionary:
+func to_dictionary(_story: bool = false) -> Dictionary:
 	var complete: float = calculate_score_percentage(self.score,
 		calculate_perfect_score(Gameplay.chart.note_counts[0]),
 		calculate_worst_score(notes_hit_count, misses + breaks))
@@ -98,15 +98,15 @@ func to_dictionary() -> Dictionary:
 		judgement_counts = PackedInt32Array(self.tiers_scored),
 		used_epics = bool(Tally.use_epics),
 		date = String(self.date),
+		story = _story,
 	}
 
 ## Saves this Tally to a list of highscores.
-func save_record(song: String, difficulty: StringName = "unknown") -> void:
+func save_record(song: String, difficulty: StringName = "unknown", story: bool = false) -> void:
 	date = Time.get_datetime_string_from_system(true)
 	# TODO: use an encrypted file.
 	var path: String = "user://mtf_highscores.json"
 	var scores: Dictionary = {}
-	
 	if ResourceLoader.exists(path):
 		var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 		if file:
@@ -116,11 +116,11 @@ func save_record(song: String, difficulty: StringName = "unknown") -> void:
 				file.close() # just making sure.
 	var record_name: String = song + "-" + difficulty
 	if not record_name in scores:
-		scores[record_name] = [ self.to_dictionary() ]
+		scores[record_name] = [ self.to_dictionary(story) ]
 	else:
 		print_debug("new record? ", self.score > scores[record_name].back().score)
 		if self.score > scores[record_name].back().score:
-			scores[record_name].append(self.to_dictionary())
+			scores[record_name].append(self.to_dictionary(story))
 	var save: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	if save:
 		save.store_string(JSON.stringify(scores, "\t"))

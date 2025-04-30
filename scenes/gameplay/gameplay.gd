@@ -1,6 +1,6 @@
 class_name Gameplay extends Node2D
 
-enum PlayMode {
+enum GameMode {
 	STORY = 0,
 	FREEPLAY = 1,
 	CHARTING = 2,
@@ -23,8 +23,61 @@ var player_strums: NoteField
 # I need this to be static because of story mode,
 # since it reuses the same tally from the previous song.
 static var tally: Tally
-static var chart: Chart
 static var current: Gameplay
+static var chart: Chart
+
+#region Playlist
+
+static var playlist: Array[Chart] = []
+static var current_song: int = 0
+
+static func set_playlist(folders: Array[String] = ["test"], difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> void:
+	clear_playlist()
+	# in case you fuck up.
+	if folders.is_empty() or folders == [""] or folders == ["null"]:
+		folders = ["test"]
+	for song: String in folders:
+		Gameplay.playlist.append(Chart.detect_and_parse(song, difficulty))
+	change_playlist_song(0, true) # just making sure
+
+static func change_playlist_song(next: int = 0, no_scene_checks: bool = false) -> void:
+	Gameplay.current_song = clampi(current_song + next, 0, playlist.size())
+	var songs_ended: bool = Gameplay.current_song > Gameplay.playlist.size() - 1
+	if not songs_ended:
+		Gameplay.chart = playlist[current_song]
+	if not no_scene_checks:
+		if songs_ended: Gameplay.current.exit_game()
+		else: Global.reload_scene(true)
+
+static func clear_playlist() -> void:
+	Gameplay.current_song = 0
+	Gameplay.playlist.clear()
+
+static func exit_to_menu(game_mode: Gameplay.GameMode = Gameplay.game_mode) -> void:
+	var uid: String = "uid://c5qnedjs8xhcw"
+	match game_mode:
+		Gameplay.GameMode.STORY: uid = "uid://dakw6tmvuvou7"
+		_: Gameplay.play_inst_outside()
+	Global.change_scene(uid)
+
+static var game_mode: GameMode = GameMode.FREEPLAY
+
+static func set_game_mode(mode: Gameplay.GameMode = Gameplay.GameMode.FREEPLAY) -> void:
+	game_mode = mode
+
+## Returns a game mode string based on the integer given.[br]
+## [code]1 = "Story Mode"[/code][br]
+## [code]2 = "Freeplay"[/code][br]
+## [code]3 = "Charting"[/code][br]
+## Anything else will return [code]"Unknown"[/code]
+static func get_mode_string(game_mode: int) -> String:
+	match game_mode:
+		0: return "Story Mode"
+		1: return "Freeplay"
+		2: return "Charting"
+		_: return "Unknown"
+
+#endregion
 
 var local_tally: Tally
 var local_settings: Settings
@@ -48,8 +101,7 @@ var player: Actor2D
 var enemy: Actor2D
 var dj: Actor2D
 
-var game_mode: PlayMode = PlayMode.FREEPLAY
-var game_mode_name: String = Global.get_mode_string(game_mode)
+@onready var game_mode_name: String = Gameplay.get_mode_string(game_mode)
 var judgements: JudgementList = preload("uid://fj361lysi7nc")
 var timed_events: Array[TimedEvent] = []
 var should_process_events: bool = true
@@ -122,6 +174,7 @@ func kill_every_note() -> void:
 		note.queue_free()
 
 func restart_song() -> void:
+	Chart.reset_timing_changes(chart.timing_changes)
 	Conductor.reset(chart.get_bpm(), false)
 	starting = true
 	ending = false
@@ -197,6 +250,12 @@ func _process(delta: float) -> void:
 func _unhandled_key_input(_event: InputEvent) -> void:
 	if OS.is_debug_build() and not starting and _event.pressed and not _event.is_echo():
 		match _event.keycode:
+			KEY_F4:
+				note_group.active = false
+				kill_every_note()
+				music.seek(music.get_playback_position() + 10)
+				await RenderingServer.frame_post_draw
+				note_group.active = true
 			KEY_END:
 				music.stop()
 				note_group.active = false
@@ -214,8 +273,7 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 		if music: music.stop()
 		var instance: Control = pause_menu.instantiate()
 		instance.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
-		if instance.has_signal("on_close"):
-			instance.connect("on_close", _default_rpc)
+		instance.tree_exited.connect(_default_rpc)
 		hud_layer.add_child(instance)
 		get_tree().paused = true
 		return
@@ -435,14 +493,15 @@ func on_beat_hit(beat: float) -> void:
 func end_song() -> void:
 	ending = true
 	await get_tree().create_timer(0.5).timeout
-	exit_game()
+	change_playlist_song(1)
 
 func exit_game() -> void:
 	if tally:
-		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty)
+		# TODO: save level score.
+		var is_story: bool = Gameplay.game_mode == Gameplay.GameMode.STORY
+		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty, is_story)
 		tally = null
-	Gameplay.play_inst_outside()
-	Global.change_scene("uid://c5qnedjs8xhcw")
+	Gameplay.exit_to_menu()
 
 func _default_rpc() -> void:
 	Global.update_discord(game_mode_name, "Playing %s (%s)" % [ song_name, difficulty_name.to_upper() ])

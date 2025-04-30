@@ -71,6 +71,9 @@ func confirm_selection() -> void:
 			create_tween().set_ease(Tween.EASE_IN).tween_property(button, "modulate:a", 0.0, 0.6)
 	await get_tree().create_timer(0.7).timeout
 	match ps.name:
+		"storymode":
+			saw_copyright = true
+			Global.change_scene("uid://dakw6tmvuvou7")
 		"freeplay":
 			saw_copyright = true
 			Global.change_scene("uid://c5qnedjs8xhcw")

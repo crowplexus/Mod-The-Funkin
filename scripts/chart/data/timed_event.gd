@@ -71,14 +71,14 @@ static func zoom_camera_event(zoom: float = 1.0) -> void:
 		# TODO: add duration, easing, and mode.
 		Gameplay.current.camera.zoom = Vector2(zoom, zoom)
 
-static func focus_camera_event(char: int = -1, x: float = 0.0, y: float = 0.0) -> void:
+static func focus_camera_event(actor_id: int = -1, x: float = 0.0, y: float = 0.0) -> void:
 	if Gameplay.current and Gameplay.current.camera:
 		var camera: Camera2D = Gameplay.current.camera
 		var offset: Vector2 = Vector2(x, y)
-		if char == -1:
+		if actor_id == -1:
 			camera.global_position = offset
 		else:
-			var actor: Actor2D = Gameplay.current.get_actor_from_index(char)
+			var actor: Actor2D = Gameplay.current.get_actor_from_index(actor_id)
 			if actor:
 				camera.global_position = actor.global_position
 				camera.global_position += actor.camera_offset + offset

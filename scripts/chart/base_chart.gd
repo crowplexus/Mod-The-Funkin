@@ -122,6 +122,13 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 	if not chart.assets: chart.assets = ChartAssets.get_resource(chart)
 	return chart
 
+static func reset_timing_changes(changes: Array[SongTimeChange] = []) -> void:
+	Conductor.timing_changes.clear()
+	Conductor.timing_changes = changes
+	if Conductor.timing_changes.is_empty():
+		Conductor.timing_changes.append(SongTimeChange.make(0.0, 100.0)) # DUMMY
+	Conductor.timing_changes.sort_custom(SongTimeChange.sort_by_time)
+
 ## Parses a chart from a resource file containing it.[br]
 ## This method SHOULD be overriden by other parsers.
 static func parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY, skip_checks: bool = false) -> Chart:

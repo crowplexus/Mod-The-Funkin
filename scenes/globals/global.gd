@@ -1,5 +1,8 @@
 extends Node
 
+signal transition_started()
+signal transition_ended()
+
 ## Song to play in the menus by default.
 const DEFAULT_SONG: AudioStream = preload("uid://bcfbl3fi4h6xu")
 const TRANSITIONS: Dictionary[String, PackedScene] = {
@@ -52,6 +55,7 @@ func play_transition() -> Control:
 	var trans: Control = TRANSITIONS[current_transition].instantiate()
 	trans.finished.connect(func() -> void: trans.queue_free())
 	transition.add_child(trans)
+	transition_started.emit()
 	trans.play()
 	return trans
 
@@ -64,6 +68,7 @@ func reload_scene(immediate: bool = false) -> void:
 		await get_tree().create_timer(trans.duration * 0.35).timeout
 	get_tree().reload_current_scene()
 	if transit: play_transition()
+	transition_ended.emit()
 
 func rewind_scene(immediate: bool = false) -> void:
 	change_scene(previous_scene_path, immediate)
@@ -79,6 +84,7 @@ func change_scene(next, immediate: bool = false) -> void:
 		await get_tree().create_timer(trans.duration * 0.35).timeout
 	if next is String: get_tree().change_scene_to_file(next)
 	elif next is PackedScene: get_tree().change_scene_to_packed(next)
+	transition_ended.emit()
 
 func begin_flicker(node: CanvasItem, duration: float = 1.0, interval: float = 0.04,
 	end_vis: bool = false, force: bool = false, finish_callable: Callable = func() -> void: pass) -> void:
@@ -99,6 +105,28 @@ func begin_flicker(node: CanvasItem, duration: float = 1.0, interval: float = 0.
 	twn.tween_callback(func() -> void:
 		node.visible = not node.visible
 	).set_delay(interval)
+
+func begin_color_flicker(node: CanvasItem, color1: = Color.WHITE, color2: = Color.BLUE,
+	duration: float = 1.0, interval: float = 0.04, end_col2: bool = true, force: bool = false, finish_callable: Callable = func() -> void: pass) -> void:
+	####
+	if node == null: return
+	if force:
+		node.modulate.a = 1.0
+		node.self_modulate.a = 1.0
+		node.visible = true
+	var twn: Tween = create_tween()
+	twn.set_loops(int(duration/interval))
+	twn.bind_node(node)
+	twn.finished.connect(func() -> void:
+		node.modulate = color2 if end_col2 else color1
+		if finish_callable != null:
+			finish_callable.call()
+	)
+	twn.tween_callback(func() -> void:
+		if node.modulate == color1: node.modulate = color2
+		elif node.modulate == color2: node.modulate = color1
+	).set_delay(interval)
+
 #endregion
 
 #region Music
@@ -107,7 +135,6 @@ var music_fade_tween: Tween
 ## Activates a volume fade tween in [code]player: AudioStreamPlayer[/code].
 func request_audio_fade(player: AudioStreamPlayer, to: float = 0.0, speed: float = 1.0) -> AudioStreamPlayer:
 	if to < 0.0: return player
-	var cur_vol: float = player.volume_linear
 	if music_fade_tween: music_fade_tween.kill()
 	music_fade_tween = create_tween()#.set_ease(Tween.EASE_IN if new_vol > cur_vol else Tween.EASE_OUT)
 	music_fade_tween.tween_property(player, "volume_linear", to, speed)
@@ -169,18 +196,6 @@ const DEFAULT_VARIATION_BINDINGS: Dictionary[String, String] = {
 ### Returns "PAUSED" if the tree is paused.
 func get_paused_string() -> String:
 	return "PAUSED" if get_tree().paused else ""
-
-## Returns a game mode string based on the integer given.[br]
-## [code]1 = "Story Mode"[/code][br]
-## [code]2 = "Freeplay"[/code][br]
-## [code]3 = "Charting"[/code][br]
-## Anything else will return [code]"Unknown"[/code]
-func get_mode_string(game_mode: int) -> String:
-	match game_mode:
-		0: return "Story Mode"
-		1: return "Freeplay"
-		2: return "Charting"
-		_: return "Unknown"
 
 ## Formats a float to a digital clock string, example: 1:10:25[br]
 func format_to_time(value: float, show_milliseconds: bool = false) -> String:

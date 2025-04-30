@@ -1,7 +1,5 @@
 extends Control
 
-signal on_close()
-
 const LISTS: Dictionary[String, PackedStringArray] = {
 	"default": ["Resume", "Restart", "Difficulty", "Options", "Exit"],
 }
@@ -31,7 +29,7 @@ func _ready() -> void:
 	var l: String = Global.format_to_time(Conductor.length)
 	progress_label.text = t + " " + l
 	
-	if Gameplay.current:
+	if Gameplay.current and Gameplay.game_mode == Gameplay.GameMode.FREEPLAY:
 		if "difficulties" in Gameplay.chart.parsed_values:
 			difficulties = Gameplay.chart.parsed_values.difficulties.duplicate()
 		level_label.text = Gameplay.current.song_name
@@ -104,7 +102,6 @@ func confirm_selection() -> void:
 			list = difficulties
 			reload_options()
 		"options":
-			on_close.emit()
 			can_control = false
 			var fuck: Control = load("uid://gulb1ge3va36").instantiate()
 			add_child(fuck)
@@ -122,8 +119,8 @@ func confirm_selection() -> void:
 					Gameplay.current.reload_hud()
 			can_control = true
 		"exit":
-			Gameplay.play_inst_outside()
-			Global.change_scene("uid://c5qnedjs8xhcw")
+			can_control = false
+			Gameplay.exit_to_menu()
 
 ## Changes the index of the selection cursor
 func change_selection(next: int = 0) -> void:
@@ -150,5 +147,4 @@ func reload_options() -> void:
 ## Closes the pause menu.
 func close() -> void:
 	can_control = false
-	on_close.emit()
 	self.queue_free()

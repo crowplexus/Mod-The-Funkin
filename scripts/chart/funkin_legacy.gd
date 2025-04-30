@@ -120,7 +120,6 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	chart.notes.sort_custom(NoteData.sort_by_time)
 	chart.timing_changes.sort_custom(SongTimeChange.sort_by_time)
 	chart.scheduled_events.sort_custom(TimedEvent.sort_by_time)
-	Conductor.timing_changes = chart.timing_changes.duplicate()
 	
 	return chart
 

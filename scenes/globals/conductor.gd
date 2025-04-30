@@ -27,7 +27,7 @@ var playhead: float = 0.0
 var bpm: float = 100.0:
 	set(new_bpm):
 		bpm = new_bpm
-		crotchet = 60.0 / bpm
+		crotchet = 60.0 / new_bpm
 ## Audio Playback Speed rate.
 var rate: float = 1.0:
 	set(new_rate):

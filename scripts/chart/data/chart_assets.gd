@@ -74,18 +74,21 @@ static func get_resource(chart: Chart, fallback: ChartAssets = Global.DEFAULT_CH
 			
 			if chart is FNFChart or chart is VSliceChart:
 				var vocal_index: int = 0
-				for i: String in ["/Voices-Player.ogg", "/Voices-Opponent.ogg", "/Voices.ogg"]:
+				var suffixes: Array[String] = ["-Player", "-Opponent", ""]
+				for i: String in suffixes:
 					if not i.contains("-") and fb.vocals.size() != 0: break # break if there's Player/Enemy separate vocals.
-					var push_vocal: bool = ResourceLoader.exists(audio_path + i)
+					var complete_path: String = audio_path + "/Voices" + i + ".ogg"
+					var push_vocal: bool = ResourceLoader.exists(complete_path)
 					if not push_vocal and vocal_index < 2:
 						var char_idx: int = vocal_index if vocal_index < 2 else -1
 						if char_idx != -1 and "characters" in chart.parsed_values:
-							i = i.replace("-Player", "-%s" % chart.parsed_values.characters[0]) \
-								.replace("-Opponent", "-%s" % chart.parsed_values.characters[1]) \
-								.replace("-DJ", "-%s" % chart.parsed_values.characters[2])
-							push_vocal = ResourceLoader.exists(audio_path + i)
+							var chars: Array = chart.parsed_values.characters # stupid safety checks.
+							for j: int in chars.size():
+								if j > suffixes.size(): continue
+								i = i.replace(suffixes[j], "-%s" % chars[j])
+							push_vocal = ResourceLoader.exists(complete_path)
 					# add vocal files (if possible)
-					if push_vocal: fb.vocals.append(load(audio_path + i))
+					if push_vocal: fb.vocals.append(load(complete_path))
 					vocal_index += 1
 			return fb
 	return load(path)

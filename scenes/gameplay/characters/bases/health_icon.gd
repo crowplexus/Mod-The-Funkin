@@ -13,4 +13,4 @@ class_name HealthIcon extends Resource
 
 ## Returns the current icon frame according to health.
 func get_frame(health: int) -> int:
-	return 1 if health <= 20 else 0
+	return (1 if health <= 20 else 0) if hframes > 1 else 0
