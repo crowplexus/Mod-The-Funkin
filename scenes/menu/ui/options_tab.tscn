@@ -180,6 +180,16 @@ description = "Changes the style of the HUD
 
 Won't work if the song forces the usage of a custom HUD."
 
+[node name="combo_stacking" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
+layout_mode = 2
+display_name = &"Combo Stacking"
+variable_name = &"combo_stacking"
+description = "Makes it so the judgements and combo will stack on top of themselves.
+
+Disable to only have a single sprite for each judgement and combo at a time.
+
+Doesn't do anything on [color=CYAN]Advanced[/color] HUD Style due to its simplistic nature."
+
 [node name="timer_style" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
 values = ["Hidden", "Time Left", "Time Elapsed", "Song Name", "Elapsed / Total"]

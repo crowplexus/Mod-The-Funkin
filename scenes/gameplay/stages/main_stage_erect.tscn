@@ -1,16 +1,16 @@
 [gd_scene load_steps=12 format=3 uid="uid://dkf8v0c0fdto5"]
 
 [ext_resource type="Script" uid="uid://cimqmlx3q2wuf" path="res://scenes/gameplay/stages/main_stage_erect.gd" id="1_tijkq"]
-[ext_resource type="Texture2D" uid="uid://4tonmtqr82ke" path="res://assets/game/backgrounds/default/erect/bg.png" id="2_1p6cj"]
-[ext_resource type="Texture2D" uid="uid://b4oec8rdkr8mh" path="res://assets/game/backgrounds/default/erect/backDark.png" id="2_tijkq"]
-[ext_resource type="Texture2D" uid="uid://c5a0j6uu5wlk6" path="res://assets/game/backgrounds/default/erect/brightLightSmall.png" id="3_2q84a"]
-[ext_resource type="Texture2D" uid="uid://b0bnktn52757n" path="res://assets/game/backgrounds/default/erect/server.png" id="3_oq5vh"]
-[ext_resource type="SpriteFrames" uid="uid://ksaev46v6fm1" path="res://assets/game/backgrounds/default/erect/crowd.res" id="4_1p6cj"]
-[ext_resource type="Texture2D" uid="uid://dp0cb34lulixr" path="res://assets/game/backgrounds/default/erect/lights.png" id="4_7xkvt"]
-[ext_resource type="Texture2D" uid="uid://ws41rk61l156" path="res://assets/game/backgrounds/default/erect/orangeLight.png" id="4_diq6q"]
-[ext_resource type="Texture2D" uid="uid://dlob3yv803142" path="res://assets/game/backgrounds/default/erect/lightgreen.png" id="5_tijkq"]
-[ext_resource type="Texture2D" uid="uid://cusr1spyc55qn" path="res://assets/game/backgrounds/default/erect/lightred.png" id="6_4mgxm"]
-[ext_resource type="Texture2D" uid="uid://3v7dbwhgfngd" path="res://assets/game/backgrounds/default/erect/lightAbove.png" id="7_yq0t4"]
+[ext_resource type="Texture2D" uid="uid://4tonmtqr82ke" path="res://assets/game/backgrounds/default/erect/erect/bg.png" id="2_1p6cj"]
+[ext_resource type="Texture2D" uid="uid://b4oec8rdkr8mh" path="res://assets/game/backgrounds/default/erect/erect/backDark.png" id="2_tijkq"]
+[ext_resource type="Texture2D" uid="uid://c5a0j6uu5wlk6" path="res://assets/game/backgrounds/default/erect/erect/brightLightSmall.png" id="3_2q84a"]
+[ext_resource type="Texture2D" uid="uid://b0bnktn52757n" path="res://assets/game/backgrounds/default/erect/erect/server.png" id="3_oq5vh"]
+[ext_resource type="SpriteFrames" uid="uid://ksaev46v6fm1" path="res://assets/game/backgrounds/default/erect/erect/crowd.res" id="4_1p6cj"]
+[ext_resource type="Texture2D" uid="uid://dp0cb34lulixr" path="res://assets/game/backgrounds/default/erect/erect/lights.png" id="4_7xkvt"]
+[ext_resource type="Texture2D" uid="uid://ws41rk61l156" path="res://assets/game/backgrounds/default/erect/erect/orangeLight.png" id="4_diq6q"]
+[ext_resource type="Texture2D" uid="uid://dlob3yv803142" path="res://assets/game/backgrounds/default/erect/erect/lightgreen.png" id="5_tijkq"]
+[ext_resource type="Texture2D" uid="uid://cusr1spyc55qn" path="res://assets/game/backgrounds/default/erect/erect/lightred.png" id="6_4mgxm"]
+[ext_resource type="Texture2D" uid="uid://3v7dbwhgfngd" path="res://assets/game/backgrounds/default/erect/erect/lightAbove.png" id="7_yq0t4"]
 
 [node name="stage_week1_erect" type="Node2D"]
 script = ExtResource("1_tijkq")
@@ -92,13 +92,16 @@ sprite_frames = ExtResource("4_1p6cj")
 animation = &"Symbol 2 instance 1"
 
 [node name="dj" type="Marker2D" parent="."]
+modulate = Color(0.937255, 0.74902, 0.854902, 1)
 z_index = 100
 position = Vector2(637, 217)
 
 [node name="enemy" type="Marker2D" parent="."]
+modulate = Color(0.835294, 0.835294, 0.827451, 1)
 z_index = 200
 position = Vector2(328, 258)
 
 [node name="player" type="Marker2D" parent="."]
+modulate = Color(0.780392, 0.772549, 0.788235, 1)
 z_index = 300
 position = Vector2(977.5, 425)

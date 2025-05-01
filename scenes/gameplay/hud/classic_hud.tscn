@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://br6ornbfmuj7l"]
+[gd_scene load_steps=12 format=3 uid="uid://br6ornbfmuj7l"]
 
 [ext_resource type="Script" uid="uid://cj82y7wjxiftj" path="res://scenes/gameplay/hud/classic_hud.gd" id="1_igncb"]
 [ext_resource type="StyleBox" uid="uid://bb871j4np30b4" path="res://scenes/gameplay/hud/styleboxes/health_bar_left.tres" id="2_2jnvp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d3x8spahvh1je" path="res://assets/game/characters/face/icon.png" id="4_nfsnc"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="5_5abol"]
 [ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/gameplay/hud/combo_group.gd" id="6_xq3v3"]
+[ext_resource type="Script" uid="uid://cku7st80n16gp" path="res://scenes/gameplay/hud/physics_sprite_2d.gd" id="7_wa1w5"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="8_7it1m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it28e"]
@@ -116,22 +117,32 @@ scale = Vector2(0.8, 0.8)
 script = ExtResource("6_xq3v3")
 
 [node name="judgement" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 
 [node name="combo_digit0" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 
 [node name="combo_digit1" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 
 [node name="combo_digit2" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 
 [node name="combo_digit3" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 

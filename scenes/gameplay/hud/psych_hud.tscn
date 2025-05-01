@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://chxabingjikr6"]
+[gd_scene load_steps=14 format=3 uid="uid://chxabingjikr6"]
 
 [ext_resource type="Script" uid="uid://dnsm2qjmkir2q" path="res://scenes/gameplay/hud/psych_hud.gd" id="1_fpm36"]
 [ext_resource type="StyleBox" uid="uid://bb871j4np30b4" path="res://scenes/gameplay/hud/styleboxes/health_bar_left.tres" id="2_lbgla"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d3x8spahvh1je" path="res://assets/game/characters/face/icon.png" id="4_lal55"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="5_wtbdw"]
 [ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/gameplay/hud/combo_group.gd" id="6_a4fgs"]
+[ext_resource type="Script" uid="uid://cku7st80n16gp" path="res://scenes/gameplay/hud/physics_sprite_2d.gd" id="7_fpm36"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="8_6nv5g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it28e"]
@@ -177,18 +178,26 @@ scale = Vector2(0.8, 0.8)
 script = ExtResource("6_a4fgs")
 
 [node name="judgement" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_fpm36")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 
 [node name="combo_digit0" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_fpm36")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 
 [node name="combo_digit1" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_fpm36")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 
 [node name="combo_digit2" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_fpm36")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 

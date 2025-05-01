@@ -12,9 +12,8 @@ const VELOCITY: String = "velocity"
 @export var judge_scale: Vector2 = Vector2.ZERO
 ## Scale of the combo sprites, leave it as [code]Vector2.ZERO[/code] for it to depend on the chart assets.
 @export var combo_scale: Vector2 = Vector2.ZERO
-
-# TODO: add combo stacking
-#@export var combo_stacking: bool = true
+## [see]Settings.combo_stacking[/see]
+@export var combo_stacking: bool = Global.settings.combo_stacking
 
 var display_digits: Array[Node2D] = []
 var display_tweens: Array[Tween] = []
@@ -23,14 +22,11 @@ var combo_digits: int = 3
 var assets: ChartAssets
 var settings: Settings
 
-func _calculate_velocity(velocity: Vector2, accel: Vector2, delta: float) -> Vector2:
-	return velocity + accel * delta
-
 func _ready() -> void:
 	if not has_node("judgement"):
-		add_child(Sprite2D.new()) # Judgement
-		get_child(0).set_meta(VELOCITY, Vector2.ZERO)
-		get_child(0).set_meta(ACCELERATION, Vector2.ZERO)
+		add_child(PhysicsSprite2D.new()) # Judgement
+		get_child(0).acceleration = Vector2.ZERO
+		get_child(0).velocity = Vector2.ZERO
 		get_child(0).name = "judgement"
 	if Gameplay.current:
 		if Gameplay.current.chart:
@@ -49,35 +45,38 @@ func _ready() -> void:
 		settings = Gameplay.current.local_settings
 	if not settings: settings = Global.settings
 
-func _process(delta: float) -> void:
-	for i: Sprite2D in get_children():
-		if not i.visible or i.get_meta(VELOCITY) == null or i.get_meta(ACCELERATION) == null:
-			continue
-		var veloc: Vector2 = i.get_meta(VELOCITY, Vector2.ZERO)
-		var accel: Vector2 = i.get_meta(ACCELERATION, Vector2.ZERO)
-		var vdt: Vector2 = 0.5 * _calculate_velocity(veloc, accel, delta) - veloc
-		i.position += (vdt * delta) * -1
-
 func display_judgement(judge: String) -> void:
-	var judgement: Sprite2D = get_child(0)
+	var judgement: PhysicsSprite2D
+	if combo_stacking:
+		judgement = get_child(0).duplicate()
+		judgement.visible = false
+		add_child(judgement)
+	else:
+		judgement = get_child(0)
 	judgement.position = Vector2.ZERO
-	judgement.self_modulate.a = 1.0
+	judgement.modulate.a = 1.0
 	judgement.scale = judge_scale #* randf_range(0.9, 1.1)
 	judgement.texture = assets.judgement_assets[judge]
 	judgement.position.y = -50
 	if not settings.simplify_popups:
-		judgement.set_meta(ACCELERATION, Vector2(0, 500))
-		judgement.set_meta(VELOCITY, Vector2(randi_range(0, 10), randi_range(140, 175)))
+		# make sure it doesn't become extremely fast every time you hit a note without combo stacking.
+		if not combo_stacking: judgement.velocity = judgement.initial_velocity
+		judgement.velocity.y += randi_range(140, 175)
+		judgement.velocity.x -= randi_range(0, 10)
+		judgement.acceleration.y = 550
 	judgement.visible = true
-	if judgement_tween: judgement_tween.stop()
-	judgement_tween = create_tween().set_parallel(true)
+	var tween: Tween
+	if not combo_stacking:
+		tween = judgement_tween
+		if tween: tween.stop()
+	tween = create_tween().set_parallel(true)
+	tween.finished.connect(judgement.queue_free if combo_stacking else judgement.hide)
 	if judgement.scale != judge_scale:
-		judgement_tween.tween_property(judgement, "scale", judge_scale, 0.2)
-	judgement_tween.tween_property(judgement, "self_modulate:a", 0.0, 0.4).set_delay(Conductor.crotchet * 0.1)
-	judgement_tween.finished.connect(judgement.hide)
+		tween.tween_property(judgement, "scale", judge_scale, 0.2)
+	tween.tween_property(judgement, "modulate:a", 0.0, 0.4).set_delay(Conductor.crotchet * 0.1)
 
 func display_combo(amnt: int = 0) -> void:
-	hide_digits()
+	#hide_digits()
 	var combo: String = str(amnt)
 	var digits: Array = combo.pad_zeros(combo_digits).split("")
 	var offset: float = digits.size() - 3
@@ -85,7 +84,7 @@ func display_combo(amnt: int = 0) -> void:
 		if i > display_digits.size() - 1:
 			display_tweens.append(null)
 			setup_digit(i)
-		var num_score: Sprite2D = display_digits[i]
+		var num_score: PhysicsSprite2D = get_digit(i)
 		num_score.frame = int(digits[i])
 		num_score.position = Vector2(
 			(size.x * 0.5) - (90 * combo_scale.x) * (offset - i) - (combo_digits * 10),
@@ -93,39 +92,53 @@ func display_combo(amnt: int = 0) -> void:
 		)
 		num_score.scale = combo_scale
 		#num_score.scale.x *= 1.5
-		num_score.self_modulate.a = 1.0
+		num_score.modulate.a = 1.0
 		if not settings.simplify_popups:
-			num_score.set_meta(ACCELERATION, Vector2(0, randi_range(250, 300)))
-			num_score.set_meta(VELOCITY, Vector2(randi_range(-5, 5), randi_range(130, 150)))
+			if not combo_stacking: num_score.velocity.x = num_score.initial_velocity.x
+			num_score.acceleration.y = randi_range(200, 300)
+			num_score.velocity.y += randi_range(140, 160)
+			num_score.velocity.x = randf_range(-5, 5)
 		num_score.show()
-		display_tweens[i] = create_tween().set_parallel(true).bind_node(num_score)
+		var tween: Tween
+		if not combo_stacking:
+			tween = display_tweens[i]
+			if display_tweens[i]: display_tweens[i].kill()
+		tween = create_tween().set_parallel(true)
+		tween.finished.connect(num_score.queue_free if combo_stacking else num_score.hide)
 		if num_score.scale != combo_scale:
-			display_tweens[i].tween_property(num_score, "scale", combo_scale, 0.1)
-		display_tweens[i].tween_property(num_score, "self_modulate:a", 0.0, 0.45).set_delay(Conductor.crotchet * 0.5)
-		display_tweens[i].finished.connect(num_score.hide)
+			tween.tween_property(num_score, "scale", combo_scale, 0.1)
+		tween.tween_property(num_score, "modulate:a", 0.0, 0.45).set_delay(Conductor.crotchet * 0.5)
 
-func compute_velocity(vel: float, accel: float, delta: float) -> float:
-	return vel + accel * (0.0 if accel <= 0.0 else delta)
-
-func is_moving(node: Node) -> bool:
-	return node.get_meta(VELOCITY, Vector2.ZERO) != Vector2.ZERO or \
-		node.get_meta(ACCELERATION, Vector2.ZERO) != Vector2.ZERO
-
-func setup_digit(digit: int) -> Sprite2D:
+func setup_digit(digit: int) -> PhysicsSprite2D:
 	var digit_name: String = "combo_digit%s" % digit
-	var sprite: Sprite2D = get_node(digit_name) if has_node(digit_name) else Sprite2D.new()
+	var is_there: bool = has_node(digit_name)
+	var sprite: PhysicsSprite2D
+	if combo_stacking:
+		if is_there and get_node(digit_name).visible == false:
+			sprite = get_node(digit_name) as PhysicsSprite2D
+		else:
+			sprite = PhysicsSprite2D.new()
+	else:
+		if is_there: sprite = get_node(digit_name) as PhysicsSprite2D
+		else: sprite = PhysicsSprite2D.new()
 	sprite.modulate.a = 1.0
 	if not sprite.texture:
 		sprite.texture = assets.combo_numbers.duplicate()
 		sprite.hframes = 10
 	sprite.hide()
 	display_digits[digit] = sprite
-	if not has_node(digit_name): add_child(sprite)
+	if not has_node(digit_name) or combo_stacking:
+		add_child(sprite)
 	return sprite
+
+func get_digit(digit: int) -> PhysicsSprite2D:
+	if not combo_stacking:
+		return display_digits[digit]
+	return setup_digit(digit)
 
 func hide_digits() -> void:
 	for i: Tween in display_tweens: if i: i.stop()
-	for i: Node2D in display_digits: if i:
-		i.set_meta(VELOCITY, Vector2.ZERO)
-		i.set_meta(ACCELERATION, Vector2.ZERO)
+	for i: PhysicsSprite2D in display_digits: if i:
+		i.acceleration = Vector2.ZERO
+		i.velocity = Vector2.ZERO
 		i.hide()

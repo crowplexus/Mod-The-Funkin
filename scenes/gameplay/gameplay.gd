@@ -356,7 +356,9 @@ func load_characters() -> void:
 			if stage_bg.has_node(ii):
 				var new_position: Marker2D = stage_bg.get_node(ii)
 				var actor_idx: int = new_position.get_index()
+				new_actor.self_modulate = new_position.self_modulate
 				new_actor.position = new_position.position
+				new_actor.modulate = new_position.modulate
 				new_actor.z_index = new_position.z_index
 				stage_bg.remove_child(new_position)
 				stage_bg.add_child(new_actor)

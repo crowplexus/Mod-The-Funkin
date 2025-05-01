@@ -29,9 +29,10 @@ func _ready() -> void:
 	var l: String = Global.format_to_time(Conductor.length)
 	progress_label.text = t + " " + l
 	
-	if Gameplay.current and Gameplay.game_mode == Gameplay.GameMode.FREEPLAY:
-		if "difficulties" in Gameplay.chart.parsed_values:
+	if Gameplay.current:
+		if "difficulties" in Gameplay.chart.parsed_values and Gameplay.game_mode == Gameplay.GameMode.FREEPLAY:
 			difficulties = Gameplay.chart.parsed_values.difficulties.duplicate()
+		
 		level_label.text = Gameplay.current.song_name
 		if not Gameplay.chart.artist.is_empty():
 			level_label.text += " — %s" % Gameplay.chart.artist
@@ -40,6 +41,7 @@ func _ready() -> void:
 		diffc_label.text = tr_diff if not tr_diff.begins_with("difficulty_") else difficulty
 		if not Gameplay.chart.charter.is_empty():
 			diffc_label.text += " — Chart: %s" % Gameplay.chart.charter
+		
 	if difficulties.size() > 1 and not difficulties.has("BACK"):
 		difficulties.append("BACK")
 	load_default_list()

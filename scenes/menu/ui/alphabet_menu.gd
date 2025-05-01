@@ -27,7 +27,7 @@ func scroll_item(item: Control) -> void:
 	var index: int = item.get_index()
 	var pos: Vector2 = start_positions[index] + offset
 	var selected: int = (index - scroll_offset)
-	var fscale: Vector2 = item.scale * scale
+	#var fscale: Vector2 = item.scale * scale
 	var height: float = (item as Label).get_line_height()
 	item.position = item.position.lerp(Vector2(
 		pos.x + (selected * distance.x) * int(change_x),

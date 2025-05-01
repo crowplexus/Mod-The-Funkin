@@ -34,16 +34,20 @@ var scroll: int = 0
 ## Adaptive adjusts the framerate if it's high, or if it's dropping, essentially balacing the drawbacks of VSync with the benefits.
 @export_enum("Capped:0", "Unlimited:1", "Mailbox:2", "Adaptive:3")
 var vsync_mode: int = 0
+
 ## Defines the intensity of the Camera Bump.
 @export var bump_intensity: int = 100:
 	set(new_bi): bump_intensity = clampi(new_bi, 0, 100)
 ## Defines the intensity of the HUD Bump.
 @export var hud_bump_intensity: int = 100:
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
-	
+
 ## Select a HUD style, or leave "Default" to let the songs decide.
 @export_enum("Default", "Advanced", "Classic", "Psych")
 var hud_style: String = "Default"
+## Makes it so the judgements and combo will stack on top of themselves.[br]
+## Disable to only have a single sprite for each judgement and combo at a time.
+@export var combo_stacking: bool = true
 ## Changes the UI elements and dialogue language.
 @export_enum("en")
 var language: String = "auto": # "auto" means get OS locale
