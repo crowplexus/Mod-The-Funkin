@@ -86,7 +86,7 @@ static func get_resource(chart: Chart, fallback: ChartAssets = Global.DEFAULT_CH
 			fb.load_song_files(chart)
 			return fb
 	
-	var existing_resource_file: ChartAssets = load(path)
+	var existing_resource_file: ChartAssets = load(path).duplicate()
 	existing_resource_file.load_song_files(chart)
 	return existing_resource_file
 

@@ -32,6 +32,7 @@ static var playlist: Array[Chart] = []
 static var current_song: int = 0
 
 static func set_playlist(folders: Array[String] = ["test"], difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> void:
+	chart = null
 	clear_playlist()
 	# in case you fuck up.
 	if folders.is_empty() or folders == [""] or folders == ["null"]:
