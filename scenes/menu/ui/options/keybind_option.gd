@@ -1,5 +1,12 @@
 @tool extends OptionBar
 
+const INSTRUCTIONS: String = "Press TAB while changing to switch to your alternative keybind.
+
+Press BACKSPACE to delete the key.
+
+Press SPACE, ENTER or ESCAPE to stop binding"
+const BIG_BAR: String = "————————————————————————————————————————"
+
 @onready var primary_keybind: Label = $"value_group/pri"
 @onready var secondary_keybind: Label = $"value_group/sec"
 @onready var bind_labels: Array[Label] = [primary_keybind, secondary_keybind]
@@ -10,6 +17,7 @@ var bind_selected: int = 0
 
 func _ready() -> void:
 	reset_binds()
+	description = INSTRUCTIONS + "\n\n" + BIG_BAR + "\n\n" + description
 	super()
 
 func reset_binds() -> void:

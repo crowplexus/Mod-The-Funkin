@@ -104,85 +104,43 @@ In most other rhythm games, this is >NOT< an option and instead is built-in, but
 layout_mode = 2
 display_name = &"Note Left"
 variable_name = &"note_left"
-description = "Press TAB while changing to switch to your alternative keybind.
-
-Press BACKSPACE to delete the key.
-
-Press SPACE, ENTER or ESCAPE to stop binding.
-
-(No description)."
+description = "(No description)."
 
 [node name="key_note_down" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
 layout_mode = 2
 display_name = &"Note Down"
 variable_name = &"note_down"
-description = "Press TAB while changing to switch to your alternative keybind.
-
-Press BACKSPACE to delete the key.
-
-Press SPACE, ENTER or ESCAPE to stop binding.
-
-(No description)."
+description = "(No description)."
 
 [node name="key_note_up" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
 layout_mode = 2
 display_name = &"Note Up"
 variable_name = &"note_up"
-description = "Press TAB while changing to switch to your alternative keybind.
-
-Press BACKSPACE to delete the key.
-
-Press SPACE, ENTER or ESCAPE to stop binding.
-
-(No description)."
+description = "(No description)."
 
 [node name="key_note_right" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
 layout_mode = 2
 display_name = &"Note Right"
 variable_name = &"note_right"
-description = "Press TAB while changing to switch to your alternative keybind.
-
-Press BACKSPACE to delete the key.
-
-Press SPACE, ENTER or ESCAPE to stop binding.
-
-(No description)."
+description = "(No description)."
 
 [node name="key_volume_up" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
 layout_mode = 2
 display_name = &"Volume Up"
 variable_name = &"volume_up"
-description = "Press TAB while changing to switch to your alternative keybind.
-
-Press BACKSPACE to delete the key.
-
-Press SPACE, ENTER or ESCAPE to stop binding.
-
-(No description)."
+description = "(No description)."
 
 [node name="key_volume_down" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
 layout_mode = 2
 display_name = &"Volume Down"
 variable_name = &"volume_down"
-description = "Press TAB while changing to switch to your alternative keybind.
-
-Press BACKSPACE to delete the key.
-
-Press SPACE, ENTER or ESCAPE to stop binding.
-
-(No description)."
+description = "(No description)."
 
 [node name="key_volume_mute" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
 layout_mode = 2
 display_name = &"Volume Mute"
 variable_name = &"volume_mute"
-description = "Press TAB while changing to switch to your alternative keybind.
-
-Press BACKSPACE to delete the key.
-
-Press SPACE, ENTER or ESCAPE to stop binding.
-
-(No description)."
+description = "(No description)."
 
 [node name="visuals" type="BoxContainer" parent="tabs"]
 visible = false
