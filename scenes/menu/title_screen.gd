@@ -118,5 +118,6 @@ func get_random_text() -> PackedStringArray:
 		while rt.size() < 1: rt = lines[randi_range(0, lines.size()-1)].split("--")
 	else:
 		print_debug("file not found")
+	if rt.size() < 1:
 		rt = "swagshit--moneymoney".split("--")
 	return rt
