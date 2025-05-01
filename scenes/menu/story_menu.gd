@@ -144,7 +144,7 @@ func change_bg_color() -> void:
 	yellow_tween.tween_property(yellow, "color", current_level.level_color, 0.6)
 
 func update_tracklist() -> void:
-	tracks.text = "TRACKS\n\n"
+	tracks.text = "\n\n"
 	for i: int in current_level.list.size():
 		tracks.text += current_level.list[i].name
 		if i < current_level.list.size():

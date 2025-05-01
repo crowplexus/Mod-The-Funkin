@@ -1,6 +1,5 @@
 [gd_scene load_steps=21 format=3 uid="uid://dakw6tmvuvou7"]
 
-[ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="1_ms1qj"]
 [ext_resource type="Script" uid="uid://ct3dvueif5qg2" path="res://scenes/menu/story_menu.gd" id="1_yrk5c"]
 [ext_resource type="Script" uid="uid://cb8wmjygxeh2h" path="res://scripts/song_playlist.gd" id="2_t50bv"]
 [ext_resource type="Script" uid="uid://cfh5aidjsi5bg" path="res://scripts/song_item.gd" id="3_3ai1w"]
@@ -9,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dugna1yxfroq5" path="res://assets/ui/menu/story/titles/week1.png" id="5_j68y8"]
 [ext_resource type="Texture2D" uid="uid://bym6lttxb8cbe" path="res://assets/ui/menu/story/arrows.png" id="8_bittg"]
 [ext_resource type="Texture2D" uid="uid://br7jrnns00i1b" path="res://assets/ui/menu/story/difficulties/normal.png" id="8_lfwej"]
+[ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="10_0n4na"]
 
 [sub_resource type="Resource" id="Resource_j68y8"]
 script = ExtResource("3_3ai1w")
@@ -22,7 +22,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_bittg"]
 script = ExtResource("2_t50bv")
 list = Array[ExtResource("3_3ai1w")]([SubResource("Resource_j68y8")])
-tagline = &"OOOO, Ö, FRIDAY NIGHT FUNKIN!"
+tagline = &"CHICK\'S GOT RHYTHM"
 campaign_difficulties = Array[String](["easy", "normal", "hard"])
 title_texture = ExtResource("4_j68y8")
 visible = 0
@@ -60,7 +60,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_fig63"]
 script = ExtResource("2_t50bv")
 list = Array[ExtResource("3_3ai1w")]([SubResource("Resource_85cfy"), SubResource("Resource_8e1yi"), SubResource("Resource_37etr")])
-tagline = &"OWN THAT FRAUD!"
+tagline = &"EX-ROCKSTAR"
 campaign_difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
 title_texture = ExtResource("5_j68y8")
 visible = 0
@@ -98,7 +98,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_lfwej"]
 script = ExtResource("2_t50bv")
 list = Array[ExtResource("3_3ai1w")]([SubResource("Resource_t50bv"), SubResource("Resource_3ai1w"), SubResource("Resource_0n4na")])
-tagline = &"WHY YOU SO MEAN, MOMMY?"
+tagline = &"KILLER QUEEN"
 campaign_difficulties = Array[String](["easy", "normal", "hard"])
 title_texture = ExtResource("5_bittg")
 visible = 0
@@ -107,7 +107,7 @@ level_color = Color(0.976471, 0.407843, 0.584314, 1)
 metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
 
 [sub_resource type="LabelSettings" id="LabelSettings_ml01f"]
-font = ExtResource("1_ms1qj")
+font = ExtResource("10_0n4na")
 font_size = 32
 
 [node name="story_menu" type="Node2D"]
@@ -147,10 +147,11 @@ offset_right = -8.0
 offset_bottom = -665.0
 grow_horizontal = 0
 grow_vertical = 2
+scale = Vector2(0.995816, 0.983886)
 theme_override_colors/font_color = Color(1, 1, 1, 0.701961)
-theme_override_fonts/font = ExtResource("1_ms1qj")
+theme_override_fonts/font = ExtResource("10_0n4na")
 theme_override_font_sizes/font_size = 32
-text = "Daddy Dearest"
+text = "Story Tagline"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -213,19 +214,36 @@ vertical = true
 layout_mode = 2
 stretch_mode = 5
 
+[node name="tracks_title" type="Label" parent="level_ui"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 31.0
+offset_top = 32.0
+offset_right = 346.0
+offset_bottom = -195.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.898039, 0.341176, 0.466667, 1)
+theme_override_fonts/font = ExtResource("10_0n4na")
+theme_override_font_sizes/font_size = 45
+text = "TRACKS"
+horizontal_alignment = 1
+metadata/_edit_lock_ = true
+
 [node name="tracks" type="Label" parent="level_ui"]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_left = 31.0
-offset_top = 40.0
+offset_top = 35.0
 offset_right = 346.0
-offset_bottom = -40.0
+offset_bottom = -20.0
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.898039, 0.341176, 0.466667, 1)
-theme_override_fonts/font = ExtResource("1_ms1qj")
-theme_override_font_sizes/font_size = 32
-text = "TRACKS
+theme_override_fonts/font = ExtResource("10_0n4na")
+theme_override_font_sizes/font_size = 24
+text = "
 
 N/A"
 horizontal_alignment = 1
+metadata/_edit_lock_ = true

@@ -66,7 +66,7 @@ func update_overlay() -> void:
 		fps_label.text = "Framerate: %.0f" % fps_count
 	if not rid_once:
 		if OS.is_debug_build(): fps_label.text += "\nF1 TO SHOW MORE | "
-		fps_label.text += "F3 TO HIDE\n(F3 will hide this hint forever!)"
+		fps_label.text += "F3 TO HIDE\n(F3 will hide this hint until the next session!)"
 
 func update_master_volume(bhm: int = 0) -> void:
 	Global.settings.master_volume += bhm
