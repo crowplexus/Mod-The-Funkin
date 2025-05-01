@@ -4,7 +4,7 @@
 @onready var secondary_keybind: Label = $"value_group/sec"
 @onready var bind_labels: Array[Label] = [primary_keybind, secondary_keybind]
 
-var prohibited_keys: Array[Key] = [KEY_ENTER, KEY_BACKSPACE, KEY_TAB]
+var prohibited_keys: Array[Key] = [KEY_ESCAPE, KEY_ENTER, KEY_BACKSPACE, KEY_TAB]
 var current_binds: PackedStringArray = []
 var bind_selected: int = 0
 
