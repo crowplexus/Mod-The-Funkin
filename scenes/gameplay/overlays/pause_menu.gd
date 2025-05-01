@@ -81,10 +81,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				reload_options()
 			else:
 				var folder: StringName = Gameplay.current.chart.parsed_values.song_name
-				Gameplay.chart = Chart.detect_and_parse(folder, selected_diff)
 				Gameplay.chart.parsed_values.difficulties = difficulties
-				close()
+				Gameplay.set_playlist([folder, selected_diff])
 				Global.reload_scene()
+				close()
 		else:
 			confirm_selection()
 

@@ -8,7 +8,6 @@ const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a R
 @export var songs: SongPlaylist = preload("uid://xqeend23c3cf").duplicate()
 
 @onready var bg: Sprite2D = $"background"
-
 @onready var score_text: Label = $"ui/score_text"
 @onready var song_menu: Control = $"song_menu"
 @onready var diff_text: Label = $"ui/score_text/diff_text"
