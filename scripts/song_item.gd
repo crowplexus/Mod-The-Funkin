@@ -6,5 +6,8 @@ class_name SongItem extends Resource
 @export var name: StringName = &"Unknown" ## Folder used to locate the song (for loading charts from).
 @export var folder: String = "test" ## Song Difficulties, used in Freeplay.
 @export var difficulties: PackedStringArray = ["easy", Global.DEFAULT_DIFFICULTY, "hard"] ## List to display this song in, used in Freeplay.
-@export var show_in_campaign: bool = true ## Toggles display the song in Campaign Mode.
-@export var shown_in_freeplay: bool = true ## Toggle displaying the song in Freeplay.
+## Defines how should the song be displayed.[br]
+## Visible: 0 -- Always | Hidden: 1 -- Never[br]
+## Locked: 2 -- When beaten in Story Mode.[br]The other 2 are self-explanatory.
+@export_enum("Visible:0", "Hidden:1", "Locked:2", "Hidden in Story:3", "Hidden in Freeplay:4")
+var visible: int = 0

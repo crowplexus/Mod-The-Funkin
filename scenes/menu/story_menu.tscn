@@ -1,111 +1,11 @@
-[gd_scene load_steps=22 format=3 uid="uid://dakw6tmvuvou7"]
+[gd_scene load_steps=8 format=3 uid="uid://dakw6tmvuvou7"]
 
 [ext_resource type="Script" uid="uid://ct3dvueif5qg2" path="res://scenes/menu/story_menu.gd" id="1_yrk5c"]
-[ext_resource type="Script" uid="uid://cb8wmjygxeh2h" path="res://scripts/song_playlist.gd" id="2_t50bv"]
-[ext_resource type="Script" uid="uid://cfh5aidjsi5bg" path="res://scripts/song_item.gd" id="3_3ai1w"]
-[ext_resource type="Texture2D" uid="uid://b5vla1a57pfbi" path="res://assets/ui/menu/story/titles/tutorial.png" id="4_j68y8"]
-[ext_resource type="Texture2D" uid="uid://cx8f04ddtvcfg" path="res://assets/ui/menu/story/titles/week4.png" id="5_bittg"]
-[ext_resource type="Texture2D" uid="uid://dugna1yxfroq5" path="res://assets/ui/menu/story/titles/week1.png" id="5_j68y8"]
+[ext_resource type="Resource" uid="uid://c4s0d4u5i34m3" path="res://assets/resources/level_list.tres" id="2_3ai1w"]
 [ext_resource type="Texture2D" uid="uid://bym6lttxb8cbe" path="res://assets/ui/menu/story/arrows.png" id="8_bittg"]
 [ext_resource type="Texture2D" uid="uid://br7jrnns00i1b" path="res://assets/ui/menu/story/difficulties/normal.png" id="8_lfwej"]
 [ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="10_0n4na"]
 [ext_resource type="LabelSettings" uid="uid://ckiqm8178ehbn" path="res://assets/ui/fonts/alphabet_font_bold.tres" id="10_85cfy"]
-
-[sub_resource type="Resource" id="Resource_j68y8"]
-script = ExtResource("3_3ai1w")
-name = &"Tutorial"
-folder = "tutorial"
-difficulties = ["easy", "normal", "hard"]
-show_in_campaign = true
-shown_in_freeplay = true
-metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
-
-[sub_resource type="Resource" id="Resource_bittg"]
-script = ExtResource("2_t50bv")
-list = Array[ExtResource("3_3ai1w")]([SubResource("Resource_j68y8")])
-tagline = &"CHICK\'S GOT RHYTHM"
-campaign_difficulties = Array[String](["easy", "normal", "hard"])
-title_texture = ExtResource("4_j68y8")
-visible = 0
-lock_type = 0
-level_color = Color(0.976, 0.812, 0.318, 1)
-metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
-
-[sub_resource type="Resource" id="Resource_85cfy"]
-script = ExtResource("3_3ai1w")
-name = &"Bopeebo"
-folder = "bopeebo"
-difficulties = ["easy", "normal", "hard"]
-show_in_campaign = true
-shown_in_freeplay = true
-metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
-
-[sub_resource type="Resource" id="Resource_8e1yi"]
-script = ExtResource("3_3ai1w")
-name = &"Fresh"
-folder = "fresh"
-difficulties = ["easy", "normal", "hard"]
-show_in_campaign = true
-shown_in_freeplay = true
-metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
-
-[sub_resource type="Resource" id="Resource_37etr"]
-script = ExtResource("3_3ai1w")
-name = &"DadBattle"
-folder = "dadbattle"
-difficulties = ["easy", "normal", "hard"]
-show_in_campaign = true
-shown_in_freeplay = true
-metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
-
-[sub_resource type="Resource" id="Resource_fig63"]
-script = ExtResource("2_t50bv")
-list = Array[ExtResource("3_3ai1w")]([SubResource("Resource_85cfy"), SubResource("Resource_8e1yi"), SubResource("Resource_37etr")])
-tagline = &"EX-ROCKSTAR"
-campaign_difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
-title_texture = ExtResource("5_j68y8")
-visible = 0
-lock_type = 0
-level_color = Color(0.976, 0.812, 0.318, 1)
-metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
-
-[sub_resource type="Resource" id="Resource_t50bv"]
-script = ExtResource("3_3ai1w")
-name = &"Satin-Panties"
-folder = "satin-panties"
-difficulties = ["easy", "normal", "hard"]
-show_in_campaign = true
-shown_in_freeplay = true
-metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
-
-[sub_resource type="Resource" id="Resource_3ai1w"]
-script = ExtResource("3_3ai1w")
-name = &"High"
-folder = "high"
-difficulties = ["easy", "normal", "hard"]
-show_in_campaign = true
-shown_in_freeplay = true
-metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
-
-[sub_resource type="Resource" id="Resource_0n4na"]
-script = ExtResource("3_3ai1w")
-name = &"M.I.L.F"
-folder = "milf"
-difficulties = ["easy", "normal", "hard"]
-show_in_campaign = true
-shown_in_freeplay = true
-metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
-
-[sub_resource type="Resource" id="Resource_lfwej"]
-script = ExtResource("2_t50bv")
-list = Array[ExtResource("3_3ai1w")]([SubResource("Resource_t50bv"), SubResource("Resource_3ai1w"), SubResource("Resource_0n4na")])
-tagline = &"KILLER QUEEN"
-campaign_difficulties = Array[String](["easy", "normal", "hard"])
-title_texture = ExtResource("5_bittg")
-visible = 0
-lock_type = 0
-level_color = Color(0.976471, 0.407843, 0.584314, 1)
-metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
 
 [sub_resource type="LabelSettings" id="LabelSettings_ml01f"]
 font = ExtResource("10_0n4na")
@@ -113,7 +13,7 @@ font_size = 32
 
 [node name="story_menu" type="Node2D"]
 script = ExtResource("1_yrk5c")
-levels = Array[ExtResource("2_t50bv")]([SubResource("Resource_bittg"), SubResource("Resource_fig63"), SubResource("Resource_lfwej")])
+levels = ExtResource("2_3ai1w")
 
 [node name="black" type="ColorRect" parent="."]
 anchors_preset = 15

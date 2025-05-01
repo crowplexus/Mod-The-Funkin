@@ -119,7 +119,7 @@ func reload_controls() ->  void:
 		for i: String in actions:
 			var new_action: InputEventKey = InputEventKey.new()
 			new_action.set_keycode(OS.find_keycode_from_string(i.to_lower()))
-			var kcd: Key = OS.find_keycode_from_string(i.to_lower())
+			#var kcd: Key = OS.find_keycode_from_string(i.to_lower())
 			#print_debug(action, " set to ", OS.get_keycode_string(kcd))
 			InputMap.action_add_event(action, new_action)
 

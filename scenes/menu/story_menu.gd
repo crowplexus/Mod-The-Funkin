@@ -9,7 +9,7 @@ extends Node2D
 @onready var difficulty_sprite: Sprite2D = $"level_ui/difficulty"
 @onready var right_arrow_sprite: Sprite2D = $level_ui/"difficulty/arrow_r"
 
-@export var levels: Array[SongPlaylist] = []
+@export var levels: PlaylistArray
 var title_positions: Array[Vector2] = []
 var title_separation: float = 40.0
 var initial_y_diff: float = 80.0
@@ -25,14 +25,14 @@ var difficulty_tween: Tween
 var arrow_tween: Tween
 
 var current_level: SongPlaylist:
-	get: return levels[selected]
+	get: return levels.list[selected]
 
 func _ready() -> void:
 	get_tree().paused = false
 	reset_music()
 	# cache difficulty textures
 	var diffs_pushed: Array[String] = []
-	for level: SongPlaylist in levels:
+	for level: SongPlaylist in levels.list:
 		for diff: String in level.campaign_difficulties:
 			if diffs_pushed.has(diff):
 				continue
@@ -54,7 +54,7 @@ func _process(delta: float) -> void:
 	for i: int in titles.get_child_count():
 		var hm: TextureRect = titles.get_child(i)
 		var w: float = hm.texture.get_width() if hm.texture else 480
-		var target_y: float = 50.0 + ((title_separation + (w * 0.25)) * (i - selected))
+		var target_y: float = 135.0 + (title_separation * (w * 0.008)) * (i - selected)
 		hm.position.y = lerpf(hm.position.y, target_y, scroll_lerp)
 	# arrow animations wow i gotta do this shit on update so it looks right damn fuck me.
 	arrow_animations()
@@ -77,7 +77,7 @@ func create_titles() -> void:
 	var title_rect: TextureRect = $"level_ui/titles/title_temp".duplicate()
 	$"level_ui/titles/title_temp".queue_free()
 	for i: int in levels.size():
-		var lvl: SongPlaylist = levels[i]
+		var lvl: SongPlaylist = levels.list[i]
 		if lvl.visible == 1 | 2: continue
 		var level_title: TextureRect = title_rect.duplicate()
 		if lvl.title_texture: level_title.texture = lvl.title_texture
@@ -146,6 +146,8 @@ func change_bg_color() -> void:
 func update_tracklist() -> void:
 	tracks.text = "\n\n"
 	for i: int in current_level.list.size():
+		if current_level.list[i].visible == 2 | 3:
+			continue
 		tracks.text += current_level.list[i].name
 		if i < current_level.list.size():
 			tracks.text += "\n"
@@ -161,7 +163,9 @@ func arrow_animations() -> void:
 
 func get_songs() -> Array[String]:
 	var folders: Array[String] = []
-	for i: SongItem in current_level.list: folders.append(i.folder)
+	for i: SongItem in current_level.list:
+		if i.visible == 3: continue
+		folders.append(i.folder)
 	return folders
 
 func reset_music() -> void:

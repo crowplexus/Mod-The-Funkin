@@ -1,0 +1,148 @@
+[gd_resource type="Resource" script_class="PlaylistArray" load_steps=22 format=3 uid="uid://c4s0d4u5i34m3"]
+
+[ext_resource type="Script" uid="uid://cb8wmjygxeh2h" path="res://scripts/song_playlist.gd" id="1_ruh8h"]
+[ext_resource type="Script" uid="uid://cfh5aidjsi5bg" path="res://scripts/song_item.gd" id="2_62nkd"]
+[ext_resource type="Texture2D" uid="uid://b5vla1a57pfbi" path="res://assets/ui/menu/story/titles/tutorial.png" id="3_3ehjm"]
+[ext_resource type="Texture2D" uid="uid://dugna1yxfroq5" path="res://assets/ui/menu/story/titles/week1.png" id="4_bpife"]
+[ext_resource type="Texture2D" uid="uid://cx8f04ddtvcfg" path="res://assets/ui/menu/story/titles/week4.png" id="5_84tjn"]
+[ext_resource type="Texture2D" uid="uid://cu2qycanomgjg" path="res://assets/ui/menu/story/titles/week6.png" id="6_ldous"]
+[ext_resource type="Script" uid="uid://c8xnek6i2j5ea" path="res://scripts/playlist_array.gd" id="7_jn1w2"]
+
+[sub_resource type="Resource" id="Resource_fj5t8"]
+script = ExtResource("2_62nkd")
+name = &"Tutorial"
+folder = "tutorial"
+difficulties = ["easy", "normal", "hard"]
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_3pie2"]
+script = ExtResource("1_ruh8h")
+list = Array[ExtResource("2_62nkd")]([SubResource("Resource_fj5t8")])
+tagline = &"CHICK\'S GOT RHYTHM"
+campaign_difficulties = Array[String](["easy", "normal", "hard"])
+title_texture = ExtResource("3_3ehjm")
+visible = 0
+lock_type = 0
+level_color = Color(0.976, 0.812, 0.318, 1)
+metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
+
+[sub_resource type="Resource" id="Resource_1pc23"]
+script = ExtResource("2_62nkd")
+name = &"Bopeebo"
+folder = "bopeebo"
+difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_fr5ij"]
+script = ExtResource("2_62nkd")
+name = &"Fresh"
+folder = "fresh"
+difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_cpmq5"]
+script = ExtResource("2_62nkd")
+name = &"DadBattle"
+folder = "dadbattle"
+difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_jsdbj"]
+script = ExtResource("1_ruh8h")
+list = Array[ExtResource("2_62nkd")]([SubResource("Resource_1pc23"), SubResource("Resource_fr5ij"), SubResource("Resource_cpmq5")])
+tagline = &"EX-ROCKSTAR"
+campaign_difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
+title_texture = ExtResource("4_bpife")
+visible = 0
+lock_type = 0
+level_color = Color(0.976, 0.812, 0.318, 1)
+metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
+
+[sub_resource type="Resource" id="Resource_pqc7o"]
+script = ExtResource("2_62nkd")
+name = &"Satin-Panties"
+folder = "satin-panties"
+difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_vkjpr"]
+script = ExtResource("2_62nkd")
+name = &"High"
+folder = "high"
+difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_vwi5a"]
+script = ExtResource("2_62nkd")
+name = &"M.I.L.F"
+folder = "milf"
+difficulties = ["easy", "normal", "hard"]
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_jjgqi"]
+script = ExtResource("1_ruh8h")
+list = Array[ExtResource("2_62nkd")]([SubResource("Resource_pqc7o"), SubResource("Resource_vkjpr"), SubResource("Resource_vwi5a")])
+tagline = &"KILLER QUEEN"
+campaign_difficulties = Array[String](["easy", "normal", "hard"])
+title_texture = ExtResource("5_84tjn")
+visible = 0
+lock_type = 0
+level_color = Color(0.976, 0.812, 0.318, 1)
+metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
+
+[sub_resource type="Resource" id="Resource_sxkes"]
+script = ExtResource("2_62nkd")
+name = &"Senpai"
+folder = "senpai"
+difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_yfyfi"]
+script = ExtResource("2_62nkd")
+name = &"Roses"
+folder = "roses"
+difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_gcxdx"]
+script = ExtResource("2_62nkd")
+name = &"Thorns"
+folder = "thorns"
+difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
+show_in_campaign = true
+shown_in_freeplay = true
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_78abo"]
+script = ExtResource("1_ruh8h")
+list = Array[ExtResource("2_62nkd")]([SubResource("Resource_sxkes"), SubResource("Resource_yfyfi"), SubResource("Resource_gcxdx")])
+tagline = &"HATING SIMULATOR (FT. MOAWLING)"
+campaign_difficulties = Array[String](["easy", "normal", "hard", "erect", "nightmare"])
+title_texture = ExtResource("6_ldous")
+visible = 0
+lock_type = 0
+level_color = Color(0.976, 0.812, 0.318, 1)
+metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
+
+[resource]
+script = ExtResource("7_jn1w2")
+list = Array[ExtResource("1_ruh8h")]([SubResource("Resource_3pie2"), SubResource("Resource_jsdbj"), SubResource("Resource_jjgqi"), SubResource("Resource_78abo")])
+metadata/_custom_type_script = "uid://c8xnek6i2j5ea"

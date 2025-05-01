@@ -5,7 +5,7 @@ extends Node2D
 const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a Random Song"
 
 ## List of songs to display on-screen.
-@export var songs: SongPlaylist = preload("uid://cfxu4hd3spw4u").duplicate()
+@export var songs: SongPlaylist = preload("uid://xqeend23c3cf")
 
 @onready var bg: Sprite2D = $"background"
 
@@ -28,6 +28,16 @@ var exiting: bool = false
 var cursor_tween: Tween
 
 func _ready() -> void:
+	var levels: PlaylistArray = load("uid://c4s0d4u5i34m3")
+	for playlist: SongPlaylist in levels.list:
+		load_from_playlist(playlist)
+	levels.unreference()
+	
+	for song: SongItem in songs.list:
+		if song.visible == 2 | 4: # Remove locked/hidden songs.
+			var index: int = songs.list.find(song)
+			songs.list.remove_at(index)
+	
 	Global.change_transition_style()
 	_harcoded_entries.append_array(song_menu.items)
 	song_menu.item_created.connect(func(item: Control) -> void:
@@ -125,14 +135,28 @@ func reload_song_items() -> void:
 	# in case your hardcode any buttons and whatnot.
 	song_menu.items.append_array(_harcoded_entries)
 	for song: SongItem in songs.list:
-		if songs.visible == 1 | 3:
-			continue
-		selectables.append(songs.list.find(song))
+		selectables.append(songs.find(song))
 		song_menu.items.append(song.name)
 	song_selected = selectables.front()
 	selected = selectables.find(song_selected)
 	song_menu.regen_list()
 	change_selection()
+
+func load_from_playlist(list) -> void:
+	if list is Array[SongItem] or list is SongPlaylist:
+		var songs_array: Array[SongItem] = list.list if list is SongPlaylist else list # jank.
+		for song: SongItem in songs_array:
+			var add_next: bool = true # workaround to not add duplicte songs
+			for local_song: SongItem in songs.list:
+				if song.name == local_song.name and song.folder == local_song.folder:
+					#print_debug("duplicate song found ", song.name)
+					add_next = false
+					continue
+			if add_next:
+				#print_debug("added ", song.name, " to local freeplay list")
+				songs.list.append(song)
+	else:
+		print_debug("Playlist provided must be a Array[SongItem] or SongPlaylist.")
 
 func refresh_display_score() -> void:
 	if Tally.use_epics != Global.settings.use_epics:

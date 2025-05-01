@@ -19,6 +19,20 @@ var visible: int = 0
 var lock_type: int = 0
 @export var level_color: Color = Color(0.976, 0.812, 0.318) ## Color for when selecting in the Story Menu.
 
+#region Array Functions
+
+## Returns the index of the [b]first[/b] occurrence of what in this array, or -1 if there are none. The search's start can be specified with from, continuing to the end of the array.
+##
+## Note: If you just want to know whether the array contains what, use has() (Contains in C#). In GDScript, you may also use the in operator.
+##
+## Note: For performance reasons, the search is affected by what's Variant.Type. For example, 7 (int) and 7.0 (float) are not considered equal for this method.
+func find(what: SongItem, from: int = 0) -> int: return list.find(what, from)
+## Returns the index of the [b]first[/b] element in the array that causes method to return true, or -1 if there are none. The search's start can be specified with from, continuing to the end of the array.
+##
+## method is a callable that takes an element of the array, and returns a bool.
+##
+## [b]Note[/b]: If you just want to know whether the array contains anything that satisfies method, use any().
+func find_custom(method: Callable, from: int = 0) -> int: return list.find_custom(method, from)
 ## Returns a random element from the array. Generates an error and returns null if the array is empty.
 func pick_random() -> SongItem: return list.pick_random()
 ## Sorts the array using a custom [Callable].
@@ -35,3 +49,5 @@ func front() -> SongItem: return list.front()
 ## Returns the last element of the array. If the array is empty, fails and returns null. See also front().[br]
 ## Note: Unlike with the [] operator (array[-1]), an error is generated without stopping project execution.
 func back() -> SongItem: return list.back()
+
+#endregion

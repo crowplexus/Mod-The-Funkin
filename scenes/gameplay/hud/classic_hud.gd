@@ -131,17 +131,17 @@ func countdown_progress() -> void:
 		return
 	
 	if _countdown_iteration < countdown_textures.size():
-		var count_scale: Vector2 = game.assets.countdown_scale if game and game.assets else Vector2(0.7, 0.7)
 		countdown_sprite.texture = countdown_textures[_countdown_iteration]
 		countdown_sprite.position = Vector2(get_viewport_rect().size.x, get_viewport_rect().size.y) * 0.5
-		countdown_sprite.scale = count_scale * (1.0 if game.local_settings.simplify_popups else 1.1)
+		countdown_sprite.scale = game.assets.countdown_scale * (1.0 if game.local_settings.simplify_popups else 1.1)
+		countdown_sprite.texture_filter = game.assets.countdown_filter
 		countdown_sprite.self_modulate.a = 1.0
 		countdown_sprite.show()
 		
 		if countdown_tween: countdown_tween.stop()
 		countdown_tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE).set_parallel(true)
-		if countdown_sprite.scale != count_scale:
-			countdown_tween.tween_property(countdown_sprite, "scale", count_scale, Conductor.crotchet * 0.9)
+		if countdown_sprite.scale != game.assets.countdown_scale:
+			countdown_tween.tween_property(countdown_sprite, "scale", game.assets.countdown_scale, Conductor.crotchet * 0.9)
 		countdown_tween.tween_property(countdown_sprite, "self_modulate:a", 0.0, Conductor.crotchet * 0.8)
 		countdown_tween.finished.connect(countdown_sprite.hide)
 	

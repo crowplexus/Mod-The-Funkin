@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://4po3ojxk5tt3"]
 
 [ext_resource type="Script" uid="uid://cbpwpskaofsru" path="res://scenes/gameplay/characters/bases/actor_2d.gd" id="1_olw6d"]
-[ext_resource type="Texture2D" uid="uid://ckfggl71y85yu" path="res://assets/game/characters/boyfriend/icon.png" id="2_tvlln"]
+[ext_resource type="Texture2D" uid="uid://dumnl2n3rdfng" path="res://assets/game/characters/boyfriend/icons/normal.png" id="2_tvlln"]
 [ext_resource type="Script" uid="uid://dovjbyvwk2plh" path="res://scenes/gameplay/characters/bases/health_icon.gd" id="3_kgqrn"]
 [ext_resource type="SpriteFrames" path="res://assets/game/characters/boyfriend/regular.res" id="4_kgqrn"]
 

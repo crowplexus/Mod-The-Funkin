@@ -56,6 +56,7 @@ func display_judgement(judge: String) -> void:
 	judgement.position = Vector2.ZERO
 	judgement.modulate.a = 1.0
 	judgement.scale = judge_scale #* randf_range(0.9, 1.1)
+	judgement.texture_filter = assets.judgement_filter
 	judgement.texture = assets.judgement_assets[judge]
 	judgement.position.y = -50
 	if not settings.simplify_popups:
@@ -87,17 +88,18 @@ func display_combo(amnt: int = 0) -> void:
 		var num_score: PhysicsSprite2D = get_digit(i)
 		num_score.frame = int(digits[i])
 		num_score.position = Vector2(
-			(size.x * 0.5) - (90 * combo_scale.x) * (offset - i) - (combo_digits * 10),
-			(size.y * 0.25) + 25
+			((size.x * 0.5) - (combo_scale.x * offset - (i * 40))),
+			(size.y * 0.25) + (combo_scale.y + 25)
 		)
 		num_score.scale = combo_scale
 		#num_score.scale.x *= 1.5
 		num_score.modulate.a = 1.0
 		if not settings.simplify_popups:
-			if not combo_stacking: num_score.velocity.x = num_score.initial_velocity.x
+			if not combo_stacking: num_score	.velocity.x = num_score.initial_velocity.x
 			num_score.acceleration.y = randi_range(200, 300)
 			num_score.velocity.y += randi_range(140, 160)
 			num_score.velocity.x = randf_range(-5, 5)
+		num_score.texture_filter = assets.combo_filter
 		num_score.show()
 		var tween: Tween
 		if not combo_stacking:

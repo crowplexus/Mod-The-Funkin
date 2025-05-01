@@ -169,8 +169,16 @@ func setup_note_fields() -> void:
 		if i.player: i.player.setup()
 	player_strums = note_fields.get_child(0)
 
-func kill_every_note() -> void:
-	for note: Node in note_group.get_children():
+func kill_every_note(advancing: bool = false) -> void:
+	for note: Note in note_group.get_children():
+		if advancing:
+			var cur_time: float = note.time
+			for i: NoteData in note_group.note_list:
+				if cur_time < Conductor.time and i.time > Conductor.time:
+					var index: int = note_group.note_list.find(i)
+					note_group.list_position = index
+					print_debug(index)
+					break
 		note.queue_free()
 
 func restart_song() -> void:
@@ -251,11 +259,7 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 	if OS.is_debug_build() and not starting and _event.pressed and not _event.is_echo():
 		match _event.keycode:
 			KEY_F4:
-				note_group.active = false
-				kill_every_note()
-				music.seek(music.get_playback_position() + 10)
-				await RenderingServer.frame_post_draw
-				note_group.active = true
+				skip_to_time(music.get_playback_position() + 10)
 			KEY_END:
 				music.stop()
 				note_group.active = false
@@ -279,6 +283,17 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 		return
 	if player_strums and player_strums.player is Player and player:
 		player.lock_on_sing = player_strums.player.keys_held.has(true)
+
+func skip_to_time(time: float = 0.0) -> void:
+	note_group.active = false
+	music.seek(time)
+	Conductor.time = time
+	if Conductor.time >= Conductor.length:
+		music.stop()
+		tally.merge(local_tally) # just in case
+		tally.is_valid = false
+	kill_every_note(true)
+	note_group.active = true
 
 func process_timed_events() -> void:
 	#var idx: int = timed_events.find(current_event) # if i need it...

@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3cs81bkfct0x"]
+
+[ext_resource type="Script" uid="uid://bqopd8xbhve36" path="res://scenes/gameplay/stages/bases/funkin_stage_2d.gd" id="1_6xvet"]
+[ext_resource type="Texture2D" uid="uid://dth6uo3v1lfja" path="res://assets/game/backgrounds/default/temp_bg.png" id="2_36s5x"]
+
+[node name="stage_week1" type="Node2D" node_paths=PackedStringArray("camera")]
+script = ExtResource("1_6xvet")
+camera = NodePath("camera_2d")
+
+[node name="camera_2d" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+limit_left = -200
+limit_top = -300
+limit_right = 1800
+limit_bottom = 800
+limit_smoothed = true
+position_smoothing_enabled = true
+rotation_smoothing_enabled = true
+
+[node name="back" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.9, 0.9)
+
+[node name="stageback" type="Sprite2D" parent="back"]
+position = Vector2(640, 360)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_36s5x")
+
+[node name="dj" type="Marker2D" parent="."]
+position = Vector2(592, 244)
+
+[node name="player" type="Marker2D" parent="."]
+position = Vector2(880, 482)
+
+[node name="enemy" type="Marker2D" parent="."]
+position = Vector2(343, 466)

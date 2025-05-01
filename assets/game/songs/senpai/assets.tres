@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="ChartAssets" load_steps=19 format=3 uid="uid://c6wt3tsrlq4r5"]
+
+[ext_resource type="Texture2D" uid="uid://cioodhibo5qmr" path="res://assets/ui/popups/pixel/score_numbers.png" id="1_ecgwk"]
+[ext_resource type="Texture2D" uid="uid://dtm4vb5x0ohva" path="res://assets/ui/popups/pixel/prepare-pixel.png" id="2_4i8al"]
+[ext_resource type="Texture2D" uid="uid://bo6vh4b8hljk8" path="res://assets/ui/popups/pixel/ready-pixel.png" id="3_ecgwk"]
+[ext_resource type="Texture2D" uid="uid://dehbvt84iy6ax" path="res://assets/ui/popups/pixel/set-pixel.png" id="4_vpvg1"]
+[ext_resource type="Texture2D" uid="uid://b1b2hi88sesp2" path="res://assets/ui/popups/pixel/go-pixel.png" id="5_cu4n1"]
+[ext_resource type="AudioStream" uid="uid://duswh65wlgi2g" path="res://assets/sounds/countdown/pixel/3.ogg" id="6_4i8al"]
+[ext_resource type="AudioStream" uid="uid://vlxjatxtdga8" path="res://assets/sounds/countdown/pixel/2.ogg" id="7_ecgwk"]
+[ext_resource type="AudioStream" uid="uid://ddkgm1nqwkpvd" path="res://assets/sounds/countdown/pixel/1.ogg" id="8_vpvg1"]
+[ext_resource type="AudioStream" uid="uid://br67b1ljjgd7j" path="res://assets/sounds/countdown/pixel/go.ogg" id="9_cu4n1"]
+[ext_resource type="Texture2D" uid="uid://druocvli7mg26" path="res://assets/ui/popups/pixel/epic.png" id="10_knpwp"]
+[ext_resource type="Texture2D" uid="uid://dgbwt437svft" path="res://assets/ui/popups/pixel/sick.png" id="11_kk3nk"]
+[ext_resource type="Texture2D" uid="uid://cexvt3wd1eu1m" path="res://assets/ui/popups/pixel/good.png" id="12_d8crv"]
+[ext_resource type="Texture2D" uid="uid://dmshodbbtaoqt" path="res://assets/ui/popups/pixel/bad.png" id="13_1lnj8"]
+[ext_resource type="Texture2D" uid="uid://derypa3mr13yn" path="res://assets/ui/popups/pixel/shit.png" id="14_ho50y"]
+[ext_resource type="AudioStream" uid="uid://bifxwkieeuopo" path="res://assets/sounds/miss/pixel/miss1.ogg" id="15_knpwp"]
+[ext_resource type="AudioStream" uid="uid://c8q2puwl24pds" path="res://assets/sounds/miss/pixel/miss3.ogg" id="16_kk3nk"]
+[ext_resource type="Resource" uid="uid://dxhq200ow8ypp" path="res://assets/resources/noteskin.tres" id="18_ch7x3"]
+[ext_resource type="Script" uid="uid://ba0wwnyur88ga" path="res://scripts/chart/data/chart_assets.gd" id="19_e141t"]
+
+[resource]
+script = ExtResource("19_e141t")
+vocals = Array[AudioStream]([])
+note_skin = ExtResource("18_ch7x3")
+countdown_assets = Array[Texture2D]([ExtResource("2_4i8al"), ExtResource("3_ecgwk"), ExtResource("4_vpvg1"), ExtResource("5_cu4n1")])
+judgement_assets = Dictionary[String, Texture2D]({
+"bad": ExtResource("13_1lnj8"),
+"epic": ExtResource("10_knpwp"),
+"good": ExtResource("12_d8crv"),
+"shit": ExtResource("14_ho50y"),
+"sick": ExtResource("11_kk3nk")
+})
+combo_numbers = ExtResource("1_ecgwk")
+countdown_scale = Vector2(6, 6)
+judgement_scale = Vector2(4, 4)
+combo_scale = Vector2(5, 5)
+countdown_filter = 1
+judgement_filter = 1
+combo_filter = 1
+countdown_sounds = Array[AudioStream]([ExtResource("6_4i8al"), ExtResource("7_ecgwk"), ExtResource("8_vpvg1"), ExtResource("9_cu4n1")])
+miss_note_sounds = Array[AudioStream]([ExtResource("15_knpwp"), ExtResource("16_kk3nk"), ExtResource("16_kk3nk")])
+metadata/_custom_type_script = "uid://ba0wwnyur88ga"
