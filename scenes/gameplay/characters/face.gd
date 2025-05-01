@@ -7,6 +7,8 @@ var normal_color: Color = Color.WHITE
 
 func _ready() -> void:
 	super()
+	if faces_left:
+		scale.x *= -1
 	normal_color = self.modulate
 
 func _process(delta: float) -> void:

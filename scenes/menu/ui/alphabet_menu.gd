@@ -1,4 +1,6 @@
-class_name AlphabetMenu extends AnimatedLabel2D
+class_name AlphabetMenu extends Control
+
+const ALPHABET_LABEL_SETTINGS: LabelSettings = preload("res://assets/ui/fonts/alphabet_font_bold.tres")
 
 signal item_created(item: Control)
 
@@ -26,9 +28,10 @@ func scroll_item(item: Control) -> void:
 	var pos: Vector2 = start_positions[index] + offset
 	var selected: int = (index - scroll_offset)
 	var fscale: Vector2 = item.scale * scale
+	var height: float = (item as Label).get_line_height()
 	item.position = item.position.lerp(Vector2(
 		pos.x + (selected * distance.x) * int(change_x),
-		pos.y + (selected * distance.y) * int(change_y)),
+		pos.y + (selected * (height + distance.y)) * int(change_y)),
 	scroll_lerp)
 
 func regen_list() -> void:
@@ -38,12 +41,11 @@ func regen_list() -> void:
 	if items.is_empty():
 		push_warning("There's nothing…")
 		return
-	var final_text: String = ""
 	for idx: int in items.size():
-		final_text += items[idx]
-		if idx < items.size() - 1:
-			final_text += "\n"
-	self.text = final_text.dedent()
+		var text_entry: Label = Label.new()
+		text_entry.label_settings = ALPHABET_LABEL_SETTINGS.duplicate()
+		text_entry.text = items[idx].to_upper()
+		add_child(text_entry)
 	# children are generated after setting the text
 	# each "line" is an entry on the menu, hence why we just set the text before.
 	for line: Control in get_children():

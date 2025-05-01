@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ciwp55vsaghii" path="res://assets/ui/menu/menuDesat.png" id="2_f7icd"]
 [ext_resource type="Script" uid="uid://dy6vubwf3s2n6" path="res://scenes/menu/ui/alphabet_menu.gd" id="3_5h24w"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="3_i0mk5"]
-[ext_resource type="SpriteFrames" uid="uid://ff2pwik2h4tp" path="res://assets/ui/fonts/alphabet.res" id="4_5h24w"]
+[ext_resource type="LabelSettings" uid="uid://ckiqm8178ehbn" path="res://assets/ui/fonts/alphabet_font_bold.tres" id="5_5h24w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0mk5"]
 bg_color = Color(0, 0, 0, 0.529412)
@@ -34,7 +34,6 @@ grow_vertical = 2
 script = ExtResource("3_5h24w")
 distance = Vector2(30, 50)
 offset = Vector2(50, 0)
-sprite_frames = ExtResource("4_5h24w")
 metadata/_custom_type_script = "uid://73nl8weocxpd"
 
 [node name="ui" type="Control" parent="."]
@@ -92,3 +91,22 @@ text = "« Difficulty »"
 label_settings = SubResource("LabelSettings_5h24w")
 horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="label" type="Label" parent="."]
+offset_left = -1817.0
+offset_top = -600.0
+offset_right = -1077.0
+offset_bottom = -57.0
+text = "HI, THE FUCK
+YOU LOOKING AT?
+
+   LATIN
+ABCDFEFGHIJK
+LMNOPQRSTUVW
+XYZ
+   CYRILLIC
+АБВГДЕЁЖЗИЙКЛМ
+НОПРСТУФХЦ
+ЧШЩЪЫЬЭЮЯ"
+label_settings = ExtResource("5_5h24w")
+vertical_alignment = 1

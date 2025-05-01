@@ -29,11 +29,7 @@ var current_level: SongPlaylist:
 
 func _ready() -> void:
 	get_tree().paused = false
-	if Global.DEFAULT_SONG and not Global.bgm.playing:
-		Global.play_bgm(Global.DEFAULT_SONG, 0.7)
-		Conductor.bpm = Global.DEFAULT_SONG.bpm
-	Global.bgm.volume_linear = 0.7
-	
+	reset_music()
 	# cache difficulty textures
 	var diffs_pushed: Array[String] = []
 	for level: SongPlaylist in levels:
@@ -41,7 +37,7 @@ func _ready() -> void:
 			if diffs_pushed.has(diff):
 				continue
 			var tex_path: String = "res://assets/ui/menu/story/difficulties/" + diff.to_snake_case() + ".png"
-			var is_animated: bool = ResourceLoader.exists(tex_path.replace(".png", ".xml")) or ResourceLoader.exists(tex_path.replace(".png", ".res")) # fuck you
+			#var is_animated: bool = ResourceLoader.exists(tex_path.replace(".png", ".xml")) or ResourceLoader.exists(tex_path.replace(".png", ".res")) # fuck you
 			if ResourceLoader.exists(tex_path):# and not is_animated:
 				difficulty_textures.append(load(tex_path))
 			else:
@@ -167,3 +163,13 @@ func get_songs() -> Array[String]:
 	var folders: Array[String] = []
 	for i: SongItem in current_level.list: folders.append(i.folder)
 	return folders
+
+func reset_music() -> void:
+	var play_default: bool = Global.bgm.playing and Global.bgm.stream != Global.DEFAULT_SONG
+	if play_default or not Global.bgm.playing:
+		if play_default:
+			Global.request_audio_fade(Global.bgm, 0.0, 0.5)
+			await Global.music_fade_tween.finished
+		Global.play_bgm(Global.DEFAULT_SONG, 0.7)
+		Conductor.bpm = Global.DEFAULT_SONG.bpm
+	Global.bgm.volume_linear = 0.7

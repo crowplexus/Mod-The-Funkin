@@ -1,0 +1,27 @@
+[remap]
+
+importer="font_data_image"
+type="FontFile"
+uid="uid://cpo50hs6mjovp"
+path="res://.godot/imported/alphabet_bold.png-c42728020ba0ffe00c87f697600b86b4.fontdata"
+
+[deps]
+
+source_file="res://assets/ui/fonts/alphabet_bold.png"
+dest_files=["res://.godot/imported/alphabet_bold.png-c42728020ba0ffe00c87f697600b86b4.fontdata"]
+
+[params]
+
+character_ranges=PackedStringArray("\"A\"-\"Z\"", "U+0020")
+kerning_pairs=PackedStringArray()
+columns=5
+rows=6
+image_margin=Rect2i(10, 0, 0, 0)
+character_margin=Rect2i(0, 0, 0, 0)
+ascent=0
+descent=0
+fallbacks=[Object(FontVariation,"resource_local_to_scene":false,"resource_name":"","fallbacks":Array[Font]([Object(SystemFont,"resource_local_to_scene":false,"resource_name":"","fallbacks":Array[Font]([]),"font_names":PackedStringArray(),"font_italic":false,"font_weight":400,"font_stretch":100,"antialiasing":1,"generate_mipmaps":false,"disable_embedded_bitmaps":true,"allow_system_fallback":true,"force_autohinter":false,"hinting":1,"subpixel_positioning":1,"keep_rounding_remainders":true,"multichannel_signed_distance_field":false,"msdf_pixel_range":16,"msdf_size":48,"oversampling":0.0,"script":null)
+]),"base_font":Resource("res://assets/ui/fonts/funkin.ttf"),"variation_opentype":{},"variation_face_index":0,"variation_embolden":0.0,"variation_transform":Transform2D(1, 0, 0, 1, 0, 0),"opentype_features":{},"spacing_glyph":0,"spacing_space":0,"spacing_top":-30,"spacing_bottom":0,"baseline_offset":0.3,"script":null)
+]
+compress=true
+scaling_mode=2

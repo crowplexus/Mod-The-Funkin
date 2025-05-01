@@ -1,10 +1,12 @@
 extends Node2D
 
-@onready var cool_text: AnimatedLabel2D = $"background/cool_text"
+@onready var cool_text: Label = $"background/cool_text"
 @onready var flash_sprite: ColorRect = $"color_rect"
 @onready var ng_sprite: Sprite2D = $"newgrounds_sprite"
 @onready var confirm_label: Label = $"title_sprites/confirm_label"
+@onready var logo_bump: AnimatedSprite2D = $"title_sprites/logo"
 @onready var title_sprites: Control = $"title_sprites"
+
 static var skipped_intro: bool = false
 var random_text: PackedStringArray
 var pressed_enter: bool = false
@@ -60,7 +62,10 @@ func _exit_tree() -> void:
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
 
 func on_beat_hit(beat: float) -> void:
-	if skipped_intro: return
+	if skipped_intro:
+		logo_bump.frame = 0
+		logo_bump.play("logo bumpin")
+		return
 	match floori(beat):
 		1: display_cool_text("The Funkin' Crew Inc.")
 		3: add_cool_text("presents")
@@ -72,7 +77,7 @@ func on_beat_hit(beat: float) -> void:
 		11: add_cool_text(random_text[1])
 		12: delete_cool_text()
 		13: display_cool_text("Friday")
-		14: add_cool_text("Night")
+		14: add_cool_text("Night\n")
 		15: add_cool_text("Funkin'")
 		16: skip_intro()
 
@@ -93,11 +98,11 @@ func flash_screen(duration: float = 4.0) -> void:
 	.finished.connect(flash_sprite.hide)
 
 func display_cool_text(text: String) -> void:
-	cool_text.text = text
+	cool_text.text = text + "\n"
 	if ng_sprite.visible: ng_sprite.hide()
 
 func add_cool_text(text: String) -> void:
-	cool_text.text += "\n" + text
+	cool_text.text += text
 	if text == "newgrounds": ng_sprite.show()
 
 func delete_cool_text() -> void:

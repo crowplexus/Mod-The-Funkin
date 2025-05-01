@@ -53,16 +53,16 @@ static func clear_playlist() -> void:
 	Gameplay.current_song = 0
 	Gameplay.playlist.clear()
 
-static func exit_to_menu(game_mode: Gameplay.GameMode = Gameplay.game_mode) -> void:
+static func exit_to_menu(gm: int = Gameplay.game_mode) -> void:
 	var uid: String = "uid://c5qnedjs8xhcw"
-	match game_mode:
+	match gm:
 		Gameplay.GameMode.STORY: uid = "uid://dakw6tmvuvou7"
 		_: Gameplay.play_inst_outside()
 	Global.change_scene(uid)
 
 static var game_mode: GameMode = GameMode.FREEPLAY
 
-static func set_game_mode(mode: Gameplay.GameMode = Gameplay.GameMode.FREEPLAY) -> void:
+static func set_game_mode(mode: int = Gameplay.GameMode.FREEPLAY) -> void:
 	game_mode = mode
 
 ## Returns a game mode string based on the integer given.[br]
@@ -70,8 +70,8 @@ static func set_game_mode(mode: Gameplay.GameMode = Gameplay.GameMode.FREEPLAY) 
 ## [code]2 = "Freeplay"[/code][br]
 ## [code]3 = "Charting"[/code][br]
 ## Anything else will return [code]"Unknown"[/code]
-static func get_mode_string(game_mode: int) -> String:
-	match game_mode:
+static func get_mode_string(gm: int) -> String:
+	match gm:
 		0: return "Story Mode"
 		1: return "Freeplay"
 		2: return "Charting"
