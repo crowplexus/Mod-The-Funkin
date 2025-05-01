@@ -30,23 +30,27 @@ func _ready() -> void:
 func _unhandled_input(_event: InputEvent) -> void:
 	var tab_axis: int = int(Input.get_axis("ui_left", "ui_right"))
 	var opt_axis: int = int(Input.get_axis("ui_up", "ui_down"))
+	var selected_option: Control = current_tab[selected]
 	if tab_axis != 0:
 		if not changing_option:
 			switch_tabs(tab_axis)
 		else:
-			var selected_option: Control = current_tab[selected]
 			if selected_option is OptionBar:
 				selected_option.update_value(tab_axis)
+				changing_option = selected_option.changing # in case options change it.
+				selected_option.update_hover()
 	if opt_axis != 0 and not changing_option:
 		change_selection(opt_axis)
 	if Input.is_action_just_pressed("ui_accept"):
 		changing_option = not changing_option
-		update_hover()
-		
+		selected_option.changing = changing_option
+		selected_option.update_hover()
+	
 	if Input.is_action_just_pressed("ui_cancel"):
 		if changing_option:
 			changing_option = false
-			update_hover()
+			selected_option.changing = false
+			selected_option.update_hover()
 		else:
 			change_altered_settings()
 			if Gameplay.current:
@@ -61,16 +65,12 @@ func change_selection(next: int = 0) -> void:
 	selected = wrapi(selected + next, 0, current_tab.size())
 	if selected != previous_selected:
 		Global.play_sfx(Global.resources.get_resource("scroll"))
-		var previous_option: Control = current_tab[previous_selected]
-		if previous_option is OptionBar:
-			previous_option.is_hovered = false
-			previous_option.modulate.v = 1
+	for i: int in current_tab.size():
+		var option: Control = current_tab[i]
+		option.modulate.v = 0.8 if selected == i else 1.0
 	var selected_option: Control = current_tab[selected]
-	if selected_option is OptionBar:
-		selected_option.is_hovered = true
-		option_title.text = tr("option_%s" % selected_option.variable_name)
-		option_infor.text = selected_option.description
-		selected_option.modulate.v = 0.8
+	option_title.text = tr("option_%s" % selected_option.name)
+	if selected_option is OptionBar: option_infor.text = selected_option.description
 
 func switch_tabs(next: int = 0) -> void:
 	var previous_tab: int = selected_tab
@@ -90,6 +90,7 @@ func update_visible_tabs() -> void:
 				tab.visible = true
 				for i: Control in tab.get_children():
 					if i.visible and i is OptionBar:
+						i.changing = false
 						current_tab.append(i)
 	if selected > current_tab.size(): selected = 0
 	change_selection()
@@ -105,13 +106,6 @@ func change_altered_settings() -> void:
 func save_to_disk() -> void:
 	pass
 
-func update_hover() -> void:
-	var option: Control = current_tab[selected]
-	if option is OptionBar:
-		# PLACEHOLDER ↓ ↓ ↓
-		option.get_child(0).modulate = Color.CYAN if changing_option else Color.WHITE
-		option.get_child(1).get_child(0).modulate = Color.CYAN if changing_option else Color.WHITE
-
 func reload_labels() -> void:
 	tab_name.text = tr("options_tab_%s" % visible_tab, OPTION_TRANSLATE_CONTEXT)
 	for tab: Control in tabs_control.get_children():
@@ -119,4 +113,4 @@ func reload_labels() -> void:
 			tabs.append(tab.name)
 			for i: Control in tab.get_children():
 				if i is OptionBar: # translate labels.
-					i.name_label.text = tr("option_%s" % i.variable_name)
+					i.name_label.text = tr("option_%s" % i.name)

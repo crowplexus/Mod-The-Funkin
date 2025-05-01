@@ -4,9 +4,10 @@ const INACTIVE_COLOR: Color = Color("#b3b3b3")
 
 @onready var name_label: Label = $"name_label"
 
-@onready var value_label: Label = $"value_group/value_name"
+@onready var value_group: Control = $"value_group"
 @onready var value_box: HBoxContainer
 @onready var value_bar: ColorRect
+@onready var value_label: Label
 
 @export var values: Array = [true, false]
 @export var display_name: StringName = &"Setting":
@@ -18,9 +19,10 @@ const INACTIVE_COLOR: Color = Color("#b3b3b3")
 var settings: Settings
 
 var current_value: int = 0
-var is_hovered: bool = false
+var changing: bool = false
 
 func _ready() -> void:
+	if has_node("value_group/value_name"): value_label = get_node("value_group/value_name")
 	if has_node("value_group/value_bar"): value_bar = get_node("value_group/value_bar")
 	if has_node("value_group/values"): value_box = get_node("value_group/values")
 	name_label.text = display_name # safety measure (sometimes it doesn't show)
@@ -59,6 +61,11 @@ func update_setting(next: int = 0) -> void:
 			var x: int = wrapi(current_value + next, 0, values.size())
 			settings.set(variable_name, values[x])
 		TYPE_INT: settings.set(variable_name, wrapi(current_value + next, 0, values.size()))
+
+func update_hover() -> void:
+	# PLACEHOLDER ↓ ↓ ↓ ( I THINK
+	value_group.get_child(1).modulate = Color.CYAN if changing else Color.WHITE
+	value_group.get_child(0).modulate = Color.CYAN if changing else Color.WHITE
 
 func get_value_string() -> String:
 	return str(values[current_value]).replace("true", "ON").replace("false", "OFF")

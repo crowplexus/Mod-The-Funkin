@@ -20,7 +20,7 @@ func _ready() -> void:
 	update_value()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not is_hovered: return
+	if not changing: return
 	if event.is_pressed():
 		if event.keycode == KEY_SHIFT:
 			_shift_mult = 4.0

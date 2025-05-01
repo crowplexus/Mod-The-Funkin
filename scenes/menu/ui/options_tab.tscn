@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://gulb1ge3va36"]
+[gd_scene load_steps=10 format=3 uid="uid://gulb1ge3va36"]
 
 [ext_resource type="Script" uid="uid://dcbyww3fravuq" path="res://scenes/menu/ui/options_tab.gd" id="1_s4ceo"]
 [ext_resource type="PackedScene" uid="uid://cn5qxa5uqvf8r" path="res://scenes/menu/ui/options/option_bar.tscn" id="2_7tf5q"]
 [ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="2_p4q55"]
 [ext_resource type="PackedScene" uid="uid://baunqnsnu3gmb" path="res://scenes/menu/ui/options/number_option.tscn" id="3_5nl4s"]
+[ext_resource type="PackedScene" uid="uid://dawmh0rsbqxix" path="res://scenes/menu/ui/options/keybind_option.tscn" id="4_rnuv3"]
 
 [sub_resource type="Gradient" id="Gradient_80t53"]
 colors = PackedColorArray(0, 0.0583333, 0.1, 1, 0, 0.133333, 0.231373, 1)
@@ -64,7 +65,6 @@ vertical_alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="gameplay" type="BoxContainer" parent="tabs"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,7 +100,106 @@ description = "Enables an extra 5th judgement
 
 In most other rhythm games, this is >NOT< an option and instead is built-in, but in [color=YELLOW]this[/color] case, if you don't like the new Epic judgement, you can just disable it."
 
+[node name="key_note_left" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
+layout_mode = 2
+display_name = &"Note Left"
+variable_name = &"note_left"
+description = "Press TAB while changing to switch to your alternative keybind.
+
+Press BACKSPACE to delete the key.
+
+Press SPACE or ENTER to stop binding.
+
+These keys cannot be bound: TAB, BACKSPACE.
+
+(No description)."
+
+[node name="key_note_down" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
+layout_mode = 2
+display_name = &"Note Down"
+variable_name = &"note_down"
+description = "Press TAB while changing to switch to your alternative keybind.
+
+Press BACKSPACE to delete the key.
+
+Press SPACE or ENTER to stop binding.
+
+These keys cannot be bound: TAB, BACKSPACE.
+
+(No description)."
+
+[node name="key_note_up" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
+layout_mode = 2
+display_name = &"Note Up"
+variable_name = &"note_up"
+description = "Press TAB while changing to switch to your alternative keybind.
+
+Press BACKSPACE to delete the key.
+
+Press SPACE or ENTER to stop binding.
+
+These keys cannot be bound: TAB, BACKSPACE.
+
+(No description)."
+
+[node name="key_note_right" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
+layout_mode = 2
+display_name = &"Note Right"
+variable_name = &"note_right"
+description = "Press TAB while changing to switch to your alternative keybind.
+
+Press BACKSPACE to delete the key.
+
+Press SPACE or ENTER to stop binding.
+
+These keys cannot be bound: TAB, BACKSPACE.
+
+(No description)."
+
+[node name="key_volume_up" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
+layout_mode = 2
+display_name = &"Volume Up"
+variable_name = &"volume_up"
+description = "Press TAB while changing to switch to your alternative keybind.
+
+Press BACKSPACE to delete the key.
+
+Press SPACE or ENTER to stop binding.
+
+These keys cannot be bound: TAB, BACKSPACE.
+
+(No description)."
+
+[node name="key_volume_down" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
+layout_mode = 2
+display_name = &"Volume Down"
+variable_name = &"volume_down"
+description = "Press TAB while changing to switch to your alternative keybind.
+
+Press BACKSPACE to delete the key.
+
+Press SPACE or ENTER to stop binding.
+
+These keys cannot be bound: TAB, BACKSPACE.
+
+(No description)."
+
+[node name="key_volume_mute" parent="tabs/gameplay" instance=ExtResource("4_rnuv3")]
+layout_mode = 2
+display_name = &"Volume Mute"
+variable_name = &"volume_mute"
+description = "Press TAB while changing to switch to your alternative keybind.
+
+Press BACKSPACE to delete the key.
+
+Press SPACE or ENTER to stop binding.
+
+These keys cannot be bound: TAB, BACKSPACE.
+
+(No description)."
+
 [node name="visuals" type="BoxContainer" parent="tabs"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

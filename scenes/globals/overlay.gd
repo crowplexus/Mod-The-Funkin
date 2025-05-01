@@ -29,22 +29,23 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			if not rid_once:
 				rid_once = true
 				update_overlay()
-		KEY_EQUAL, KEY_KP_MULTIPLY:
-			if Global.settings.master_mute:
-				Global.settings.master_mute = false
-			update_master_volume(5)
-			Global.settings.update_master_volume()
-			display_volume_slider()
-		KEY_MINUS, KEY_KP_SUBTRACT:
-			if Global.settings.master_mute:
-				Global.settings.master_mute = false
-			update_master_volume(-5)
-			Global.settings.update_master_volume()
-			display_volume_slider()
-		KEY_0, KEY_KP_0:
-			Global.settings.master_mute = not Global.settings.master_mute
-			Global.settings.update_master_volume()
-			display_volume_slider()
+
+	if event.is_action("volume_up"):
+		if Global.settings.master_mute:
+			Global.settings.master_mute = false
+		update_master_volume(5)
+		Global.settings.update_master_volume()
+		display_volume_slider()
+	if event.is_action("volume_down"):
+		if Global.settings.master_mute:
+			Global.settings.master_mute = false
+		update_master_volume(-5)
+		Global.settings.update_master_volume()
+		display_volume_slider()
+	if event.is_action("volume_mute"):
+		Global.settings.master_mute = not Global.settings.master_mute
+		Global.settings.update_master_volume()
+		display_volume_slider()
 
 func update_overlay() -> void:
 	var fps_count: float = Engine.get_frames_per_second()

@@ -4,7 +4,7 @@
 
 [resource]
 resource_name = "alphabet_bold_fnf"
-line_spacing = -30.0
+line_spacing = -15.0
 font = ExtResource("1_brw1p")
 font_size = 64
 outline_size = 16

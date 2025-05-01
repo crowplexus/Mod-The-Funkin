@@ -62,7 +62,7 @@ static func exit_to_menu(gm: int = Gameplay.game_mode) -> void:
 
 static var game_mode: GameMode = GameMode.FREEPLAY
 
-static func set_game_mode(mode: int = Gameplay.GameMode.FREEPLAY) -> void:
+static func set_game_mode(mode: Gameplay.GameMode = Gameplay.GameMode.FREEPLAY) -> void:
 	game_mode = mode
 
 ## Returns a game mode string based on the integer given.[br]

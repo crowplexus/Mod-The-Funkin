@@ -20,11 +20,20 @@ option_scroll,Scroll Direction,Dirección de las Notas,Direção das Notas,Scrol
 option_ghost_tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping
 option_use_epics,Show 'Epic' Judgement,Mostrar Calificación 'Epic',Mostrar Classificação 'Epic',Show 'Epic' Judgement,Прикажи 'Epic' рејтинг
 
+option_key_note_left,Note Left,Note Left,Note Left,Note Left,Note Left
+option_key_note_down,Note Down,Note Down,Note Down,Note Down,Note Down
+option_key_note_up,Note Up,Note Up,Note Up,Note Up,Note Up
+option_key_note_right,Note Right,Note Right,Note Right,Note Right,Note Right
+
+option_key_volume_up,Volume Up,Volume Up,Volume Up,Volume Up,Volume Up
+option_key_volume_down,Volume Down,Volume Down,Volume Down,Volume Down,Volume Down
+option_key_volume_mute,Volume Mute,Volume Mute,Volume Mute,Volume Mute,Volume Mute
+
 options_tab_visuals,Visuals,Visuales,Visuais,Visuals,Изглед
 
 option_framerate,Framerate,Framerate,Framerate,Framerate,Фрамерате
 option_language,Language,Idioma,Idioma,Язык,Йазик
-option_vsync_mode,VSync Mode,Tipo de VSync,Tipo de VSync,Тип VSync,ТипVSync
+option_vsync_mode,VSync Mode,Tipo de VSync,Tipo de VSync,Тип VSync,Тип VSync
 
 option_hud_style,HUD Style,Estilo de la HUD,Estilo da HUD,Стиль HUD,Изглед HUD
 option_combo_stacking,Combo Stacking,Apillar Combo,Empihar Combo,Стиль HUD,Изглед HUD

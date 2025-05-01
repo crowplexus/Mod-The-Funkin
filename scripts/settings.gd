@@ -9,11 +9,19 @@ var master_mute: bool = false
 ## Alternates between in-game scroll directions.
 @export_enum("Up:0","Down:1")
 var scroll: int = 0
-## Defines note keybinds.
-@export var keybinds: Array[PackedStringArray] = [
-	"DFJK".split(""), # Primary Keybinds (Player 1)
-	"Left,Down,Up,Right".split(",") # Secondary Keybinds (Player 2)
-]
+## User-defined controls, with primary and secondary keybinds for actions.
+@export var controls: Dictionary[String, PackedStringArray] = {
+	# I don't really need to do arrays this way but its funny.
+	## -- Note Keybinds --
+	"note_left" : "D,Left".split(","),
+	"note_down" : "F,Down".split(","),
+	"note_up"   : "J,Up".split(","),
+	"note_right": "K,Right".split(","),
+	## -- Extra Keybinds --
+	"volume_up": "Equal,K Add".split(","),
+	"volume_down": "Minus,Kp Subtract".split(","),
+	"volume_mute": "0,Kp 0".split(","),
+}
 ## Prevents inputs from punishing you if you press keys when there's no notes to hit.
 @export var ghost_tapping: bool = true
 ## Defines the maximum timing window for a note to be hittable.
@@ -86,7 +94,7 @@ func update_all() -> void:
 			"framerate": update_framerate()
 			"vsync_mode": update_vsync_mode()
 			"master_volume": update_master_volume()
-			"keybinds": reload_keybinds()
+			"controls": reload_controls()
 			"language": reload_locale()
 
 ## Reloads the current display language.
@@ -98,23 +106,22 @@ func reload_locale() -> void:
 	TranslationServer.set_locale(new_lang)
 	language = new_lang
 
-## Reloads the note keybinds.
-func reload_keybinds() -> void:
-	const NOTE_KEYBINDS: Array[String] = ["note_left", "note_down", "note_up", "note_right"]
-	for action: String in NOTE_KEYBINDS:
+## Reloads all of the bound controls.
+func reload_controls() ->  void:
+	var ckeys: Array[String] = controls.keys()
+	for action: String in ckeys:
 		if InputMap.has_action(action):
 			for key: InputEvent in InputMap.action_get_events(action):
 				if not key or not InputMap.action_has_event(action, key): continue
 				InputMap.action_erase_event(action, key)
 				key.unreference()
-	for i: int in keybinds.size(): # 2 Players
-		for j: int in keybinds[i].size(): # 4 keys
-			var action: String = NOTE_KEYBINDS[j]
-			var keystr: String = keybinds[i][j].to_lower()
-			var new_event: InputEventKey = InputEventKey.new()
-			new_event.set_keycode(OS.find_keycode_from_string(keystr))
-			InputMap.action_add_event(action, new_event)
-			#print_debug(action, " set to ", OS.find_keycode_from_string(keystr))
+		var actions: PackedStringArray = controls[action]
+		for i: String in actions:
+			var new_action: InputEventKey = InputEventKey.new()
+			new_action.set_keycode(OS.find_keycode_from_string(i.to_lower()))
+			var kcd: Key = OS.find_keycode_from_string(i.to_lower())
+			#print_debug(action, " set to ", OS.get_keycode_string(kcd))
+			InputMap.action_add_event(action, new_action)
 
 ## Updates the master volume and mute.
 func update_master_volume() -> void:
@@ -149,8 +156,15 @@ func reload_custom_settings() -> void:
 	var custom_settings: Settings = load("user://mtf_settings.tres")
 	if custom_settings:
 		for key: String in get_settings().keys():
-			if get(key) != custom_settings.get(key):
-				set(key, custom_settings.get(key))
+			var setting: Variant = get(key)
+			if setting != custom_settings.get(key):
+				if setting is Dictionary:
+					for dict_key: String in setting.keys():
+						var custom_dict: Dictionary = custom_settings.get(key)
+						if not dict_key in custom_dict:
+							custom_dict.set(dict_key, setting.get(dict_key))
+				else:
+					set(key, custom_settings.get(key))
 		custom_settings.unreference()
 
 ## Grabs all the settings (not including constant properties)
