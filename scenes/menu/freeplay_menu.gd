@@ -114,19 +114,17 @@ func change_selection(next: int = 0) -> void:
 	item = song_menu.get_child(selected)
 	if item: item.modulate.a = 1.0
 	song_menu.scroll_offset = selected
-	if songs.list[song_selected].difficulties.find(difficulty_name) == -1:
-		change_difficulty()
-	refresh_display_score()
+	change_difficulty()
 
 ## Changes the index of the difficulty cursor
 func change_difficulty(next: int = 0) -> void:
 	difficulty = wrapi(difficulty + next, 0, songs.list[song_selected].difficulties.size())
-	refresh_display_score()
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	var diff: String = songs.list[song_selected].difficulties[difficulty]
 	var tr_diff: String = tr("difficulty_%s" % diff.to_lower(), &"menus")
 	diff_text.text = "\n« %s »" % [ tr_diff if not tr_diff.begins_with("difficulty_") else diff ]
 	difficulty_name = diff
+	refresh_display_score()
 
 ## Reloads every item in the menu.
 func reload_song_items() -> void:
