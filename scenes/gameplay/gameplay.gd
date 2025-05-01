@@ -177,7 +177,6 @@ func kill_every_note(advancing: bool = false) -> void:
 				if cur_time < Conductor.time and i.time > Conductor.time:
 					var index: int = note_group.note_list.find(i)
 					note_group.list_position = index
-					print_debug(index)
 					break
 		note.queue_free()
 

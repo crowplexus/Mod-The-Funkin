@@ -5,7 +5,7 @@ extends Node2D
 const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a Random Song"
 
 ## List of songs to display on-screen.
-@export var songs: SongPlaylist = preload("uid://xqeend23c3cf")
+@export var songs: SongPlaylist = preload("uid://xqeend23c3cf").duplicate()
 
 @onready var bg: Sprite2D = $"background"
 
