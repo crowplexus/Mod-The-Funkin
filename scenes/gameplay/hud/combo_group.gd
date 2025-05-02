@@ -47,28 +47,26 @@ func _ready() -> void:
 	if settings.simplify_popups: combo_stacking = false
 
 func display_judgement(judge: String) -> void:
-	var judgement: PhysicsSprite2D
+	var popup_judge: PhysicsSprite2D
 	if combo_stacking:
-		judgement = get_child(0).duplicate()
-		judgement.visible = false
-		add_child(judgement)
+		popup_judge = get_child(0).duplicate()
+		popup_judge.visible = false
+		add_child(popup_judge)
 	else:
-		judgement = get_child(0)
-	judgement.position = Vector2.ZERO
-	judgement.modulate.a = 1.0
-	judgement.scale = judge_scale
-	judgement.texture_filter = assets.judgement_filter
-	judgement.texture = assets.judgement_assets[judge]
-	judgement.position.y = -50
+		popup_judge = get_child(0)
+	popup_judge.position = Vector2.ZERO
+	popup_judge.modulate.a = 1.0
+	popup_judge.scale = judge_scale
+	popup_judge.texture_filter = assets.judgement_filter
+	popup_judge.texture = assets.judgement_assets[judge]
+	popup_judge.position.y = -50
 	if not settings.simplify_popups:
-		# make sure it doesn't become extremely fast every time you hit a note without combo stacking.
-		if not combo_stacking: judgement.velocity = judgement.initial_velocity
-		judgement.velocity.y += randi_range(140, 175)
-		judgement.velocity.x -= randi_range(0, 10)
-		judgement.acceleration.y = 550
+		popup_judge.velocity.y = randi_range(140, 175)
+		popup_judge.velocity.x = randi_range(0, 10)
+		popup_judge.acceleration.y = 550
 	else:
-		judgement.scale *= 1.1
-	judgement.visible = true
+		popup_judge.scale *= 1.1
+	popup_judge.visible = true
 	var tween: Tween
 	if not combo_stacking:
 		if judgement_tween: judgement_tween.stop()
@@ -76,10 +74,10 @@ func display_judgement(judge: String) -> void:
 		tween = judgement_tween
 	else:
 		tween = create_tween().set_parallel(true)
-	tween.finished.connect(judgement.queue_free if combo_stacking else judgement.hide)
-	if judgement.scale != judge_scale:
-		tween.tween_property(judgement, "scale", judge_scale, 0.2)
-	tween.tween_property(judgement, "modulate:a", 0.0, 0.4).set_delay(Conductor.crotchet * 0.1)
+	tween.finished.connect(popup_judge.queue_free if combo_stacking else popup_judge.hide)
+	if popup_judge.scale != judge_scale:
+		tween.tween_property(popup_judge, "scale", judge_scale, 0.2)
+	tween.tween_property(popup_judge, "modulate:a", 0.0, 0.4).set_delay(Conductor.crotchet * 0.1)
 
 func display_combo(amnt: int = 0) -> void:
 	#hide_digits()
@@ -99,9 +97,8 @@ func display_combo(amnt: int = 0) -> void:
 		num_score.scale = combo_scale
 		num_score.modulate.a = 1.0
 		if not settings.simplify_popups:
-			if not combo_stacking: num_score	.velocity.x = num_score.initial_velocity.x
 			num_score.acceleration.y = randi_range(200, 300)
-			num_score.velocity.y += randi_range(140, 160)
+			num_score.velocity.y = randi_range(140, 160)
 			num_score.velocity.x = randf_range(-5, 5)
 		else:
 			num_score.scale.x *= 1.35
