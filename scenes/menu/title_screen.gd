@@ -3,6 +3,7 @@ extends Node2D
 @onready var cool_text: Label = $"background/cool_text"
 @onready var flash_sprite: ColorRect = $"color_rect"
 @onready var ng_sprite: Sprite2D = $"newgrounds_sprite"
+
 @onready var confirm_label: Label = $"title_sprites/confirm_label"
 @onready var logo_bump: AnimatedSprite2D = $"title_sprites/logo"
 @onready var title_sprites: Control = $"title_sprites"
@@ -20,6 +21,7 @@ var enter_text_timer: float = 0.0
 var flash_tween: Tween
 
 func _ready() -> void:
+	title_sprites.hide()
 	random_text = get_random_text()
 	if Global.DEFAULT_SONG and not Global.bgm.playing:
 		await RenderingServer.frame_post_draw

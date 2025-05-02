@@ -13,6 +13,7 @@ const BIG_BAR: String = "——————————————————�
 
 var prohibited_keys: Array[Key] = [KEY_ESCAPE, KEY_ENTER, KEY_PAUSE, KEY_BACKSPACE, KEY_TAB]
 var current_binds: PackedStringArray = []
+var original_binds: PackedStringArray = []
 var bind_selected: int = 0
 
 func _ready() -> void:
@@ -25,6 +26,7 @@ func reset_binds() -> void:
 	if variable_name in Global.settings.controls:
 		for i: String in Global.settings.controls[variable_name]:
 			current_binds.append(i)
+	original_binds = current_binds.duplicate()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not changing: return
@@ -64,3 +66,6 @@ func update_hover() -> void: # PLACEHOLDER ↓ ↓ ↓ ( I THINK
 		var next_color: Color = Color.WHITE
 		if i == bind_selected and changing: next_color = Color.CYAN
 		bind_labels[i].modulate = next_color
+
+func value_changed() -> bool:
+	return current_binds == original_binds

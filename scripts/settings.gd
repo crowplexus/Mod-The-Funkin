@@ -161,8 +161,10 @@ func reload_custom_settings() -> void:
 				if setting is Dictionary:
 					for dict_key: String in setting.keys():
 						var custom_dict: Dictionary = custom_settings.get(key)
-						if not dict_key in custom_dict:
+						if not dict_key in custom_dict: # set any missing keys to the custom dictionary.
 							custom_dict.set(dict_key, setting.get(dict_key))
+						# set the dictionary to the custom one.
+						set(key, custom_settings.get(key))
 				else:
 					set(key, custom_settings.get(key))
 		custom_settings.unreference()

@@ -22,6 +22,7 @@ func _ready() -> void:
 		og_pos = Global.bgm.get_playback_position()
 		Global.bgm.stop()
 	Conductor.bpm = bgm.stream.bpm
+	bgm.stream.loop = true
 	bgm.play()
 
 func _unhandled_key_input(event: InputEvent) -> void:

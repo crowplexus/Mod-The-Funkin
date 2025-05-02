@@ -42,7 +42,7 @@ func _notification(what: int) -> void:
 		NOTIFICATION_APPLICATION_FOCUS_IN when settings.auto_pause and Gameplay.current:
 			get_tree().paused = _was_paused
 		NOTIFICATION_WM_CLOSE_REQUEST:
-			settings.save_settings()
+			Global.settings.save_settings()
 
 #endregion
 

@@ -62,7 +62,7 @@ offset_right = 135.0
 offset_bottom = 52.0
 theme_override_fonts/font = ExtResource("2_2e11e")
 theme_override_font_sizes/font_size = 12
-text = "FPS: 0"
+text = "? FPS"
 
 [node name="update_timer" type="Timer" parent="."]
 unique_name_in_owner = true

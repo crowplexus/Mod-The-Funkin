@@ -44,6 +44,7 @@ func _ready() -> void:
 				setup_digit(i)
 		settings = Gameplay.current.local_settings
 	if not settings: settings = Global.settings
+	if settings.simplify_popups: combo_stacking = false
 
 func display_judgement(judge: String) -> void:
 	var judgement: PhysicsSprite2D
@@ -55,7 +56,7 @@ func display_judgement(judge: String) -> void:
 		judgement = get_child(0)
 	judgement.position = Vector2.ZERO
 	judgement.modulate.a = 1.0
-	judgement.scale = judge_scale #* randf_range(0.9, 1.1)
+	judgement.scale = judge_scale
 	judgement.texture_filter = assets.judgement_filter
 	judgement.texture = assets.judgement_assets[judge]
 	judgement.position.y = -50
@@ -65,12 +66,16 @@ func display_judgement(judge: String) -> void:
 		judgement.velocity.y += randi_range(140, 175)
 		judgement.velocity.x -= randi_range(0, 10)
 		judgement.acceleration.y = 550
+	else:
+		judgement.scale *= 1.1
 	judgement.visible = true
 	var tween: Tween
 	if not combo_stacking:
+		if judgement_tween: judgement_tween.stop()
+		judgement_tween = create_tween().set_parallel(true)
 		tween = judgement_tween
-		if tween: tween.stop()
-	tween = create_tween().set_parallel(true)
+	else:
+		tween = create_tween().set_parallel(true)
 	tween.finished.connect(judgement.queue_free if combo_stacking else judgement.hide)
 	if judgement.scale != judge_scale:
 		tween.tween_property(judgement, "scale", judge_scale, 0.2)
@@ -92,20 +97,23 @@ func display_combo(amnt: int = 0) -> void:
 			(size.y * 0.25) + (combo_scale.y + 25)
 		)
 		num_score.scale = combo_scale
-		#num_score.scale.x *= 1.5
 		num_score.modulate.a = 1.0
 		if not settings.simplify_popups:
 			if not combo_stacking: num_score	.velocity.x = num_score.initial_velocity.x
 			num_score.acceleration.y = randi_range(200, 300)
 			num_score.velocity.y += randi_range(140, 160)
 			num_score.velocity.x = randf_range(-5, 5)
+		else:
+			num_score.scale.x *= 1.35
 		num_score.texture_filter = assets.combo_filter
 		num_score.show()
 		var tween: Tween
 		if not combo_stacking:
-			tween = display_tweens[i]
 			if display_tweens[i]: display_tweens[i].kill()
-		tween = create_tween().set_parallel(true)
+			display_tweens[i] = create_tween().set_parallel(true)
+			tween = display_tweens[i]
+		else:
+			tween = create_tween().set_parallel(true)
 		tween.finished.connect(num_score.queue_free if combo_stacking else num_score.hide)
 		if num_score.scale != combo_scale:
 			tween.tween_property(num_score, "scale", combo_scale, 0.1)

@@ -10,6 +10,7 @@ extends Node2D
 @onready var right_arrow_sprite: Sprite2D = $level_ui/"difficulty/arrow_r"
 
 @export var levels: PlaylistArray
+
 var title_positions: Array[Vector2] = []
 var title_separation: float = 40.0
 var initial_y_diff: float = 80.0

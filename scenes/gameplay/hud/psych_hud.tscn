@@ -202,6 +202,8 @@ metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 
 [node name="combo_digit3" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_fpm36")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
 metadata/velocity = Vector2(0, 0)
 metadata/acceleration = Vector2(0, 0)
 

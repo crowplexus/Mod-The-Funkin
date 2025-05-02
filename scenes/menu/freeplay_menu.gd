@@ -2,10 +2,8 @@ extends Node2D
 
 # TODO: rewrite this.
 
-const TIP_BUTTONS: String = "Push Q/E to Switch Categories\nPush R to Select a Random Song"
-
 ## List of songs to display on-screen.
-@export var songs: SongPlaylist = preload("uid://xqeend23c3cf").duplicate()
+@export var songs: SongPlaylist
 
 @onready var bg: Sprite2D = $"background"
 @onready var score_text: Label = $"ui/score_text"
@@ -19,7 +17,6 @@ var difficulty: int = 1 # NORMAL
 var lerp_score: float = 0
 
 var selectables: Array[int] = []
-var _harcoded_entries: Array[String] = []
 var difficulty_name: String = Global.DEFAULT_DIFFICULTY
 var display_score: Dictionary = Tally.empty_highscore()
 var lists: Array[String] = []
@@ -38,7 +35,7 @@ func _ready() -> void:
 			songs.list.remove_at(index)
 	
 	Global.change_transition_style()
-	_harcoded_entries.append_array(song_menu.items)
+	song_menu.items.clear()
 	song_menu.item_created.connect(func(item: Control) -> void:
 		item.modulate.a = 0.6 if item.get_index() != selected else 1.0)
 	Global.update_discord("Menus", "Selecting a Song in Freeplay")
@@ -129,8 +126,6 @@ func change_difficulty(next: int = 0) -> void:
 func reload_song_items() -> void:
 	selectables.clear()
 	song_menu.items.clear()
-	# in case your hardcode any buttons and whatnot.
-	song_menu.items.append_array(_harcoded_entries)
 	for song: SongItem in songs.list:
 		selectables.append(songs.find(song))
 		song_menu.items.append(song.name)

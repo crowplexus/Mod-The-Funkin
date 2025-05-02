@@ -23,7 +23,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 script = ExtResource("1_rxiwv")
 name = &"Test"
 folder = "test"
-difficulties = ["normal"]
+difficulties = ["hard"]
 visible = 3
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 

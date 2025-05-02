@@ -15,7 +15,7 @@ const INACTIVE_COLOR: Color = Color("#b3b3b3")
 		if name_label: name_label.text = new_dpnm
 		display_name = new_dpnm
 @export var variable_name: StringName
-@export_multiline var description: String = "Description."
+@export_multiline var description: String = "(No description)."
 var settings: Settings
 
 var current_value: int = 0

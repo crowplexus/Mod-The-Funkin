@@ -1,5 +1,7 @@
 extends Control
 
+# TODO: rewrite this.
+
 const OPTION_TRANSLATE_CONTEXT: StringName = &"options"
 
 @onready var option_title: Label = $"description/option"
@@ -27,7 +29,7 @@ func _ready() -> void:
 	reload_labels()
 	switch_tabs()
 
-func _unhandled_input(_event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	var tab_axis: int = int(Input.get_axis("ui_left", "ui_right"))
 	var opt_axis: int = int(Input.get_axis("ui_up", "ui_down"))
 	var selected_option: Control = current_tab[selected]
@@ -39,8 +41,10 @@ func _unhandled_input(_event: InputEvent) -> void:
 				selected_option.update_value(tab_axis)
 				changing_option = selected_option.changing # in case options change it.
 				selected_option.update_hover()
+	
 	if opt_axis != 0 and not changing_option:
 		change_selection(opt_axis)
+	
 	if Input.is_action_just_pressed("ui_accept"):
 		changing_option = not changing_option
 		selected_option.changing = changing_option
@@ -102,9 +106,6 @@ func change_altered_settings() -> void:
 				if i.visible and i is OptionBar:
 					i.update_setting()
 	settings.update_all()
-
-func save_to_disk() -> void:
-	pass
 
 func reload_labels() -> void:
 	tab_name.text = tr("options_tab_%s" % visible_tab, OPTION_TRANSLATE_CONTEXT)

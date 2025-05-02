@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cjow6k70i87vg" path="res://scenes/tools/sparrow_to_spriteframes.gd" id="1_7u426"]
 [ext_resource type="Texture2D" uid="uid://ciwp55vsaghii" path="res://assets/ui/menu/menuDesat.png" id="2_6mghc"]
 [ext_resource type="FontFile" uid="uid://bd4a21b8dcnsd" path="res://assets/ui/fonts/funkin.ttf" id="4_b4mj3"]
-[ext_resource type="Theme" uid="uid://bnfirbbvjsv2r" path="res://assets/themes/funkin_godot_tools.tres" id="4_jbg5x"]
+[ext_resource type="Theme" uid="uid://bnfirbbvjsv2r" path="res://assets/ui/funkin_godot_tools.tres" id="4_jbg5x"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cske1"]
 font = ExtResource("4_b4mj3")

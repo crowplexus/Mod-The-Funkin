@@ -31,6 +31,7 @@ var bpm: float = 100.0:
 ## Audio Playback Speed rate.
 var rate: float = 1.0:
 	set(new_rate):
+		rate = new_rate
 		AudioServer.playback_speed_scale = new_rate
 		Engine.time_scale = new_rate
 ## Beat Length in seconds, calculated when setting the bpm.
