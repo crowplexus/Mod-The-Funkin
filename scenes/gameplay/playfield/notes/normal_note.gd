@@ -58,7 +58,7 @@ func display_splash() -> Node2D:
 		strum.add_child(dip)
 	dip.global_position = strum.global_position
 	dip.modulate.a = (game.local_settings.note_splash_alpha if Gameplay.current else Global.settings.note_splash_alpha) * 0.01
-	dip.scale = splash_scale * (1.0 if judgement.splash_type == Judgement.SplashType.FULL else 0.8)
+	dip.scale = splash_scale * (1.5 if judgement.splash_type == Judgement.SplashType.FULL else 1.0)
 	dip.frame = 0
 	dip.show()
 	dip.play("note impact %s %s" %  [ randi_range(1, 2), Note.COLORS[column] ], 1.0)
