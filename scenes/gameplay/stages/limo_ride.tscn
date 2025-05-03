@@ -280,23 +280,23 @@ position = Vector2(1006, 429)
 sprite_frames = ExtResource("3_oxteu")
 animation = &"background limo pink"
 autoplay = "background limo pink"
-frame_progress = 0.862957
+frame_progress = 0.006792
 
 [node name="limo_dancer1" type="AnimatedSprite2D" parent="factor(0_4,0_4)"]
 z_index = 50
-position = Vector2(558, 51)
+position = Vector2(958, 51)
 sprite_frames = ExtResource("4_g1wyp")
 animation = &"bg dancer sketch PINK"
 
 [node name="limo_dancer2" type="AnimatedSprite2D" parent="factor(0_4,0_4)"]
 z_index = 50
-position = Vector2(1006, 51)
+position = Vector2(1406, 51)
 sprite_frames = ExtResource("4_g1wyp")
 animation = &"bg dancer sketch PINK"
 
 [node name="limo_dancer3" type="AnimatedSprite2D" parent="factor(0_4,0_4)"]
 z_index = 50
-position = Vector2(1414, 51)
+position = Vector2(1814, 51)
 sprite_frames = ExtResource("4_g1wyp")
 animation = &"bg dancer sketch PINK"
 
@@ -308,7 +308,7 @@ position = Vector2(1020, 648)
 sprite_frames = ExtResource("3_g1wyp")
 animation = &"Limo stage"
 autoplay = "Limo stage"
-frame_progress = 0.308027
+frame_progress = 0.451863
 
 [node name="car" type="Sprite2D" parent="factor(1,1)"]
 z_index = 100
@@ -328,12 +328,12 @@ metadata/_custom_type_script = "uid://cku7st80n16gp"
 
 [node name="dj" type="Marker2D" parent="."]
 z_index = 100
-position = Vector2(1761, 60)
+position = Vector2(617, 36)
 scale = Vector2(0.7, 0.7)
 
 [node name="enemy" type="Marker2D" parent="."]
 z_index = 200
-position = Vector2(480, 234)
+position = Vector2(400, 178)
 
 [node name="player" type="Marker2D" parent="."]
 z_index = 300
