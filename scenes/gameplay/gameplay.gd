@@ -28,6 +28,7 @@ const DEFAULT_HEALTH_WEIGHT: int = 5
 
 var player_id: int = 0
 var player_strums: Strumline
+var player_botplay: bool = false
 # I need this to be static because of story mode,
 # since it reuses the same tally from the previous song.
 static var tally: Tally
@@ -172,6 +173,7 @@ func _ready() -> void:
 		Conductor.length = chart.notes.back().time
 	player_strums = strumlines.get_child(player_id)
 	for strums: Strumline in strumlines.get_children():
+		if strums == player_strums: strums.input.botplay = player_botplay
 		strums.input.botplay = strums != player_strums
 		strums.input.setup()
 	
@@ -249,12 +251,6 @@ func _process(delta: float) -> void:
 		Conductor.update(music.get_playback_position() + AudioServer.get_time_since_last_mix())
 	elif not Conductor.active:
 		Conductor.active = true
-	if should_spawn_notes: do_note_spawning()
-	if should_process_events: process_timed_events()
-	
-	if no_fail_mode and health <= 0:
-		kill_yourself(get_actor_from_index(player_id))
-	
 	if starting:
 		if Conductor.time >= 0.0:
 			if music: music.play(Conductor.time)
@@ -262,12 +258,17 @@ func _process(delta: float) -> void:
 	else:
 		if Conductor.time >= Conductor.length and not ending:
 			end_song()
-		
+	if no_fail_mode and health <= 0: kill_yourself(get_actor_from_index(player_id))
 	# hud bumping #
 	if hud and hud_layer.is_inside_tree() and hud_layer.scale != Vector2.ONE:
 		hud_layer.scale = hud.get_bump_lerp_vector(hud_layer.scale, default_hud_scale, delta)
 		hud_layer.offset.x = (hud_layer.scale.x - 1.0) * -(get_viewport_rect().size.x * 0.5)
 		hud_layer.offset.y = (hud_layer.scale.y - 1.0) * -(get_viewport_rect().size.y * 0.5)
+
+func _physics_process(delta: float) -> void:
+	# I don't need this to run every single frame.
+	if should_process_events: process_timed_events()
+	if should_spawn_notes: do_note_spawning()
 
 func _unhandled_key_input(_event: InputEvent) -> void:
 	if OS.is_debug_build() and not starting and _event.pressed and not _event.is_echo():
@@ -389,6 +390,7 @@ func load_characters() -> void:
 				new_actor.position = new_position.position
 				new_actor.modulate = new_position.modulate
 				new_actor.z_index = new_position.z_index
+				new_actor.scale = new_position.scale
 				stage_bg.remove_child(new_position)
 				stage_bg.add_child(new_actor)
 				stage_bg.move_child(new_actor, actor_idx)

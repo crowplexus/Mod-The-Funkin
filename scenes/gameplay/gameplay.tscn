@@ -19,8 +19,6 @@ script = ExtResource("1_7biu0")
 
 [node name="hud_layer" type="CanvasLayer" parent="."]
 
-[node name="hud" parent="hud_layer" instance=ExtResource("3_m3hu3")]
-
 [node name="strumlines" type="Control" parent="hud_layer"]
 layout_mode = 3
 anchors_preset = 15
@@ -48,6 +46,8 @@ input = NodePath("botplay_input")
 script = ExtResource("5_q64rj")
 strumline = NodePath("..")
 metadata/_custom_type_script = "uid://khoba7t4ejd5"
+
+[node name="hud" parent="hud_layer" instance=ExtResource("3_m3hu3")]
 
 [node name="music_player" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
