@@ -32,7 +32,7 @@ func setup() -> void:
 
 func _process(delta: float) -> void:
 	if strumline and strumline.notes and strumline.notes.get_child_count() != 0:
-		if Conductor.time > -1.0:
+		if Conductor.time > -0.05:
 			for note: Note in strumline.notes.get_children():
 				if botplay and note.time <= Conductor.time and not note.was_hit:
 					on_note_hit(note)

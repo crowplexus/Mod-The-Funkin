@@ -30,5 +30,7 @@ func play_animation(state: int = StrumNote.States.STATIC, force: bool = false) -
 	var index: int = get_index()
 	if parent: index = index % parent.get_child_count()
 	if _last_state != state or force: player.seek(0.0)
-	player.play(str(index) + " " + StrumNote.States.keys()[state].to_lower())
+	var animation: StringName = str(index) + " " + StrumNote.States.keys()[state].to_lower()
+	if player.has_animation(animation):
+		player.play(animation)
 	_last_state = state

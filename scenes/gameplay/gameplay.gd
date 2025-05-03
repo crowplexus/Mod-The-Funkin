@@ -178,8 +178,8 @@ func _ready() -> void:
 		if not strums.skin and assets and assets.noteskin:
 			strums.skin = assets.noteskin
 		if strums.skin: strums.reload_skin()
-		if strums == player_strums: strums.input.botplay = player_botplay
 		strums.input.botplay = strums != player_strums
+		if strums == player_strums: strums.input.botplay = player_botplay
 		strums.input.setup()
 	
 	Conductor.on_beat_hit.connect(on_beat_hit)
