@@ -13,15 +13,16 @@ var speed_change_tween: Tween
 func reload_skin() -> void:
 	if not skin: return
 	for strum: StrumNote in strums:
+		if skin.strum_scene.resource_path == strum.scene_file_path:
+			return
+		strum.queue_free()
 		var new_thing: StrumNote = skin.strum_scene.instantiate()
-		new_thing.position = (strum.position * (new_thing.scale * self.scale))
-		new_thing.name = strum.name
+		new_thing.position = (strum.position * (self.scale * new_thing.scale))
 		var index: int = strums.find(strum)
+		new_thing.name = str(index)
 		add_child(new_thing)
 		strums[index] = new_thing
 		move_child(new_thing, index)
-		strum.queue_free()
-		print_debug("replaced strum ", index)
 
 func get_splash(idx: int) -> Node:
 	var splash: Node = null
