@@ -115,7 +115,7 @@ func confirm_selection() -> void:
 							note.reset_scroll()
 				# swap the huds if we can.
 				if Gameplay.current.hud_is_built_in == true and Gameplay.current.local_settings.hud_style != Global.settings.hud_style:
-					Gameplay.current.local_settings.hfud_style = Global.settings.hud_style
+					Gameplay.current.local_settings.hud_style = Global.settings.hud_style
 					Gameplay.current.reload_hud()
 			can_control = true
 		"exit":

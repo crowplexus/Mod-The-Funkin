@@ -86,7 +86,6 @@ func on_beat_hit(beat: float) -> void:
 func skip_intro() -> void:
 	flash_screen()
 	delete_cool_text()
-	
 	title_sprites.show()
 	cool_text.hide()
 	await get_tree().create_timer(0.1).timeout
