@@ -58,6 +58,7 @@ var length: float = -1.0
 # Input stuff
 var was_hit: bool = false
 var was_missed: bool = false
+var hit_misses: bool = false ## Hitting this note will cause a miss instead.
 #var late_hitbox: float = 1.0
 #var early_hitbox: float = 1.0
 var hit_time: float = 0.0

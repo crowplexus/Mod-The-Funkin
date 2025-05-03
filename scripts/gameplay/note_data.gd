@@ -15,7 +15,7 @@ static var EMPTY: NoteData = NoteData.new():
 @export var side: int = 0
 ## Note Type/Kind, if unspecified or non-existant,
 ## The default note type will be used instead.
-@export var kind: StringName = &"default"
+@export var kind: StringName = DEFAULT_NOTE_KIND
 ## Note Length, spawns a tail in the note if specified.
 @export var length: float = 0.0
 ## Custom Parameters.
@@ -58,14 +58,21 @@ func _to_string() -> String:
 
 #region Note Generation Functions
 
+const DEFAULT_NOTE_KIND: StringName = &"_"
+
 ## Schema must use the original FNF format, that being:[br][br]
 ## [ time: float (ms), column: int, length: float (ms), data: String ]
 static func from_array(data: Array, max_columns: int = 4, return_raw_column: bool = false) -> NoteData:
 	var swag_note: NoteData = NoteData.new()
 	var raw_column: int = int(data[1])
 	swag_note.time = float(data[0]) * 0.001
-	if data.size() > 3 and data[3] != "":
-		swag_note.kind = StringName(data[3])
+	if data.size() > 3 and not str(data[3]).is_empty():
+		swag_note.kind = StringName(str(data[3]))
+		match swag_note.kind:
+			&"Hurt Note": swag_note.kind = &"mine" # psych.
+			_: swag_note.kind = DEFAULT_NOTE_KIND
+		if swag_note.kind != DEFAULT_NOTE_KIND and not swag_note.kind in Gameplay.NOTE_TYPES:
+			swag_note.kind = DEFAULT_NOTE_KIND # default
 	swag_note.length = float(data[2]) * 0.001
 	if not return_raw_column:
 		swag_note.column = raw_column % max_columns

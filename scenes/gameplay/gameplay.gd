@@ -10,6 +10,7 @@ signal on_note_spawned(data: NoteData, note: Note)
 
 ## Notetypes that can be spawned.
 const NOTE_TYPES: Dictionary[String, PackedScene] = {
+	"mine": preload("uid://b4e0quuk03nqs"),
 	"_": preload("uid://gib0vewis1qh"),
 }
 
@@ -55,6 +56,7 @@ static func change_playlist_song(next: int = 0, no_scene_checks: bool = false) -
 	var songs_ended: bool = Gameplay.current_song > Gameplay.playlist.size() - 1
 	if not songs_ended:
 		Gameplay.chart = playlist[current_song]
+		Chart.reset_timing_changes(Gameplay.chart.timing_changes)
 	if not no_scene_checks:
 		if songs_ended: Gameplay.current.exit_game()
 		else: Global.reload_scene(true)
@@ -197,9 +199,7 @@ func kill_every_note(advancing: bool = false) -> void:
 			note.queue_free()
 
 func restart_song() -> void:
-	if chart:
-		Chart.reset_timing_changes(chart.timing_changes)
-		Conductor.reset(chart.get_bpm(), false)
+	if chart: Conductor.reset(chart.get_bpm(), false)
 	starting = true
 	ending = false
 	if music:
@@ -258,7 +258,8 @@ func _process(delta: float) -> void:
 	else:
 		if Conductor.time >= Conductor.length and not ending:
 			end_song()
-	if no_fail_mode and health <= 0: kill_yourself(get_actor_from_index(player_id))
+	if not no_fail_mode and health <= 0:
+		kill_yourself(get_actor_from_index(player_id))
 	# hud bumping #
 	if hud and hud_layer.is_inside_tree() and hud_layer.scale != Vector2.ONE:
 		hud_layer.scale = hud.get_bump_lerp_vector(hud_layer.scale, default_hud_scale, delta)
@@ -449,7 +450,7 @@ func do_note_spawning() -> void:
 		if strumline.speed < 1.0: spawn_time /= strumline.speed
 		if not strumline or absf(note_data.time - Conductor.playhead) > spawn_time:
 			break
-		var new_note: Note = get_unspawned_note()
+		var new_note: Note = get_unspawned_note(note_data.kind)
 		new_note.strumline = strumline
 		new_note.data = note_data
 		strumline.notes.add_child(new_note)
@@ -457,12 +458,12 @@ func do_note_spawning() -> void:
 		on_note_spawned.emit(note_data, new_note)
 		note_spawn_index = notes_to_spawn.find(note_data) + 1
 
-func get_unspawned_note() -> Node:
+func get_unspawned_note(type: StringName = NoteData.DEFAULT_NOTE_KIND) -> Node:
 	#for node: Node in strumline.notes.sget_children():
 	#	if not node.visible:
 	#		return node
-	var unspawned_note: = NOTE_TYPES._.instantiate()
-	unspawned_note.name = "note%s" % note_spawn_index
+	var unspawned_note: = NOTE_TYPES[type].instantiate()
+	unspawned_note.name = "note_%s_%s" % [ unspawned_note.name, note_spawn_index ]
 	return unspawned_note
 
 func on_note_hit(note: Note) -> void:
@@ -494,7 +495,6 @@ func on_note_hit(note: Note) -> void:
 		hud.display_combo(local_tally.combo)
 		hud.update_score_text(false)
 		hud.update_health(display_health)
-	if character: kill_yourself(character)
 
 func kill_yourself(actor: Actor2D) -> void: # thanks Unholy
 	if health <= 0: # игра окоичена!
