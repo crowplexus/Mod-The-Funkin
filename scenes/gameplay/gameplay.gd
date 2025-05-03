@@ -405,6 +405,8 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 	if hud_layer.has_node("hud"):
 		idx = hud_layer.get_node("hud").get_index()
 		huds.append(hud_layer.get_node("hud"))
+	elif hud:
+		idx = hud.get_index()
 	for hud_node: Control in huds:
 		hud_node.set_process(false) # just in case
 		hud_node.queue_free()
