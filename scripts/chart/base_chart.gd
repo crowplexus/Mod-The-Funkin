@@ -15,7 +15,7 @@ const VELOCITY_EVENTS: Array[StringName] = [
 	#&"Set Slider Velocity",
 ]
 
-## Assets used in the chart (music files, custom hud and noteskin, pause menu, etc)
+## Assets used in the chart (music files, custom hud, pause menu, etc)
 @export var assets: ChartAssets
 ## Song Name (to display in menus).
 @export var name: StringName = &"Unknown"

@@ -6,6 +6,13 @@ enum GameMode {
 	CHARTING = 2,
 }
 
+signal on_note_spawned(data: NoteData, note: Note)
+
+## Notetypes that can be spawned.
+const NOTE_TYPES: Dictionary[String, PackedScene] = {
+	"_": preload("uid://gib0vewis1qh"),
+}
+
 ## Default HUD scenes to use, mainly for settings and stuff.
 var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
 	"Classic": load("uid://br6ornbfmuj7l"),
@@ -19,14 +26,15 @@ const DEFAULT_HEALTH_VALUE: int = 50
 ## Default Health Weight (how much should it be multiplied by when gaining)
 const DEFAULT_HEALTH_WEIGHT: int = 5
 
-var player_strums: NoteField
+var player_id: int = 0
+var player_strums: Strumline
 # I need this to be static because of story mode,
 # since it reuses the same tally from the previous song.
 static var tally: Tally
 static var current: Gameplay
 static var chart: Chart
 
-#region Playlist
+#region Static Stuff
 
 static var playlist: Array[Chart] = []
 static var current_song: int = 0
@@ -78,6 +86,13 @@ static func get_mode_string(gm: int) -> String:
 		2: return "Charting"
 		_: return "Unknown"
 
+static func play_inst_outside() -> void:
+	if Gameplay.chart and Gameplay.chart.assets:
+		Global.play_bgm(Gameplay.chart.assets.instrumental, 0.01)
+		var length: float = Gameplay.chart.assets.instrumental.get_length()
+		Global.bgm.seek(randf_range(0, length * 0.5))
+		Global.request_audio_fade(Global.bgm, 0.7, 1.0)
+
 #endregion
 
 var local_tally: Tally
@@ -86,8 +101,7 @@ var assets: ChartAssets
 var scripts: ScriptPack
 
 @onready var music: AudioStreamPlayer = $%"music_player"
-@onready var note_group: Node2D = $"hud_layer/note_group"
-@onready var note_fields: Control = $"hud_layer/note_fields"
+@onready var strumlines: Control = $"hud_layer/strumlines"
 
 @onready var hud_layer: CanvasLayer = $"hud_layer"
 @onready var default_hud_scale: Vector2 = $"hud_layer".scale
@@ -104,12 +118,17 @@ var dj: Actor2D
 
 @onready var game_mode_name: String = Gameplay.get_mode_string(game_mode)
 var judgements: JudgementList = preload("uid://fj361lysi7nc")
+
+var note_spawn_index: int = 0
+var notes_to_spawn: Array[NoteData] = []
 var timed_events: Array[TimedEvent] = []
 var should_process_events: bool = true
+var should_spawn_notes: bool = true
 var event_position: int = 0
 
 var ending: bool = false
 var starting: bool = true
+var no_fail_mode: bool = false
 var has_enemy_track: bool = false
 var hud_is_built_in: bool = true
 ## This will move the enemy character and hide the dj character[br]
@@ -118,13 +137,8 @@ var tutorial_dj: bool = true
 
 var health: int = Gameplay.DEFAULT_HEALTH_VALUE:
 	set(new_health): health = clampi(new_health, 0, 100)
-
-static func play_inst_outside() -> void:
-	if Gameplay.chart and Gameplay.chart.assets:
-		Global.play_bgm(Gameplay.chart.assets.instrumental, 0.01)
-		var length: float = Gameplay.chart.assets.instrumental.get_length()
-		Global.bgm.seek(randf_range(0, length * 0.5))
-		Global.request_audio_fade(Global.bgm, 0.7, 1.0)
+var display_health: int = Gameplay.DEFAULT_HEALTH_VALUE:
+	get: return health if player_id == 0 else (100 - health)
 
 func _ready() -> void:
 	current = self
@@ -144,17 +158,22 @@ func _ready() -> void:
 		scripts.load_song_scripts(chart.parsed_values.song_name, chart.parsed_values.difficulty)
 		timed_events = chart.scheduled_events.duplicate()
 		difficulty_name = chart.parsed_values.difficulty
+		notes_to_spawn = chart.notes.duplicate()
 		song_name = chart.name
 	add_child(scripts)
 	scripts.call_func("_pack_entered")
-	if chart.assets:
+	if chart and chart.assets:
 		load_stage(chart.stage if chart and chart.stage else null)
 		load_characters()
 		load_streams()
 		reload_hud()
 	
-	init_note_spawner()
-	setup_note_fields()
+	if chart and Conductor.length <= 0.0:
+		Conductor.length = chart.notes.back().time
+	player_strums = strumlines.get_child(player_id)
+	for strums: Strumline in strumlines.get_children():
+		strums.input.botplay = strums != player_strums
+		strums.input.setup()
 	
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	scripts.call_func("_ready_post")
@@ -164,26 +183,21 @@ func _ready() -> void:
 	camera = get_viewport().get_camera_2d()
 	restart_song()
 
-func setup_note_fields() -> void:
-	# TODO: rewrite how note fields work entirely.
-	for i: NoteField in note_fields.get_children():
-		if i.player: i.player.setup()
-	player_strums = note_fields.get_child(0)
-
 func kill_every_note(advancing: bool = false) -> void:
-	for note: Note in note_group.get_children():
-		if advancing:
-			var cur_time: float = note.time
-			for i: NoteData in note_group.note_list:
-				if cur_time < Conductor.time and i.time > Conductor.time:
-					var index: int = note_group.note_list.find(i)
-					note_group.list_position = index
-					break
-		note.queue_free()
+	for strums: Strumline in strumlines.get_children():
+		for note: Note in strums.notes.get_children():
+			if advancing:
+				var cur_time: float = note.time
+				for i: NoteData in notes_to_spawn:
+					if cur_time < Conductor.time and i.time > Conductor.time:
+						note_spawn_index = notes_to_spawn.find(i)
+						break
+			note.queue_free()
 
 func restart_song() -> void:
-	Chart.reset_timing_changes(chart.timing_changes)
-	Conductor.reset(chart.get_bpm(), false)
+	if chart:
+		Chart.reset_timing_changes(chart.timing_changes)
+		Conductor.reset(chart.get_bpm(), false)
 	starting = true
 	ending = false
 	if music:
@@ -191,7 +205,7 @@ func restart_song() -> void:
 		music.seek(0.0)
 	# disable note spawning and event dispatching.
 	should_process_events = false
-	note_group.active = false
+	should_spawn_notes = false
 	local_tally.zero()
 	health = Gameplay.DEFAULT_HEALTH_VALUE
 	tally.merge(local_tally)
@@ -202,17 +216,13 @@ func restart_song() -> void:
 	should_process_events = not timed_events.is_empty()
 	# kill notes in the note group to not give you damage
 	kill_every_note()
-	note_group.offset = local_settings.note_offset
-	note_group.list_position = 0
-	note_group.active = true
+	note_spawn_index = 0
+	should_spawn_notes = not notes_to_spawn.is_empty()
 	# set initial scroll speed.
 	if chart: fire_timed_event(chart.get_velocity_change(0.0))
-	for note_field: NoteField in note_fields.get_children():
-		if note_field.player is Player:
-			note_field.player.keys_held.fill(false)
-			note_field.player.note_group = note_group
-		for i: int in note_field.get_child_count():
-			note_field.play_animation(i)
+	for strums: Strumline in strumlines.get_children():
+		for i: int in strums.get_child_count():
+			strums.play_strum(StrumNote.States.STATIC, i)
 	_sync_rpc_timestamp()
 	play_countdown()
 
@@ -239,8 +249,12 @@ func _process(delta: float) -> void:
 		Conductor.update(music.get_playback_position() + AudioServer.get_time_since_last_mix())
 	elif not Conductor.active:
 		Conductor.active = true
-	if should_process_events:
-		process_timed_events()
+	if should_spawn_notes: do_note_spawning()
+	if should_process_events: process_timed_events()
+	
+	if no_fail_mode and health <= 0:
+		kill_yourself(get_actor_from_index(player_id))
+	
 	if starting:
 		if Conductor.time >= 0.0:
 			if music: music.play(Conductor.time)
@@ -262,30 +276,30 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 				skip_to_time(music.get_playback_position() + 10)
 			KEY_END:
 				music.stop()
-				note_group.active = false
+				should_spawn_notes = false
 				should_process_events = false
 				tally.merge(local_tally) # just in case
 				tally.is_valid = false
 				Conductor.time = Conductor.length
 	
 	if Input.is_action_just_pressed("ui_pause"):
+		if music: music.stop()
 		var pause_menu: PackedScene
 		if assets and assets.pause_menu:
 			pause_menu = assets.pause_menu
 		else:
 			pause_menu = DEFAULT_PAUSE_MENU
-		if music: music.stop()
 		var instance: Control = pause_menu.instantiate()
 		instance.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 		instance.tree_exited.connect(_default_rpc)
 		hud_layer.add_child(instance)
 		get_tree().paused = true
 		return
-	if player_strums and player_strums.player is Player and player:
-		player.lock_on_sing = player_strums.player.keys_held.has(true)
+	if player_strums and player:
+		player.lock_on_sing = player_strums.input.keys_held.has(true)
 
 func skip_to_time(time: float = 0.0) -> void:
-	note_group.active = false
+	should_spawn_notes = false
 	music.seek(time)
 	Conductor.time = time
 	if Conductor.time >= Conductor.length:
@@ -293,7 +307,7 @@ func skip_to_time(time: float = 0.0) -> void:
 		tally.merge(local_tally) # just in case
 		tally.is_valid = false
 	kill_every_note(true)
-	note_group.active = true
+	should_spawn_notes = true
 
 func process_timed_events() -> void:
 	#var idx: int = timed_events.find(current_event) # if i need it...
@@ -412,7 +426,7 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 	if hud:
 		hud.init_vars()
 		hud.update_score_text(true) # pretend its a miss
-		hud.update_health(health)
+		hud.update_health(display_health)
 
 func load_streams() -> void:
 	if chart.assets and chart.assets.instrumental:
@@ -423,16 +437,29 @@ func load_streams() -> void:
 			for i: int in chart.assets.vocals.size():
 				music.stream.set_sync_stream(i + 1, chart.assets.vocals[i])
 
-func init_note_spawner() -> void:
-	note_group.on_note_spawned.connect(func(data: NoteData, note: Node2D) -> void:
-		var receptor: = note_fields.get_child(data.side).get_child(data.column)
-		note.global_position = receptor.global_position
-		note.scale = note_fields.get_child(data.side).scale
-		note.note_field = note_fields.get_child(data.side)
-	)
-	if chart and not chart.notes.is_empty():
-		note_group.note_list = chart.notes.duplicate(true)
-		if Conductor.length <= 0.0: Conductor.length = chart.notes.back().time
+func do_note_spawning() -> void:
+	while note_spawn_index < notes_to_spawn.size():
+		var note_data: NoteData = notes_to_spawn[note_spawn_index]
+		var strumline: Strumline = strumlines.get_child(note_data.side)
+		var spawn_time: float = 1.25
+		if strumline.speed < 1.0: spawn_time /= strumline.speed
+		if not strumline or absf(note_data.time - Conductor.playhead) > spawn_time:
+			break
+		var new_note: Note = get_unspawned_note()
+		new_note.strumline = strumline
+		new_note.data = note_data
+		strumline.notes.add_child(new_note)
+		new_note.reload(note_data)
+		on_note_spawned.emit(note_data, new_note)
+		note_spawn_index = notes_to_spawn.find(note_data) + 1
+
+func get_unspawned_note() -> Node:
+	#for node: Node in strumline.notes.sget_children():
+	#	if not node.visible:
+	#		return node
+	var unspawned_note: = NOTE_TYPES._.instantiate()
+	unspawned_note.name = "note%s" % note_spawn_index
+	return unspawned_note
 
 func on_note_hit(note: Note) -> void:
 	if note.was_hit or note.column == -1:
@@ -441,8 +468,9 @@ func on_note_hit(note: Note) -> void:
 	var abs_diff: float = absf(note.time - Conductor.playhead) * 1000.0
 	var judged_tier: int = Tally.judge_time(abs_diff)
 	note.judgement = judgements.list[judged_tier]
-	if player and note.side == 0 and player.able_to_sing:
-		player.sing(note.column, note.arrow.visible)
+	var character: Actor2D = get_actor_from_index(note.side)
+	if character and character.able_to_sing:
+		character.sing(note.column, note.arrow.visible)
 		if music: music.stream.set_sync_stream_volume(1, linear_to_db(1.0))
 	if note.can_splash(): note.display_splash()
 	# kill everyone, and everything in your path
@@ -461,10 +489,10 @@ func on_note_hit(note: Note) -> void:
 		hud.display_judgement(note.judgement)
 		hud.display_combo(local_tally.combo)
 		hud.update_score_text(false)
-		hud.update_health(health)
-	kill_yourself()
+		hud.update_health(display_health)
+	if character: kill_yourself(character)
 
-func kill_yourself() -> void: # thanks Unholy
+func kill_yourself(actor: Actor2D) -> void: # thanks Unholy
 	if health <= 0: # игра окоичена!
 		hud_layer.hide()
 		if music: music.stop()
@@ -472,9 +500,9 @@ func kill_yourself() -> void: # thanks Unholy
 		local_tally.zero()
 		tally.merge(local_tally)
 		if hud:
-			hud.update_health(health)
+			hud.update_health(display_health)
 			hud.update_score_text(true)
-		player.die()
+		actor.die()
 
 func try_revive() -> void:
 	if health > 0:
@@ -484,24 +512,27 @@ func try_revive() -> void:
 func on_note_miss(note: Note, idx: int = -1) -> void:
 	var damage_boost: float = -note.hold_size if note and note.hold_size > 0.0 else -2.0
 	if damage_boost < -10.0: damage_boost = -10.0
-	if note and note.was_missed or idx == -1: return
+	if (note and note.was_missed) or idx == -1: return
+	# change scoring
 	if local_tally.combo > 0: # break combo (if needed)
 		local_tally.combo = 0
 	#else: # decrease for miss combo
 	#	local_tally.combo -= 1
 	local_tally.score += Tally.MISS_SCORE
 	local_tally.increase_misses(1) # increase by one
-	player.sing(idx, true, "miss")
 	health += int(-5 + damage_boost)
+	#print_debug("Health damaged by ", int(Tally.MISS_POINTS + damage_boost), "%")
+	tally.merge(local_tally)
+	# mute vocals
 	if music: music.stream.set_sync_stream_volume(1, linear_to_db(0.0))
 	if assets and assets.miss_note_sounds:
 		Global.play_sfx(assets.miss_note_sounds.pick_random(), randf_range(0.1, 0.4))
-	#print_debug("Health damaged by ", int(Tally.MISS_POINTS + damage_boost), "%")
-	tally.merge(local_tally)
+	# update hud
 	if hud:
 		hud.update_score_text(true)
-		hud.update_health(health)
-	kill_yourself()
+		hud.update_health(display_health)
+	# play miss animations.
+	if player: player.sing(idx, true, "miss")
 
 func on_beat_hit(beat: float) -> void:
 	if hud and int(beat) > 0 and int(beat) % 4 == 0:
@@ -513,7 +544,7 @@ func end_song() -> void:
 	change_playlist_song(1)
 
 func exit_game() -> void:
-	if tally:
+	if tally and chart:
 		# TODO: save level score.
 		var is_story: bool = Gameplay.game_mode == Gameplay.GameMode.STORY
 		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty, is_story)

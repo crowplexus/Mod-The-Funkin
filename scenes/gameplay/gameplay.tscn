@@ -1,12 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://cvf84mr6iepcs"]
+[gd_scene load_steps=7 format=3 uid="uid://cvf84mr6iepcs"]
 
 [ext_resource type="Script" uid="uid://btgjnxmxnkh14" path="res://scenes/gameplay/gameplay.gd" id="1_7biu0"]
 [ext_resource type="PackedScene" uid="uid://br6ornbfmuj7l" path="res://scenes/gameplay/hud/classic_hud.tscn" id="3_m3hu3"]
-[ext_resource type="PackedScene" uid="uid://d0a6dlj2togbt" path="res://scenes/gameplay/playfield/strum/4k.tscn" id="4_gh441"]
-[ext_resource type="Script" uid="uid://c3dm5njdcq7if" path="res://scenes/gameplay/playfield/note_group.gd" id="4_q64rj"]
 [ext_resource type="PackedScene" uid="uid://c10wmwqhwc2gj" path="res://scenes/gameplay/stages/main_stage.tscn" id="5_0w2j2"]
-[ext_resource type="Script" uid="uid://dp7ul3erh1ciu" path="res://scenes/gameplay/playfield/player/player.gd" id="5_pa1on"]
-[ext_resource type="Script" uid="uid://cfnk73c6iyf2s" path="res://scenes/gameplay/playfield/player/botplay.gd" id="6_elju3"]
+[ext_resource type="Script" uid="uid://khoba7t4ejd5" path="res://scenes/gameplay/playfield/strumline/game_input.gd" id="5_q64rj"]
+[ext_resource type="PackedScene" uid="uid://0sccgasqr8t8" path="res://scenes/gameplay/playfield/strumline/4k.tscn" id="6_pa1on"]
 
 [sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_7biu0"]
 stream_count = 3
@@ -23,7 +21,7 @@ script = ExtResource("1_7biu0")
 
 [node name="hud" parent="hud_layer" instance=ExtResource("3_m3hu3")]
 
-[node name="note_fields" type="Control" parent="hud_layer"]
+[node name="strumlines" type="Control" parent="hud_layer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,20 +30,24 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="right_notes" parent="hud_layer/note_fields" instance=ExtResource("4_gh441")]
-position = Vector2(797, 105)
+[node name="right" parent="hud_layer/strumlines" node_paths=PackedStringArray("input") instance=ExtResource("6_pa1on")]
+position = Vector2(790, 105)
+input = NodePath("player_input")
 
-[node name="player" type="Node" parent="hud_layer/note_fields/right_notes"]
-script = ExtResource("5_pa1on")
+[node name="player_input" type="Node" parent="hud_layer/strumlines/right" node_paths=PackedStringArray("strumline")]
+script = ExtResource("5_q64rj")
+botplay = false
+strumline = NodePath("..")
+metadata/_custom_type_script = "uid://khoba7t4ejd5"
 
-[node name="left_notes" parent="hud_layer/note_fields" instance=ExtResource("4_gh441")]
-position = Vector2(142, 105)
+[node name="left" parent="hud_layer/strumlines" node_paths=PackedStringArray("input") instance=ExtResource("6_pa1on")]
+position = Vector2(135, 105)
+input = NodePath("botplay_input")
 
-[node name="player" type="Node" parent="hud_layer/note_fields/left_notes"]
-script = ExtResource("6_elju3")
-
-[node name="note_group" type="Node2D" parent="hud_layer"]
-script = ExtResource("4_q64rj")
+[node name="botplay_input" type="Node" parent="hud_layer/strumlines/left" node_paths=PackedStringArray("strumline")]
+script = ExtResource("5_q64rj")
+strumline = NodePath("..")
+metadata/_custom_type_script = "uid://khoba7t4ejd5"
 
 [node name="music_player" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true

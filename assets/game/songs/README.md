@@ -52,7 +52,7 @@ assets/
 
 If you don't have any variations, you _CAN_ still have the "default" folder of course, but its optional.
 
-Songs may also have a custom `assets.tres` file which can override things such as HUD used in the song, noteskin, and audio files.
+Songs may also have a custom `assets.tres` file which can override things such as HUD used in the song, and audio files.
 
 `assets.tres` can go in any of the variation folders _OR_ the root directory for the song in case you want it to be the fallback.
 

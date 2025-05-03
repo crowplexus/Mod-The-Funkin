@@ -23,8 +23,8 @@ static func velocity_change(_time: float, speed: float = 1.0, immediate: bool = 
 	vc.name = &"Change Scroll Speed"
 	vc.efire = func() -> void:
 		if Gameplay.current:
-			for note_field: NoteField in Gameplay.current.note_fields.get_children():
-				TimedEvent.change_scrolL_speed_event(note_field, speed, immediate)
+			for strums: Strumline in Gameplay.current.strumlines.get_children():
+				TimedEvent.change_scrolL_speed_event(strums, speed, immediate)
 	vc.values.speed = speed
 	vc.time = _time
 	return vc
@@ -58,12 +58,12 @@ static func play_animation_event(animation: String, force: bool = false, target:
 		actor.able_to_sing = false
 		actor.lock_on_sing = false
 
-static func change_scrolL_speed_event(note_field: NoteField, speed: float, immediate: bool = false) -> void:
+static func change_scrolL_speed_event(strumline: Strumline, speed: float, immediate: bool = false) -> void:
 	if not immediate:
-		note_field.speed_change_tween = note_field.create_tween()
-		note_field.speed_change_tween.tween_property(note_field, "speed", speed, 1.0)
+		strumline.speed_change_tween = strumline.create_tween()
+		strumline.speed_change_tween.tween_property(strumline, "speed", speed, 1.0)
 	else:
-		note_field.speed = speed
+		strumline.speed = speed
 
 # TODO: figure out a way of making the camera events not bound to gameplay.
 static func zoom_camera_event(zoom: float = 1.0) -> void:

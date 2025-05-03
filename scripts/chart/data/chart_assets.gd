@@ -3,7 +3,6 @@ class_name ChartAssets extends Resource
 
 @export var instrumental: AudioStream ## The chart's song instrumental
 @export var vocals: Array[AudioStream] = [] ## The chart's song vocals (if any)
-@export var note_skin: NoteSkin = preload("uid://dxhq200ow8ypp") ## The noteskin used in the song.
 @export var hud: PackedScene ## The HUD scene that will be used for the song, if unspecified, the game will use the default one.
 @export var pause_menu: PackedScene ## The Pause Menu scene that will be used for the song, if unspecified, the game will use the default one.
 
@@ -75,9 +74,9 @@ static func get_resource(chart: Chart, fallback: ChartAssets = Global.DEFAULT_CH
 		var global_path: String = ChartAssets.song_path(song_name, "", "assets.tres", true)
 		var failed: bool = true
 		for one_of: String in [path_fixed, global_path]:
-			print_debug("looking at ", one_of)
+			#print_debug("looking at ", one_of)
 			if ResourceLoader.exists(one_of):
-				print_debug("loading ", one_of)
+				#print_debug("loading ", one_of)
 				failed = false
 				path = one_of
 				break

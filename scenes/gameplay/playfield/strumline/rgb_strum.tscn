@@ -1,11 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://dkt7ni4knjv04"]
+[gd_scene load_steps=19 format=3 uid="uid://ddp5iy3ye33eo"]
 
-[ext_resource type="Texture2D" uid="uid://c446o5iqgwuhu" path="res://assets/game/notetypes/rgb/receptor.png" id="1_bxo8i"]
-[ext_resource type="Shader" uid="uid://dcp4ukipqp06e" path="res://assets/game/notetypes/rgb/colorswap.gdshader" id="1_x8g3m"]
-[ext_resource type="Script" uid="uid://c54wblx3iwwde" path="res://scenes/gameplay/playfield/strum/rgb_receptor.gd" id="2_uwy6y"]
+[ext_resource type="Script" uid="uid://dhb07tp4e4fjv" path="res://scenes/gameplay/playfield/strumline/strum_quant.gd" id="1_hos8f"]
+[ext_resource type="Shader" uid="uid://dcp4ukipqp06e" path="res://assets/game/notetypes/rgb/colorswap.gdshader" id="2_bp743"]
+[ext_resource type="Texture2D" uid="uid://c446o5iqgwuhu" path="res://assets/game/notetypes/rgb/receptor.png" id="3_do1ae"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d0n6b"]
-shader = ExtResource("1_x8g3m")
+shader = ExtResource("2_bp743")
 
 [sub_resource type="Animation" id="Animation_ajoaw"]
 resource_name = "0 confirm"
@@ -54,10 +54,10 @@ tracks/3/path = NodePath("sprite_2d:scale")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0416667, 0.208333),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0416667, 0.125, 0.208333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1.05, 1.05), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_w6i8r"]
@@ -107,10 +107,10 @@ tracks/3/path = NodePath("sprite_2d:scale")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0416667, 0.208333),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0416667),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(0.95, 0.95), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(0.9, 0.9)]
 }
 
 [sub_resource type="Animation" id="Animation_bxo8i"]
@@ -213,10 +213,10 @@ tracks/3/path = NodePath("sprite_2d:scale")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0416667, 0.208333),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0416667, 0.125, 0.208333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1.05, 1.05), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_acqvs"]
@@ -266,10 +266,10 @@ tracks/3/path = NodePath("sprite_2d:scale")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0416667, 0.208333),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0416667),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(0.95, 0.95), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(0.9, 0.9)]
 }
 
 [sub_resource type="Animation" id="Animation_uwy6y"]
@@ -371,10 +371,10 @@ tracks/3/path = NodePath("sprite_2d:scale")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0416667, 0.208333),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0416667, 0.125, 0.208333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1.05, 1.05), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_17wwc"]
@@ -424,10 +424,10 @@ tracks/3/path = NodePath("sprite_2d:scale")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0416667, 0.208333),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0416667),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(0.95, 0.95), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(0.9, 0.9)]
 }
 
 [sub_resource type="Animation" id="Animation_qs75p"]
@@ -529,10 +529,10 @@ tracks/3/path = NodePath("sprite_2d:scale")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0416667, 0.208333),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0416667, 0.125, 0.208333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1.05, 1.05), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_db5sg"]
@@ -582,10 +582,10 @@ tracks/3/path = NodePath("sprite_2d:scale")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.0416667, 0.208333),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.0416667),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(0.95, 0.95), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(0.9, 0.9)]
 }
 
 [sub_resource type="Animation" id="Animation_4qmoq"]
@@ -709,15 +709,16 @@ _data = {
 &"RESET": SubResource("Animation_x8g3m")
 }
 
-[node name="rgb_receptor" type="Node2D" node_paths=PackedStringArray("sprite")]
-script = ExtResource("2_uwy6y")
-sprite = NodePath("sprite_2d")
+[node name="strum_note_quant" type="Node2D" node_paths=PackedStringArray("player")]
+script = ExtResource("1_hos8f")
+colors = PackedColorArray(0.760784, 0.294118, 0.6, 1, 0, 1, 1, 1, 0.0705882, 0.980392, 0.0196078, 1, 0.976471, 0.223529, 0.247059, 1)
+player = NodePath("animation_player")
 
 [node name="sprite_2d" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_d0n6b")
-instance_shader_parameters/enabled = true
-instance_shader_parameters/new_color = Color(1, 1, 1, 1)
-texture = ExtResource("1_bxo8i")
+instance_shader_parameters/enabled = false
+instance_shader_parameters/new_color = Color(0.760784, 0.294118, 0.6, 1)
+texture = ExtResource("3_do1ae")
 hframes = 3
 
 [node name="animation_player" type="AnimationPlayer" parent="."]

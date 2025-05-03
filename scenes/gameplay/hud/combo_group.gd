@@ -13,7 +13,7 @@ const VELOCITY: String = "velocity"
 ## Scale of the combo sprites, leave it as [code]Vector2.ZERO[/code] for it to depend on the chart assets.
 @export var combo_scale: Vector2 = Vector2.ZERO
 ## [see]Settings.combo_stacking[/see]
-@export var combo_stacking: bool = Global.settings.combo_stacking
+@export var combo_stacking: bool = false
 
 var display_digits: Array[Node2D] = []
 var display_tweens: Array[Tween] = []
@@ -45,6 +45,7 @@ func _ready() -> void:
 		settings = Gameplay.current.local_settings
 	if not settings: settings = Global.settings
 	if settings.simplify_popups: combo_stacking = false
+	else: combo_stacking = Global.settings.combo_stacking
 
 func display_judgement(judge: String) -> void:
 	var popup_judge: PhysicsSprite2D
@@ -91,7 +92,7 @@ func display_combo(amnt: int = 0) -> void:
 		var num_score: PhysicsSprite2D = get_digit(i)
 		num_score.frame = int(digits[i])
 		num_score.position = Vector2(
-			((size.x * 0.5) - (combo_scale.x * offset - (i * 40))),
+			((size.x * 0.5) - (combo_scale.x * offset - (i * 45))),
 			(size.y * 0.25) + (combo_scale.y + 25)
 		)
 		num_score.scale = combo_scale

@@ -12,7 +12,7 @@ const COLORS: PackedStringArray = ["purple", "blue", "green", "red"]
 ## Default Note Distance (in pixels).
 const DISTANCE: float = 450.0
 ## Arrow Size (in pixels), for test purposes.
-const ARROW_SIZE: float = 64.0
+const ARROW_SIZE: float = 85.0
 ## Hardcoded Speed Multiplier for new movement math.
 const SPEED_MULT: float = 8.0
 
@@ -20,12 +20,16 @@ static func get_scroll_as_vector(scroll: int) -> Vector2:
 	match scroll:
 		1: return Vector2(-1, 1) # Down
 		_: return -Vector2.ONE # Up (default)
-## This is for the notefield that the note is targetting.
-var note_field: NoteField
+
+## Strumline that this note is moving towards.
+var strumline: Strumline
 ## Data used mainly for hold sizes and whatnot.
 var data: NoteData:
 	set(new_data):
-		time = new_data.time
+		var offset: float = 0.0
+		if Global.settings: offset = Global.settings.note_offset
+		time = new_data.time + offset
+		raw_time = new_data.time
 		column = new_data.column
 		length = new_data.length
 		kind = new_data.kind
@@ -41,12 +45,10 @@ var hold_tail: TextureRect
 ## Control Node for hiding offscreen hold notes.
 var clip_rect: Control
 
-## Note Spawn Time (in seconds).
-var time: float = -1.0
-## Note Column/Direction.
-var column: int = -1
-## Note Player ID/Side.[br]0 = Enemy, 1 = Player, etc...
-var side: int = -1
+var time: float = -1.0 ## Note Spawn Time (in seconds) with offset.
+var raw_time: float = -1.0 ## Raw Note Spawn Time.
+var column: int = -1 ## Note Column/Direction.
+var side: int = -1 ## Note Player ID/Side.[br]0 = Enemy, 1 = Player, etc...
 ## Note Type/Kind, if unspecified or non-existant,
 ## The default note type will be used instead.
 var kind: StringName
@@ -56,7 +58,6 @@ var length: float = -1.0
 # Input stuff
 var was_hit: bool = false
 var was_missed: bool = false
-var die_later: bool = false
 #var late_hitbox: float = 1.0
 #var early_hitbox: float = 1.0
 var hit_time: float = 0.0
@@ -77,6 +78,7 @@ func can_splash() -> bool:
 	return false
 
 var _old_sm: Vector2 = Vector2.ZERO
+var _strum: StrumNote
 
 func _ready() -> void:
 	if has_node("clip_rect"):
@@ -93,28 +95,27 @@ func reset_scroll() -> void:
 	_old_sm = scroll_mult
 
 func get_total_speed() -> float:
-	var speed: float = note_field.speed * note_field.get_receptor(column).speed
-	return speed * Note.SPEED_MULT
+	var strums_speed: float = strumline.speed * strumline.get_strum(column).speed
+	return strums_speed * Note.SPEED_MULT
 
 func scroll_ahead() -> void:
-	if not note_field or column == -1:
-		return
 	# i stole this shit from OpenITG https://github.com/openitg/openitg/blob/f2c129fe65c65e4a9b3a691ff35e7717b4e8de51/src/ArrowEffects.cpp#L42
 	# TODO: change how speed works later
-	var beat_speed: float = get_total_speed()#Conductor.bpm
-	var secs_until_step: float = time - Conductor.playhead
-	var next_y: float = secs_until_step * beat_speed * Note.ARROW_SIZE
-	position.y = note_field.global_position.y + next_y * -scroll_mult.y #/ absf(scale.y)
+	var note_speed: float = get_total_speed()#Conductor.bpm
+	var next_y: float = (time - Conductor.playhead) * (note_speed * Note.ARROW_SIZE)
+	position.y = _strum.position.y + next_y * -scroll_mult.y #/ absf(scale.y)
 
 func update_hold(_delta: float) -> void:
 	moving = false
-	position.y = note_field.global_position.y
+	position.y = _strum.position.y
+	if not clip_rect.z_index == -1:
+		clip_rect.z_index = -1
 	if _stupid_visual_bug:
 		hold_size += hit_time / absf(clip_rect.scale.y)
 		_stupid_visual_bug = false
 	hold_size = (time + length) - Conductor.playhead
 	display_hold(hold_size, get_total_speed())
-	if (hold_size <= 0.0 or trip_timer <= 0.0) and not die_later:
+	if (hold_size <= 0.0 or trip_timer <= 0.0):
 		hide_all()
 
 ## Override this function to do something when you finish holding all the way through.
@@ -125,11 +126,14 @@ func hold_finished() -> void:
 ## Called whenever a note is spawned, remember to also call super(data)
 func reload(p_data: NoteData) -> void:
 	data = p_data
+	if strumline: # for convenience.
+		_strum = strumline.strums[p_data.column]
+		if _strum: position = _strum.position
 	hold_size = p_data.length
 	_stupid_visual_bug = false
+	moving = is_instance_valid(_strum)
 	was_missed = false
 	was_hit = false
-	moving = true
 
 ## Use this function for implementing hold note visuals.[br]
 ## Leave empty if you want your note type to not have holds.

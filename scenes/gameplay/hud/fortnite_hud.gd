@@ -50,12 +50,12 @@ func settings_changed(settings: Settings = Global.settings) -> void:
 	match settings.scroll:
 		0:
 			if game is Gameplay:
-				game.note_fields.position.y = 0
+				game.strumlines.position.y = 0
 			health_bar.position.y = 660
 			shield_bar.position.y = 645
 		1:
 			if game is Gameplay:
-				game.note_fields.position.y = 500
+				game.strumlines.position.y = 500
 			health_bar.position.y = 50
 			shield_bar.position.y = 35
 	health_bar.self_modulate.a = settings.health_bar_alpha * 0.01

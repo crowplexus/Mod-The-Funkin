@@ -46,7 +46,7 @@ func _ready() -> void:
 		default_ip2_pos = icon_p2.position
 	if game is Gameplay:
 		settings_changed(game.local_settings)
-		_max_score = Tally.calculate_perfect_score(Gameplay.chart.note_counts[0])
+		if Gameplay.chart: _max_score = Tally.calculate_perfect_score(Gameplay.chart.note_counts[0])
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	countdown.hide()
 
@@ -62,12 +62,12 @@ func settings_changed(settings: Settings = Global.settings) -> void:
 	match settings.scroll:
 		0:
 			if game is Gameplay:
-				game.note_fields.position.y = 0
+				game.strumlines.position.y = 0
 			health_bar.position.y = 660
 			combo_group.position.y = 120
 		1:
 			if game is Gameplay:
-				game.note_fields.position.y = 500
+				game.strumlines.position.y = 500
 			combo_group.position.y = 650
 			health_bar.position.y = 65
 	health_bar.self_modulate.a = settings.health_bar_alpha * 0.01
