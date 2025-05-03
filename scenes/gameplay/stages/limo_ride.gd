@@ -17,6 +17,7 @@ var car_origins: Array[Vector2] = []
 var danced: bool = false
 
 func _ready() -> void:
+	super()
 	for car: PhysicsSprite2D in cars:
 		car_origins.append(car.position)
 		drive_timers.append(Timer.new())

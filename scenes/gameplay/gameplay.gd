@@ -265,7 +265,7 @@ func _process(delta: float) -> void:
 		hud_layer.offset.x = (hud_layer.scale.x - 1.0) * -(get_viewport_rect().size.x * 0.5)
 		hud_layer.offset.y = (hud_layer.scale.y - 1.0) * -(get_viewport_rect().size.y * 0.5)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# I don't need this to run every single frame.
 	if should_process_events: process_timed_events()
 	if should_spawn_notes: do_note_spawning()
