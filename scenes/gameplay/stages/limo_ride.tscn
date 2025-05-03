@@ -280,7 +280,7 @@ position = Vector2(1006, 429)
 sprite_frames = ExtResource("3_oxteu")
 animation = &"background limo pink"
 autoplay = "background limo pink"
-frame_progress = 0.006792
+frame_progress = 0.00458633
 
 [node name="limo_dancer1" type="AnimatedSprite2D" parent="factor(0_4,0_4)"]
 z_index = 50
@@ -308,7 +308,7 @@ position = Vector2(1020, 648)
 sprite_frames = ExtResource("3_g1wyp")
 animation = &"Limo stage"
 autoplay = "Limo stage"
-frame_progress = 0.451863
+frame_progress = 0.449657
 
 [node name="car" type="Sprite2D" parent="factor(1,1)"]
 z_index = 100

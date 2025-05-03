@@ -2,10 +2,12 @@ extends Node2D
 
 var credits_thing: PackedScene = load("uid://wh2umjjgf2f6")
 
-@onready var background: Sprite2D = $"background"
-@onready var buttons: BoxContainer = $"ui/buttons"
-@onready var copyright_text: Label = $"ui/color_rect/copyright_text"
-@onready var copyright_rect: ColorRect = $"ui/color_rect"
+@onready var camera: Camera2D = $"camera_2d"
+@onready var bg: Sprite2D = $"bg_scroll/background"
+@onready var buttons: BoxContainer = $"canvas_layer/ui/buttons"
+@onready var copyright_text: Label = $"canvas_layer/ui/color_rect/copyright_text"
+@onready var copyright_rect: ColorRect = $"canvas_layer/ui/color_rect"
+@onready var bg_pos: Vector2 = bg.position
 
 static var saw_copyright: bool = false
 var moving_copyright: bool = false
@@ -60,10 +62,11 @@ func change_selection(next: int = 0) -> void:
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	ps = buttons.get_child(selected)
 	if ps: ps.play("%s selected" % ps.name)
+	camera.position.y = ps.global_position.y
 
 func confirm_selection() -> void:
 	var ps: = buttons.get_child(selected)
-	Global.begin_flicker(background, 0.6, 0.1)
+	Global.begin_flicker(bg, 0.6, 0.1)
 	Global.begin_flicker(ps, 0.6, 0.06)
 	Global.play_sfx(Global.resources.get_resource("confirm"))
 	for button: CanvasItem in buttons.get_children():
@@ -93,9 +96,9 @@ func confirm_selection() -> void:
 			default_confirm()
 
 func default_confirm() -> void:
+	bg.show()
 	buttons.get_child(selected).modulate.a = 0.0
 	buttons.get_child(selected).show()
-	background.show()
 	can_input = true
 	for button: CanvasItem in buttons.get_children():
 		create_tween().set_ease(Tween.EASE_IN).tween_property(button, "modulate:a", 1.0, 0.6)

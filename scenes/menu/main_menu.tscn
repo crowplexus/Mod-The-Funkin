@@ -16,60 +16,73 @@ font_size = 32
 [node name="main_menu" type="Node2D"]
 script = ExtResource("1_isoef")
 
-[node name="magenta" type="Sprite2D" parent="."]
-modulate = Color(0.992157, 0.443137, 0.607843, 1)
+[node name="camera_2d" type="Camera2D" parent="."]
 position = Vector2(640, 360)
+limit_top = -750
+limit_bottom = 750
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 1.0
+rotation_smoothing_speed = 3.0
+
+[node name="bg_scroll" type="Parallax2D" parent="."]
+scale = Vector2(1.1, 1.1)
+scroll_scale = Vector2(0.17, 0.17)
+
+[node name="magenta" type="Sprite2D" parent="bg_scroll"]
+modulate = Color(0.992157, 0.443137, 0.607843, 1)
+position = Vector2(576, 324)
 texture = ExtResource("3_qgo02")
 
-[node name="background" type="Sprite2D" parent="."]
-position = Vector2(640, 360)
+[node name="background" type="Sprite2D" parent="bg_scroll"]
+position = Vector2(576, 324)
 texture = ExtResource("1_nl8w3")
 
-[node name="ui" type="Control" parent="."]
+[node name="canvas_layer" type="CanvasLayer" parent="."]
+
+[node name="ui" type="Control" parent="canvas_layer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1280.0
-offset_bottom = 720.0
+offset_left = 1.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="buttons" type="BoxContainer" parent="ui"]
+[node name="buttons" type="BoxContainer" parent="canvas_layer/ui"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_right = 40.0
-offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 vertical = true
 
-[node name="storymode" type="AnimatedSprite2D" parent="ui/buttons"]
+[node name="storymode" type="AnimatedSprite2D" parent="canvas_layer/ui/buttons"]
 position = Vector2(0, -184)
 sprite_frames = ExtResource("2_3rkf3")
 animation = &"storymode idle"
 
-[node name="freeplay" type="AnimatedSprite2D" parent="ui/buttons"]
+[node name="freeplay" type="AnimatedSprite2D" parent="canvas_layer/ui/buttons"]
 position = Vector2(0, -40)
 sprite_frames = ExtResource("3_247la")
 animation = &"freeplay idle"
 
-[node name="options" type="AnimatedSprite2D" parent="ui/buttons"]
+[node name="options" type="AnimatedSprite2D" parent="canvas_layer/ui/buttons"]
 position = Vector2(0, 112)
 sprite_frames = ExtResource("4_kiqgm")
 animation = &"options idle"
 
-[node name="credits" type="AnimatedSprite2D" parent="ui/buttons"]
+[node name="credits" type="AnimatedSprite2D" parent="canvas_layer/ui/buttons"]
 position = Vector2(0, 248)
 sprite_frames = ExtResource("5_hj162")
 animation = &"credits idle"
 
-[node name="color_rect" type="ColorRect" parent="ui"]
+[node name="color_rect" type="ColorRect" parent="canvas_layer/ui"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -79,7 +92,7 @@ offset_bottom = -10.0
 grow_horizontal = 2
 color = Color(0, 0, 0, 0.529412)
 
-[node name="copyright_text" type="Label" parent="ui/color_rect"]
+[node name="copyright_text" type="Label" parent="canvas_layer/ui/color_rect"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
