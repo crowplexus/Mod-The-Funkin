@@ -175,6 +175,9 @@ func _ready() -> void:
 		Conductor.length = chart.notes.back().time
 	player_strums = strumlines.get_child(player_id)
 	for strums: Strumline in strumlines.get_children():
+		if not strums.skin and assets and assets.noteskin:
+			strums.skin = assets.noteskin
+		if strums.skin: strums.reload_skin()
 		if strums == player_strums: strums.input.botplay = player_botplay
 		strums.input.botplay = strums != player_strums
 		strums.input.setup()
@@ -450,19 +453,22 @@ func do_note_spawning() -> void:
 		if strumline.speed < 1.0: spawn_time /= strumline.speed
 		if not strumline or absf(note_data.time - Conductor.playhead) > spawn_time:
 			break
-		var new_note: Note = get_unspawned_note(note_data.kind)
-		new_note.strumline = strumline
-		new_note.data = note_data
+		var new_note: Note = get_unspawned_note(strumline, note_data)
 		strumline.notes.add_child(new_note)
 		new_note.reload(note_data)
 		on_note_spawned.emit(note_data, new_note)
 		note_spawn_index = notes_to_spawn.find(note_data) + 1
 
-func get_unspawned_note(type: StringName = NoteData.DEFAULT_NOTE_KIND) -> Node:
+func get_unspawned_note(strumline: Strumline, note_data: NoteData) -> Node:
 	#for node: Node in strumline.notes.sget_children():
 	#	if not node.visible:
 	#		return node
-	var unspawned_note: = NOTE_TYPES[type].instantiate()
+	var types: Dictionary[String, PackedScene] = NOTE_TYPES
+	if strumline.skin and note_data.kind in strumline.skin.note_scenes:
+		types = strumline.skin.note_scenes
+	var unspawned_note: = types[note_data.kind].instantiate()
+	unspawned_note.strumline = strumline
+	unspawned_note.data = note_data
 	unspawned_note.name = "note_%s_%s" % [ unspawned_note.name, note_spawn_index ]
 	return unspawned_note
 

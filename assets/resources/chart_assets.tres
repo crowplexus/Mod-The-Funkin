@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ChartAssets" load_steps=21 format=3 uid="uid://cp25ehrc4xvy2"]
+[gd_resource type="Resource" script_class="ChartAssets" load_steps=25 format=3 uid="uid://cp25ehrc4xvy2"]
 
 [ext_resource type="Texture2D" uid="uid://eoyumqwmgfpq" path="res://assets/ui/popups/funkin/prepare.png" id="1_8nmsk"]
 [ext_resource type="Texture2D" uid="uid://cyni3widg3lqh" path="res://assets/ui/popups/funkin/score_numbers.png" id="1_avqpl"]
@@ -20,12 +20,24 @@
 [ext_resource type="Texture2D" uid="uid://ln8kwo702lx6" path="res://assets/ui/popups/funkin/good.png" id="17_cg71a"]
 [ext_resource type="Texture2D" uid="uid://oc4gpybrbw7r" path="res://assets/ui/popups/funkin/bad.png" id="18_qr5u1"]
 [ext_resource type="Texture2D" uid="uid://bdvlysb4ywney" path="res://assets/ui/popups/funkin/shit.png" id="19_0t5l1"]
+[ext_resource type="PackedScene" uid="uid://gib0vewis1qh" path="res://scenes/gameplay/playfield/notes/normal_note.tscn" id="19_8cuh8"]
+[ext_resource type="Script" uid="uid://c2xogvs2sc0u2" path="res://scripts/gameplay/noteskin.gd" id="20_q7mb6"]
+[ext_resource type="PackedScene" uid="uid://d2h30ycb87v3x" path="res://scenes/gameplay/playfield/strumline/default_strum.tscn" id="21_1nvi1"]
+
+[sub_resource type="Resource" id="Resource_cg71a"]
+script = ExtResource("20_q7mb6")
+strum_scene = ExtResource("21_1nvi1")
+note_scenes = Dictionary[String, PackedScene]({
+"_": ExtResource("19_8cuh8")
+})
+metadata/_custom_type_script = "uid://c2xogvs2sc0u2"
 
 [resource]
 script = ExtResource("1_sw5gl")
 vocals = Array[AudioStream]([])
 hud = ExtResource("9_y0kxw")
 pause_menu = ExtResource("11_pjkj3")
+noteskin = SubResource("Resource_cg71a")
 countdown_assets = Array[Texture2D]([ExtResource("1_8nmsk"), ExtResource("2_avqpl"), ExtResource("3_nscln"), ExtResource("4_8cuh8")])
 judgement_assets = Dictionary[String, Texture2D]({
 "bad": ExtResource("18_qr5u1"),

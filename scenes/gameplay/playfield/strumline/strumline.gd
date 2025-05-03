@@ -6,7 +6,22 @@ signal on_note_deleted(note: Note)
 @export var strums: Array[StrumNote] = [] ## Contains the strum note sprites.
 @export var input: GameInput ## Handles input, or otherwise automatic input (botplay).
 @export var speed: float = 1.0 ## Note Speed for this particular strumline, is affected by the chart, may be increased by timed events.
+@export var skin: NoteSkin
+
 var speed_change_tween: Tween
+
+func reload_skin() -> void:
+	if not skin: return
+	for strum: StrumNote in strums:
+		var new_thing: StrumNote = skin.strum_scene.instantiate()
+		new_thing.position = (strum.position * (new_thing.scale * self.scale))
+		new_thing.name = strum.name
+		var index: int = strums.find(strum)
+		add_child(new_thing)
+		strums[index] = new_thing
+		move_child(new_thing, index)
+		strum.queue_free()
+		print_debug("replaced strum ", index)
 
 func get_splash(idx: int) -> Node:
 	var splash: Node = null

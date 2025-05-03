@@ -5,6 +5,7 @@ class_name ChartAssets extends Resource
 @export var vocals: Array[AudioStream] = [] ## The chart's song vocals (if any)
 @export var hud: PackedScene ## The HUD scene that will be used for the song, if unspecified, the game will use the default one.
 @export var pause_menu: PackedScene ## The Pause Menu scene that will be used for the song, if unspecified, the game will use the default one.
+@export var noteskin: NoteSkin ## The noteskin used in the song.
 
 ## The Countdown Sprite Frames that will be used for the early-song countdown.
 @export var countdown_assets: Array[Texture2D] = [

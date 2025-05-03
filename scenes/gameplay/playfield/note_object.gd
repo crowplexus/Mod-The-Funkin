@@ -144,7 +144,8 @@ func display_hold(size: float = 0.0, speed: float = -1.0) -> void:
 		return
 	# general implementation, should work for everything???
 	hold_body.size.x = hold_body.texture.get_width()
-	hold_body.size.y = (size * (speed * 100.0)) - 0.01
+	hold_body.size.y = (size * (speed * 100.0)) - 0.05
+	hold_body.size.y /= clip_rect.scale.y
 
 ## Use this function for implementing splash visuals.[br]
 ## Return null if you don't want note splashes on your note type.

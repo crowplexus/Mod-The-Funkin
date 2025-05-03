@@ -1,6 +1,6 @@
 [gd_scene load_steps=19 format=3 uid="uid://ddp5iy3ye33eo"]
 
-[ext_resource type="Script" uid="uid://dhb07tp4e4fjv" path="res://scenes/gameplay/playfield/strumline/strum_quant.gd" id="1_hos8f"]
+[ext_resource type="Script" uid="uid://dhb07tp4e4fjv" path="res://scenes/gameplay/playfield/strumline/skin/strum_quant.gd" id="1_hos8f"]
 [ext_resource type="Shader" uid="uid://dcp4ukipqp06e" path="res://assets/game/notetypes/rgb/colorswap.gdshader" id="2_bp743"]
 [ext_resource type="Texture2D" uid="uid://c446o5iqgwuhu" path="res://assets/game/notetypes/rgb/receptor.png" id="3_do1ae"]
 

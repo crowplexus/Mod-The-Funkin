@@ -3,6 +3,7 @@ extends Note
 @onready var player: AnimationPlayer = $"animation_player"
 @onready var splash: AnimatedSprite2D = $"splash"
 @onready var arrow: AnimatedSprite2D = $"arrow"
+@onready var splash_scale: Vector2 = splash.scale
 
 var loaded_hold: bool = false
 var game: Node2D
@@ -57,7 +58,7 @@ func display_splash() -> Node2D:
 		strum.add_child(dip)
 	dip.global_position = strum.global_position
 	dip.modulate.a = (game.local_settings.note_splash_alpha if Gameplay.current else Global.settings.note_splash_alpha) * 0.01
-	dip.scale = Vector2.ONE * (1.0 if judgement.splash_type == Judgement.SplashType.FULL else 0.8)
+	dip.scale = splash_scale * (1.0 if judgement.splash_type == Judgement.SplashType.FULL else 0.8)
 	dip.frame = 0
 	dip.show()
 	dip.play("note impact %s %s" %  [ randi_range(1, 2), Note.COLORS[column] ], 1.0)
