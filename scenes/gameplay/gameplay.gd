@@ -423,11 +423,10 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 		else:
 			fallback = true
 			hud_is_built_in = true
-	else:
-		if fallback: hud_type = "Classic"
-		if hud_type in DEFAULT_HUDS:
-			hud = DEFAULT_HUDS[hud_type].instantiate()
-			hud_is_built_in = true
+	if fallback: hud_type = "Classic"
+	if hud_type in DEFAULT_HUDS:
+		hud = DEFAULT_HUDS[hud_type].instantiate()
+		hud_is_built_in = true
 	hud_layer.add_child(hud)
 	hud_layer.move_child(hud, idx)
 	# update hud if possible
