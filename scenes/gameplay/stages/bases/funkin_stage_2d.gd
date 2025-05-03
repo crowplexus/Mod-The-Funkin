@@ -3,8 +3,8 @@ class_name FunkinStage2D extends Node2D
 
 @export var camera: Camera2D = null ## Camera attached to the stage.
 @export var auto_zoom: bool = true ## If the camera should zoom automatically.
-@export var zoom_interval: float = 4.0 ## Zoom Interval (in beats).
 @export var zoom_intensity: float = 0.020 ## Zoom Intensity (defaults to 20% or 0.020).
+@export var zoom_interval: int = 4 ## Zoom Interval (in beats).
 var camera_zoom: Vector2 = Vector2.ONE
 
 func _ready() -> void:
@@ -21,7 +21,7 @@ func _exit_tree() -> void:
 func initialize_camera_2d() -> void:
 	if camera:
 		camera_zoom = camera.zoom
-		bump_camera(2.0) # forced
+		bump_camera(zoom_interval) # forced
 
 func reset_camera_bump(_delta: float) -> void:
 	if not camera or not auto_zoom: return
@@ -32,7 +32,7 @@ func on_beat_hit(beat: float) -> void:
 	if camera and auto_zoom: bump_camera(beat)
 
 func bump_camera(beat: float) -> void:
-	if int(beat) < 0: return
+	if int(beat) < 0 or not auto_zoom: return
 	#var digits: int = str(zoom_interval).split("").size()
-	if fmod(snappedf(beat, 0.01), zoom_interval) <= zoom_interval:
+	if int(beat) % zoom_interval == 0:
 		camera.zoom += Vector2(zoom_intensity, zoom_intensity)

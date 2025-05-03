@@ -103,6 +103,7 @@ func die() -> void:
 	instance.skeleton = death_skeleton.instantiate()
 	instance.skeleton.global_position = pos
 	instance.skeleton.name = "skeleton"
+	instance.character = self
 	instance.add_child(instance.skeleton)
 	instance.move_child(instance.skeleton, 1)
 	get_tree().paused = true

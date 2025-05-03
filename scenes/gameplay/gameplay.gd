@@ -512,6 +512,9 @@ func try_revive() -> void:
 	if health > 0:
 		player.show()
 		hud_layer.show()
+		if hud:
+			hud.update_health(display_health)
+			hud.update_score_text(true)
 
 func on_note_miss(note: Note, idx: int = -1) -> void:
 	var damage_boost: float = -note.hold_size if note and note.hold_size > 0.0 else -2.0

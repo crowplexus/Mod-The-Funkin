@@ -31,6 +31,7 @@ var og_camera_speed: float = 1.0
 var text_tweens: Array[Tween] = []
 var oops: bool = false
 var camera: Camera2D
+var character: Actor2D
 
 func _start_game_over() -> void:
 	camera = get_viewport().get_camera_2d()
@@ -166,10 +167,18 @@ func _selected_da() -> void:
 			camera.global_position = get_viewport_rect().size * 0.5
 		var game: Gameplay = get_tree().current_scene as Gameplay
 		game.restart_song()
-		game.try_revive()
-		game.player.sing(2, true)
-		game.player.idle_cooldown = 0.8
 		get_tree().paused = false
+		game.try_revive()
+		if character.has_animation("hey"):
+			character.play_animation("hey", true)
+		elif character.has_animation("cheer"):
+			character.play_animation("cheer", true)
+		else:
+			character.sing(2, true)
+		# just make sure this is set.
+		character.able_to_sing = false
+		character.lock_on_sing = false
+		character.idle_cooldown = 0.8
 		await get_tree().create_timer(0.05).timeout
 		self.queue_free()
 	else:
