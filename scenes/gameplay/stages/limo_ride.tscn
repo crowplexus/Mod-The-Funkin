@@ -253,7 +253,7 @@ metadata/_custom_type_script = "uid://bqopd8xbhve36"
 
 [node name="camera_2d" type="Camera2D" parent="."]
 position = Vector2(640, 360)
-zoom = Vector2(0.9, 0.9)
+zoom = Vector2(0.85, 0.85)
 limit_left = -150
 limit_top = -720
 limit_right = 1980
@@ -312,19 +312,25 @@ frame_progress = 0.449657
 
 [node name="car" type="Sprite2D" parent="factor(1,1)"]
 z_index = 100
-position = Vector2(-1012, 535)
+position = Vector2(-4500, 535)
 texture = ExtResource("5_oyqf4")
 script = ExtResource("7_yha1o")
 metadata/_custom_type_script = "uid://cku7st80n16gp"
 
+[node name="timer" type="Timer" parent="factor(1,1)/car"]
+wait_time = 2.0
+
 [node name="carr" type="Sprite2D" parent="factor(1,1)"]
 modulate = Color(0.4, 1, 0.81, 1)
 z_index = 150
-position = Vector2(2822, 844)
+position = Vector2(4500, 844)
 texture = ExtResource("5_oyqf4")
 flip_h = true
 script = ExtResource("7_yha1o")
 metadata/_custom_type_script = "uid://cku7st80n16gp"
+
+[node name="timer" type="Timer" parent="factor(1,1)/carr"]
+wait_time = 2.0
 
 [node name="dj" type="Marker2D" parent="."]
 z_index = 100
@@ -333,7 +339,7 @@ scale = Vector2(0.7, 0.7)
 
 [node name="enemy" type="Marker2D" parent="."]
 z_index = 200
-position = Vector2(400, 178)
+position = Vector2(400, 202)
 
 [node name="player" type="Marker2D" parent="."]
 z_index = 300
@@ -347,4 +353,6 @@ libraries = {
 [node name="car_pass_player" type="AudioStreamPlayer" parent="."]
 max_polyphony = 10
 bus = &"Sound Effects"
-playback_type = 2
+
+[node name="driver_wait" type="Timer" parent="."]
+wait_time = 1.25

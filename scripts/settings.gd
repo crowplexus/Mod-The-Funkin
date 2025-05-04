@@ -31,6 +31,15 @@ var scroll: int = 0
 ## Defines an offset for music synching, delays note spawning.[br]
 ## This is set to an amount of seconds.
 @export var note_offset: float = 0.0
+## How fast should the notes be? affected by [code]Settings.use_custom_note_speed[/code]
+@export var note_speed: float = 1.0
+## Enable to always use your defined scroll speed.
+@export var use_custom_note_speed: bool = false
+
+# reserveed to when I add X-Mod/BPM-Based note speed.
+#@export_enum("Default:0", "Multiply Default:1", "Constant:2", "BPM-Based:3")
+#var note_speed_mode: int = 0
+
 ## You know what a framerate is, right?
 @export var framerate: int = 120
 ## Decides if the game should pause if the window loses focus.

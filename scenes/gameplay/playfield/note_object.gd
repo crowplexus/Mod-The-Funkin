@@ -9,12 +9,10 @@ class_name Note extends Node2D
 
 ## Default Directions. TODO: replace this
 const COLORS: PackedStringArray = ["purple", "blue", "green", "red"]
-## Default Note Distance (in pixels).
-const DISTANCE: float = 450.0
-## Arrow Size (in pixels), for test purposes.
-const ARROW_SIZE: float = 85.0
-## Hardcoded Speed Multiplier for new movement math.
-const SPEED_MULT: float = 8.0
+# for Stepmania movement math.
+const SM_ARROW_SIZE: float = 80.0 # 64.0 originally.
+const SM_SPEED_MULT: float = 10.0 # adjust for fnf notes.
+const USE_SM_SCROLL: bool = true
 
 static func get_scroll_as_vector(scroll: int) -> Vector2:
 	match scroll:
@@ -96,22 +94,31 @@ func reset_scroll() -> void:
 	_old_sm = scroll_mult
 
 func get_total_speed() -> float:
-	var strums_speed: float = strumline.speed * strumline.get_strum(column).speed
-	return strums_speed * Note.SPEED_MULT
+	var markplier: float = (Note.SM_SPEED_MULT if Note.USE_SM_SCROLL else 1.5)
+	if Global.settings.use_custom_note_speed:
+		return Global.settings.note_speed * markplier
+	else:
+		var strums_speed: float = strumline.speed * strumline.get_strum(column).speed
+		return strums_speed * markplier
 
 func scroll_ahead() -> void:
-	# i stole this shit from OpenITG https://github.com/openitg/openitg/blob/f2c129fe65c65e4a9b3a691ff35e7717b4e8de51/src/ArrowEffects.cpp#L42
-	# TODO: change how speed works later
 	var note_speed: float = get_total_speed()#Conductor.bpm
-	var next_y: float = (time - Conductor.playhead) * (note_speed * Note.ARROW_SIZE)
-	position.y = _strum.position.y + next_y * -scroll_mult.y #/ absf(scale.y)
+	var relative: float = (time - Conductor.playhead)
+	position.y = _strum.position.y # making sure
+	if Note.USE_SM_SCROLL:
+		# Stepmania/ITG speed handling https://github.com/openitg/openitg/blob/f2c129fe65c65e4a9b3a691ff35e7717b4e8de51/src/ArrowEffects.cpp#L42
+		var next_y: float = relative * note_speed * Note.SM_ARROW_SIZE
+		position.y += next_y * -scroll_mult.y #/ absf(scale.y)
+	else:
+		# classic FNF speed stuff, readded for testing.
+		position.y += 450.0 * (relative * note_speed) * -scroll_mult.y
 
 func update_hold(_delta: float) -> void:
 	moving = false
 	position.y = _strum.position.y
 	if not clip_rect.z_index == -1:
 		clip_rect.z_index = -1
-	if _stupid_visual_bug:
+	if _stupid_visual_bug and not Note.USE_SM_SCROLL:
 		hold_size += hit_time / absf(clip_rect.scale.y)
 		_stupid_visual_bug = false
 	hold_size = (time + length) - Conductor.playhead
@@ -142,10 +149,15 @@ func display_hold(size: float = 0.0, speed: float = -1.0) -> void:
 	if speed <= 0.0: speed = get_total_speed()
 	if column != -1 and not hold_body or not clip_rect:
 		return
+	 # URGHHHHHHHHHHH
+	if Note.USE_SM_SCROLL:
+		speed *= Note.SM_ARROW_SIZE
+	else:
+		speed *= 500.0
 	# general implementation, should work for everything???
-	hold_body.size.x = hold_body.texture.get_width()
-	hold_body.size.y = (size * (speed * 100.0)) - 0.05
-	hold_body.size.y /= clip_rect.scale.y
+	if hold_body.texture:
+		hold_body.size.x = hold_body.texture.get_width()
+		hold_body.size.y = (size * speed) / clip_rect.scale.y
 
 ## Use this function for implementing splash visuals.[br]
 ## Return null if you don't want note splashes on your note type.

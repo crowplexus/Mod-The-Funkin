@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwfwtlmetlc6r"]
+
+[ext_resource type="Script" uid="uid://cusmm6j3ueux7" path="res://scenes/menu/ui/freeplay/record_panel.gd" id="1_4uf0h"]
+[ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="1_qx4u7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qx4u7"]
+bg_color = Color(0.4, 0.4, 0.4, 1)
+border_color = Color(1, 0.833333, 0, 1)
+
+[node name="record_panel" type="Control"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+script = ExtResource("1_4uf0h")
+
+[node name="panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qx4u7")
+
+[node name="label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_qx4u7")
+theme_override_font_sizes/font_size = 32
+text = "Score: 0123456789 | Combo Breaks: 5 | Highest Combo: 36 [SDCB]"
+horizontal_alignment = 1
+vertical_alignment = 1

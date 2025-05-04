@@ -3,6 +3,7 @@
 [ext_resource type="FontFile" uid="uid://cpo50hs6mjovp" path="res://assets/ui/fonts/alphabet_bold.png" id="1_brw1p"]
 
 [resource]
+resource_local_to_scene = true
 resource_name = "alphabet_bold_fnf"
 line_spacing = -20.0
 font = ExtResource("1_brw1p")

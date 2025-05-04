@@ -62,8 +62,56 @@ func get_velocity_change(timestamp: float) -> TimedEvent:
 			break
 	return change
 
+func bpm_changed_note_loop(fun: Callable):
+	if not fun: return
+	var change_index: int = 0
+	var cur_time: float = 0.0
+	var cur_change: SongTimeChange = timing_changes[change_index]
+	for note: NoteData in notes:
+		# convert notes to rows and shiit.
+		var fake_bpm: float = get_bpm(change_index)
+		var beat_length: float = (60.0 / fake_bpm)
+		fun.call(note, fake_bpm, cur_time, beat_length)
+		var changed_time: float = timing_changes[change_index].time < cur_time
+		if changed_time and (change_index + 1) < timing_changes.size():
+			change_index = timing_changes.find(cur_change) + 1
+		cur_time += beat_length * maxf((cur_time * fake_bpm) / 60.0, 4.0) # TODO: change this.
+		cur_change = timing_changes[change_index]
+
+## Grabs how many notes, holds, and unique note patterns exist in the chart.
+func get_note_quantities() -> Dictionary[String, int]:
+	var quantities: Dictionary[String, int] = {
+		"notes": 0, # Single Notes
+		"holds": 0, # Hold Notes
+		"chords": 0, # 2 or more notes at the same time with different columns.
+		"jumps": 0, # 2 notes at the same time with different columns (doubles even).
+		"hands": 0, # Three notes at the same time with different columns.
+		"quads": 0, # Four notes at the same time with different columns.
+	}
+	var rows: Dictionary[int, Array] = { }
+	bpm_changed_note_loop(func(note: NoteData, bpm: float, time: float, _crotchet: float) -> void:
+		# convert notes to rows and shiit.
+		# btw if you think I know what am doing, think again.
+		var row: int = Conductor.secs_to_row(note.time, bpm)
+		if not row in rows: rows[row] = []
+		rows[row].append(note.column)
+		if note.length > 0.0:
+			quantities.holds += 1
+		quantities.notes += 1
+	)
+	rows.sort() # should be enough to sort all keys.
+	for i: int in rows.keys():
+		var note_row: Array = rows[i]
+		if note_row.size() > 1:
+			if note_row.size() == 2: quantities.jumps += 1
+			if note_row.size() == 3: quantities.hands += 1
+			if note_row.size() == 4: quantities.quads += 1
+			quantities.chords += 1
+	return quantities
+
 ## Clear every overlapping note from the chart, only really used for fnf charts.
 func clear_overlapping_notes() -> void:
+	const EPSILON: float = 1e-12
 	var counter: int = 0
 	var total: int = 0
 	for i: int in notes.size():
@@ -71,8 +119,7 @@ func clear_overlapping_notes() -> void:
 			continue
 		var cur: NoteData = notes[i]
 		var prev: NoteData = notes[i - 1]
-		const epsilon: float = 1e-12
-		if prev and absf(cur.time - prev.time) < epsilon and cur.column == prev.column and cur.side == prev.side:
+		if prev and is_equal_approx(cur.time - prev.time, EPSILON) and cur.column == prev.column and cur.side == prev.side:
 			#print_debug("removed note 	at ", prev.time, " (", cur.time, ")")
 			notes.remove_at(i)
 			counter += 1
@@ -86,12 +133,10 @@ func save_parsing_meta(song_name: StringName, difficulty: StringName = Global.DE
 
 ## Detects a chart format and parses it.
 static func detect_and_parse(song_name: StringName, difficulty: StringName = Global.DEFAULT_DIFFICULTY) -> Chart:
-	# TODO: rewerite all of this ig.
 	var variation: String = ChartAssets.solve_variation(difficulty)
 	var path: String = ChartAssets.song_path(song_name, variation, difficulty + ".json")
-
-	var chart: Chart
 	var chart_type: ChartType = ChartType.DUMMY
+	var chart: Chart
 
 	if ResourceLoader.exists(path):
 		chart_type = ChartType.FNF_LEGACY

@@ -47,18 +47,12 @@ func _ready() -> void:
 	reload_song_items()
 	change_difficulty()
 
-func _process(delta: float) -> void:
-	var lerp_value: float = clamp(delta * 9.6, 0.0, 1.0)
+func _physics_process(delta: float) -> void:
+	var lerp_value: float = clamp(delta * 5.0, 0.0, 1.0)
 	song_menu.scroll_lerp = lerp_value
-	
-	# update score lerp and shit
-	if score_text and display_score and "score" in display_score:
-		lerp_score = lerp(lerp_score, float(display_score.score), lerp_value) # placeholder
-		if abs(lerp_score - display_score.score) < 0.01:
-			lerp_score = display_score.score
-		score_text.text = "HIGH SCORE: %s" % Global.separate_thousands(int(lerp_score))
+	update_score_text(delta)
 
-func _unhandled_input(_event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if exiting: return
 	
 	var accepting: bool = Input.is_action_just_pressed("ui_accept")
@@ -156,3 +150,11 @@ func refresh_display_score() -> void:
 	var song: String = songs.list[song_selected].folder
 	var diff: String = songs.list[song_selected].difficulties[difficulty]
 	display_score = Tally.get_record(song, diff)
+
+func update_score_text(delta: float) -> void:
+	if score_text and display_score and "score" in display_score:
+		var lerp_value: float = clamp(delta * 5.0, 0.0, 1.0)
+		lerp_score = lerp(lerp_score, float(display_score.score), lerp_value) # placeholder
+		if abs(lerp_score - display_score.score) < 0.01:
+			lerp_score = display_score.score
+		score_text.text = "HIGH SCORE: %s" % Global.separate_thousands(int(lerp_score))

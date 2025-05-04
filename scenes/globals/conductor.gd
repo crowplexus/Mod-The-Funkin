@@ -95,9 +95,14 @@ func get_timed_change(timestamp: float) -> SongTimeChange:
 			break
 	return change
 
+
 ## Converts time (in seconds) to a beat value.
 func get_beat(p_time: float = Conductor.time, p_bpm: float = Conductor.bpm) -> float:
 	return (p_time * p_bpm) / 60.0
+
+## Converts beats to a time value (in seconds).
+func get_time(p_beat: float = Conductor.current_beat, p_bpm: float = Conductor.bpm) -> float:
+	return (p_beat / 60.0) * p_bpm
 
 ## Converts time (in seconds) to a 16th notes (semiquaver).
 func get_16th(p_time: float = Conductor.time, p_bpm: float = Conductor.bpm) -> float:
@@ -106,6 +111,29 @@ func get_16th(p_time: float = Conductor.time, p_bpm: float = Conductor.bpm) -> f
 ## Snaps time to the nearest N-th note (e.g., 4 = quarter, 8 = eighth).
 func snap_to_beat(p_time: float, p_bpm: float, subdiv: int = 4) -> float:
 	return roundf(get_beat(p_time, p_bpm) * subdiv) / subdiv
+
+# needless to say, ikepotchey, chihuisepapa
+# never dales, conecosna heibi amare
+
+const ROWS_PER_BEAT: float = 48
+
+# TODO: adjust these to time signature.
+
+## Converts time to a note row.
+func secs_to_row(p_time: float, p_bpm: float = Conductor.bpm) -> int:
+	return round(get_beat(p_time, p_bpm) * ROWS_PER_BEAT)
+
+## Converts a beat value to a note row.
+func beat_to_row(p_beat: float) -> int:
+	return round(p_beat * ROWS_PER_BEAT)
+
+## [code]Conductor.beat_to_row[/code] but in reverse.
+func row_to_beat(p_row: int) -> float:
+	return p_row / ROWS_PER_BEAT
+
+## [code]Conductor.secs_to_row[/code] but in reverse.
+func row_to_secs(p_row: int, p_bpm: float = Conductor.bpm) -> float:
+	return get_time(p_row / ROWS_PER_BEAT, p_bpm)
 
 ## Converts Beats per minute to seconds.
 func get_bps(p_bpm: float = Conductor.bpm) -> float:
