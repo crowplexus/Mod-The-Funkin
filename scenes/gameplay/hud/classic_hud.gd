@@ -119,10 +119,9 @@ func setup_icons() -> void:
 				icon_p2.vframes = game.enemy.icon.vframes
 
 func start_countdown() -> void:
-	if countdown:
-		countdown.show()
-		countdown_timer.start(Conductor.crotchet)
-		_countdown_iteration = 0
+	countdown.show()
+	countdown_timer.start(Conductor.crotchet)
+	_countdown_iteration = 0
 
 func countdown_progress() -> void:
 	if _countdown_iteration >= 4:
