@@ -158,23 +158,27 @@ script = ExtResource("1_31kjc")
 
 [node name="clip_rect" type="Control" parent="."]
 modulate = Color(1, 1, 1, 0.8)
+clip_contents = true
 layout_mode = 3
 anchors_preset = 0
-offset_left = -30.0
-offset_right = 55.0
-offset_bottom = 850.0
+offset_left = -25.0
+offset_right = 60.0
+offset_bottom = 1235.0
 
 [node name="hold_body" type="TextureRect" parent="clip_rect"]
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 810.0
+metadata/_edit_lock_ = true
 
 [node name="hold_tail" type="TextureRect" parent="clip_rect"]
 layout_mode = 0
+metadata/_edit_lock_ = true
 
 [node name="arrow" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_31kjc")
 animation = &"arrowDOWN"
+metadata/_edit_lock_ = true
 
 [node name="animation_player" type="AnimationPlayer" parent="."]
 libraries = {
@@ -186,3 +190,4 @@ visible = false
 scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("2_xg47h")
 animation = &"note impact 2 blue"
+metadata/_edit_lock_ = true

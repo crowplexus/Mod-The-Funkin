@@ -14,11 +14,6 @@ const SM_ARROW_SIZE: float = 80.0 # 64.0 originally.
 const SM_SPEED_MULT: float = 10.0 # adjust for fnf notes.
 const USE_SM_SCROLL: bool = true
 
-static func get_scroll_as_vector(scroll: int) -> Vector2:
-	match scroll:
-		1: return Vector2(-1, 1) # Down
-		_: return -Vector2.ONE # Up (default)
-
 ## Strumline that this note is moving towards.
 var strumline: Strumline
 ## Data used mainly for hold sizes and whatnot.
@@ -66,7 +61,7 @@ var dropped: bool = false
 var trip_timer: float = 1.0
 var _stupid_visual_bug: bool = false
 # VISUALS
-var scroll_mult: Vector2 = -Vector2.ONE
+@onready var scroll_mult: Vector2 = Vector2(-1, 1)
 var moving: bool = true
 
 func hide_all() -> void: queue_free()
@@ -76,7 +71,6 @@ func show_all() -> void: show()
 func can_splash() -> bool:
 	return false
 
-var _old_sm: Vector2 = Vector2.ZERO
 var _strum: StrumNote
 
 func _ready() -> void:
@@ -87,10 +81,10 @@ func _ready() -> void:
 	reset_scroll()
 
 func reset_scroll() -> void:
-	scroll_mult = Note.get_scroll_as_vector(Global.settings.scroll)
-	if clip_rect and scroll_mult != _old_sm:
-		clip_rect.scale *= -scroll_mult
-	_old_sm = scroll_mult
+	match Global.settings.scroll:
+		0: scroll_mult.y *= -1
+		1: scroll_mult.y *=  1
+	clip_rect.scale *= -scroll_mult
 
 func get_total_speed() -> float:
 	var markplier: float = (Note.SM_SPEED_MULT if Note.USE_SM_SCROLL else 1.5)
@@ -156,7 +150,7 @@ func display_hold(size: float = 0.0, speed: float = -1.0) -> void:
 	# general implementation, should work for everything???
 	if hold_body.texture:
 		hold_body.size.x = hold_body.texture.get_width()
-		hold_body.size.y = (size * speed) / clip_rect.scale.y
+		hold_body.size.y = (size * speed) / absf(clip_rect.scale.y)
 
 ## Use this function for implementing splash visuals.[br]
 ## Return null if you don't want note splashes on your note type.

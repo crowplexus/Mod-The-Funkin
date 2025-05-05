@@ -113,14 +113,14 @@ func seek_music(target_time: float = 0.0) -> void:
 
 ## Plays the music stream of the Conductor.
 func play_music(start_time: float = 0.0, volume_linear: float = 1.0, looped: bool = true) -> void:
-	if bound_music:
+	if bound_music and bound_music.stream:
 		bound_music.stream.get_sync_stream(0).loop = looped
 		bound_music.volume_linear = volume_linear
 		bound_music.play(start_time)
 
 ## Sets the volume of the music stream of the Conductor.
 func set_music_volume(volume_linear: float, stream: int = -1) -> void:
-	if bound_music:
+	if bound_music and bound_music.stream:
 		if stream < 0 or stream > bound_music.stream.stream_count:
 			bound_music.volume_linear = volume_linear
 		else:
@@ -135,15 +135,16 @@ func stop_music() -> void:
 	if bound_music: bound_music.stop()
 
 func get_main_stream() -> AudioStream:
-	return bound_music.stream.get_sync_stream(0) if bound_music else null
+	return bound_music.stream.get_sync_stream(0) if bound_music and bound_music.stream else null
 
 ## Sets the music stream of the Conductor.
 func set_music_stream(stream: AudioStream) -> void:
-	if bound_music: bound_music.stream.set_sync_stream(0, stream)
+	if bound_music and bound_music.stream:
+		bound_music.stream.set_sync_stream(0, stream)
 
 ## Clears all music streams from the Conductor.
 func clear_music_streams() -> void:
-	if bound_music:
+	if bound_music and bound_music.stream:
 		bound_music.stop()
 		for i: int in bound_music.stream.stream_count:
 			bound_music.stream.set_sync_stream(i, null)

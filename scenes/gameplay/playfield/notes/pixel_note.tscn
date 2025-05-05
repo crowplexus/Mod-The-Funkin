@@ -161,9 +161,9 @@ script = ExtResource("1_8i8cq")
 modulate = Color(1, 1, 1, 0.8)
 layout_mode = 3
 anchors_preset = 0
-offset_left = -48.0
-offset_right = 37.0
-offset_bottom = 850.0
+offset_left = -40.0
+offset_right = 45.0
+offset_bottom = 900.0
 scale = Vector2(9, 9)
 
 [node name="hold_body" type="TextureRect" parent="clip_rect"]
@@ -186,6 +186,6 @@ libraries = {
 
 [node name="splash" type="AnimatedSprite2D" parent="."]
 visible = false
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 sprite_frames = ExtResource("3_8i8cq")
 animation = &"purple1"
