@@ -64,8 +64,8 @@ func on_note_hit(note: Note) -> void:
 			# TODO: attach characters to the strumline or something like that.
 			var actor: Actor2D = game.get_actor_from_index(note.side)
 			if actor: actor.sing(note.column, true)
-			if game.music and not game.has_enemy_track:
-				game.music.stream.set_sync_stream_volume(1, linear_to_db(1.0))
+			if game.chart_music and not game.has_enemy_track:
+				game.chart_music.set_sync_stream_volume(1, linear_to_db(1.0))
 
 func on_note_miss(note: Note = null, idx: int = -1) -> void:
 	miss_note.emit(note, note.column)

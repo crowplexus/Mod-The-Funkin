@@ -40,10 +40,11 @@ func _ready() -> void:
 		item.modulate.a = 0.6 if item.get_index() != selected else 1.0)
 	Global.update_discord("Menus", "Selecting a Song in Freeplay")
 	if get_tree().paused: get_tree().paused = false
-	if Global.DEFAULT_SONG and not Global.bgm.playing:
-		Global.play_bgm(Global.DEFAULT_SONG, 0.7)
+	if Global.DEFAULT_SONG and not Conductor.is_music_playing():
+		Conductor.set_music_stream(Global.DEFAULT_SONG)
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
-	Global.bgm.volume_linear = 0.7
+		Conductor.play_music(0.0)
+	Conductor.set_music_volume(0.7)
 	reload_song_items()
 	change_difficulty()
 
@@ -52,7 +53,7 @@ func _physics_process(delta: float) -> void:
 	song_menu.scroll_lerp = lerp_value
 	update_score_text(delta)
 
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	if exiting: return
 	
 	var accepting: bool = Input.is_action_just_pressed("ui_accept")
@@ -72,8 +73,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func go_to_gameplay() -> void:
 	exiting = true
+	Conductor.stop_music()
 	Global.change_transition_style(&"alternate")
-	Global.request_audio_fade(Global.bgm, 0.0, 0.5)
+	Global.request_audio_fade(Conductor.bound_music, 0.0, 0.5)
 	var parse: bool = true
 	var selected_song: SongItem = songs.list[song_selected]
 	if Gameplay.chart and Gameplay.chart.parsed_values.song_name == selected_song.folder:

@@ -27,7 +27,6 @@ config/icon="uid://dskmlhhqpvkkc"
 [autoload]
 
 Global="*res://scenes/globals/global.tscn"
-Overlay="*res://scenes/globals/overlay.tscn"
 Conductor="*res://scenes/globals/conductor.tscn"
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
 

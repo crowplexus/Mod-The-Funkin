@@ -19,9 +19,10 @@ var selected: int = 0
 var copyright_tween: Tween
 
 func _ready() -> void:
-	if Global.DEFAULT_SONG and not Global.bgm.playing:
-		Global.play_bgm(Global.DEFAULT_SONG, 0.7)
+	if Global.DEFAULT_SONG and not Conductor.is_music_playing():
+		Conductor.set_music_stream(Global.DEFAULT_SONG)
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
+		Conductor.play_music(0.0, 0.7)
 	
 	if not saw_copyright:
 		var start_moving: Callable = func() -> void:

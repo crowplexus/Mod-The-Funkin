@@ -91,8 +91,6 @@ func confirm_selection() -> void:
 	var game: = get_tree().current_scene
 	match list[selected].dedent().to_lower():
 		"resume":
-			if game is Gameplay and not game.starting and not game.ending:
-				game.music.play(Conductor.time)
 			get_tree().paused = false
 			close()
 		"restart":

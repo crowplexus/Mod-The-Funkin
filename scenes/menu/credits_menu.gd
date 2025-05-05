@@ -11,16 +11,22 @@ var index: int = 0
 var label_tween: Tween
 var ended: bool = false
 var og_vol: float = 1.0
-var og_pos: float = 0.0
+var og_pos: float = -1.0
 
 func _ready() -> void:
 	advance()
-	if Global.bgm.playing:
+	var song: AudioStreamPlayer
+	if Global.bgm and Global.bgm.playing:
 		og_vol = Global.bgm.volume_linear
-		Global.request_audio_fade(Global.bgm, 0.0, 1.0)
-		await Global.music_fade_tween.finished
 		og_pos = Global.bgm.get_playback_position()
-		Global.bgm.stop()
+		song = Global.bgm
+	elif (not Global.bgm or not Global.bgm.playing) and Conductor.is_music_playing():
+		song = Conductor.bound_music
+	og_vol = song.volume_linear
+	og_pos = song.get_playback_position()
+	Global.request_audio_fade(song, 0.0, 1.0)
+	await Global.music_fade_tween.finished
+	song.stop()
 	Conductor.bpm = bgm.stream.bpm
 	bgm.stream.loop = true
 	bgm.play()
@@ -50,6 +56,6 @@ func advance(next: int = 0) -> void:
 func restore_audio(duration: float = 1.0) -> void:
 	Global.request_audio_fade(bgm, 0.0, duration)
 	await Global.music_fade_tween.finished
-	Conductor.bpm = Global.bgm.stream.bpm
-	Global.request_audio_fade(Global.bgm, og_vol, 0.5)
-	Global.bgm.play(og_pos)
+	Conductor.bpm = Conductor.get_main_stream().bpm
+	Global.request_audio_fade(Conductor.bound_music, og_vol, 0.5)
+	Conductor.play_music(og_pos)

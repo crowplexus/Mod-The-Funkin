@@ -1,12 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://boh8r5qu5i1xn"]
+[gd_scene load_steps=4 format=3 uid="uid://boh8r5qu5i1xn"]
 
 [ext_resource type="Script" uid="uid://cuxjf52d0a06l" path="res://scenes/globals/conductor.gd" id="1_dqjak"]
 [ext_resource type="AudioStream" uid="uid://c732jy0inr3bb" path="res://assets/sounds/scroll.ogg" id="2_emm5y"]
 
+[sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_rcp3f"]
+stream_count = 5
+stream_0/volume = 0.0
+stream_1/volume = 0.0
+stream_2/volume = 0.0
+stream_3/volume = 0.0
+stream_4/volume = 0.0
+
 [node name="conductor" type="Node"]
+process_mode = 3
 script = ExtResource("1_dqjak")
 
 [node name="metronome" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("2_emm5y")
 max_polyphony = 10
+
+[node name="bound_music" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = SubResource("AudioStreamSynchronized_rcp3f")
+bus = &"Music"

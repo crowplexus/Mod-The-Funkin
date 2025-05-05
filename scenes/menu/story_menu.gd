@@ -129,7 +129,7 @@ func go_to_gameplay() -> void:
 	Global.begin_color_flicker(title, Color.WHITE, Color(0.2, 1.0, 1.0))
 	Global.play_sfx(Global.resources.get_resource("confirm"))
 	await get_tree().create_timer(0.8).timeout
-	Global.bgm.stop()
+	Conductor.stop_music()
 	var next_playlist: = get_songs()
 	Gameplay.set_game_mode(Gameplay.GameMode.STORY)
 	if Gameplay.playlist != next_playlist:
@@ -170,11 +170,12 @@ func get_songs() -> Array[String]:
 	return folders
 
 func reset_music() -> void:
-	var play_default: bool = Global.bgm.playing and Global.bgm.stream != Global.DEFAULT_SONG
-	if play_default or not Global.bgm.playing:
+	var play_default: bool = Conductor.is_music_playing() and Conductor.get_main_stream() != Global.DEFAULT_SONG
+	if play_default or not Conductor.is_music_playing():
 		if play_default:
-			Global.request_audio_fade(Global.bgm, 0.0, 0.5)
+			Global.request_audio_fade(Conductor.bound_music, 0.0, 0.5)
 			await Global.music_fade_tween.finished
-		Global.play_bgm(Global.DEFAULT_SONG, 0.7)
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
-	Global.bgm.volume_linear = 0.7
+		Conductor.set_music_stream(Global.DEFAULT_SONG)
+		Conductor.play_music(0.0, 0.7)
+	Conductor.set_music_volume(0.7) # if it's playing.

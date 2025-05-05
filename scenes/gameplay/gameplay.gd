@@ -90,11 +90,11 @@ static func get_mode_string(gm: int) -> String:
 		_: return "Unknown"
 
 static func play_inst_outside() -> void:
-	if Gameplay.chart and Gameplay.chart.assets:
-		Global.play_bgm(Gameplay.chart.assets.instrumental, 0.01)
-		var length: float = Gameplay.chart.assets.instrumental.get_length()
-		Global.bgm.seek(randf_range(0, length * 0.5))
-		Global.request_audio_fade(Global.bgm, 0.7, 1.0)
+	Conductor.clear_music_streams()
+	var length: float = Gameplay.chart.assets.instrumental.get_length()
+	Conductor.set_music_stream(Gameplay.chart.assets.instrumental)
+	Conductor.play_music(randf_range(0, Conductor.length * 0.5), 0.01, true)
+	Global.request_audio_fade(Conductor.bound_music, 0.7, 1.0)
 
 #endregion
 
@@ -103,7 +103,7 @@ var local_settings: Settings
 var assets: ChartAssets
 var scripts: ScriptPack
 
-@onready var music: AudioStreamPlayer = $%"music_player"
+@onready var chart_music: AudioStreamSynchronized = AudioStreamSynchronized.new()
 @onready var strumlines: Control = $"hud_layer/strumlines"
 
 @onready var hud_layer: CanvasLayer = $"hud_layer"
@@ -203,12 +203,11 @@ func kill_every_note(advancing: bool = false) -> void:
 			note.queue_free()
 
 func restart_song() -> void:
-	if chart: Conductor.reset(chart.get_bpm(), false)
 	starting = true
 	ending = false
-	if music:
-		music.stream_paused = true
-		music.seek(0.0)
+	Conductor.toggle_pause_music(true)
+	Conductor.seek_music(0.0)
+	if chart: Conductor.reset(chart.get_bpm(), true)
 	# disable note spawning and event dispatching.
 	should_process_events = false
 	should_spawn_notes = false
@@ -251,13 +250,10 @@ func _exit_tree() -> void:
 	local_settings.unreference()
 
 func _process(delta: float) -> void:
-	if music and music.playing and not ending:
-		Conductor.update(music.get_playback_position() + AudioServer.get_time_since_last_mix())
-	elif not Conductor.active:
-		Conductor.active = true
 	if starting:
 		if Conductor.time >= 0.0:
-			if music: music.play(Conductor.time)
+			Conductor.toggle_pause_music(false) # just in case.
+			Conductor.play_music(Conductor.get_music_time(), 1.0, false)
 			starting = false
 	else:
 		if Conductor.time >= Conductor.length and not ending:
@@ -279,9 +275,9 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 	if OS.is_debug_build() and not starting and _event.pressed and not _event.is_echo():
 		match _event.keycode:
 			KEY_F4:
-				skip_to_time(music.get_playback_position() + 10)
+				skip_to_time(Conductor.time + 10)
 			KEY_END:
-				music.stop()
+				Conductor.stop_music()
 				should_spawn_notes = false
 				should_process_events = false
 				tally.merge(local_tally) # just in case
@@ -289,7 +285,7 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 				Conductor.time = Conductor.length
 	
 	if Input.is_action_just_pressed("ui_pause"):
-		if music: music.stop()
+		Conductor.stop_music()
 		var pause_menu: PackedScene
 		if assets and assets.pause_menu:
 			pause_menu = assets.pause_menu
@@ -306,10 +302,10 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 
 func skip_to_time(time: float = 0.0) -> void:
 	should_spawn_notes = false
-	music.seek(time)
+	Conductor.seek_music(time)
 	Conductor.time = time
 	if Conductor.time >= Conductor.length:
-		music.stop()
+		Conductor.stop_music()
 		tally.merge(local_tally) # just in case
 		tally.is_valid = false
 	kill_every_note(true)
@@ -438,13 +434,9 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 			hud.update_score_text(true) # pretend its a miss
 
 func load_streams() -> void:
+	Conductor.load_chart_music(chart)
 	if chart.assets and chart.assets.instrumental:
-		music.stream.set_sync_stream(0, chart.assets.instrumental)
-		Conductor.length = chart.assets.instrumental.get_length()
-		if chart.assets.vocals:
-			has_enemy_track = chart.assets.vocals.size() > 1
-			for i: int in chart.assets.vocals.size():
-				music.stream.set_sync_stream(i + 1, chart.assets.vocals[i])
+		has_enemy_track = chart.assets.vocals.size() > 1
 
 func do_note_spawning() -> void:
 	while note_spawn_index < notes_to_spawn.size():
@@ -483,7 +475,7 @@ func on_note_hit(note: Note) -> void:
 	var character: Actor2D = get_actor_from_index(note.side)
 	if character and character.able_to_sing:
 		character.sing(note.column, note.arrow.visible)
-		if music: music.stream.set_sync_stream_volume(1, linear_to_db(1.0))
+		if chart_music: chart_music.set_sync_stream_volume(1, linear_to_db(1.0))
 	if note.can_splash(): note.display_splash()
 	# kill everyone, and everything in your path
 	health += (DEFAULT_HEALTH_WEIGHT * judged_tier)
@@ -506,7 +498,7 @@ func on_note_hit(note: Note) -> void:
 func kill_yourself(actor: Actor2D) -> void: # thanks Unholy
 	if health <= 0: # игра окоичена!
 		hud_layer.hide()
-		if music: music.stop()
+		Conductor.stop_music()
 		print_debug("Died with a MA of ", tally.calculate_epic_ratio(), " and a PA of ", tally.calculate_sick_ratio())
 		local_tally.zero()
 		tally.merge(local_tally)
@@ -538,7 +530,7 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 	#print_debug("Health damaged by ", int(Tally.MISS_POINTS + damage_boost), "%")
 	tally.merge(local_tally)
 	# mute vocals
-	if music: music.stream.set_sync_stream_volume(1, linear_to_db(0.0))
+	if chart_music: chart_music.set_sync_stream_volume(1, linear_to_db(0.0))
 	if assets and assets.miss_note_sounds:
 		Global.play_sfx(assets.miss_note_sounds.pick_random(), randf_range(0.1, 0.4))
 	# update hud

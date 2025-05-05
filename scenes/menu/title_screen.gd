@@ -23,20 +23,18 @@ var flash_tween: Tween
 func _ready() -> void:
 	title_sprites.hide()
 	random_text = get_random_text()
-	if Global.DEFAULT_SONG and not Global.bgm.playing:
-		await RenderingServer.frame_post_draw
-		Global.play_bgm(Global.DEFAULT_SONG, 0.01)
+	if Global.DEFAULT_SONG and not Conductor.is_music_playing():
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
-		Global.request_audio_fade(Global.bgm, 0.7, 1.5)
+		Conductor.set_music_stream(Global.DEFAULT_SONG)
+		Conductor.play_music(0.0, 0.01)
+		Global.request_audio_fade(Conductor.bound_music, 0.7, 1.5)
 	if skipped_intro: skip_intro()
 	Conductor.on_beat_hit.connect(on_beat_hit)
 
 func _process(_delta: float) -> void:
-	if Global.bgm and Global.bgm.playing:
-		Conductor.update(Global.bgm.get_playback_position() + AudioServer.get_time_since_last_mix())
+	if Conductor.is_music_playing():
 		if ng_sprite.visible and fmod(Conductor.current_beat, 0.1) < 0.01:
 			ng_sprite.frame = int(not ng_sprite.frame)
-	
 	if confirm_label:
 		var speed: float = 0.5 if not pressed_enter else 50.0
 		enter_text_timer += _delta * speed
