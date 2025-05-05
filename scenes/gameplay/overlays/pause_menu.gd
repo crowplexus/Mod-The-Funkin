@@ -110,9 +110,9 @@ func confirm_selection() -> void:
 			if Gameplay.current:
 				if Gameplay.current.hud:
 					Gameplay.current.hud.settings_changed(Global.settings)
-					for strums: Strumline in Gameplay.current.strumlines.get_children():
-						for note: Note in strums.notes.get_children():
-							note.reset_scroll()
+				for strums: Strumline in Gameplay.current.strumlines.get_children():
+					for note: Note in strums.notes.get_children():
+						note.reset_scroll()
 				# swap the huds if we can.
 				if Gameplay.current.hud_is_built_in == true and Gameplay.current.local_settings.hud_style != Global.settings.hud_style:
 					Gameplay.current.local_settings.hud_style = Global.settings.hud_style

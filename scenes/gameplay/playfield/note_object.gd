@@ -87,8 +87,7 @@ func _ready() -> void:
 	reset_scroll()
 
 func reset_scroll() -> void:
-	var game: Gameplay = Gameplay.current
-	scroll_mult = Note.get_scroll_as_vector(game.local_settings.scroll if game else Global.settings.scroll)
+	scroll_mult = Note.get_scroll_as_vector(Global.settings.scroll)
 	if clip_rect and scroll_mult != _old_sm:
 		clip_rect.scale *= -scroll_mult
 	_old_sm = scroll_mult
