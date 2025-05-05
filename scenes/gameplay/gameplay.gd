@@ -186,7 +186,8 @@ func _ready() -> void:
 	scripts.call_func("_ready_post")
 	var tick_scripts: Callable = func(tick: int) -> void:
 		scripts.call_func("countdown_tick", [tick])
-	if hud: hud.on_countdown_tick.connect(tick_scripts)
+	if hud and hud.is_inside_tree():
+		hud.on_countdown_tick.connect(tick_scripts)
 	camera = get_viewport().get_camera_2d()
 	restart_song()
 
@@ -234,7 +235,7 @@ func restart_song() -> void:
 func play_countdown(offset: float = 0.0) -> void:
 	var skip_countdown: bool = false
 	var crotchet_offset: float = -3.0
-	if hud:
+	if hud and hud.is_inside_tree():
 		skip_countdown = hud.skip_countdown
 		if not skip_countdown:
 			crotchet_offset = -5.0
@@ -264,7 +265,7 @@ func _process(delta: float) -> void:
 	if not no_fail_mode and health <= 0:
 		kill_yourself(get_actor_from_index(player_id))
 	# hud bumping #
-	if hud and hud_layer.is_inside_tree() and hud_layer.scale != Vector2.ONE:
+	if hud_layer.is_inside_tree() and hud_layer.scale != Vector2.ONE:
 		hud_layer.scale = hud.get_bump_lerp_vector(hud_layer.scale, default_hud_scale, delta)
 		hud_layer.offset.x = (hud_layer.scale.x - 1.0) * -(get_viewport_rect().size.x * 0.5)
 		hud_layer.offset.y = (hud_layer.scale.y - 1.0) * -(get_viewport_rect().size.y * 0.5)
@@ -427,13 +428,14 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 	if hud_type in DEFAULT_HUDS:
 		hud = DEFAULT_HUDS[hud_type].instantiate()
 		hud_is_built_in = true
-	hud_layer.add_child(hud)
-	hud_layer.move_child(hud, idx)
 	# update hud if possible
 	if hud:
-		hud.init_vars()
-		hud.update_score_text(true) # pretend its a miss
-		hud.update_health(display_health)
+		hud_layer.add_child(hud)
+		hud_layer.move_child(hud, idx)
+		if hud.is_inside_tree():
+			hud.init_vars()
+			hud.update_health(display_health)
+			hud.update_score_text(true) # pretend its a miss
 
 func load_streams() -> void:
 	if chart.assets and chart.assets.instrumental:
@@ -495,7 +497,7 @@ func on_note_hit(note: Note) -> void:
 	local_tally.update_tier_score(judged_tier)
 	# Update HUD
 	tally.merge(local_tally)
-	if hud:
+	if hud and hud.is_inside_tree():
 		hud.display_judgement(note.judgement)
 		hud.display_combo(local_tally.combo)
 		hud.update_score_text(false)
@@ -508,7 +510,7 @@ func kill_yourself(actor: Actor2D) -> void: # thanks Unholy
 		print_debug("Died with a MA of ", tally.calculate_epic_ratio(), " and a PA of ", tally.calculate_sick_ratio())
 		local_tally.zero()
 		tally.merge(local_tally)
-		if hud:
+		if hud and hud.is_inside_tree():
 			hud.update_health(display_health)
 			hud.update_score_text(true)
 		actor.die()
@@ -517,7 +519,7 @@ func try_revive() -> void:
 	if health > 0:
 		player.show()
 		hud_layer.show()
-		if hud:
+		if hud and hud.is_inside_tree():
 			hud.update_health(display_health)
 			hud.update_score_text(true)
 
@@ -540,14 +542,14 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 	if assets and assets.miss_note_sounds:
 		Global.play_sfx(assets.miss_note_sounds.pick_random(), randf_range(0.1, 0.4))
 	# update hud
-	if hud:
+	if hud and hud.is_inside_tree():
 		hud.update_score_text(true)
 		hud.update_health(display_health)
 	# play miss animations.
 	if player: player.sing(idx, true, "miss")
 
 func on_beat_hit(beat: float) -> void:
-	if hud and int(beat) > 0 and int(beat) % 4 == 0:
+	if hud and hud.is_inside_tree() and int(beat) > 0 and int(beat) % 4 == 0:
 		hud_layer.scale += Vector2(hud.get_bump_scale(), hud.get_bump_scale())
 
 func end_song() -> void:
