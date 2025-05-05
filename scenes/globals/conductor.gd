@@ -119,8 +119,12 @@ func play_music(start_time: float = 0.0, volume_linear: float = 1.0, looped: boo
 		bound_music.play(start_time)
 
 ## Sets the volume of the music stream of the Conductor.
-func set_music_volume(volume_linear: float) -> void:
-	if bound_music: bound_music.volume_linear = volume_linear
+func set_music_volume(volume_linear: float, stream: int = -1) -> void:
+	if bound_music:
+		if stream < 0 or stream > bound_music.stream.stream_count:
+			bound_music.volume_linear = volume_linear
+		else:
+			bound_music.stream.set_sync_stream_volume(stream, linear_to_db(volume_linear))
 
 ## Pauses or unpauses the music stream of the Conductor.
 func toggle_pause_music(value: bool = false) -> void:

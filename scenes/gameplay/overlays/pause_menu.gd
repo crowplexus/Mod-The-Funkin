@@ -145,4 +145,5 @@ func reload_options() -> void:
 ## Closes the pause menu.
 func close() -> void:
 	can_control = false
+	Conductor.toggle_pause_music(true)
 	self.queue_free()

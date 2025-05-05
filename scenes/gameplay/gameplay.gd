@@ -103,7 +103,6 @@ var local_settings: Settings
 var assets: ChartAssets
 var scripts: ScriptPack
 
-@onready var chart_music: AudioStreamSynchronized = AudioStreamSynchronized.new()
 @onready var strumlines: Control = $"hud_layer/strumlines"
 
 @onready var hud_layer: CanvasLayer = $"hud_layer"
@@ -245,7 +244,6 @@ func play_countdown(offset: float = 0.0) -> void:
 
 func _exit_tree() -> void:
 	current = null
-	Conductor.length = -1.0
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
 	local_settings.unreference()
 
@@ -285,7 +283,7 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 				Conductor.time = Conductor.length
 	
 	if Input.is_action_just_pressed("ui_pause"):
-		Conductor.stop_music()
+		Conductor.toggle_pause_music(false) # FUCK?
 		var pause_menu: PackedScene
 		if assets and assets.pause_menu:
 			pause_menu = assets.pause_menu
@@ -475,7 +473,7 @@ func on_note_hit(note: Note) -> void:
 	var character: Actor2D = get_actor_from_index(note.side)
 	if character and character.able_to_sing:
 		character.sing(note.column, note.arrow.visible)
-		if chart_music: chart_music.set_sync_stream_volume(1, linear_to_db(1.0))
+		Conductor.set_music_volume(1.0, 1)
 	if note.can_splash(): note.display_splash()
 	# kill everyone, and everything in your path
 	health += (DEFAULT_HEALTH_WEIGHT * judged_tier)
@@ -530,7 +528,7 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 	#print_debug("Health damaged by ", int(Tally.MISS_POINTS + damage_boost), "%")
 	tally.merge(local_tally)
 	# mute vocals
-	if chart_music: chart_music.set_sync_stream_volume(1, linear_to_db(0.0))
+	Conductor.set_music_volume(0.0, 1)
 	if assets and assets.miss_note_sounds:
 		Global.play_sfx(assets.miss_note_sounds.pick_random(), randf_range(0.1, 0.4))
 	# update hud
