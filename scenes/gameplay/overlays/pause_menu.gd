@@ -92,6 +92,7 @@ func confirm_selection() -> void:
 	match list[selected].dedent().to_lower():
 		"resume":
 			get_tree().paused = false
+			Conductor.toggle_pause_music(true)
 			close()
 		"restart":
 			if game is Gameplay: game.restart_song()
@@ -145,5 +146,4 @@ func reload_options() -> void:
 ## Closes the pause menu.
 func close() -> void:
 	can_control = false
-	Conductor.toggle_pause_music(true)
 	self.queue_free()

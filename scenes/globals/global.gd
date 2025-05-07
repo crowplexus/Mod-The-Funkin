@@ -38,8 +38,10 @@ func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_APPLICATION_FOCUS_OUT when settings.auto_pause and Gameplay.current:
 			_was_paused = get_tree().paused
+			Conductor.toggle_pause_music(false)
 			get_tree().paused = true
 		NOTIFICATION_APPLICATION_FOCUS_IN when settings.auto_pause and Gameplay.current:
+			Conductor.toggle_pause_music(not _was_paused)
 			get_tree().paused = _was_paused
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			Global.settings.save_settings()
@@ -141,7 +143,7 @@ func request_audio_fade(player: AudioStreamPlayer, to: float = 0.0, speed: float
 	return player
 
 ## Plays background music (remember to stop it if you're switching to a scene that has custom music nodes).
-func play_bgm(stream: AudioStream, volume: float = 1.0, loop: bool = true) -> AudioStreamPlayer:
+func g(stream: AudioStream, volume: float = 1.0, loop: bool = true) -> AudioStreamPlayer:
 	bgm.stop()
 	bgm.stream = stream
 	bgm.volume_db = linear_to_db(volume)
