@@ -439,7 +439,7 @@ func do_note_spawning() -> void:
 	while note_spawn_index < notes_to_spawn.size():
 		var note_data: NoteData = notes_to_spawn[note_spawn_index]
 		var strumline: Strumline = strumlines.get_child(note_data.side)
-		var spawn_time: float = 1.25
+		var spawn_time: float = 0.9
 		if strumline.speed < 1.0: spawn_time /= strumline.speed
 		if not strumline or absf(note_data.time - Conductor.playhead) > spawn_time:
 			break
