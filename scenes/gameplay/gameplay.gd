@@ -205,7 +205,6 @@ func restart_song() -> void:
 	starting = true
 	ending = false
 	Conductor.toggle_pause_music(true)
-	Conductor.seek_music(0.0)
 	if chart: Conductor.reset(chart.get_bpm(), true)
 	# disable note spawning and event dispatching.
 	should_process_events = false
@@ -251,7 +250,7 @@ func _process(delta: float) -> void:
 	if starting:
 		if Conductor.time >= 0.0:
 			Conductor.toggle_pause_music(false) # just in case.
-			Conductor.play_music(Conductor.get_music_time(), 1.0, false)
+			Conductor.play_music(0.0, 1.0, false)
 			starting = false
 	else:
 		if Conductor.time >= Conductor.length and not ending:
