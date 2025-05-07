@@ -104,7 +104,7 @@ func update(new_time: float) -> void:
 
 ## Syncs the Conductor's time to the bound music stream.
 func update_bound_music() -> void:
-	if play_metronome_sound and int(_prev_beat) < int(current_beat):
+	if play_metronome_sound and floori(current_beat) > floori(_prev_beat):
 		metronome.play(0.0)
 	if bound_music and bound_music.stream and Conductor.active:
 		Conductor.update(Conductor.get_music_time())

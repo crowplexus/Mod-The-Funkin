@@ -458,9 +458,9 @@ func get_unspawned_note(strumline: Strumline, note_data: NoteData) -> Node:
 	if strumline.skin and note_data.kind in strumline.skin.note_scenes:
 		types = strumline.skin.note_scenes
 	var unspawned_note: = types[note_data.kind].instantiate()
+	unspawned_note.name = "note_%s_%s" % [ unspawned_note.name, note_spawn_index ]
 	unspawned_note.strumline = strumline
 	unspawned_note.data = note_data
-	unspawned_note.name = "note_%s_%s" % [ unspawned_note.name, note_spawn_index ]
 	return unspawned_note
 
 func on_note_hit(note: Note) -> void:
