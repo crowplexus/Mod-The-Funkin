@@ -204,7 +204,7 @@ func kill_every_note(advancing: bool = false) -> void:
 func restart_song() -> void:
 	starting = true
 	ending = false
-	Conductor.toggle_pause_music(true)
+	Conductor.toggle_pause_music(false)
 	if chart: Conductor.reset(chart.get_bpm(), true)
 	# disable note spawning and event dispatching.
 	should_process_events = false

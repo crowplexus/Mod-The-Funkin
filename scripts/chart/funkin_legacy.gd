@@ -102,6 +102,9 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 				swag_note.side = 1 - swag_note.side
 			if swag_note.side > chart.note_counts.size():
 				chart.note_counts.append(0)
+			if song_note.size() > 3: # i completely forgot this exists.
+				chart.load_psych_notetypes_as_events(song_note, swag_note.side)
+				if str(song_note[3]) == "Alt Animation": swag_note.anim_suffix = "-alt"
 			chart.note_counts[swag_note.side] += 1
 			chart.notes.append(swag_note)
 		
@@ -140,6 +143,16 @@ func load_psych_events(event_note: Array) -> void:
 		event.time = float(event_note[0] * 0.001)
 		event.values.assign({"v1": event_note[3], "v2": event_note[4]})
 		scheduled_events.append(event)
+
+func load_psych_notetypes_as_events(note: Array, side: int) -> void:
+	match str(note[3]):
+		"Hey!":
+			var hey_note: = TimedEvent.new()
+			hey_note.name = &"Play Animation"
+			hey_note.time = float(note[0]) * 0.001
+			hey_note.efire = func() -> void:
+				TimedEvent.play_animation_event("hey", true, side)
+			scheduled_events.append(hey_note)
 
 ## For Kade Engine BPM Change Events.
 func load_kade_bpm_changes() -> void:

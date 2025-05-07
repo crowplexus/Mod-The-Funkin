@@ -18,6 +18,8 @@ static var EMPTY: NoteData = NoteData.new():
 @export var kind: StringName = DEFAULT_NOTE_KIND
 ## Note Length, spawns a tail in the note if specified.
 @export var length: float = 0.0
+## Animation Suffix for the note.
+@export var anim_suffix: String = ""
 ## Custom Parameters.
 @export var params: Array = []
 

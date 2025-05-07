@@ -21,7 +21,8 @@ var data: NoteData:
 	set(new_data):
 		var offset: float = 0.0
 		if Global.settings: offset = Global.settings.note_offset
-		time = new_data.time + offset
+		time = new_data.time + offset]
+		anim_suffix = new_data.anim_suffix
 		raw_time = new_data.time
 		column = new_data.column
 		length = new_data.length
@@ -47,6 +48,8 @@ var side: int = -1 ## Note Player ID/Side.[br]0 = Enemy, 1 = Player, etc...
 var kind: StringName
 ## Note Length, spawns a tail in the note if specified.
 var length: float = -1.0
+## Animation Suffix for the note.
+var anim_suffix: String = ""
 
 # Input stuff
 var was_hit: bool = false

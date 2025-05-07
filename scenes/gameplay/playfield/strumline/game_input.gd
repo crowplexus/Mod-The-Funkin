@@ -63,7 +63,7 @@ func on_note_hit(note: Note) -> void:
 		else:
 			# TODO: attach characters to the strumline or something like that.
 			var actor: Actor2D = game.get_actor_from_index(note.side)
-			if actor: actor.sing(note.column, true)
+			if actor: actor.sing(note.column, true, note.anim_suffix)
 			if Conductor.is_music_playing() and not game.has_enemy_track:
 				Conductor.set_music_volume(1.0, 1)
 
@@ -75,7 +75,8 @@ func on_hold_hit(note: Note) -> void:
 	hit_hold_note.emit(note)
 	if game:
 		var actor: Actor2D = game.get_actor_from_index(note.side)
-		if actor and actor.able_to_sing: actor.sing(note.column, actor.get_anim_position() > 0.1)
+		if actor and actor.able_to_sing:
+		actor.sing(note.column, actor.get_anim_position() > 0.1, note.anim_suffix)
 
 #endregion
 
