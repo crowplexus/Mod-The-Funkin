@@ -1,5 +1,6 @@
 class_name Strumline extends Node2D
 
+@warning_ignore("unused_signal") # it's used elsewhere shut the fuck up.
 signal on_note_deleted(note: Note)
 
 @onready var notes: Node2D = $"notes" ## Notes get sent here when spawned.

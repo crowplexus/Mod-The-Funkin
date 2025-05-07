@@ -80,7 +80,7 @@ func _ready() -> void:
 		if has_node("clip_rect/hold_tail"): hold_tail = get_node("clip_rect/hold_tail")
 	reset_scroll()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if visible and _strum and moving:
 		follow_strum()
 

@@ -45,6 +45,7 @@ var current_beat: float = 0.0 ## Current song beat.
 var current_bar: float = 0.0 ## Current song bar / measure.
 
 var _prev_beat: float = 0.0
+var _prev_bar : float = 0.0
 var _prev_time: float = 0.0
 
 ## Resets the Conductor's values, call only when needed,
@@ -91,11 +92,14 @@ func update(new_time: float) -> void:
 	var beat_dt: float = ctc.calculate_beat_delta(time - _prev_time)
 	current_bar += beat_dt * 4.0
 	current_beat += beat_dt
-	if int(_prev_beat) < int(current_beat):
-		if int(current_beat) % 4 == 0:
-			on_bar_hit.emit(current_bar)
-		on_beat_hit.emit(current_beat)
+	if floori(current_beat) > floori(_prev_beat):
+		for i: int in range(_prev_beat,current_beat):
+			on_beat_hit.emit(i)
 		_prev_beat = current_beat
+	if floori(current_bar) > floori(_prev_bar):
+		for i: int in range(_prev_bar,current_bar):
+			on_bar_hit.emit(i)
+		_prev_bar = current_bar
 	_prev_time = time
 
 ## Syncs the Conductor's time to the bound music stream.

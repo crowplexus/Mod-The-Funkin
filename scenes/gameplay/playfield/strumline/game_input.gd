@@ -169,7 +169,6 @@ func update_holds(delta: float) -> void:
 		# TODO: move this to Note._process without breaking anything
 		note.update_hold(delta)
 		
-		var was_hold: bool = note.hold_size > 0.0
 		var trip_decay: float = 0.01 # needs to be nerfed for rolls?
 		var must_trip: bool = keys_held[note.column] == false
 		if note.kind.begins_with("roll"): # invert the condition
