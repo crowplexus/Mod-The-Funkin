@@ -86,6 +86,30 @@ Up will move your notefield to the top of the screen, UI elements to the bottom,
 
 Down will move your notefield to the bottom of the screen, UI elements to the top, and notes will come from top to bottom."
 
+[node name="note_speed" parent="tabs/gameplay" instance=ExtResource("3_5nl4s")]
+layout_mode = 2
+maxv = 10.0
+display_name = &"Note Scroll Speed"
+variable_name = &"note_speed"
+description = "How fast should the notes be?
+
+This will be affected by the \"Note Speed Mode\" setting"
+
+[node name="note_speed_mode" parent="tabs/gameplay" instance=ExtResource("2_7tf5q")]
+layout_mode = 2
+values = ["Default", "Multiply Chart's", "User-Constant", "BPM-Based"]
+display_name = &"Note Speed Mode"
+variable_name = &"note_speed_mode"
+description = "How should notes deal with scroll speed?
+
+[color=DIM_GRAY]Default[/color] means it will use whatever is defined in the Chart.
+
+[color=GRAY]Multiply Chart's[/color] will use your custom value as a multiplier to the Chart's Scroll Speed.
+
+[color=LIME]User-Constant[/color] will use your custom value and only your custom value.
+
+[color=CRIMSON]BPM-Based[/color] will use the Chart's BPM as a multiplier to your own custom value, which makes BPM Changes affect the chart."
+
 [node name="ghost_tapping" parent="tabs/gameplay" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
 display_name = &"Ghost Tapping"

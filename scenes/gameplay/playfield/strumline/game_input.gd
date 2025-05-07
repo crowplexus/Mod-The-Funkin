@@ -76,7 +76,7 @@ func on_hold_hit(note: Note) -> void:
 	if game:
 		var actor: Actor2D = game.get_actor_from_index(note.side)
 		if actor and actor.able_to_sing:
-		actor.sing(note.column, actor.get_anim_position() > 0.1, note.anim_suffix)
+			actor.sing(note.column, actor.get_anim_position() > 0.1, note.anim_suffix)
 
 #endregion
 

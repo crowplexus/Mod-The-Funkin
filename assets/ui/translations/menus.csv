@@ -17,6 +17,8 @@ difficulty_back,Back,Volver,Voltar,Назад,Назад
 options_tab_gameplay,Gameplay,Jugabilidad,Jogabilidade,Gameplay,Игранйе
 
 option_scroll,Scroll Direction,Dirección de las Notas,Direção das Notas,Scroll Direction,Распоред на белешките
+option_note_speed,Note Speed,Velocidad de las Notas,Velocidade das Notas,Note Скорость,Note Брзина
+option_note_speed_mode,Note Speed Mode,Dirección de las Notas,Direção das Notas,Note Скоростной режим,Note мод за брзина
 option_ghost_tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping,Ghost Tapping
 option_use_epics,Show 'Epic' Judgement,Mostrar Calificación 'Epic',Mostrar Classificação 'Epic',Show 'Epic' Judgement,Прикажи 'Epic' рејтинг
 

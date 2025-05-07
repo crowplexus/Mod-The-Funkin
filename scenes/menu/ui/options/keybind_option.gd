@@ -1,4 +1,4 @@
-@tool extends OptionBar
+extends OptionBar
 
 const INSTRUCTIONS: String = "Press TAB while changing to switch to your alternative keybind.
 

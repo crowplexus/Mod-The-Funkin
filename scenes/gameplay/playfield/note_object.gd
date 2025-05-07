@@ -21,7 +21,7 @@ var data: NoteData:
 	set(new_data):
 		var offset: float = 0.0
 		if Global.settings: offset = Global.settings.note_offset
-		time = new_data.time + offset]
+		time = new_data.time + offset
 		anim_suffix = new_data.anim_suffix
 		raw_time = new_data.time
 		column = new_data.column
@@ -65,6 +65,7 @@ var trip_timer: float = 1.0
 var _stupid_visual_bug: bool = false
 # VISUALS
 @onready var scroll_mult: Vector2 = Vector2(-1, 1)
+@onready var _old_sm: Vector2 = Vector2.ZERO
 var moving: bool = true
 
 func hide_all() -> void: queue_free()
@@ -92,15 +93,18 @@ func reset_scroll() -> void:
 	match Global.settings.scroll:
 		0: scroll_mult.y *= -1
 		1: scroll_mult.y *=  1
-	clip_rect.scale *= -scroll_mult
+	if _old_sm != scroll_mult:
+		clip_rect.scale *= -scroll_mult
+	_old_sm = scroll_mult
 
 func get_total_speed() -> float:
 	var markplier: float = (Note.SM_SPEED_MULT if Note.USE_SM_SCROLL else 1.5)
-	if Global.settings.use_custom_note_speed:
-		return Global.settings.note_speed * markplier
-	else:
-		var strums_speed: float = strumline.speed * strumline.get_strum(column).speed
-		return strums_speed * markplier
+	var speed: float = strumline.speed * strumline.get_strum(column).speed
+	match Global.settings.note_speed_mode:
+		2: speed = Global.settings.note_speed # Constant/C-Mod
+		1: speed = speed * Global.settings.note_speed # Multiplicative/A-Mod
+		3: speed = Global.settings.note_speed * (Conductor.bpm / 60.0) # BPM-Based/X-Mod
+	return speed * markplier
 
 func scroll_ahead() -> void:
 	var note_speed: float = get_total_speed()#Conductor.bpm
