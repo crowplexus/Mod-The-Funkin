@@ -88,7 +88,9 @@ Down will move your notefield to the bottom of the screen, UI elements to the to
 
 [node name="note_speed" parent="tabs/gameplay" instance=ExtResource("3_5nl4s")]
 layout_mode = 2
-maxv = 10.0
+minv = 0.5
+maxv = 5.0
+values = [0.5, 1.0, 1.25, 1.5, 2.0, 2.25, 2.5, 3.0, 3.25, 3.5, 4.0, 4.25, 4.5, 5.0]
 display_name = &"Note Scroll Speed"
 variable_name = &"note_speed"
 description = "How fast should the notes be?
@@ -108,7 +110,9 @@ description = "How should notes deal with scroll speed?
 
 [color=LIME]User-Constant[/color] will use your custom value and only your custom value.
 
-[color=CRIMSON]BPM-Based[/color] will use the Chart's BPM as a multiplier to your own custom value, which makes BPM Changes affect the chart."
+[color=CRIMSON]BPM-Based[/color] will use the Chart's BPM as a multiplier to your own custom value, which makes BPM Changes affect the chart.
+
+Press TAB to cycle through recommended values."
 
 [node name="ghost_tapping" parent="tabs/gameplay" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
