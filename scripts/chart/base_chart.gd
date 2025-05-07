@@ -92,7 +92,7 @@ func get_note_quantities() -> Dictionary[String, int]:
 	bpm_changed_note_loop(func(note: NoteData, bpm: float, time: float, _crotchet: float) -> void:
 		# convert notes to rows and shiit.
 		# btw if you think I know what am doing, think again.
-		var row: int = Conductor.secs_to_row(note.time, bpm)
+		var row: int = NoteData.secs_to_row(note.time, bpm)
 		if not row in rows: rows[row] = []
 		rows[row].append(note.column)
 		if note.length > 0.0:

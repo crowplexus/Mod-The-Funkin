@@ -76,6 +76,7 @@ sprite_frames = ExtResource("4_kiqgm")
 animation = &"options idle"
 
 [node name="credits" type="AnimatedSprite2D" parent="canvas_layer/ui/buttons"]
+visible = false
 position = Vector2(0, 248)
 sprite_frames = ExtResource("5_hj162")
 animation = &"credits idle"

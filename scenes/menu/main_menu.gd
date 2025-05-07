@@ -6,12 +6,13 @@ var credits_thing: PackedScene = load("uid://wh2umjjgf2f6")
 @onready var bg: Sprite2D = $"bg_scroll/background"
 
 @onready var hud: CanvasLayer = $"canvas_layer"
-@onready var buttons: BoxContainer = $"canvas_layer/ui/buttons"
+@onready var button_options: BoxContainer = $"canvas_layer/ui/buttons"
 @onready var copyright_text: Label = $"canvas_layer/ui/color_rect/copyright_text"
 @onready var copyright_rect: ColorRect = $"canvas_layer/ui/color_rect"
 @onready var bg_pos: Vector2 = bg.position
 
 static var saw_copyright: bool = false
+var buttons: Array[CanvasItem] = []
 var moving_copyright: bool = false
 var can_input: bool = true
 
@@ -19,6 +20,8 @@ var selected: int = 0
 var copyright_tween: Tween
 
 func _ready() -> void:
+	for i: CanvasItem in button_options.get_children():
+		if i.visible: buttons.append(i)
 	if Global.DEFAULT_SONG and not Conductor.is_music_playing():
 		Conductor.set_music_stream(Global.DEFAULT_SONG)
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
@@ -59,20 +62,20 @@ func _unhandled_input(event: InputEvent) -> void:
 			Global.change_scene("uid://ce22u68qyw5bs")
 
 func change_selection(next: int = 0) -> void:
-	var ps: AnimatedSprite2D = buttons.get_child(selected)
+	var ps: AnimatedSprite2D = buttons[selected]
 	if ps: ps.play("%s idle" % ps.name)
-	selected = wrapi(selected + next, 0, buttons.get_child_count())
+	selected = wrapi(selected + next, 0, buttons.size())
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
-	ps = buttons.get_child(selected)
+	ps = buttons[selected]
 	if ps: ps.play("%s selected" % ps.name)
 	camera.position.y = ps.global_position.y
 
 func confirm_selection() -> void:
-	var ps: = buttons.get_child(selected)
+	var ps: = buttons[selected]
 	Global.begin_flicker(bg, 0.6, 0.1)
 	Global.begin_flicker(ps, 0.6, 0.06)
 	Global.play_sfx(Global.resources.get_resource("confirm"))
-	for button: CanvasItem in buttons.get_children():
+	for button: CanvasItem in buttons:
 		if button.get_index() != selected:
 			create_tween().set_ease(Tween.EASE_IN).tween_property(button, "modulate:a", 0.0, 0.6)
 	await get_tree().create_timer(0.7).timeout
@@ -101,8 +104,8 @@ func confirm_selection() -> void:
 
 func default_confirm() -> void:
 	bg.show()
-	buttons.get_child(selected).modulate.a = 0.0
-	buttons.get_child(selected).show()
+	buttons[selected].modulate.a = 0.0
+	buttons[selected].show()
 	can_input = true
-	for button: CanvasItem in buttons.get_children():
+	for button: CanvasItem in buttons:
 		create_tween().set_ease(Tween.EASE_IN).tween_property(button, "modulate:a", 1.0, 0.6)
