@@ -67,19 +67,19 @@ func on_beat_hit(beat: float) -> void:
 		logo_bump.play("logo bumpin")
 		return
 	match floori(beat):
-		1: display_cool_text("The Funkin' Crew Inc.")
-		3: add_cool_text("presents")
-		4: delete_cool_text()
-		5: display_cool_text("In association with")
-		7: add_cool_text("newgrounds")
-		8: delete_cool_text()
-		9: display_cool_text(random_text[0])
-		11: add_cool_text(random_text[1])
-		12: delete_cool_text()
-		13: display_cool_text("Friday")
-		14: add_cool_text("Night\n")
-		15: add_cool_text("Funkin'")
-		16: skip_intro()
+		0: display_cool_text("The Funkin' Crew Inc.")
+		2: add_cool_text("presents")
+		3: delete_cool_text()
+		4: display_cool_text("In association with")
+		6: add_cool_text("newgrounds")
+		7: delete_cool_text()
+		8: display_cool_text(random_text[0])
+		10: add_cool_text(random_text[1])
+		11: delete_cool_text()
+		12: display_cool_text("Friday")
+		13: add_cool_text("Night\n")
+		14: add_cool_text("Funkin'")
+		15: skip_intro()
 
 func skip_intro() -> void:
 	flash_screen()
@@ -115,9 +115,14 @@ func get_random_text() -> PackedStringArray:
 	var intro_texts: String = FileAccess.open(itp, FileAccess.READ).get_as_text()
 	if intro_texts:
 		var lines: PackedStringArray = intro_texts.split("\n")
-		while rt.size() < 1: rt = lines[randi_range(0, lines.size()-1)].split("--")
+		for line: String in lines:
+			var split: PackedStringArray = line.split("--")
+			if split.size() >= 2:
+				rt = split
+				break
+			else:
+				rt = "swagshit--moneymoney".split("--")
+				break
 	else:
 		print_debug("file not found")
-	if rt.size() < 1:
-		rt = "swagshit--moneymoney".split("--")
 	return rt
