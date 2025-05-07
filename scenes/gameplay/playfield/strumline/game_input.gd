@@ -185,7 +185,7 @@ func update_holds(delta: float) -> void:
 			note.dropped = true
 			note.moving = true
 		# delete the note if you're done holding or dropped it.
-		if note.hold_size <= 0.0 and keys_held[note.column] == true:
-			strumline.set_reset_timer(note.column, 0.005)
+		if note.hold_size <= 0.0 or note.trip_timer <= 0.0:
+			if keys_held[note.column] == true: strumline.set_reset_timer(note.column, 0.005)
 			if not note.dropped: note.hold_finished()
 			note.hide_all()
