@@ -51,7 +51,7 @@ var length: float = -1.0
 # Input stuff
 var was_hit: bool = false
 var was_missed: bool = false
-var hit_misses: bool = false ## Hitting this note will cause a miss instead.
+var hit_by_bot: bool = false
 #var late_hitbox: float = 1.0
 #var early_hitbox: float = 1.0
 var hit_time: float = 0.0
@@ -85,6 +85,7 @@ func _process(_delta: float) -> void:
 		follow_strum()
 
 func reset_scroll() -> void:
+	if not clip_rect: return
 	match Global.settings.scroll:
 		0: scroll_mult.y *= -1
 		1: scroll_mult.y *=  1
@@ -122,6 +123,15 @@ func update_hold(_delta: float) -> void:
 	display_hold(hold_size, get_total_speed())
 	if (hold_size <= 0.0 or trip_timer <= 0.0):
 		hide_all()
+
+## Override this function to do something when you hit the note.
+func on_note_hit() -> void:
+	strumline.input.on_note_hit(self)
+
+## Override this function to do something when you miss the note.
+func on_note_miss() -> void:
+	strumline.input.on_note_miss(self, column)
+	was_missed = true
 
 ## Override this function to do something when you finish holding all the way through.
 func hold_finished() -> void:
@@ -173,9 +183,8 @@ func follow_strum() -> void:
 	if not was_hit and (Conductor.playhead - time) > 0.75:
 		if strumline and strumline.input:
 			var miss_delay: float = 0.75 if strumline.input.botplay else 0.3
-			if miss_delay == 0.3 and not was_hit and not hit_misses:
-				strumline.input.on_note_miss(self, column)
-				was_missed = true
+			if miss_delay == 0.3 and not was_hit:
+				on_note_miss()
 		if is_inside_tree(): # not null by the time on_note_miss is called
 			hide_all()
 			strumline.on_note_deleted.emit(self)

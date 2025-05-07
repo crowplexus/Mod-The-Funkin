@@ -35,13 +35,13 @@ func _process(delta: float) -> void:
 		if Conductor.time > -0.05:
 			for note: Note in strumline.notes.get_children():
 				if botplay and note.time <= Conductor.time and not note.was_hit:
-					on_note_hit(note)
+					note.hit_by_bot = true
+					note.on_note_hit()
 				var miss_delay: float = 0.75 if botplay else 0.3
 				# preventing orphan nodes hopefully with this.
 				if not note.was_hit and (Conductor.playhead - note.time) > miss_delay:
-					if miss_delay == 0.3 and not note.was_hit and not note.hit_misses:
-						on_note_miss(note, note.column)
-						note.was_missed = true
+					if miss_delay == 0.3 and not note.was_hit:
+						note.on_note_miss()
 					if note: # not null by the time on_note_miss is called
 						note.hide_all()
 						strumline.on_note_deleted.emit(note)
@@ -96,23 +96,17 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		return
 	var note: Note = _get_note(idx)
 	if note and note.is_hittable(settings.max_hit_window):
-		if note.hit_misses:
-			on_note_miss(note, note.column)
-			if note.can_splash(): note.display_splash()
-			strumline.play_strum(StrumNote.States.PRESS, note.column, true)
-			note.hide_all()
-		else:
-			on_note_hit(note)
-			if note.was_hit:
-				note.hit_time = note.time - Conductor.playhead
-				if note.hold_size <= 0.0:
-					note.hide_all()
-					if note._strum._last_state != StrumNote.States.PRESS:
-						strumline.play_strum(StrumNote.States.CONFIRM, idx)
-					strumline.set_reset_timer(idx, 0.2)
-				else:
-					note.trip_timer = 0.5 # half a second
-					note._stupid_visual_bug = note.hit_time < 0.0
+		note.on_note_hit()
+		if note.was_hit:
+			note.hit_time = note.time - Conductor.playhead
+			if note.hold_size <= 0.0:
+				note.hide_all()
+				if note._strum._last_state != StrumNote.States.PRESS:
+					strumline.play_strum(StrumNote.States.CONFIRM, idx)
+				strumline.set_reset_timer(idx, 0.2)
+			else:
+				note.trip_timer = 0.5 # half a second
+				note._stupid_visual_bug = note.hit_time < 0.0
 	else:
 		strumline.play_strum(StrumNote.States.PRESS, idx)
 		if not settings.ghost_tapping: on_note_miss(null, idx)
@@ -187,7 +181,7 @@ func update_holds(delta: float) -> void:
 			note.modulate.a -= 5 * delta
 		# miss note if you dropped it completely.
 		if note.trip_timer <= 0.0:
-			on_note_miss(note, note.column)
+			note.on_note_miss()
 			note.dropped = true
 			note.moving = true
 		# delete the note if you're done holding or dropped it.
