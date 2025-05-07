@@ -48,25 +48,3 @@ func set_reset_animation(idx: int = 0, new_state: StrumNote.States = StrumNote.S
 	get_strum(idx).reset_state = new_state
 
 #endregion
-
-#region Note Spawning and Movement
-
-func _process(_delta: float) -> void:
-	if notes.get_child_count() != 0:	
-		for note: Note in notes.get_children():
-			if not note is Note or not note.visible:
-				continue
-			# NOTE: nodpe is the note itself
-			if note.moving: note.scroll_ahead()
-			# preventing orphan nodes hopefully with this.
-			if not note.was_hit and (Conductor.playhead - note.time) > 0.75:
-				if note.strumline and note.strumline.input:
-					var miss_delay: float = 0.75 if note.strumline.input.botplay else 0.3
-					if miss_delay == 0.3 and not note.was_hit and not note.hit_misses:
-						note.strumline.input.on_note_miss(note, note.column)
-						note.was_missed = true
-				if note: # not null by the time on_note_miss is called
-					note.hide_all()
-					on_note_deleted.emit(note)
-
-#endregion

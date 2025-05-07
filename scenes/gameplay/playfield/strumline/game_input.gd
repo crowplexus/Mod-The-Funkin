@@ -163,41 +163,36 @@ func _get_note_old(idx: int) -> Note:
 
 func update_holds(delta: float) -> void:
 	for note: Note in strumline.notes.get_children():
-		if note.hold_size <= 0.0 or note.trip_timer <= 0.0 or not note.was_hit:
+		if not note.visible or note.hold_size <= 0.0 or note.trip_timer <= 0.0 or not note.was_hit:
 			continue
-		if botplay: ## Botplay logic
-			var was_hold: bool = note.hold_size > 0.0
-			if note.hold_size > 0.0:
-				note.update_hold(delta)
-				strumline.play_strum(StrumNote.States.CONFIRM, note.column, fmod(note.hold_size, 0.05) == 0)
-				on_hold_hit(note)
-			if note.hold_size <= 0.0:
-				if was_hold:
-					strumline.set_reset_timer(note.column, 0.05)
-					if not note.dropped: note.hold_finished()
-				note.hide_all()
-		else:
-			## Player Logic.
-			note.update_hold(delta)
-			var trip_decay: float = 0.01 # needs to be nerfed for rolls?
-			var condition_to_trip: bool = keys_held[note.column] == false
-			if note.kind.begins_with("roll"): # invert the condition
-				condition_to_trip = not condition_to_trip
-			# play animations if you're not tripping balls.
-			if not condition_to_trip:
-				strumline.play_strum(StrumNote.States.CONFIRM, note.column, fmod(note.hold_size, 0.05) == 0)
-				if note.modulate.a < 1.0: note.modulate.a = 1.0
-				on_hold_hit(note)
-			elif note.hold_size > 0.04: # nerf hold dropping by a few seconds. (Bopeebo)
-				note.trip_timer -= trip_decay / note.hold_size
-				note.modulate.a = note.trip_timer
-			# miss note if you dropped it completely.
-			if note.trip_timer <= 0.0:
-				on_note_miss(note, note.column)
-				note.dropped = true
-				note.moving = true
-			# delete the note if you're done holding or dropped it.
-			if note.trip_timer <= 0.0 or note.hold_size <= 0.0:
-				if keys_held[note.column] == true: strumline.set_reset_timer(note.column, 0.005)
-				if not note.dropped: note.hold_finished() # actually held all the way through
-				note.hide_all()
+		
+		# TODO: move this to Note._process without breaking anything
+		note.update_hold(delta)
+		
+		var was_hold: bool = note.hold_size > 0.0
+		var trip_decay: float = 0.01 # needs to be nerfed for rolls?
+		var must_trip: bool = keys_held[note.column] == false
+		if note.kind.begins_with("roll"): # invert the condition
+			must_trip = not must_trip
+		if botplay:
+			must_trip = false
+		# hit the note if you didn't trip
+		if not must_trip:
+			strumline.play_strum(StrumNote.States.CONFIRM, note.column, fmod(note.hold_size, 0.05) == 0)
+			if note.modulate.a < 1.0: note.modulate.a = 1.0
+			on_hold_hit(note)
+			if note.hold_size <= 0.0 and botplay:
+				strumline.set_reset_timer(note.column, 0.01)
+		if must_trip and note.hold_size > 0.045: # nerf hold dropping by a few seconds. (Bopeebo)
+			note.trip_timer -= trip_decay / note.hold_size
+			note.modulate.a -= 5 * delta
+		# miss note if you dropped it completely.
+		if note.trip_timer <= 0.0:
+			on_note_miss(note, note.column)
+			note.dropped = true
+			note.moving = true
+		# delete the note if you're done holding or dropped it.
+		if note.hold_size <= 0.0 and keys_held[note.column] == true:
+			strumline.set_reset_timer(note.column, 0.005)
+			if not note.dropped: note.hold_finished()
+			note.hide_all()

@@ -80,6 +80,10 @@ func _ready() -> void:
 		if has_node("clip_rect/hold_tail"): hold_tail = get_node("clip_rect/hold_tail")
 	reset_scroll()
 
+func _process(delta: float) -> void:
+	if visible and _strum and moving:
+		follow_strum()
+
 func reset_scroll() -> void:
 	match Global.settings.scroll:
 		0: scroll_mult.y *= -1
@@ -162,3 +166,16 @@ func is_hittable(hit_window: float = 0.18) -> bool:
 	#const diff: float = data.time - Conductor.playhead
 	#return absf(diff) <= (hit_window * (early_hitbox if diff < 0 else late_hitbox))
 	return absf(Conductor.playhead - time) <= hit_window and not was_hit and not was_missed
+
+func follow_strum() -> void:
+	if moving: scroll_ahead()
+	# preventing orphan nodes hopefully with this.
+	if not was_hit and (Conductor.playhead - time) > 0.75:
+		if strumline and strumline.input:
+			var miss_delay: float = 0.75 if strumline.input.botplay else 0.3
+			if miss_delay == 0.3 and not was_hit and not hit_misses:
+				strumline.input.on_note_miss(self, column)
+				was_missed = true
+		if is_inside_tree(): # not null by the time on_note_miss is called
+			hide_all()
+			strumline.on_note_deleted.emit(self)
