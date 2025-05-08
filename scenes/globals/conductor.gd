@@ -154,9 +154,9 @@ func get_main_stream() -> AudioStream:
 
 ## Sets the music stream of the Conductor.
 func set_music_stream(stream: AudioStream) -> void:
-	if bound_music and bound_music.stream:
+	if bound_music:
 		bound_music.stream.set_sync_stream(0, stream)
-		Conductor.length = stream.get_length()
+		if stream: Conductor.length = stream.get_length()
 
 ## Clears all music streams from the Conductor.
 func clear_music_streams() -> void:

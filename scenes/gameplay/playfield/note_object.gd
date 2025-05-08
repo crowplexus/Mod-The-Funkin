@@ -58,7 +58,8 @@ var hit_by_bot: bool = false
 #var late_hitbox: float = 1.0
 #var early_hitbox: float = 1.0
 var hit_time: float = 0.0
-var judgement: Judgement
+var judgement: StringName = &"none"
+var splash_type: = Judgement.SplashType.DISABLED
 # FOR HOLDS
 var dropped: bool = false
 var trip_timer: float = 1.0

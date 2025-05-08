@@ -7,6 +7,8 @@ signal on_countdown_tick(tick: int)
 @warning_ignore("unused_signal") # shut UP?
 signal on_countdown_end()
 
+## Use this if you want to disable the note splashes on a per-hud basis.
+@export var disable_note_splashes: bool = false
 ## Use this if you want to skip the default hud countdown.
 @export var skip_countdown: bool = false
 

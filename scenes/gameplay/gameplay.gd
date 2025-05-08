@@ -18,7 +18,7 @@ const NOTE_TYPES: Dictionary[String, PackedScene] = {
 var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
 	"Classic": load("uid://br6ornbfmuj7l"),
 	"Advanced": load("uid://bjkg052ui3mnl"),
-	"Psych": load("uid://chxabingjikr6")
+	"Psych": load("uid://chxabingjikr6"),
 }
 ## Default Pause Menu, used if there's none set in the Chart Assets.
 const DEFAULT_PAUSE_MENU: PackedScene = preload("uid://bpmp1nmibtels")
@@ -92,7 +92,6 @@ static func get_mode_string(gm: int) -> String:
 static func play_inst_outside() -> void:
 	Conductor.clear_music_streams()
 	var random_position: float = randf_range(0, Conductor.length * 0.5)
-	var length: float = Gameplay.chart.assets.instrumental.get_length()
 	Conductor.set_music_stream(Gameplay.chart.assets.instrumental)
 	Conductor.play_music(random_position, 0.01, true)
 	Global.request_audio_fade(Conductor.bound_music, 0.7, 1.0)
@@ -106,6 +105,7 @@ var assets: ChartAssets
 var scripts: ScriptPack
 
 @onready var strumlines: Control = $"hud_layer/strumlines"
+@onready var default_strumline_position: Vector2 = strumlines.position
 
 @onready var hud_layer: CanvasLayer = $"hud_layer"
 @onready var default_hud_scale: Vector2 = $"hud_layer".scale
@@ -398,7 +398,17 @@ func load_characters() -> void:
 				stage_bg.add_child(new_actor)
 				if new_actor == dj: stage_bg.move_child(dj, player.get_index())
 
+## Same as HUDs managing this except its not dependent on HUDs.[br]Made for convenience.
+func get_strumline_position(settings: Settings) -> Vector2:
+	var pos: Vector2 = default_strumline_position
+	match settings.scroll:
+		0: pos.y = 0
+		1: pos.y = 500
+	return pos
+
 func reload_hud(custom_hud: PackedScene = null) -> void:
+	# huds are completely able to change this so make sure its set to default if it happens.
+	strumlines.position = get_strumline_position(Global.settings)
 	var idx: int = 0
 	var huds: Array = []
 	if hud: huds.append(hud)
@@ -431,6 +441,7 @@ func reload_hud(custom_hud: PackedScene = null) -> void:
 			hud.init_vars()
 			hud.update_health(display_health)
 			hud.update_score_text(true) # pretend its a miss
+			hud.settings_changed(Global.settings)
 
 func load_streams() -> void:
 	Conductor.load_chart_music(chart)
@@ -470,11 +481,16 @@ func on_note_hit(note: Note) -> void:
 	note.was_hit = true
 	var abs_diff: float = absf(note.time - Conductor.playhead) * 1000.0
 	var judged_tier: int = Tally.judge_time(abs_diff)
-	note.judgement = judgements.list[judged_tier]
+	var judgement: Judgement = judgements.list[judged_tier]
+	note.splash_type = judgement.splash_type
+	note.judgement = judgement.name
+	
 	var character: Actor2D = get_actor_from_index(note.side)
 	if character and character.able_to_sing:
 		character.sing(note.column, note.arrow.visible)
 		Conductor.set_music_volume(1.0, 1)
+	if hud and hud.disable_note_splashes:
+		note.splash_type = Judgement.SplashType.DISABLED
 	if note.can_splash(): note.display_splash()
 	# kill everyone, and everything in your path
 	health += (DEFAULT_HEALTH_WEIGHT * judged_tier)
@@ -482,14 +498,14 @@ func on_note_hit(note: Note) -> void:
 	# Scoring Stuff
 	local_tally.increase_score(abs_diff)
 	local_tally.increase_combo(1)
-	if note.judgement.combo_break and local_tally.combo > 0:
+	if judgement.combo_break and local_tally.combo > 0:
 		local_tally.breaks += 1
 		local_tally.combo = 0
 	local_tally.update_tier_score(judged_tier)
 	# Update HUD
 	tally.merge(local_tally)
 	if hud and hud.is_inside_tree():
-		hud.display_judgement(note.judgement)
+		hud.display_judgement(judgement)
 		hud.display_combo(local_tally.combo)
 		hud.update_score_text(false)
 		hud.update_health(display_health)

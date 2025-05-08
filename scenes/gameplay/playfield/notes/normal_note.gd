@@ -38,11 +38,11 @@ func display_hold(size: float = 0.0, speed: float = -1.0) -> void:
 	hold_tail.position.y = hold_body.get_end().y
 
 func can_splash() -> bool:
-	return judgement and judgement.splash_type != Judgement.SplashType.DISABLED and length <= 0.0
+	return splash_type != Judgement.SplashType.DISABLED and length <= 0.0
 
 func hold_finished() -> void:
 	# testing, idk if i will add hold covers and whatever.
-	if judgement and judgement.splash_type != Judgement.SplashType.DISABLED:
+	if splash_type != Judgement.SplashType.DISABLED:
 		display_splash()
 
 func display_splash() -> Node2D:
@@ -58,7 +58,7 @@ func display_splash() -> Node2D:
 		strum.add_child(dip)
 	dip.global_position = strum.global_position
 	dip.modulate.a = (game.local_settings.note_splash_alpha if Gameplay.current else Global.settings.note_splash_alpha) * 0.01
-	dip.scale = splash_scale * (1.5 if judgement.splash_type == Judgement.SplashType.FULL else 1.0)
+	dip.scale = splash_scale * (1.5 if splash_type == Judgement.SplashType.FULL else 1.0)
 	dip.frame = 0
 	dip.show()
 	dip.play("note impact %s %s" %  [ randi_range(1, 2), Note.COLORS[column] ], 1.0)
