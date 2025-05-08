@@ -8,7 +8,7 @@ script = ExtResource("1_spwge")
 name = &"Epic"
 splash_type = 2
 combo_break = false
-color = Color(1, 0.603922, 0, 1)
+color = Color(1, 0.76, 0.4, 1)
 metadata/_custom_type_script = ExtResource("1_spwge")
 
 [sub_resource type="Resource" id="Resource_ka624"]

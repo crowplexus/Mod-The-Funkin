@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c446o5iqgwuhu"
-path="res://.godot/imported/receptor.png-57e62a456083ab899aa90a29b141d99f.ctex"
+uid="uid://q6ar5akjn3g3"
+path="res://.godot/imported/exterior.png-87e488e36af64b3fd5e278b08d3e1bc1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/game/notetypes/rgb/receptor.png"
-dest_files=["res://.godot/imported/receptor.png-57e62a456083ab899aa90a29b141d99f.ctex"]
+source_file="res://assets/game/notetypes/rgb/exterior.png"
+dest_files=["res://.godot/imported/exterior.png-87e488e36af64b3fd5e278b08d3e1bc1.ctex"]
 
 [params]
 

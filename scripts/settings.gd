@@ -6,6 +6,8 @@ const _IGNORED_PROPERTIES: Array[String] = ["resource_local_to_scene", "resource
 var master_volume: int = 30
 ## Shortcut setting for muting the whole game.
 var master_mute: bool = false
+## Setting to hide the fps counter.
+var hide_fps_info: bool = false
 ## Alternates between in-game scroll directions.
 @export_enum("Up:0","Down:1")
 var scroll: int = 0

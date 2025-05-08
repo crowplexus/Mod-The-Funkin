@@ -28,7 +28,7 @@ const DEFAULT_HEALTH_VALUE: int = 50
 const DEFAULT_HEALTH_WEIGHT: int = 5
 
 var player_id: int = 0
-var player_strums: Strumline
+var player_sl: Strumline
 var player_botplay: bool = false
 # I need this to be static because of story mode,
 # since it reuses the same tally from the previous song.
@@ -52,7 +52,7 @@ static func set_playlist(folders: Array[String] = ["test"], difficulty: StringNa
 	change_playlist_song(0, true) # just making sure
 
 static func change_playlist_song(next: int = 0, no_scene_checks: bool = false) -> void:
-	Gameplay.current_song = clampi(current_song + next, 0, playlist.size())
+	Gameplay.current_song = current_song + next
 	var songs_ended: bool = Gameplay.current_song > Gameplay.playlist.size() - 1
 	if not songs_ended:
 		Gameplay.chart = playlist[current_song]
@@ -174,14 +174,20 @@ func _ready() -> void:
 	
 	if chart and Conductor.length <= 0.0:
 		Conductor.length = chart.notes.back().time
-	player_strums = strumlines.get_child(player_id)
+	player_sl = strumlines.get_child(player_id)
 	for strums: Strumline in strumlines.get_children():
 		if not strums.skin and assets and assets.noteskin:
 			strums.skin = assets.noteskin
 		if strums.skin: strums.reload_skin()
-		strums.input.botplay = strums != player_strums
-		if strums == player_strums: strums.input.botplay = player_botplay
 		strums.input.setup()
+	player_sl.input.botplay = player_botplay
+	if player_botplay: tally.is_valid = false
+	
+	if not player_botplay:
+		# make this apply only when Global.settings.custom_note_colors is enabled
+		# later though I don't even have a menu for that
+		for strum: StrumNote in player_sl.strums:
+			strum.allow_color_overriding = true
 	
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	scripts.call_func("_ready_post")
@@ -256,6 +262,7 @@ func _process(delta: float) -> void:
 			starting = false
 	else:
 		if Conductor.time >= Conductor.length and not ending:
+			ending = true
 			end_song()
 	if not no_fail_mode and health <= 0:
 		kill_yourself(get_actor_from_index(player_id))
@@ -296,8 +303,8 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 		hud_layer.add_child(instance)
 		get_tree().paused = true
 		return
-	if player_strums and player:
-		player.lock_on_sing = player_strums.input.keys_held.has(true)
+	if player_sl and player:
+		player.lock_on_sing = player_sl.input.keys_held.has(true)
 
 func skip_to_time(time: float = 0.0) -> void:
 	should_spawn_notes = false
@@ -509,6 +516,8 @@ func on_note_hit(note: Note) -> void:
 		hud.display_combo(local_tally.combo)
 		hud.update_score_text(false)
 		hud.update_health(display_health)
+	if note.strumline == player_sl:
+		note._strum.color = judgement.color
 
 func kill_yourself(actor: Actor2D) -> void: # thanks Unholy
 	if health <= 0: # игра окоичена!

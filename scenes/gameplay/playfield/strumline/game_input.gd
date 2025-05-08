@@ -56,7 +56,7 @@ func on_note_hit(note: Note) -> void:
 		if note.hold_size <= 0.0:
 			note.hide_all()
 		strumline.play_strum(StrumNote.States.CONFIRM, note.column)
-		strumline.set_reset_timer(note.column, 0.45 * (Conductor.crotchet + note.length))
+		strumline.set_reset_timer(note.column, 0.6 * (Conductor.crotchet + note.length))
 	if game:
 		if not botplay:
 			game.on_note_hit(note)
@@ -104,7 +104,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				note.hide_all()
 				if note._strum._last_state != StrumNote.States.PRESS:
 					strumline.play_strum(StrumNote.States.CONFIRM, idx)
-				strumline.set_reset_timer(idx, 0.2)
+				strumline.set_reset_timer(idx, 0.3)
 			else:
 				note.trip_timer = 0.5 # half a second
 				note._stupid_visual_bug = note.hit_time < 0.0

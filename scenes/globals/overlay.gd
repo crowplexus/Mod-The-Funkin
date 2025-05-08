@@ -16,6 +16,9 @@ func _ready() -> void:
 		update_overlay()
 		update_timer.start(1.0)
 	)
+	await RenderingServer.frame_post_draw
+	fps_label.visible = not Global.settings.hide_fps_info
+	pressed_debug_key = Global.settings.hide_fps_info
 	update_timer.timeout.emit()
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -26,6 +29,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				pressed_debug_key = true
 				update_overlay()
 			fps_label.visible = not fps_label.visible
+			Global.settings.hide_fps_info = not fps_label.visible
 		KEY_F3 when OS.is_debug_build():
 			show_debug = not show_debug
 			if not pressed_debug_key:

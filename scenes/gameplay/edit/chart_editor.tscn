@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bdh61ttaohn0"]
 
 [ext_resource type="Script" uid="uid://tiq8ff2ojo0u" path="res://scenes/gameplay/edit/chart_editor.gd" id="1_jdpge"]
-[ext_resource type="Shader" uid="uid://bedysotoww8iy" path="res://scenes/gameplay/edit/note_panel.gdshader" id="2_jdpge"]
+[ext_resource type="Shader" uid="uid://bdpvja82fwv8o" path="res://scenes/gameplay/edit/note_panel.gdshader" id="2_jdpge"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="3_n1c82"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n1c82"]

@@ -1,8 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://gib0vewis1qh"]
+[gd_scene load_steps=13 format=3 uid="uid://gib0vewis1qh"]
 
 [ext_resource type="Script" uid="uid://ds4v6bqi66g6f" path="res://scenes/gameplay/playfield/notes/normal_note.gd" id="1_31kjc"]
-[ext_resource type="SpriteFrames" uid="uid://bssdylvyd1wg8" path="res://assets/game/notetypes/funkin/notes.res" id="2_31kjc"]
 [ext_resource type="SpriteFrames" path="res://assets/game/notetypes/funkin/splashes.res" id="2_xg47h"]
+[ext_resource type="Texture2D" uid="uid://q6ar5akjn3g3" path="res://assets/game/notetypes/rgb/exterior.png" id="3_vawdo"]
+[ext_resource type="Texture2D" uid="uid://u2g5xlw4uotk" path="res://assets/game/notetypes/rgb/interior.png" id="4_701c1"]
+[ext_resource type="Texture2D" uid="uid://bueqdbpjkud4c" path="res://assets/game/notetypes/rgb/interior-blur.png" id="5_6uqhm"]
+[ext_resource type="Texture2D" uid="uid://cvneuhkf6tnny" path="res://assets/game/notetypes/rgb/lightning.png" id="6_hmkq5"]
 
 [sub_resource type="Animation" id="Animation_fer4d"]
 resource_name = "0"
@@ -10,147 +13,207 @@ step = 1.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("arrow:animation")
+tracks/0/path = NodePath("arrow:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"purple tap"]
+"update": 0,
+"values": [Color(0.282353, 0.176471, 0.376471, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("arrow:frame")
+tracks/1/path = NodePath("arrow/interior:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
+"update": 0,
+"values": [Color(0.760784, 0.294118, 0.6, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("arrow:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_cusb7"]
+[sub_resource type="Animation" id="Animation_vawdo"]
+resource_name = "RESET"
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("arrow:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.35, 0.1365, 0.275275, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("arrow/interior:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.760784, 0.294118, 0.6, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("arrow:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_701c1"]
 resource_name = "1"
 step = 1.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("arrow:animation")
+tracks/0/path = NodePath("arrow:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"blue tap"]
+"update": 0,
+"values": [Color(0, 0.4, 0.4, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("arrow:frame")
+tracks/1/path = NodePath("arrow/interior:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
+"update": 0,
+"values": [Color(0, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("arrow:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.5708]
 }
 
-[sub_resource type="Animation" id="Animation_j2xfe"]
+[sub_resource type="Animation" id="Animation_6uqhm"]
 resource_name = "2"
 step = 1.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("arrow:animation")
+tracks/0/path = NodePath("arrow:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"green tap"]
+"update": 0,
+"values": [Color(0.0392157, 0.266667, 0.278431, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("arrow:frame")
+tracks/1/path = NodePath("arrow/interior:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
+"update": 0,
+"values": [Color(0.071, 0.98, 0.02, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("arrow:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
 }
 
-[sub_resource type="Animation" id="Animation_f2bup"]
+[sub_resource type="Animation" id="Animation_hmkq5"]
 resource_name = "3"
 step = 1.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("arrow:animation")
+tracks/0/path = NodePath("arrow:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"red tap"]
+"update": 0,
+"values": [Color(0.396078, 0.0627451, 0.219608, 1)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("arrow:frame")
+tracks/1/path = NodePath("arrow/interior:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
+"update": 0,
+"values": [Color(0.976471, 0.223529, 0.247059, 1)]
 }
-
-[sub_resource type="Animation" id="Animation_5wcya"]
-length = 0.0416708
-step = 1.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("arrow:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("arrow:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"arrowDOWN"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("arrow:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
+"update": 0,
+"values": [3.14159]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lpqa0"]
 _data = {
 &"0": SubResource("Animation_fer4d"),
-&"1": SubResource("Animation_cusb7"),
-&"2": SubResource("Animation_j2xfe"),
-&"3": SubResource("Animation_f2bup"),
-&"RESET": SubResource("Animation_5wcya")
+&"1": SubResource("Animation_701c1"),
+&"2": SubResource("Animation_6uqhm"),
+&"3": SubResource("Animation_hmkq5"),
+&"RESET": SubResource("Animation_vawdo")
 }
 
 [node name="normal" type="Node2D"]
@@ -175,11 +238,6 @@ metadata/_edit_lock_ = true
 layout_mode = 0
 metadata/_edit_lock_ = true
 
-[node name="arrow" type="AnimatedSprite2D" parent="."]
-sprite_frames = ExtResource("2_31kjc")
-animation = &"arrowDOWN"
-metadata/_edit_lock_ = true
-
 [node name="animation_player" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_lpqa0")
@@ -191,3 +249,22 @@ scale = Vector2(0.7, 0.7)
 sprite_frames = ExtResource("2_xg47h")
 animation = &"note impact 2 blue"
 metadata/_edit_lock_ = true
+
+[node name="arrow" type="Sprite2D" parent="."]
+self_modulate = Color(0.35, 0.1365, 0.275275, 1)
+texture = ExtResource("3_vawdo")
+
+[node name="interior" type="Sprite2D" parent="arrow"]
+self_modulate = Color(0.760784, 0.294118, 0.6, 1)
+position = Vector2(-1.5, 0.931807)
+scale = Vector2(0.954545, 0.954545)
+texture = ExtResource("4_701c1")
+
+[node name="blur" type="Sprite2D" parent="arrow/interior"]
+visible = false
+position = Vector2(4.68888, -0.234495)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("5_6uqhm")
+
+[node name="lightning" type="Sprite2D" parent="arrow"]
+texture = ExtResource("6_hmkq5")
