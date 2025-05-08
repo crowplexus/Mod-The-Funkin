@@ -91,10 +91,12 @@ static func get_mode_string(gm: int) -> String:
 
 static func play_inst_outside() -> void:
 	Conductor.clear_music_streams()
+	var random_position: float = randf_range(0, Conductor.length * 0.5)
 	var length: float = Gameplay.chart.assets.instrumental.get_length()
 	Conductor.set_music_stream(Gameplay.chart.assets.instrumental)
-	Conductor.play_music(randf_range(0, Conductor.length * 0.5), 0.01, true)
+	Conductor.play_music(random_position, 0.01, true)
 	Global.request_audio_fade(Conductor.bound_music, 0.7, 1.0)
+	Conductor.bpm = Gameplay.chart.get_bpm(Gameplay.chart.time_bpm_change(random_position))
 
 #endregion
 

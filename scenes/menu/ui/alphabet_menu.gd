@@ -10,6 +10,9 @@ signal item_created(item: Control)
 @export var offset: Vector2 = Vector2.ZERO ## General offset of all items.
 @export var change_x: bool = true ## Updates the X-axis of each item.
 @export var change_y: bool = true ## Updates the Y-axis of each item.
+@export var force_uppercase: bool = true ## All the text in the items will be uppercase.
+@export var horizontal_alignment: = HORIZONTAL_ALIGNMENT_LEFT ## Horizontal alignment for each of the items.
+@export var vertical_alignment: = VERTICAL_ALIGNMENT_TOP ## Vertical alignment for each of the items.
 var start_positions: Array[Vector2] = [] ## List of positions the items start at.
 var scroll_lerp: float = 0.15 ## Value used for lerp weight.
 var scroll_offset: int = 0: ## Menu scroll offset.
@@ -43,8 +46,15 @@ func regen_list() -> void:
 		return
 	for idx: int in items.size():
 		var text_entry: Label = Label.new()
+		text_entry.name = items[idx]
+		text_entry.text = items[idx]
+		text_entry.uppercase = force_uppercase
 		text_entry.label_settings = ALPHABET_LABEL_SETTINGS.duplicate()
-		text_entry.text = items[idx].to_upper()
+		# values out of my ass.
+		text_entry.position.y = (distance.y * idx) - (text_entry.get_line_height() + distance.y * 0.5)
+		text_entry.horizontal_alignment = horizontal_alignment
+		text_entry.vertical_alignment = vertical_alignment
+		text_entry.size = self.size
 		add_child(text_entry)
 	# children are generated after setting the text
 	# each "line" is an entry on the menu, hence why we just set the text before.

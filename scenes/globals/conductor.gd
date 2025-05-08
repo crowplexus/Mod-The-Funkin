@@ -4,10 +4,13 @@ extends Node
 
 signal on_beat_hit(beat: float) ## Signal fired every beat hit
 signal on_bar_hit(bar: float) ## Signal fired every bar / measure hit
+signal music_looped(times: int) ## Signal fired every time the bound song loops.
 
 @onready var metronome: AudioStreamPlayer = $%"metronome"
 @onready var bound_music: AudioStreamPlayer = $"%bound_music"
 @export var play_metronome_sound: bool = false ## I wonder what this could be.
+var current_stream_is_looped: bool = false
+var _times_looped: int = 0
 
 ## If the conductor is active, disables _process function when disabled,
 ## Which would allow you to update it manually if needed.
@@ -56,12 +59,13 @@ func reset(_bpm: float = 100.0, _active: bool = false) -> void:
 	set_time(0.0)
 
 ## Sets the Conductor's time and related values.
-func set_time(new_time: float) -> void:
-	time = new_time
+func set_time(new_time: float = 0.0) -> void:
 	_prev_time = new_time
 	current_beat = (new_time * bpm) / 60.0
 	current_bar = 0.0#current_beat * 4.0
 	_prev_beat = current_beat
+	_prev_bar = current_bar
+	time = new_time
 
 func _ready() -> void:
 	set_process_input(false)
@@ -107,7 +111,12 @@ func update_bound_music() -> void:
 	if play_metronome_sound and floori(current_beat) > floori(_prev_beat):
 		metronome.play(0.0)
 	if bound_music and bound_music.stream and Conductor.active:
-		Conductor.update(Conductor.get_music_time())
+		var music_time: float = bound_music.get_playback_position()
+		if current_stream_is_looped and Conductor.time >= Conductor.length:
+			_times_looped += 1
+			Conductor.set_time(0.0)
+			music_looped.emit(_times_looped)
+		Conductor.update(music_time)
 
 #region Bound Music, These functions aren't needed but have null checks to prevent errors.
 
@@ -120,7 +129,9 @@ func play_music(start_time: float = 0.0, volume_linear: float = 1.0, looped: boo
 	if bound_music and bound_music.stream:
 		bound_music.stream.get_sync_stream(0).loop = looped
 		bound_music.volume_linear = volume_linear
+		current_stream_is_looped = looped
 		bound_music.play(start_time)
+		_times_looped = 0
 
 ## Sets the volume of the music stream of the Conductor.
 func set_music_volume(volume_linear: float, stream: int = -1) -> void:
@@ -145,6 +156,7 @@ func get_main_stream() -> AudioStream:
 func set_music_stream(stream: AudioStream) -> void:
 	if bound_music and bound_music.stream:
 		bound_music.stream.set_sync_stream(0, stream)
+		Conductor.length = stream.get_length()
 
 ## Clears all music streams from the Conductor.
 func clear_music_streams() -> void:

@@ -41,6 +41,10 @@ const VELOCITY_EVENTS: Array[StringName] = [
 ## Note counter, only really useful internally
 var note_counts: Array[int] = [0, 0]
 
+## Returns the index of a BPM Change event from a timed position.
+func time_bpm_change(time: float = 0.0) -> int:
+	return timing_changes.find(Conductor.get_timed_change(time))
+
 ## Returns the BPM value for a BPM Change event.[br]
 ## Defaults to 0 for default bpm.
 func get_bpm(change: int = 0) -> float: return timing_changes[change].bpm
