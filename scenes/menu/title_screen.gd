@@ -115,14 +115,11 @@ func get_random_text() -> PackedStringArray:
 	var intro_texts: String = FileAccess.open(itp, FileAccess.READ).get_as_text()
 	if intro_texts:
 		var lines: PackedStringArray = intro_texts.split("\n")
-		for line: String in lines:
-			var split: PackedStringArray = line.split("--")
-			if split.size() >= 2:
-				rt = split
-				break
-			else:
-				rt = "swagshit--moneymoney".split("--")
-				break
+		var i: int = randi_range(0, lines.size()-1)
+		var split: PackedStringArray = lines[i].split("--")
+		if split.size() >= 2: rt = split
+		else: rt = "swagshit--moneymoney".split("--")
 	else:
 		print_debug("file not found")
+		rt = "swagshit--moneymoney".split("--")
 	return rt
