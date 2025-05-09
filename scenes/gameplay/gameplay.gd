@@ -22,10 +22,8 @@ var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
 }
 ## Default Pause Menu, used if there's none set in the Chart Assets.
 const DEFAULT_PAUSE_MENU: PackedScene = preload("uid://bpmp1nmibtels")
-## Default Health Percentage.
-const DEFAULT_HEALTH_VALUE: int = 50
-## Default Health Weight (how much should it be multiplied by when gaining)
-const DEFAULT_HEALTH_WEIGHT: int = 5
+const DEFAULT_HEALTH_VALUE: int = 50 ## Default Health Percentage.
+const MISS_HEALTH_BONUS: int = -8 ## Default Health Bonus for Missing.
 
 var player_id: int = 0
 var player_sl: Strumline
@@ -500,7 +498,7 @@ func on_note_hit(note: Note) -> void:
 		note.splash_type = Judgement.SplashType.DISABLED
 	if note.can_splash(): note.display_splash()
 	# kill everyone, and everything in your path
-	health += (DEFAULT_HEALTH_WEIGHT * judged_tier)
+	health += judgement.health_bonus
 	#print_debug("Health increased by ", DEFAULT_HEALTH_WEIGHT * judged_tier, "%")
 	# Scoring Stuff
 	local_tally.increase_score(abs_diff)
@@ -550,7 +548,7 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 	#	local_tally.combo -= 1
 	local_tally.score += Tally.MISS_SCORE
 	local_tally.increase_misses(1) # increase by one
-	health += int(-5 + damage_boost)
+	health += int(MISS_HEALTH_BONUS + damage_boost)
 	#print_debug("Health damaged by ", int(Tally.MISS_POINTS + damage_boost), "%")
 	tally.merge(local_tally)
 	# mute vocals

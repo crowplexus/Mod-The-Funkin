@@ -9,6 +9,7 @@ name = &"Epic"
 splash_type = 2
 combo_break = false
 color = Color(1, 0.76, 0.4, 1)
+health_bonus = 2
 metadata/_custom_type_script = ExtResource("1_spwge")
 
 [sub_resource type="Resource" id="Resource_ka624"]
@@ -17,6 +18,7 @@ name = &"Sick"
 splash_type = 1
 combo_break = false
 color = Color(0.627451, 1, 1, 1)
+health_bonus = 1
 metadata/_custom_type_script = ExtResource("1_spwge")
 
 [sub_resource type="Resource" id="Resource_ya0cj"]
@@ -25,14 +27,16 @@ name = &"Good"
 splash_type = 0
 combo_break = false
 color = Color(0.611765, 1, 0.643137, 1)
+health_bonus = 0
 metadata/_custom_type_script = ExtResource("1_spwge")
 
 [sub_resource type="Resource" id="Resource_i6s6j"]
 script = ExtResource("1_spwge")
 name = &"Bad"
 splash_type = 0
-combo_break = false
+combo_break = true
 color = Color(0.858824, 0.454902, 0.529412, 1)
+health_bonus = -1
 metadata/_custom_type_script = ExtResource("1_spwge")
 
 [sub_resource type="Resource" id="Resource_xs71s"]
@@ -41,6 +45,7 @@ name = &"Shit"
 splash_type = 0
 combo_break = true
 color = Color(0.52549, 0.152941, 0.223529, 1)
+health_bonus = -5
 metadata/_custom_type_script = ExtResource("1_spwge")
 
 [resource]
