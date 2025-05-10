@@ -6,7 +6,7 @@
 [ext_resource type="SpriteFrames" uid="uid://caygix8miagm8" path="res://assets/game/backgrounds/week4/bgLimo.res" id="3_oxteu"]
 [ext_resource type="SpriteFrames" path="res://assets/game/backgrounds/week4/limoDancer.res" id="4_g1wyp"]
 [ext_resource type="Texture2D" uid="uid://c6xoaulhmih5s" path="res://assets/game/backgrounds/week4/fastCarLol.png" id="5_oyqf4"]
-[ext_resource type="Script" uid="uid://cku7st80n16gp" path="res://scenes/gameplay/hud/physics_sprite_2d.gd" id="7_yha1o"]
+[ext_resource type="Script" uid="uid://cku7st80n16gp" path="res://scenes/gameplay/hud/popup/physics_sprite_2d.gd" id="7_yha1o"]
 
 [sub_resource type="Animation" id="Animation_6dooh"]
 length = 1.20834

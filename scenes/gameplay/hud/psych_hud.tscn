@@ -5,8 +5,8 @@
 [ext_resource type="StyleBox" uid="uid://bdag5e631yhvt" path="res://scenes/gameplay/hud/styleboxes/health_bar_right.tres" id="3_x3eqx"]
 [ext_resource type="Texture2D" uid="uid://d3x8spahvh1je" path="res://assets/game/characters/face/icon.png" id="4_lal55"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="5_wtbdw"]
-[ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/gameplay/hud/combo_group.gd" id="6_a4fgs"]
-[ext_resource type="Script" uid="uid://cku7st80n16gp" path="res://scenes/gameplay/hud/physics_sprite_2d.gd" id="7_fpm36"]
+[ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/gameplay/hud/popup/combo_group.gd" id="6_a4fgs"]
+[ext_resource type="Script" uid="uid://cku7st80n16gp" path="res://scenes/gameplay/hud/popup/physics_sprite_2d.gd" id="7_fpm36"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="8_6nv5g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it28e"]

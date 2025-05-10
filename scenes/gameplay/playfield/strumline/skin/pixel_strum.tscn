@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://b3cs5ephqkidd"]
 
-[ext_resource type="Script" uid="uid://crpupht0nfsw2" path="res://scenes/gameplay/playfield/strumline/strum_note.gd" id="1_7umwm"]
+[ext_resource type="Script" uid="uid://dhb07tp4e4fjv" path="res://scenes/gameplay/playfield/strumline/strum_note.gd" id="1_7umwm"]
 [ext_resource type="SpriteFrames" uid="uid://camlsykf7yoai" path="res://assets/game/notetypes/funkin/pixel/arrows-pixels.tres" id="2_0hxrm"]
 
 [sub_resource type="Animation" id="Animation_ajoaw"]
@@ -511,18 +511,18 @@ _data = {
 &"3 static": SubResource("Animation_aen6k")
 }
 
-[node name="pixel_strum" type="Node2D" node_paths=PackedStringArray("player")]
+[node name="pixel_strum" type="Node2D" node_paths=PackedStringArray("animation")]
 scale = Vector2(1.5, 1.5)
 script = ExtResource("1_7umwm")
-player = NodePath("animation_player")
-
-[node name="animated_sprite_2d" type="AnimatedSprite2D" parent="."]
-texture_filter = 1
-scale = Vector2(6, 6)
-sprite_frames = ExtResource("2_0hxrm")
-animation = &"arrowUP"
+animation = NodePath("animation_player")
 
 [node name="animation_player" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_uwy6y")
 }
+
+[node name="animated_sprite_2d" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(6, 6)
+sprite_frames = ExtResource("2_0hxrm")
+animation = &"left confirm"

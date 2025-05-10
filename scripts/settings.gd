@@ -25,7 +25,8 @@ var scroll: int = 0
 	"volume_mute": "0,Kp 0".split(","),
 }
 ## Prevents inputs from punishing you if you press keys when there's no notes to hit.
-@export var ghost_tapping: bool = true
+@export_enum("Disabled:0", "When in silence:1", "Enabled:2")
+var ghost_tapping: int = 1
 ## Defines the maximum timing window for a note to be hittable.
 @export var max_hit_window: float = 0.18 # 180ms
 ## Enables a 5th judgement not originally present in the game.
@@ -60,6 +61,11 @@ var vsync_mode: int = 0
 ## Select a HUD style, or leave "Default" to let the songs decide.
 @export_enum("Default", "Advanced", "Classic", "Psych")
 var hud_style: String = "Default"
+
+## Choose how the game deals with note colours.
+@export_enum("Column:0", "Judgement:1") #"Quant:2")
+var note_color_mode: int = 0
+
 ## Makes it so the judgements and combo will stack on top of themselves.[br]
 ## Disable to only have a single sprite for each judgement and combo at a time.
 @export var combo_stacking: bool = true

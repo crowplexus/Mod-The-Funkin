@@ -181,9 +181,8 @@ func _ready() -> void:
 	player_sl.input.botplay = player_botplay
 	if player_botplay: tally.is_valid = false
 	
-	if not player_botplay:
-		# make this apply only when Global.settings.custom_note_colors is enabled
-		# later though I don't even have a menu for that
+	# apply this to other strumlines later if its quants.
+	if not player_botplay and Global.settings.note_color_mode > 0:
 		for strum: StrumNote in player_sl.strums:
 			strum.allow_color_overriding = true
 	

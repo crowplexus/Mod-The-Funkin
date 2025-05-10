@@ -68,7 +68,7 @@ func on_note_hit(note: Note) -> void:
 				Conductor.set_music_volume(1.0, 1)
 
 func on_note_miss(note: Note = null, idx: int = -1) -> void:
-	miss_note.emit(note, note.column)
+	miss_note.emit(note, idx)
 	if game: game.on_note_miss(note, idx)
 
 func on_hold_hit(note: Note) -> void:
@@ -109,9 +109,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				note.trip_timer = 0.5 # half a second
 				note._stupid_visual_bug = note.hit_time < 0.0
 	else:
+		if settings.ghost_tapping == 1:
+			var can_ghost: bool = note and note.is_hittable(settings.max_hit_window + 1.3)
+			if can_ghost: on_note_miss(null, idx) # When silent
+		elif settings.ghost_tapping == 0:
+			on_note_miss(null, idx) # Disabled
 		strumline.play_strum(StrumNote.States.PRESS, idx)
-		if not settings.ghost_tapping: on_note_miss(null, idx)
-
+\
 func get_action_id(event: InputEvent) -> int:
 	var id: int = -1
 	if event.is_echo(): return id

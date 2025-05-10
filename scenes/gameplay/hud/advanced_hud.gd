@@ -3,7 +3,8 @@ extends TemplateHUD
 const POPUP_SCALE: Vector2 = Vector2(1.5, 1.5)
 const SCORE_TRANSLATE_CONTEXT: StringName = &"gameplay"
 
-@onready var score_text: Label = $"health_bar/score_text"
+@onready var score_text: Label = $"score_text"
+@onready var score_value: Control = $"score_text/counter"
 @onready var health_text: Label = $"health_bar/health_percent"
 @onready var accuracy_text: Label = $"accuracy_bar/accuracy_progress"
 @onready var judgement_popup: Label = $"judgement_popup"
@@ -53,10 +54,12 @@ func settings_changed(settings: Settings = Global.settings) -> void:
 				game.strumlines.position.y = 0
 			health_bar.position.y = 660
 			shield_bar.position.y = 645
+			score_text.position.y = 610
 		1:
 			if game is Gameplay:
 				game.strumlines.position.y = 500
 			health_bar.position.y = 50
+			score_text.position.y = 10
 			shield_bar.position.y = 35
 	health_bar.self_modulate.a = settings.health_bar_alpha * 0.01
 
@@ -96,19 +99,8 @@ func countdown_progress() -> void:
 
 func update_score_text(_missed: bool = false) -> void:
 	var tally: bool = game and game.tally
-	var total_misses: int = game.tally.misses + game.tally.breaks
-	var fc_string: String = game.tally.get_clear_flag()
-	var info_content: Array = [
-		Global.separate_thousands(game.tally.score if tally else 0),
-		str(game.tally.combo if tally else 0),
-		str(total_misses if tally else 0)
-	]
-	score_text.text = "{1}: %s | {2}: %s ({3}: %s)" % info_content
-	score_text.text = score_text.text.replace("{1}", tr("score", SCORE_TRANSLATE_CONTEXT)) \
-		.replace("{2}", tr("combo", SCORE_TRANSLATE_CONTEXT)) \
-		.replace("{3}", tr("breaks", SCORE_TRANSLATE_CONTEXT))
-	if fc_string: score_text.text += " | %s" % fc_string
 	if tally:
+		score_value.value = game.tally.score
 		_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
 		var accuracy_score: float = Tally.calculate_score_percentage(game.tally.score, _max_score, _min_score)
 		accuracy_text.text = "%.2f%%" % accuracy_score

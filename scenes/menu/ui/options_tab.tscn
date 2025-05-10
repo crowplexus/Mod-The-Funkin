@@ -116,9 +116,14 @@ Press TAB to cycle through recommended values."
 
 [node name="ghost_tapping" parent="tabs/gameplay" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
+values = [&"Disabled", &"When in silence", &"Enabled"]
 display_name = &"Ghost Tapping"
 variable_name = &"ghost_tapping"
-description = "Prevents the game from punishing you for pushing buttons while no notes are there to be hit."
+description = "Prevents the game from punishing you for pushing buttons while no notes are there to be hit.
+
+\"When in silence\" will punish your for mashing when notes are hittable (close to your strumline) so that's when you shoudl stop mashing.
+
+NOTE: \"When in silence\" will only punish the note you're trying to ghost tap, so you will still be able to ghost tap if there's a note charging at a srum and you're trying to ghost tap on *that* strum."
 
 [node name="use_epics" parent="tabs/gameplay" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
@@ -243,6 +248,17 @@ description = "Changes the style of the HUD
 [color=PURPLE]Psych[/color] is a recreation of the same HUD for Psych Engine, it displays Score, Combo Breaks, Accuracy, Health, and Time.
 
 Won't work if the song forces the usage of a custom HUD."
+
+[node name="note_color_mode" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
+layout_mode = 2
+values = [&"Column", &"Judgement"]
+display_name = &"Note Colouring Mode"
+variable_name = &"note_color_mode"
+description = "Choose how the game deals with note colours.
+
+[color=CYAN]Column[/color] will color the strums and notes based on their pointing direction.
+
+[color=GOLD]Judgement[/color] will color the strums based on the judgement you've hit."
 
 [node name="combo_stacking" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2

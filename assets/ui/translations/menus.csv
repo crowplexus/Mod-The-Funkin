@@ -38,7 +38,8 @@ option_language,Language,Idioma,Idioma,Язык,Йазик
 option_vsync_mode,VSync Mode,Tipo de VSync,Tipo de VSync,Тип VSync,Тип VSync
 
 option_hud_style,HUD Style,Estilo de la HUD,Estilo da HUD,Стиль HUD,Изглед HUD
-option_combo_stacking,Combo Stacking,Apillar Combo,Empihar Combo,Стиль HUD,Изглед HUD
+option_combo_stacking,Combo Stacking,Apillar Combo,Empihar Стек Комбо HUD,Стек Комбо
+option_note_color_mode,Note Colouring Mode,Modo de color de las notas,Modo de Cor das Notas,Note Цветовой режим,Режим на боја на ноти
 option_simplify_popups,Simplify Popups,Simplificar Popups,Simplfiicar Pop-ups,Simplify Popups,Поедноставени Popups
 option_timer_style,Timer Style,Estilo del Timer,Estilo do Timer,Таимер Стиль,Таимер Стиль
 option_note_splash_alpha,Note Splash Opacity,Opacidad del Note Splash,Opacidade do Note Splash,Note Splash Opacity,Слабење на Note Splash

@@ -1,10 +1,10 @@
 [gd_scene load_steps=21 format=3 uid="uid://ddp5iy3ye33eo"]
 
-[ext_resource type="Script" uid="uid://dhb07tp4e4fjv" path="res://scenes/gameplay/playfield/strumline/skin/strum_quant.gd" id="1_hos8f"]
-[ext_resource type="Texture2D" uid="uid://q6ar5akjn3g3" path="res://assets/game/notetypes/rgb/exterior.png" id="4_nqe6f"]
-[ext_resource type="Texture2D" uid="uid://u2g5xlw4uotk" path="res://assets/game/notetypes/rgb/interior.png" id="5_ayinx"]
-[ext_resource type="Texture2D" uid="uid://cvneuhkf6tnny" path="res://assets/game/notetypes/rgb/lightning.png" id="5_jb18l"]
-[ext_resource type="Texture2D" uid="uid://bueqdbpjkud4c" path="res://assets/game/notetypes/rgb/interior-blur.png" id="5_rdi0w"]
+[ext_resource type="Script" uid="uid://178k17onq8hn" path="res://scenes/gameplay/playfield/strumline/skin/quant.gd" id="1_qcssd"]
+[ext_resource type="Texture2D" uid="uid://q6ar5akjn3g3" path="res://assets/game/notetypes/rgb/exterior.png" id="2_0qem3"]
+[ext_resource type="Texture2D" uid="uid://u2g5xlw4uotk" path="res://assets/game/notetypes/rgb/interior.png" id="3_lcb2a"]
+[ext_resource type="Texture2D" uid="uid://bueqdbpjkud4c" path="res://assets/game/notetypes/rgb/interior-blur.png" id="4_vq4su"]
+[ext_resource type="Texture2D" uid="uid://cvneuhkf6tnny" path="res://assets/game/notetypes/rgb/lightning.png" id="5_ct7h1"]
 
 [sub_resource type="Animation" id="Animation_2agsk"]
 resource_name = "0 confirm"
@@ -380,7 +380,7 @@ tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/path = NodePath("exterior:scale")
-tracks/2/interp = 0
+tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.125),
@@ -763,10 +763,10 @@ _data = {
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ayinx"]
 blend_mode = 1
 
-[node name="strum_note_quant" type="Node2D" node_paths=PackedStringArray("player")]
+[node name="strum_note" type="Node2D" node_paths=PackedStringArray("animation")]
 scale = Vector2(1.05, 1.05)
-script = ExtResource("1_hos8f")
-player = NodePath("animation_player")
+script = ExtResource("1_qcssd")
+animation = NodePath("animation_player")
 
 [node name="animation_player" type="AnimationPlayer" parent="."]
 libraries = {
@@ -775,13 +775,13 @@ libraries = {
 
 [node name="exterior" type="Sprite2D" parent="."]
 self_modulate = Color(0, 0, 0, 1)
-texture = ExtResource("4_nqe6f")
+texture = ExtResource("2_0qem3")
 
 [node name="interior" type="Sprite2D" parent="exterior"]
 modulate = Color(0.529412, 0.639216, 0.678431, 1)
 position = Vector2(-1.48403, 0.223373)
 scale = Vector2(0.956311, 0.952568)
-texture = ExtResource("5_ayinx")
+texture = ExtResource("3_lcb2a")
 metadata/_edit_lock_ = true
 
 [node name="blur" type="Sprite2D" parent="exterior/interior"]
@@ -789,7 +789,7 @@ visible = false
 material = SubResource("CanvasItemMaterial_ayinx")
 position = Vector2(4.68888, -0.234495)
 scale = Vector2(1.2, 1.2)
-texture = ExtResource("5_rdi0w")
+texture = ExtResource("4_vq4su")
 
 [node name="lightning" type="Sprite2D" parent="exterior"]
-texture = ExtResource("5_jb18l")
+texture = ExtResource("5_ct7h1")

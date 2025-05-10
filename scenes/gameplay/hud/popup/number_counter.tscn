@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://bub15e063cnho"]
+
+[ext_resource type="Script" uid="uid://du66l4a3052qw" path="res://scenes/gameplay/hud/popup/number_counter.gd" id="1_imj1k"]
+[ext_resource type="Texture2D" uid="uid://dt7pe8alvuca7" path="res://assets/ui/popups/tally_numbers.png" id="2_7vy7m"]
+
+[node name="bitmap_counter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_imj1k")
+
+[node name="digit0" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_7vy7m")
+hframes = 10
+vframes = 2
+frame = 1
+
+[node name="digit1" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(40, 0)
+texture = ExtResource("2_7vy7m")
+hframes = 10
+vframes = 2
+frame = 1
+
+[node name="digit2" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(80, 0)
+texture = ExtResource("2_7vy7m")
+hframes = 10
+vframes = 2
+frame = 1
+
+[node name="digit3" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(120, 0)
+texture = ExtResource("2_7vy7m")
+hframes = 10
+vframes = 2
+frame = 1
+
+[node name="digit4" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(160, 0)
+texture = ExtResource("2_7vy7m")
+hframes = 10
+vframes = 2
+frame = 1
