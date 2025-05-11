@@ -7,8 +7,8 @@ const HOLD_FRAMES: SpriteFrames = preload("res://assets/game/notetypes/funkin/no
 @onready var splash: AnimatedSprite2D = $"splash"
 @onready var splash_scale: Vector2 = splash.scale
 
-@onready var arrow_interior: Sprite2D = $"arrow/interior"
-@onready var arrow: Sprite2D = $"arrow"
+@onready var arrow_interior: Node2D = $"arrow/interior"
+@onready var arrow: Node2D = $"arrow"
 var loaded_hold: bool = false
 var game: Node2D
 
@@ -29,8 +29,9 @@ func reload(p_data: NoteData) -> void:
 	var is_hold: bool = clip_rect and hold_size > 0.0 and hold_body
 	if is_hold:
 		var color: = Note.COLORS[column % Note.COLORS.size()]
-		hold_body.texture = HOLD_FRAMES.get_frame_texture("%s hold piece" % color, 0)
-		hold_tail.texture = HOLD_FRAMES.get_frame_texture("%s hold tail" % color, 0)
+		var frames: SpriteFrames = arrow.sprite_frames if arrow is AnimatedSprite2D else HOLD_FRAMES
+		hold_body.texture = frames.get_frame_texture("%s hold piece" % color, 0)
+		hold_tail.texture = frames.get_frame_texture("%s hold tail" % color, 0)
 		hold_tail.position.y = hold_body.get_end().y
 		hold_tail.size = hold_tail.texture.get_size()
 		display_hold(hold_size, get_total_speed())

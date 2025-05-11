@@ -7,6 +7,12 @@
 [ext_resource type="StyleBox" uid="uid://bdag5e631yhvt" path="res://scenes/gameplay/hud/styleboxes/health_bar_right.tres" id="4_mp5kv"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="5_8xe2f"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_it28e"]
+font = ExtResource("2_3as4q")
+font_size = 48
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhk22"]
 bg_color = Color(0.8, 0.8, 0.8, 0.6)
 corner_radius_top_left = 3
@@ -23,12 +29,6 @@ anti_aliasing = false
 [sub_resource type="LabelSettings" id="LabelSettings_8v6dl"]
 font = ExtResource("2_3as4q")
 font_size = 32
-
-[sub_resource type="LabelSettings" id="LabelSettings_it28e"]
-font = ExtResource("2_3as4q")
-font_size = 48
-outline_size = 6
-outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3l1f0"]
 font = ExtResource("2_3as4q")
@@ -50,7 +50,41 @@ grow_vertical = 2
 scale = Vector2(0.999695, 1.00043)
 script = ExtResource("1_6idyv")
 
-[node name="judgement_popup" type="Label" parent="."]
+[node name="text_ui" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="score" type="Label" parent="text_ui"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 527.0
+offset_top = 590.0
+offset_right = 640.0
+offset_bottom = 646.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Score"
+label_settings = SubResource("LabelSettings_it28e")
+horizontal_alignment = 1
+
+[node name="counter" parent="text_ui" instance=ExtResource("3_3as4q")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.0
+offset_left = 543.0
+offset_top = 680.0
+offset_right = 698.0
+offset_bottom = 710.0
+grow_vertical = 1
+
+[node name="judgement_popup" type="Label" parent="text_ui"]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -58,10 +92,10 @@ anchor_left = 0.481
 anchor_top = 0.602
 anchor_right = 0.519
 anchor_bottom = 0.687
-offset_left = -0.180054
-offset_top = 0.059967
-offset_right = 1.17993
-offset_bottom = -0.140015
+offset_left = 588.76
+offset_top = 400.42
+offset_right = 652.24
+offset_bottom = 476.02
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(25, 30)
@@ -71,32 +105,6 @@ x0"
 label_settings = SubResource("LabelSettings_8v6dl")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="score_text" type="Label" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -76.0
-offset_top = 10.0
-offset_right = 76.0
-offset_bottom = 66.0
-grow_horizontal = 2
-text = "Score"
-label_settings = SubResource("LabelSettings_it28e")
-horizontal_alignment = 1
-
-[node name="counter" parent="score_text" instance=ExtResource("3_3as4q")]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-offset_left = -138.995
-offset_top = 15.9932
-offset_right = 16.0049
-offset_bottom = 15.9932
-grow_horizontal = 0
-grow_vertical = 0
 
 [node name="health_bar" type="ProgressBar" parent="."]
 unique_name_in_owner = true

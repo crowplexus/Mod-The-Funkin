@@ -34,20 +34,3 @@ texture = ExtResource("2_7vy7m")
 hframes = 10
 vframes = 2
 frame = 1
-
-[node name="digit3" type="Sprite2D" parent="."]
-texture_filter = 1
-position = Vector2(120, 0)
-texture = ExtResource("2_7vy7m")
-hframes = 10
-vframes = 2
-frame = 1
-
-[node name="digit4" type="Sprite2D" parent="."]
-visible = false
-texture_filter = 1
-position = Vector2(160, 0)
-texture = ExtResource("2_7vy7m")
-hframes = 10
-vframes = 2
-frame = 1

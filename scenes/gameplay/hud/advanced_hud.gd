@@ -3,11 +3,11 @@ extends TemplateHUD
 const POPUP_SCALE: Vector2 = Vector2(1.5, 1.5)
 const SCORE_TRANSLATE_CONTEXT: StringName = &"gameplay"
 
-@onready var score_text: Label = $"score_text"
-@onready var score_value: Control = $"score_text/counter"
+@onready var score_text: Label = $"text_ui/score"
+@onready var score_value: Control = $"text_ui/counter"
 @onready var health_text: Label = $"health_bar/health_percent"
 @onready var accuracy_text: Label = $"accuracy_bar/accuracy_progress"
-@onready var judgement_popup: Label = $"judgement_popup"
+@onready var judgement_popup: Label = $"text_ui/judgement_popup"
 
 @onready var health_bar: ProgressBar = $"%health_bar"
 @onready var shield_bar: ProgressBar = $"%accuracy_bar" # this is accuracy not time btw
@@ -52,14 +52,16 @@ func settings_changed(settings: Settings = Global.settings) -> void:
 		0:
 			if game is Gameplay:
 				game.strumlines.position.y = 0
+			score_value.position.y = 680
+			score_text.position.y = 580
 			health_bar.position.y = 660
 			shield_bar.position.y = 645
-			score_text.position.y = 610
 		1:
 			if game is Gameplay:
 				game.strumlines.position.y = 500
-			health_bar.position.y = 50
+			score_value.position.y = 80
 			score_text.position.y = 10
+			health_bar.position.y = 50
 			shield_bar.position.y = 35
 	health_bar.self_modulate.a = settings.health_bar_alpha * 0.01
 

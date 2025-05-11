@@ -178,9 +178,11 @@ func get_music_time() -> float:
 func load_chart_music(chart: Chart) -> void:
 	if chart.assets and chart.assets.instrumental:
 		Conductor.bound_music.stream.set_sync_stream(0, chart.assets.instrumental)
+		Conductor.bound_music.stream.get_sync_stream(0).loop = false
 		if chart.assets.vocals:
 			for i: int in chart.assets.vocals.size():
 				Conductor.bound_music.stream.set_sync_stream(i+1, chart.assets.vocals[i])
+				Conductor.bound_music.stream.get_sync_stream(i+1).loop = false
 		Conductor.length = chart.assets.instrumental.get_length()
 
 #endregion
