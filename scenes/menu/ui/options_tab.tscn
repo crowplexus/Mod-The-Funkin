@@ -251,14 +251,16 @@ Won't work if the song forces the usage of a custom HUD."
 
 [node name="note_color_mode" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2
-values = [&"Column", &"Judgement"]
+values = [&"Column", &"Judgement", &"Quant"]
 display_name = &"Note Colouring Mode"
 variable_name = &"note_color_mode"
 description = "Choose how the game deals with note colours.
 
 [color=CYAN]Column[/color] will color the strums and notes based on their pointing direction.
 
-[color=GOLD]Judgement[/color] will color the strums based on the judgement you've hit."
+[color=GOLD]Judgement[/color] will color the strums based on the judgement you've hit.
+
+[color=ROYAL_BLUE]Quant[/color] will color the strums and notes based on the time they spawned."
 
 [node name="combo_stacking" parent="tabs/visuals" instance=ExtResource("2_7tf5q")]
 layout_mode = 2

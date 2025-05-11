@@ -8,6 +8,7 @@ enum States {
 
 const STATIC_COLOUR: Color = Color(0.529, 0.639, 0.678) # Bri'ish
 
+@export var allow_color_overriding: bool = false
 @export var animation: AnimationPlayer
 @onready var parent: StrumNote
 
@@ -17,7 +18,6 @@ var _last_state: int = -1
 var speed: float = 1.0
 # hey guys welcome to another episode of "how to workaround"
 var _color_map: Dictionary[String, Color] = {}
-var allow_color_overriding: bool = false
 var color: Color = Color.WHITE
 
 func _ready() -> void:
@@ -25,6 +25,9 @@ func _ready() -> void:
 	if get_parent() is StrumNote:
 		parent = get_parent()
 	play_animation()
+
+func apply_color_mode() -> void:
+	allow_color_overriding = Global.settings.note_color_mode > 0
 
 func _process(delta: float) -> void:
 	if reset_timer > 0 and _last_state != reset_state:
@@ -38,6 +41,8 @@ func manual_coloring() -> void:
 	for anim_name: String in animation.get_animation_list():
 		var a: Animation = animation.get_animation(anim_name)
 		for b: int in a.get_track_count():
+			if a.track_get_type(b) != Animation.TYPE_VALUE or a.track_get_key_count(b) == 0:
+				continue
 			var p: NodePath = a.track_get_path(b)
 			var path: String = p.get_concatenated_names() + ":" + p.get_concatenated_subnames()
 			if path == "exterior/interior:modulate":

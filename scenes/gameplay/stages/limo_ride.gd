@@ -24,7 +24,7 @@ func _ready() -> void:
 		var index: int = cars.find(car)
 		car_origins[index] = car.position
 		drive_timers[index].timeout.connect(func() -> void:
-			car = reset_fast_car(car)
+			reset_fast_car(car)
 		)
 	super()
 

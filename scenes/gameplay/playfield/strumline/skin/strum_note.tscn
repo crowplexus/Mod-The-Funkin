@@ -766,6 +766,7 @@ blend_mode = 1
 [node name="strum_note" type="Node2D" node_paths=PackedStringArray("animation")]
 scale = Vector2(1.05, 1.05)
 script = ExtResource("1_qcssd")
+allow_color_overriding = true
 animation = NodePath("animation_player")
 
 [node name="animation_player" type="AnimationPlayer" parent="."]
@@ -788,7 +789,6 @@ metadata/_edit_lock_ = true
 visible = false
 material = SubResource("CanvasItemMaterial_ayinx")
 position = Vector2(4.68888, -0.234495)
-scale = Vector2(1.2, 1.2)
 texture = ExtResource("4_vq4su")
 
 [node name="lightning" type="Sprite2D" parent="exterior"]

@@ -180,12 +180,7 @@ func _ready() -> void:
 		strums.input.setup()
 	player_sl.input.botplay = player_botplay
 	if player_botplay: tally.is_valid = false
-	
-	# apply this to other strumlines later if its quants.
-	if not player_botplay and Global.settings.note_color_mode > 0:
-		for strum: StrumNote in player_sl.strums:
-			strum.allow_color_overriding = true
-	
+
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	scripts.call_func("_ready_post")
 	var tick_scripts: Callable = func(tick: int) -> void:
@@ -513,7 +508,7 @@ func on_note_hit(note: Note) -> void:
 		hud.display_combo(local_tally.combo)
 		hud.update_score_text(false)
 		hud.update_health(display_health)
-	if note.strumline == player_sl:
+	if Global.settings.note_color_mode == 1 and note.strumline == player_sl:
 		note._strum.color = judgement.color
 
 func kill_yourself(actor: Actor2D) -> void: # thanks Unholy

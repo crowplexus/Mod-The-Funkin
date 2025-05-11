@@ -29,7 +29,7 @@ func _ready() -> void:
 	reload_labels()
 	switch_tabs()
 
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	var tab_axis: int = int(Input.get_axis("ui_left", "ui_right"))
 	var opt_axis: int = int(Input.get_axis("ui_up", "ui_down"))
 	var selected_option: Control = current_tab[selected]

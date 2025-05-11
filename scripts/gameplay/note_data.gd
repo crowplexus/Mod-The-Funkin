@@ -21,7 +21,7 @@ static var EMPTY: NoteData = NoteData.new():
 ## Animation Suffix for the note.
 @export var anim_suffix: String = ""
 ## Custom Parameters.
-@export var params: Array = []
+@export var params: Dictionary = {}
 
 #region Stepmania Functions
 
@@ -33,12 +33,39 @@ const ROWS_PER_BEAT: int = 48 ## Fixed-point time/beat representation from SM.
 const ROWS_PER_MEASURE: int = ROWS_PER_BEAT * 4 ## Rows used in a measure
 const QUANT_LIST: Array[int] = [4, 8, 12, 16, 24, 32, 48, 64, 192] ## List of quant types.
 
+const QUANT_COLOR_PRESETS: Dictionary[String, PackedColorArray] = {
+	"default": [
+		Color("#ff3333"), Color("#3388ff"), Color("#33ff55"), # 4th, 8th, 12th
+		Color("#cc33ff"), Color("#ffee33"), Color("#aa33ff"), # 16th, 24th, 32nd
+		Color("#ff33aa"), Color("#ff9933"), Color("#888888"), # 48th, 64th, 192nd
+	],
+	"kadeish": [
+		Color("#f9393f"), Color("#00ffff"), Color("#12fa05"), # 4th, 8th, 12th
+		Color("#c24b99"), Color("#ffd700"), Color("#ff7f00"), # 16th, 24th, 32nd
+		Color("#ff00ff"), Color("#00ff7f"), Color("#7f00ff"), # 48th, 64th, 192nd
+	]
+}
+const QUANT_COLORS: PackedColorArray = QUANT_COLOR_PRESETS.default
+
 ## Retrieve a quantized note row for the note.
 static func get_note_quant(row: int) -> int:
 	for quant: int in QUANT_LIST:
-		if row % (ROWS_PER_MEASURE % quant) == 0:
+		if row % (ROWS_PER_MEASURE / quant) == 0:
 			return quant
 	return QUANT_LIST[-1]
+
+# temporary until the options menu gets remade
+static func get_quant_color(row: int) -> Color:
+	match row:
+		4: return QUANT_COLORS[0]
+		8: return QUANT_COLORS[1]
+		12:return QUANT_COLORS[3]
+		16:return QUANT_COLORS[3]
+		24:return QUANT_COLORS[4]
+		32:return QUANT_COLORS[5]
+		48:return QUANT_COLORS[6]
+		64:return QUANT_COLORS[7]
+		_: return QUANT_COLORS[8]
 
 # needless to say, ikepotchey, chihuisepapa
 # never dales, conecosna heibi amare
@@ -104,8 +131,8 @@ static func from_dictionary(dictionary: Dictionary, max_columns: int = 4) -> Not
 		new_note.time = float(dictionary.t * 0.001)
 		new_note.column = int(dictionary.d)
 		if "l" in dictionary: new_note.length = float(dictionary.l * 0.001)
+		if "p" in dictionary: new_note.params = Dictionary(dictionary.p)
 		if "k" in dictionary: new_note.kind = StringName(dictionary.k)
-		if "p" in dictionary: new_note.params = Array(dictionary.p)
 		new_note.side = int(new_note.column / max_columns)
 	return new_note
 
