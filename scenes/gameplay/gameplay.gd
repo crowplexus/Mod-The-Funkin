@@ -243,6 +243,7 @@ func play_countdown(offset: float = 0.0) -> void:
 
 func _exit_tree() -> void:
 	current = null
+	Conductor.bound_music.finished.disconnect(end_song)
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
 	local_settings.unreference()
 
@@ -252,10 +253,6 @@ func _process(delta: float) -> void:
 			Conductor.toggle_pause_music(false) # just in case.
 			Conductor.play_music(0.0, 1.0, false)
 			starting = false
-	else:
-		if Conductor.time >= Conductor.length and not ending:
-			ending = true
-			end_song()
 	if not no_fail_mode and health <= 0:
 		kill_yourself(get_actor_from_index(player_id))
 	# hud bumping #
@@ -446,6 +443,8 @@ func load_streams() -> void:
 	Conductor.load_chart_music(chart)
 	if chart.assets and chart.assets.instrumental:
 		has_enemy_track = chart.assets.vocals.size() > 1
+	if not Conductor.bound_music.finished.is_connected(end_song):
+		Conductor.bound_music.finished.connect(end_song)
 
 func do_note_spawning() -> void:
 	while note_spawn_index < notes_to_spawn.size():
