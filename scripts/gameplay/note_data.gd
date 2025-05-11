@@ -59,7 +59,7 @@ static func get_quant_color(row: int) -> Color:
 	match row:
 		4: return QUANT_COLORS[0]
 		8: return QUANT_COLORS[1]
-		12:return QUANT_COLORS[3]
+		12:return QUANT_COLORS[2]
 		16:return QUANT_COLORS[3]
 		24:return QUANT_COLORS[4]
 		32:return QUANT_COLORS[5]

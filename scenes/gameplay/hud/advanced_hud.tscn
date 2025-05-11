@@ -1,16 +1,17 @@
-[gd_scene load_steps=13 format=3 uid="uid://bjkg052ui3mnl"]
+[gd_scene load_steps=14 format=3 uid="uid://bjkg052ui3mnl"]
 
 [ext_resource type="Script" uid="uid://bqen71fvkle87" path="res://scenes/gameplay/hud/advanced_hud.gd" id="1_6idyv"]
 [ext_resource type="FontFile" uid="uid://casd318dkyewy" path="res://assets/ui/fonts/lilitaonerus.ttf" id="2_3as4q"]
+[ext_resource type="FontFile" uid="uid://bd4a21b8dcnsd" path="res://assets/ui/fonts/funkin.ttf" id="2_e5qyr"]
 [ext_resource type="PackedScene" uid="uid://bub15e063cnho" path="res://scenes/gameplay/hud/popup/number_counter.tscn" id="3_3as4q"]
 [ext_resource type="StyleBox" uid="uid://dhwynnq1ji6ou" path="res://scenes/gameplay/hud/styleboxes/fortnite_bar_bg.tres" id="3_e5qyr"]
 [ext_resource type="StyleBox" uid="uid://bdag5e631yhvt" path="res://scenes/gameplay/hud/styleboxes/health_bar_right.tres" id="4_mp5kv"]
 [ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="5_8xe2f"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_it28e"]
-font = ExtResource("2_3as4q")
+font = ExtResource("2_e5qyr")
 font_size = 48
-outline_size = 6
+outline_size = 16
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yhk22"]
