@@ -30,12 +30,6 @@ var data: NoteData:
 		side = new_data.side
 ## (Current) Hold Size, not to be confused with [code]data.length[/code]
 var hold_size: float = 0.0
-## Hold note body, gets attached if [code]$"clip_rect/hold_body"[/code]
-## exists in the scene tree.
-var hold_body: TextureRect
-## Hold note tail, gets attached if [code]$"clip_rect/hold_tail"[/code]
-## exists in the scene tree.
-var hold_tail: TextureRect
 ## Control Node for hiding offscreen hold notes.
 var clip_rect: Control
 
@@ -81,8 +75,6 @@ var _strum: StrumNote
 func _ready() -> void:
 	if has_node("clip_rect"):
 		clip_rect = get_node("clip_rect")
-		if has_node("clip_rect/hold_body"): hold_body = get_node("clip_rect/hold_body")
-		if has_node("clip_rect/hold_tail"): hold_tail = get_node("clip_rect/hold_tail")
 	reset_scroll()
 
 func _process(_delta: float) -> void:
@@ -128,7 +120,6 @@ func update_hold(_delta: float) -> void:
 		hold_size += hit_time / absf(clip_rect.scale.y)
 		_stupid_visual_bug = false
 	hold_size = (time + length) - Conductor.playhead
-	display_hold(hold_size, get_total_speed())
 	if (hold_size <= 0.0 or trip_timer <= 0.0):
 		hide_all()
 
@@ -160,19 +151,17 @@ func reload(p_data: NoteData) -> void:
 
 ## Use this function for implementing hold note visuals.[br]
 ## Leave empty if you want your note type to not have holds.
-func display_hold(size: float = 0.0, speed: float = -1.0) -> void:
+func calculate_hold_y_size(size: float = 0.0, speed: float = -1.0) -> float:
+	if column <= -1:
+		return 0.0
 	if speed <= 0.0: speed = get_total_speed()
-	if column != -1 and not hold_body or not clip_rect:
-		return
 	 # URGHHHHHHHHHHH
 	if Note.USE_SM_SCROLL:
 		speed *= Note.SM_ARROW_SIZE
 	else:
 		speed *= 500.0
 	# general implementation, should work for everything???
-	if hold_body.texture:
-		hold_body.size.x = hold_body.texture.get_width()
-		hold_body.size.y = (size * speed) / absf(clip_rect.scale.y)
+	return (size * speed) / absf(clip_rect.scale.y)
 
 ## Use this function for implementing splash visuals.[br]
 ## Return null if you don't want note splashes on your note type.

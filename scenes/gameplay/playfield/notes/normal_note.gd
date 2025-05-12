@@ -9,6 +9,12 @@ const HOLD_FRAMES: SpriteFrames = preload("res://assets/game/notetypes/funkin/no
 
 @onready var arrow: Node2D = $"exterior"
 @onready var arrow_interior: Node2D = $"exterior/interior"
+
+@onready var hold_tail: Sprite2D = $"clip_rect/hold_tail"
+@onready var hold_body: Line2D = $"clip_rect/hold_body"
+@onready var body_high_l: ColorRect = $"clip_rect/hold_body/line_left"
+@onready var body_high_r: ColorRect = $"clip_rect/hold_body/line_right"
+
 var _color_map: Dictionary[String, Color] = {}
 var loaded_hold: bool = false
 var game: Node2D
@@ -41,6 +47,12 @@ func save_colors() -> void:
 				"exterior:self_modulate":
 					_color_map["exterior_" + anim_name] = a.track_get_key_value(b, 0)
 					a.track_set_enabled(b, false)
+				#"clip_rect/hold_body:self_modulate":
+				#	_color_map["hold_interior_" + anim_name] = a.track_get_key_value(b, 0)
+				#	a.track_set_enabled(b, false)
+				#"clip_rect/hold_tail:self_modulate":
+				#	_color_map["hold_exterior_" + anim_name] = a.track_get_key_value(b, 0)
+				#	a.track_set_enabled(b, false)
 
 func apply_color(p_time: float) -> void:
 	match Global.settings.note_color_mode:
@@ -48,36 +60,45 @@ func apply_color(p_time: float) -> void:
 			var quant: int = NoteData.get_note_quant(NoteData.secs_to_row(p_time))
 			arrow_interior.self_modulate = NoteData.get_quant_color(quant)
 			arrow.self_modulate = arrow_interior.self_modulate.darkened(0.6)
+			hold_tail.self_modulate = arrow_interior.self_modulate.darkened(0.371)
+			hold_body.self_modulate = arrow_interior.self_modulate
 		_:  # Default column-based colouring
 			var interior_key := "interior_%d" % column
 			var exterior_key := "exterior_%d" % column
 			if _color_map.has(interior_key) and _color_map.has(exterior_key):
+				arrow.self_modulate = _color_map[exterior_key]	
 				arrow_interior.self_modulate = _color_map[interior_key]
-				arrow.self_modulate = _color_map[exterior_key]
+				hold_tail.self_modulate = _color_map[exterior_key]
+				hold_body.default_color = _color_map[interior_key]
 			else:
-				arrow_interior.self_modulate = Color.WEB_GRAY
 				arrow.self_modulate = Color.DIM_GRAY
+				arrow_interior.self_modulate = Color.WEB_GRAY
+				hold_tail.self_modulate = Color.DIM_GRAY
+				hold_body.default_color = Color.WEB_GRAY
+	
+	body_high_l.color = hold_tail.self_modulate.lightened(0.8)
+	body_high_r.color = hold_tail.self_modulate.lightened(0.8)
 
 func reload(p_data: NoteData) -> void:
 	super(p_data)
 	animation.play(str(column))
 	apply_color(p_data.time)
 	show_all()
-	var is_hold: bool = clip_rect and hold_size > 0.0 and hold_body
-	if is_hold:
-		var color: = Note.COLORS[column % Note.COLORS.size()]
-		var frames: SpriteFrames = arrow.sprite_frames if arrow is AnimatedSprite2D else HOLD_FRAMES
-		hold_body.texture = frames.get_frame_texture("%s hold piece" % color, 0)
-		hold_tail.texture = frames.get_frame_texture("%s hold tail" % color, 0)
-		hold_tail.position.y = hold_body.get_end().y
-		hold_tail.size = hold_tail.texture.get_size()
-		display_hold(hold_size, get_total_speed())
+	if clip_rect and hold_size > 0.0:
 		loaded_hold = true
+		stretch_hold()
 
-func display_hold(size: float = 0.0, speed: float = -1.0) -> void:
-	super(size, speed)
-	if arrow.visible and loaded_hold: arrow.hide()
-	hold_tail.position.y = hold_body.get_end().y
+func update_hold(delta: float) -> void:
+	super(delta)
+	stretch_hold()
+
+func stretch_hold() -> void:
+	var w: float = hold_tail.texture.get_width() - 18 # "values out of my ass" moment
+	var next_size: float = calculate_hold_y_size(hold_size, get_total_speed())
+	hold_tail.position.y = hold_body.get_point_position(4).y
+	hold_body.points[4].y = next_size + w
+	body_high_l.size.y = next_size * 0.8
+	body_high_r.size.y = next_size * 0.8
 
 func can_splash() -> bool:
 	return splash_type != Judgement.SplashType.DISABLED and length <= 0.0
@@ -107,6 +128,7 @@ func display_splash() -> Node2D:
 	return dip
 
 func on_note_hit() -> void:
-	strumline.input.on_note_hit(self)
+	if arrow.visible and hold_size > 0.0: arrow.hide()
 	if _strum.allow_color_overriding:
-		_strum.color = arrow.self_modulate.lightened(0.4)
+		_strum.color = arrow_interior.self_modulate
+	strumline.input.on_note_hit(self)

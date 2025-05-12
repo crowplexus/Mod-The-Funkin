@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://q6ar5akjn3g3" path="res://assets/game/notetypes/rgb/exterior.png" id="2_0qem3"]
 [ext_resource type="Texture2D" uid="uid://u2g5xlw4uotk" path="res://assets/game/notetypes/rgb/interior.png" id="3_lcb2a"]
 [ext_resource type="Texture2D" uid="uid://bueqdbpjkud4c" path="res://assets/game/notetypes/rgb/interior-blur.png" id="4_vq4su"]
-[ext_resource type="Texture2D" uid="uid://cvneuhkf6tnny" path="res://assets/game/notetypes/rgb/lightning.png" id="5_ct7h1"]
+[ext_resource type="Texture2D" uid="uid://cvneuhkf6tnny" path="res://assets/game/notetypes/rgb/highlight.png" id="5_ct7h1"]
 
 [sub_resource type="Animation" id="Animation_2agsk"]
 resource_name = "0 confirm"
@@ -791,5 +791,5 @@ material = SubResource("CanvasItemMaterial_ayinx")
 position = Vector2(4.68888, -0.234495)
 texture = ExtResource("4_vq4su")
 
-[node name="lightning" type="Sprite2D" parent="exterior"]
+[node name="highlight" type="Sprite2D" parent="exterior"]
 texture = ExtResource("5_ct7h1")

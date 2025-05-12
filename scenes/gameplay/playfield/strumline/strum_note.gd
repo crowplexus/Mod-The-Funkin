@@ -18,23 +18,27 @@ var _last_state: int = -1
 var speed: float = 1.0
 # hey guys welcome to another episode of "how to workaround"
 var _color_map: Dictionary[String, Color] = {}
+var _real_color: Color = Color.WHITE
 var color: Color = Color.WHITE
 
 func _ready() -> void:
-	manual_coloring()
 	if get_parent() is StrumNote:
 		parent = get_parent()
+	save_colors()
 	play_animation()
 
-func apply_color_mode() -> void:
-	allow_color_overriding = Global.settings.note_color_mode > 0
+func get_color_state(state: int = StrumNote.States.STATIC) -> Color:
+	match state:
+		StrumNote.States.PRESS: return color.darkened(0.371) # 37.1% less colour
+		StrumNote.States.CONFIRM: return color.lightened(0.4) # 40% more colour
+		_: return color
 
 func _process(delta: float) -> void:
 	if reset_timer > 0 and _last_state != reset_state:
 		reset_timer -= delta * (Conductor.crotchet * 4.0)
 		if reset_timer <= 0.0: play_animation(reset_state, true)
 
-func manual_coloring() -> void:
+func save_colors() -> void:
 	if not animation:
 		push_error("AnimationPlayer is not set in StrumNote")
 		return
@@ -58,9 +62,9 @@ func play_animation(state: int = StrumNote.States.STATIC, force: bool = false) -
 		index = index % parent.get_child_count()
 	var state_name: String = StrumNote.States.keys()[state].to_lower()
 	var anim_name: String = str(index) + " " + state_name
-	
 	if _last_state != state or force:
 		animation.seek(0.0) # just to make sure
-	
+	if state != StrumNote.States.STATIC and allow_color_overriding:
+		_real_color = get_color_state(state)
 	animation.play(anim_name)
 	_last_state = state

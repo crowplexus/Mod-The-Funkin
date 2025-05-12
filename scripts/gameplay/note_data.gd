@@ -45,7 +45,7 @@ const QUANT_COLOR_PRESETS: Dictionary[String, PackedColorArray] = {
 		Color("#ff00ff"), Color("#00ff7f"), Color("#7f00ff"), # 48th, 64th, 192nd
 	]
 }
-const QUANT_COLORS: PackedColorArray = QUANT_COLOR_PRESETS.default
+const QUANT_COLORS: PackedColorArray = QUANT_COLOR_PRESETS.kadeish
 
 ## Retrieve a quantized note row for the note.
 static func get_note_quant(row: int) -> int:

@@ -10,10 +10,7 @@ func play_animation(state: int = StrumNote.States.STATIC, force: bool = false) -
 	var anim_name: String = str(index) + " " + StrumNote.States.keys()[state].to_lower()
 	var use_static: bool = state == StrumNote.States.STATIC
 	if allow_color_overriding:
-		if state == StrumNote.States.PRESS:
-			interior.modulate = color.darkened(0.6)
-		elif not use_static:
-			interior.modulate = color
+		interior.modulate = _real_color
 	else:
 		if anim_name in _color_map:
 			interior.modulate = _color_map[anim_name]

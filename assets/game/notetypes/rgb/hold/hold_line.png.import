@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvneuhkf6tnny"
-path="res://.godot/imported/lightning.png-d36e78a45ba0015b760b7e9f8c0be422.ctex"
+uid="uid://ctpnifbhsfdwu"
+path="res://.godot/imported/hold_line.png-f9da72cf09a8e65beba7b39aedea6e39.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/game/notetypes/rgb/lightning.png"
-dest_files=["res://.godot/imported/lightning.png-d36e78a45ba0015b760b7e9f8c0be422.ctex"]
+source_file="res://assets/game/notetypes/rgb/hold/hold_line.png"
+dest_files=["res://.godot/imported/hold_line.png-f9da72cf09a8e65beba7b39aedea6e39.ctex"]
 
 [params]
 

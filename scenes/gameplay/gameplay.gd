@@ -292,7 +292,7 @@ func _unhandled_key_input(_event: InputEvent) -> void:
 		hud_layer.add_child(instance)
 		get_tree().paused = true
 		return
-	if player_sl and player:
+	if player_sl and player and player.able_to_sing:
 		player.lock_on_sing = player_sl.input.keys_held.has(true)
 
 func skip_to_time(time: float = 0.0) -> void:
