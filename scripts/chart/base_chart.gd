@@ -24,7 +24,7 @@ const VELOCITY_EVENTS: Array[StringName] = [
 ## Song Charter/Mapper (to display in menus).
 @export var charter: StringName = &""
 ## List of notes to spawn in-game.
-@export var notes: Array[NoteData] = []
+@export var notes: NoteCollection = NoteCollection.new()
 ## List of Events to be executed during the song.
 @export var scheduled_events: Array[TimedEvent] = []
 ## List of Timing Changes in the chart,
@@ -118,11 +118,12 @@ func clear_overlapping_notes() -> void:
 	const EPSILON: float = 1e-12
 	var counter: int = 0
 	var total: int = 0
-	for i: int in notes.size():
-		if i == 0 or i >= notes.size():
+	var datas: Array[NoteData] = notes.get_all()
+	for i: int in datas.size():
+		if i == 0 or i >= datas.size():
 			continue
-		var cur: NoteData = notes[i]
-		var prev: NoteData = notes[i - 1]
+		var cur: NoteData = datas[i]
+		var prev: NoteData = datas[i - 1]
 		if prev and is_equal_approx(cur.time - prev.time, EPSILON) and cur.column == prev.column and cur.side == prev.side:
 			#print_debug("removed note 	at ", prev.time, " (", cur.time, ")")
 			notes.remove_at(i)
@@ -165,9 +166,8 @@ static func detect_and_parse(song_name: StringName, difficulty: StringName = Glo
 		chart = FNFChart.new() # make an FNFChart to avoid a metric fuckton amount of crashes.
 		chart.scheduled_events.append(TimedEvent.velocity_change(0.0))
 		print_debug("Unable to parse chart (", path, "), creating a dummy...")
-	if chart:
-		chart.clear_overlapping_notes()
-		chart.save_parsing_meta(song_name, difficulty)
+	chart.clear_overlapping_notes()
+	chart.save_parsing_meta(song_name, difficulty)
 	if not chart.assets: chart.assets = ChartAssets.get_resource(chart)
 	return chart
 

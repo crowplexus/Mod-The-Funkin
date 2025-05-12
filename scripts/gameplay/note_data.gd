@@ -73,11 +73,11 @@ static func get_quant_color(row: int) -> Color:
 
 ## Converts time to a note row.
 static func secs_to_row(p_time: float, p_bpm: float = Conductor.bpm) -> int:
-	return round(Conductor.get_beat(p_time, p_bpm) * ROWS_PER_BEAT)
+	return roundi((p_time * p_bpm * ROWS_PER_BEAT) / 60.0)
 
 ## Converts a beat value to a note row.
 static func beat_to_row(p_beat: float) -> int:
-	return round(p_beat * ROWS_PER_BEAT)
+	return roundi(p_beat * ROWS_PER_BEAT)
 
 ## [code]NoteData.beat_to_row[/code] but in reverse.
 static func row_to_beat(p_row: int) -> float:
@@ -85,12 +85,16 @@ static func row_to_beat(p_row: int) -> float:
 
 ## [code]NoteData.secs_to_row[/code] but in reverse.
 static func row_to_secs(p_row: int, p_bpm: float = Conductor.bpm) -> float:
-	return Conductor.get_time(p_row / ROWS_PER_BEAT, p_bpm)
+	return (p_row * 60.0) / (p_bpm * ROWS_PER_BEAT)
 
 ## Snaps a row to the nearest quant.
 static func snap_row_to_quant(row: int, quant: int) -> int:
 	assert(quant in QUANT_LIST, "Invalid quant value!")
 	return roundi(float(row) / quant) * quant
+
+## Gets the time of the nearest row.
+static func snap_to_row(p_time: float) -> float:
+	return row_to_secs(secs_to_row(p_time))
 
 #endregion
 
@@ -136,7 +140,14 @@ static func from_dictionary(dictionary: Dictionary, max_columns: int = 4) -> Not
 		new_note.side = int(new_note.column / max_columns)
 	return new_note
 
+#endregion
+
+#region Sorting Functions
+
 static func sort_by_time(one: NoteData, two: NoteData) -> int:
 	return one.time < two.time
+
+#static func sort_by_row(one: NoteData, two: NoteData) -> int:
+	# return
 
 #endregion

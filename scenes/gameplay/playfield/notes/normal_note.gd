@@ -86,8 +86,8 @@ func reload(p_data: NoteData) -> void:
 	apply_color(p_data.time)
 	show_all()
 	if clip_rect and hold_size > 0.0:
-		loaded_hold = true
 		stretch_hold()
+		loaded_hold = true
 
 func update_hold(delta: float) -> void:
 	super(delta)

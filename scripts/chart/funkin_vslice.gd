@@ -115,7 +115,7 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 					if new_note.side > chart.note_counts.size():
 						chart.note_counts.append(0)
 					chart.note_counts[new_note.side] += 1
-					chart.notes.append(new_note)
+					chart.notes.add_note(new_note)
 				else:
 					push_warning("Unable to create note at ", fake_timer)
 			fake_timer += fake_crotchet * signature
@@ -139,7 +139,6 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 			if "t" in change and "bpm" in change:
 				chart.timing_changes.append(SongTimeChange.make(change.t, change.bpm))
 	
-	chart.notes.sort_custom(NoteData.sort_by_time)
 	chart.timing_changes.sort_custom(SongTimeChange.sort_by_time)
 	chart.scheduled_events.sort_custom(TimedEvent.sort_by_time)
 	

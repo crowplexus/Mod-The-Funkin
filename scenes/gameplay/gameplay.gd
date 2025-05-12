@@ -6,8 +6,6 @@ enum GameMode {
 	CHARTING = 2,
 }
 
-signal on_note_spawned(data: NoteData, note: Note)
-
 ## Notetypes that can be spawned.
 const NOTE_TYPES: Dictionary[String, PackedScene] = {
 	"mine": preload("uid://b4e0quuk03nqs"),
@@ -121,8 +119,8 @@ var dj: Actor2D
 @onready var game_mode_name: String = Gameplay.get_mode_string(game_mode)
 var judgements: JudgementList = preload("uid://fj361lysi7nc")
 
-var note_spawn_index: int = 0
-var notes_to_spawn: Array[NoteData] = []
+var note_spawner: NoteRing
+var notes_that_spawned: Array[Note] = []
 var timed_events: Array[TimedEvent] = []
 var should_process_events: bool = true
 var should_spawn_notes: bool = true
@@ -160,7 +158,7 @@ func _ready() -> void:
 		scripts.load_song_scripts(chart.parsed_values.song_name, chart.parsed_values.difficulty)
 		timed_events = chart.scheduled_events.duplicate()
 		difficulty_name = chart.parsed_values.difficulty
-		notes_to_spawn = chart.notes.duplicate()
+		note_spawner = NoteRing.new(chart.notes.get_all(true))
 		song_name = chart.name
 	add_child(scripts)
 	scripts.call_func("_pack_entered")
@@ -191,15 +189,12 @@ func _ready() -> void:
 	restart_song()
 
 func kill_every_note(advancing: bool = false) -> void:
-	for strums: Strumline in strumlines.get_children():
-		for note: Note in strums.notes.get_children():
-			if advancing:
-				var cur_time: float = note.time
-				for i: NoteData in notes_to_spawn:
-					if cur_time < Conductor.time and i.time > Conductor.time:
-						note_spawn_index = notes_to_spawn.find(i)
-						break
+	if advancing:
+		note_spawner.seek(Conductor.time)
+	for note: Note in notes_that_spawned:
+		if is_instance_valid(note):
 			note.queue_free()
+	notes_that_spawned.clear()
 
 func restart_song() -> void:
 	starting = true
@@ -218,9 +213,10 @@ func restart_song() -> void:
 	event_position = 0
 	should_process_events = not timed_events.is_empty()
 	# kill notes in the note group to not give you damage
-	kill_every_note()
-	note_spawn_index = 0
-	should_spawn_notes = not notes_to_spawn.is_empty()
+	if note_spawner:
+		note_spawner.cursor = 0
+		kill_every_note()
+	should_spawn_notes = note_spawner.length > 0
 	# set initial scroll speed.
 	if chart: fire_timed_event(chart.get_velocity_change(0.0))
 	for strums: Strumline in strumlines.get_children():
@@ -263,14 +259,39 @@ func _process(delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	# I don't need this to run every single frame.
+	if should_spawn_notes: note_spawner.spawn(note_spawning)
 	if should_process_events: process_timed_events()
-	if should_spawn_notes: do_note_spawning()
+
+func note_spawning(note_data: NoteData) -> void:
+	var strumline: Strumline = strumlines.get_child(note_data.side)
+	if strumline:
+		var spawn_time: float = NoteRing.SPAWN_SECS
+		if strumline.speed < 1.0: spawn_time /= strumline.speed
+		if absf(note_data.time - Conductor.playhead) <= spawn_time:
+			var new_note: Note = get_unspawned_note(strumline, note_data)
+			strumline.notes.add_child(new_note)
+			notes_that_spawned.append(new_note)
+			new_note.reload(note_data)
+
+func get_unspawned_note(strumline: Strumline, note_data: NoteData) -> Node:
+	var types: Dictionary[String, PackedScene] = NOTE_TYPES
+	if strumline.skin and note_data.kind in strumline.skin.note_scenes:
+		types = strumline.skin.note_scenes
+	var unspawned_note: = types[note_data.kind].instantiate()
+	unspawned_note.name = "note_%s_%s" % [ unspawned_note.name, note_spawner.cursor ]
+	unspawned_note.strumline = strumline
+	unspawned_note.data = note_data
+	return unspawned_note
 
 func _unhandled_key_input(_event: InputEvent) -> void:
 	if OS.is_debug_build() and not starting and _event.pressed and not _event.is_echo():
 		match _event.keycode:
 			KEY_F4:
 				skip_to_time(Conductor.time + 10)
+			KEY_F6:
+				player_botplay = not player_botplay
+				player_sl.input.botplay = player_botplay
+				tally.is_valid = false
 			KEY_END:
 				Conductor.stop_music()
 				should_spawn_notes = false
@@ -304,7 +325,7 @@ func skip_to_time(time: float = 0.0) -> void:
 		tally.merge(local_tally) # just in case
 		tally.is_valid = false
 	kill_every_note(true)
-	should_spawn_notes = true
+	should_spawn_notes = note_spawner.length > 0
 
 func process_timed_events() -> void:
 	#var idx: int = timed_events.find(current_event) # if i need it...
@@ -445,33 +466,6 @@ func load_streams() -> void:
 		has_enemy_track = chart.assets.vocals.size() > 1
 	if not Conductor.bound_music.finished.is_connected(end_song):
 		Conductor.bound_music.finished.connect(end_song)
-
-func do_note_spawning() -> void:
-	while note_spawn_index < notes_to_spawn.size():
-		var note_data: NoteData = notes_to_spawn[note_spawn_index]
-		var strumline: Strumline = strumlines.get_child(note_data.side)
-		var spawn_time: float = 0.9
-		if strumline.speed < 1.0: spawn_time /= strumline.speed
-		if not strumline or absf(note_data.time - Conductor.playhead) > spawn_time:
-			break
-		var new_note: Note = get_unspawned_note(strumline, note_data)
-		strumline.notes.add_child(new_note)
-		new_note.reload(note_data)
-		on_note_spawned.emit(note_data, new_note)
-		note_spawn_index = notes_to_spawn.find(note_data) + 1
-
-func get_unspawned_note(strumline: Strumline, note_data: NoteData) -> Node:
-	#for node: Node in strumline.notes.sget_children():
-	#	if not node.visible:
-	#		return node
-	var types: Dictionary[String, PackedScene] = NOTE_TYPES
-	if strumline.skin and note_data.kind in strumline.skin.note_scenes:
-		types = strumline.skin.note_scenes
-	var unspawned_note: = types[note_data.kind].instantiate()
-	unspawned_note.name = "note_%s_%s" % [ unspawned_note.name, note_spawn_index ]
-	unspawned_note.strumline = strumline
-	unspawned_note.data = note_data
-	return unspawned_note
 
 func on_note_hit(note: Note) -> void:
 	if note.was_hit or note.column == -1:

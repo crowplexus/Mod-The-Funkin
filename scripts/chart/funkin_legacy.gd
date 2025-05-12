@@ -106,7 +106,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 				chart.load_psych_notetypes_as_events(song_note, swag_note.side)
 				if str(song_note[3]) == "Alt Animation": swag_note.anim_suffix = "-alt"
 			chart.note_counts[swag_note.side] += 1
-			chart.notes.append(swag_note)
+			chart.notes.add_note(swag_note)
 		
 		if measure["changeBPM"] == true and fake_bpm != measure.bpm:
 			fake_bpm = measure.bpm
@@ -120,7 +120,6 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	var scroll_speed_event: = TimedEvent.velocity_change(-2.0, speed, true)
 	chart.scheduled_events.append(scroll_speed_event)
 	
-	chart.notes.sort_custom(NoteData.sort_by_time)
 	chart.timing_changes.sort_custom(SongTimeChange.sort_by_time)
 	chart.scheduled_events.sort_custom(TimedEvent.sort_by_time)
 	
