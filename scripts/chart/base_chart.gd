@@ -55,15 +55,20 @@ func get_bpm_time(change: int = 0) -> float: return timing_changes[change].time
 
 ## Returns a velocity change that is near the timestamp provided.
 func get_velocity_change(timestamp: float) -> TimedEvent:
+	var change: TimedEvent = null
 	if scheduled_events.is_empty():
 		push_error("Unable to get velocity change from an empty events list")
-		return null
-	var change: TimedEvent = null
-	for i: TimedEvent in scheduled_events:
-		if VELOCITY_EVENTS.has(i.name) and i.time >= timestamp:
-			change = i
-		else: # list is sorted, so exit early.
-			break
+		return change
+	var left: int = 0
+	var right: int = Conductor.timing_changes.size() - 1
+	while left <= right:
+		var middle: int = (left + right) * 0.5
+		var event := scheduled_events[middle]
+		if VELOCITY_EVENTS.has(event.name) and event.time <= timestamp:
+			change = event
+			left = middle + 1
+		else:
+			right = middle - 1
 	return change
 
 func bpm_changed_note_loop(fun: Callable):

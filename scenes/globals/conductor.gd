@@ -194,11 +194,16 @@ func get_timed_change(timestamp: float) -> SongTimeChange:
 		return null
 	var change: SongTimeChange = Conductor.timing_changes[0]
 	if timestamp <= 0.0: return change # This is, most likely, the first change.
-	for i: SongTimeChange in Conductor.timing_changes:
-		if i.time >= timestamp: # NOTE: Test with time parameter being exactly at a timing change, or after all timing changes
-			change = i
-		else: # list is sorted, so exit early.
-			break
+	var left: int = 0
+	var right: int = Conductor.timing_changes.size() - 1
+	while left <= right:
+		var middle: int = (left + right) * 0.5
+		var mid_change: SongTimeChange = Conductor.timing_changes[middle]
+		if mid_change.time <= timestamp:
+			change = mid_change
+			left = middle + 1
+		else:
+			right = middle - 1
 	return change
 
 #region Tooling and Stchuff

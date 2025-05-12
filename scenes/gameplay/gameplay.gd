@@ -144,14 +144,13 @@ func _ready() -> void:
 	current = self
 	get_tree().paused = false
 	local_settings = Global.settings.duplicate()
-	local_tally = Tally.new()
 	scripts = ScriptPack.new()
+	local_tally = Tally.new()
 	Tally.use_epics = local_settings.use_epics
 	if not tally:
 		tally = Tally.new()
-	else:
-		# merge tallies if it's not a local one
-		tally.merge(local_tally)
+	else: # merge local tally with global tally data if any, for story mode.
+		local_tally.merge(local_tally)
 	scripts.load_global_scripts()
 	if chart:
 		assets = chart.assets
