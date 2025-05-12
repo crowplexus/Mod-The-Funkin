@@ -355,7 +355,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_left = -26.0
 offset_right = 34.0
-offset_bottom = 1000.0
+offset_bottom = 1800.0
 metadata/_edit_lock_ = true
 
 [node name="hold_body" type="Line2D" parent="clip_rect"]
@@ -393,6 +393,7 @@ texture = ExtResource("4_hmkq5")
 metadata/_edit_lock_ = true
 
 [node name="exterior" type="Sprite2D" parent="."]
+visible = false
 self_modulate = Color(0.282353, 0.176471, 0.376471, 1)
 texture = ExtResource("3_vawdo")
 

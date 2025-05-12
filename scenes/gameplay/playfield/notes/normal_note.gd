@@ -10,8 +10,8 @@ const HOLD_FRAMES: SpriteFrames = preload("res://assets/game/notetypes/funkin/no
 @onready var arrow: Node2D = $"exterior"
 @onready var arrow_interior: Node2D = $"exterior/interior"
 
-@onready var hold_tail: Sprite2D = $"clip_rect/hold_tail"
 @onready var hold_body: Line2D = $"clip_rect/hold_body"
+@onready var hold_tail: Sprite2D = $"clip_rect/hold_tail"
 @onready var body_high_l: ColorRect = $"clip_rect/hold_body/line_left"
 @onready var body_high_r: ColorRect = $"clip_rect/hold_body/line_right"
 
@@ -47,34 +47,35 @@ func save_colors() -> void:
 				"exterior:self_modulate":
 					_color_map["exterior_" + anim_name] = a.track_get_key_value(b, 0)
 					a.track_set_enabled(b, false)
-				#"clip_rect/hold_body:self_modulate":
-				#	_color_map["hold_interior_" + anim_name] = a.track_get_key_value(b, 0)
-				#	a.track_set_enabled(b, false)
-				#"clip_rect/hold_tail:self_modulate":
-				#	_color_map["hold_exterior_" + anim_name] = a.track_get_key_value(b, 0)
-				#	a.track_set_enabled(b, false)
+				"clip_rect/hold_body:self_modulate":
+					_color_map["hold_interior_" + anim_name] = a.track_get_key_value(b, 0)
+					a.track_set_enabled(b, false)
+				"clip_rect/hold_tail:self_modulate":
+					_color_map["hold_exterior_" + anim_name] = a.track_get_key_value(b, 0)
+					a.track_set_enabled(b, false)
 
 func apply_color(p_time: float) -> void:
 	match Global.settings.note_color_mode:
 		2:  # Quant-based colouring
 			var quant: int = NoteData.get_note_quant(NoteData.secs_to_row(p_time))
-			arrow_interior.self_modulate = NoteData.get_quant_color(quant)
-			arrow.self_modulate = arrow_interior.self_modulate.darkened(0.6)
-			hold_tail.self_modulate = arrow_interior.self_modulate.darkened(0.371)
-			hold_body.self_modulate = arrow_interior.self_modulate
+			var quant_color: Color = NoteData.get_quant_color(quant)
+			arrow_interior.self_modulate = quant_color
+			arrow.self_modulate = quant_color.darkened(0.6)
+			hold_tail.self_modulate = quant_color.darkened(0.371)
+			hold_body.self_modulate = quant_color
 		_:  # Default column-based colouring
 			var interior_key := "interior_%d" % column
 			var exterior_key := "exterior_%d" % column
 			if _color_map.has(interior_key) and _color_map.has(exterior_key):
 				arrow.self_modulate = _color_map[exterior_key]	
 				arrow_interior.self_modulate = _color_map[interior_key]
-				hold_tail.self_modulate = _color_map[exterior_key]
-				hold_body.default_color = _color_map[interior_key]
+				hold_tail.self_modulate = _color_map["hold_" + exterior_key]
+				hold_body.self_modulate = _color_map["hold_" + interior_key]
 			else:
 				arrow.self_modulate = Color.DIM_GRAY
 				arrow_interior.self_modulate = Color.WEB_GRAY
 				hold_tail.self_modulate = Color.DIM_GRAY
-				hold_body.default_color = Color.WEB_GRAY
+				hold_body.self_modulate = Color.WEB_GRAY
 	
 	body_high_l.color = hold_tail.self_modulate.lightened(0.8)
 	body_high_r.color = hold_tail.self_modulate.lightened(0.8)
