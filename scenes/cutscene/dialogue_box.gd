@@ -9,7 +9,7 @@ const WRITER_DELAY: float = 0.3 # 300ms
 const SOUNDLESS_CHARS: PackedStringArray = ["", " ", "\n", "\t", "\r"]
 
 @export var animation: AnimationPlayer
-@export var write_sound: AudioStream ## Default sound used when there's no character speaking.
+@export var default_write_sound: AudioStream = preload("res://assets/sounds/dialogue/pixelText.ogg") ## Default sound used when there's no character speaking.
 @export var default_writing_speed: float = 25.0 ## Characters per second.
 @export var conversation: ConversationArray
 
