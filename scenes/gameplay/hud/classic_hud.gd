@@ -64,11 +64,11 @@ func settings_changed(settings: Settings = Global.settings) -> void:
 			if game is Gameplay:
 				game.strumlines.position.y = 0
 			health_bar.position.y = 660
-			combo_group.position.y = 120
+			#combo_group.position.y = 120
 		1:
 			if game is Gameplay:
 				game.strumlines.position.y = 500
-			combo_group.position.y = 650
+			#combo_group.position.y = 650
 			health_bar.position.y = 65
 	health_bar.self_modulate.a = settings.health_bar_alpha * 0.01
 	icon_p1.self_modulate.a = settings.health_bar_alpha * 0.01

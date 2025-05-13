@@ -157,6 +157,11 @@ _data = {
 texture_filter = 1
 script = ExtResource("1_8i8cq")
 
+[node name="animation_player" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_lpqa0")
+}
+
 [node name="clip_rect" type="Control" parent="."]
 modulate = Color(1, 1, 1, 0.8)
 layout_mode = 3
@@ -167,24 +172,23 @@ offset_bottom = 900.0
 scale = Vector2(9, 9)
 
 [node name="hold_body" type="TextureRect" parent="clip_rect"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 810.0
 
 [node name="hold_tail" type="TextureRect" parent="clip_rect"]
+unique_name_in_owner = true
 layout_mode = 0
 
 [node name="arrow" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
 scale = Vector2(9, 9)
 sprite_frames = ExtResource("2_8i8cq")
 animation = &"arrowDOWN"
 
-[node name="animation_player" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_lpqa0")
-}
-
 [node name="splash" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
 visible = false
 scale = Vector2(3, 3)
 sprite_frames = ExtResource("3_8i8cq")

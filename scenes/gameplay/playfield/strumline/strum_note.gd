@@ -4,13 +4,14 @@ enum States {
 	STATIC = 0,
 	PRESS = 1,
 	CONFIRM = 2,
+	HOLD = 3,
 }
 
 const STATIC_COLOUR: Color = Color(0.529, 0.639, 0.678) # Bri'ish
 
 @export var allow_color_overriding: bool = false
 @export var animation: AnimationPlayer
-@onready var parent: StrumNote
+@onready var parent: Strumline
 
 var reset_timer: float = 0.0
 var reset_state: int = States.STATIC
@@ -22,8 +23,8 @@ var _real_color: Color = Color.WHITE
 var color: Color = Color.WHITE
 
 func _ready() -> void:
-	if get_parent() is StrumNote:
-		parent = get_parent()
+	if get_parent() is Strumline: parent = get_parent()
+	if get_parent().get_parent() is Strumline: parent = get_parent().get_parent()
 	save_colors()
 	play_animation()
 
@@ -58,10 +59,14 @@ func play_animation(state: int = StrumNote.States.STATIC, force: bool = false) -
 		push_error("AnimationPlayer is not set in StrumNote")
 		return
 	var index: int = get_index()
-	if parent: # wrap index if it's too high.
-		index = index % parent.get_child_count()
+	if parent is Strumline: # wrap index if it's too high.
+		index = index % parent.strums.size()
+	
 	var state_name: String = StrumNote.States.keys()[state].to_lower()
 	var anim_name: String = str(index) + " " + state_name
+	if state == StrumNote.States.HOLD and not animation.has_animation(anim_name):
+		anim_name = anim_name.replace(state_name, "confirm")
+	
 	if _last_state != state or force:
 		animation.seek(0.0) # just to make sure
 	if state != StrumNote.States.STATIC and allow_color_overriding:

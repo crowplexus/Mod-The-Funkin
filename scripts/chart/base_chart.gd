@@ -62,7 +62,7 @@ func get_velocity_change(timestamp: float) -> TimedEvent:
 	var left: int = 0
 	var right: int = Conductor.timing_changes.size() - 1
 	while left <= right:
-		var middle: int = (left + right) * 0.5
+		var middle: int = (left + right)/2
 		var event := scheduled_events[middle]
 		if VELOCITY_EVENTS.has(event.name) and event.time <= timestamp:
 			change = event

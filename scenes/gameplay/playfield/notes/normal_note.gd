@@ -1,8 +1,5 @@
 extends Note
 
-# temporary
-const HOLD_FRAMES: SpriteFrames = preload("res://assets/game/notetypes/funkin/notes.res")
-
 @onready var animation: AnimationPlayer = $"animation_player"
 @onready var splash: AnimatedSprite2D = $"splash"
 @onready var splash_scale: Vector2 = splash.scale

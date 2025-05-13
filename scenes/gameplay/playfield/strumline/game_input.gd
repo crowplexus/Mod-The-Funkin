@@ -176,7 +176,7 @@ func update_holds(delta: float) -> void:
 			must_trip = false
 		# hit the note if you didn't trip
 		if not must_trip:
-			strumline.play_strum(StrumNote.States.CONFIRM, note.column, fmod(note.hold_size, 0.05) == 0)
+			strumline.play_strum(StrumNote.States.HOLD, note.column, fmod(note.hold_size, 0.05) == 0)
 			if note.modulate.a < 1.0: note.modulate.a = 1.0
 			on_hold_hit(note)
 			if note.hold_size <= 0.0 and botplay:

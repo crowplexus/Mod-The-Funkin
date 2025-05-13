@@ -11,8 +11,8 @@ var notes: Array[NoteData]
 var cursor: int = 0
 var length: int = 0
 
-func _init(notes: Array[NoteData]) -> void:
-	self.notes = notes
+func _init(_notess: Array[NoteData]) -> void:
+	self.notes = _notess
 	self.length = notes.size()
 
 func reverse_modifier() -> void:
