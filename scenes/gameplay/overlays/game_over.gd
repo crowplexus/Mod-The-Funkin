@@ -17,13 +17,7 @@ const TOTAL_SECRET_MESSAGES: int = 3
 @onready var gore: Sprite2D = $"secret_texts/gore_of_my_comfort_character"
 
 var selected: int = -1
-var can_change: bool = false:
-	set(new_change):
-		set_process_input(new_change)
-		set_process_unhandled_input(new_change)
-		set_process_unhandled_key_input(new_change)
-		set_process_shortcut_input(new_change)
-		can_change = new_change
+var can_change: bool = false
 var texts_displayed: bool = false
 var camera_moved: bool = true
 var og_camera_zoom: Vector2 = Vector2.ONE
@@ -83,6 +77,7 @@ func _process(_delta: float) -> void:
 			camera_moved = true
 
 func _unhandled_input(_event: InputEvent) -> void:
+	if not can_change: return
 	var axis: int = int(Input.get_axis("ui_left", "ui_right"))
 	if axis != 0 and oops:
 		selected = wrapi(selected + axis, 0, stupid_buttons.size())
@@ -119,6 +114,7 @@ func _progress_animations(animation: StringName) -> void:
 
 func _selected_nyet() -> void:
 	can_change = false
+	Conductor.clear_music_streams()
 	music.stop()
 	if not oops:
 		get_tree().paused = false
@@ -180,7 +176,7 @@ func _selected_da() -> void:
 		character.lock_on_sing = false
 		character.idle_cooldown = 0.8
 		await get_tree().create_timer(0.05).timeout
-		self.queue_free()
+		queue_free()
 	else:
 		get_tree().paused = false
 		Global.change_scene(load("uid://cvf84mr6iepcs"))
