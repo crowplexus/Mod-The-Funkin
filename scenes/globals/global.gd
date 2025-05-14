@@ -107,6 +107,7 @@ func begin_flicker(node: CanvasItem, duration: float = 1.0, interval: float = 0.
 	twn.tween_callback(func() -> void:
 		node.visible = not node.visible
 	).set_delay(interval)
+	await twn.finished
 
 func begin_color_flicker(node: CanvasItem, color1: = Color.WHITE, color2: = Color.BLUE,
 	duration: float = 1.0, interval: float = 0.04, end_col2: bool = true, force: bool = false, finish_callable: Callable = func() -> void: pass) -> void:

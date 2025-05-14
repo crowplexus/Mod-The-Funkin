@@ -3,6 +3,7 @@ class_name DialogueBox extends Control
 signal dialogue_skipped(convo: Conversation)
 signal dialogue_progressed(convo: Conversation)
 signal character_popped(convo: Conversation, char: int)
+signal dialogue_ended()
 
 const INPUT_DELAY: float = 0.1 # 100ms
 const WRITER_DELAY: float = 0.3 # 300ms
@@ -101,6 +102,7 @@ func progress_dialogue() -> void:
 		if animation.has_animation("close"):
 			play_animation("close")
 			await animation.animation_finished
+		dialogue_ended.emit()
 		queue_free()
 		return
 	current_convo_idx = clampi(current_convo_idx + 1, 0, conversation.size()-1)

@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqxmfmm8a11j6"]
+
+[ext_resource type="Script" uid="uid://crpechx0v8by4" path="res://scenes/menu/ui/options/controls_rebind.gd" id="1_bojf1"]
+[ext_resource type="FontFile" uid="uid://cpo50hs6mjovp" path="res://assets/ui/fonts/alphabet_bold.png" id="2_xbcdc"]
+
+[node name="controls_rebind" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bojf1")
+
+[node name="back" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.701961)
+
+[node name="controls_list" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="binds_label" type="RichTextLabel" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_xbcdc")
+theme_override_font_sizes/normal_font_size = 42
+bbcode_enabled = true
+text = "NAME | [1ST, 2ND]"
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1

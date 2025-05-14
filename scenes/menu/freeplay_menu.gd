@@ -49,8 +49,6 @@ func _ready() -> void:
 	change_difficulty()
 
 func _physics_process(delta: float) -> void:
-	var lerp_value: float = clamp(delta * 5.0, 0.0, 1.0)
-	song_menu.scroll_lerp = lerp_value
 	update_score_text(delta)
 
 func _unhandled_input(_event: InputEvent) -> void:
@@ -91,21 +89,15 @@ func highlight_selected() -> void:
 		if song.get_index() != selected:
 			var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC).set_parallel(true)
 			tween.tween_property(song, "position:x", -get_viewport_rect().size.x, 0.6)
-			tween.tween_property(song, "modulate:a", 0.0, 0.5)
+			tween.tween_property(song, "self_modulate:a", 0.0, 0.5)
 	Global.begin_flicker(song_menu.get_child(selected), 1.0, 0.04, true, true, go_to_gameplay)
 
 ## Changes the index of the selection cursor
 func change_selection(next: int = 0) -> void:
-	var item: Control = song_menu.get_child(selected)
-	
 	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back() + 1)
 	selected = wrapi(selected + next, 0, song_menu.get_child_count())
-	
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
-	if item: item.modulate.a = 0.6
-	item = song_menu.get_child(selected)
-	if item: item.modulate.a = 1.0
-	song_menu.scroll_offset = selected
+	song_menu.focus_item(selected)
 	change_difficulty()
 
 ## Changes the index of the difficulty cursor

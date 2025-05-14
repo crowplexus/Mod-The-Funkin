@@ -13,7 +13,7 @@ var credits_thing: PackedScene = load("uid://wh2umjjgf2f6")
 
 static var saw_copyright: bool = false
 var buttons: Array[CanvasItem] = []
-var moving_copyright: bool = false
+var moving_copyright: bool = OS.is_debug_build()
 var can_input: bool = true
 
 var selected: int = 0
@@ -88,7 +88,7 @@ func confirm_selection() -> void:
 			Global.change_scene("uid://c5qnedjs8xhcw")
 		"options":
 			saw_copyright = true
-			Global.change_scene("uid://gulb1ge3va36")
+			Global.change_scene("uid://btno3m7xritu5")
 		"credits":
 			can_input = false
 			var display_credits: Control = credits_thing.instantiate()

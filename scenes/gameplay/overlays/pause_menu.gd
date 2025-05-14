@@ -103,7 +103,7 @@ func confirm_selection() -> void:
 			reload_options()
 		"options":
 			can_control = false
-			var fuck: Control = load("uid://gulb1ge3va36").instantiate()
+			var fuck: Node2D = load("uid://btno3m7xritu5").instantiate()
 			add_child(fuck)
 			await fuck.tree_exited
 			if Gameplay.current:
