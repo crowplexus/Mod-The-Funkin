@@ -49,6 +49,7 @@ var anim_suffix: String = ""
 var was_hit: bool = false
 var was_missed: bool = false
 var hit_by_bot: bool = false
+var is_mine: bool = false
 #var late_hitbox: float = 1.0
 #var early_hitbox: float = 1.0
 var hit_time: float = 0.0

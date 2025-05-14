@@ -110,7 +110,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				note._stupid_visual_bug = note.hit_time < 0.0
 	else:
 		if settings.ghost_tapping == 1:
-			var can_ghost: bool = note and note.is_hittable(settings.max_hit_window + 1.3)
+			var can_ghost: bool = note and note.is_hittable(settings.max_hit_window + 1.3) and not note.is_mine
 			if can_ghost: on_note_miss(null, idx) # When silent
 		elif settings.ghost_tapping == 0:
 			on_note_miss(null, idx) # Disabled

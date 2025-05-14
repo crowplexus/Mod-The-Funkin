@@ -85,11 +85,12 @@ func go_to_gameplay() -> void:
 	Global.change_scene("uid://cvf84mr6iepcs")
 
 func highlight_selected() -> void:
+	song_menu.active = false
 	for song: CanvasItem in song_menu.get_children():
 		if song.get_index() != selected:
 			var tween: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CIRC).set_parallel(true)
 			tween.tween_property(song, "position:x", -get_viewport_rect().size.x, 0.6)
-			tween.tween_property(song, "self_modulate:a", 0.0, 0.5)
+			tween.tween_property(song, "self_modulate:a", 0.0, 0.7)
 	Global.begin_flicker(song_menu.get_child(selected), 1.0, 0.04, true, true, go_to_gameplay)
 
 ## Changes the index of the selection cursor

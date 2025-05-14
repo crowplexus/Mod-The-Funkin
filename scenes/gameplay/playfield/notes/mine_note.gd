@@ -5,6 +5,7 @@ extends Note
 
 func reload(p_data: NoteData) -> void:
 	super(p_data)
+	is_mine = true
 	animation.play("mine")
 	if hold_size > 0.0: hold_size = 0.0 # can't
 	show_all()
