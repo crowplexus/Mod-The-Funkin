@@ -175,7 +175,7 @@ func change_option_selected(change: int = 0) -> void:
 			var step = option.values.get("step", 1.0) * (10.0 if Input.is_key_label_pressed(KEY_SHIFT) else 1.0)
 			var minv = option.values.get("min", 0.0)
 			var maxv = option.values.get("max", 1.0)
-			new_value = wrap(option.current_value + (change * step), minv, maxv)
+			new_value = wrap(option.current_value + (change * step), minv, maxv + 1.0)
 		OptionType.ENUM:
 			if option.current_value is int:
 				new_value = wrapi(option.current_value + change, 0, option.values.size())

@@ -20,9 +20,9 @@ signal list_regenerated()
 
 var scroll_lerp: float = 0.15 ## Value used for lerp weight.
 var start_positions: Array[Vector2] = [] ## List of positions the items start at.
-var min_scroll_offset: int = 0 ## In case you have negative items??? how??? why???
 var scroll_offset: float = 0.0 ## Menu scroll offset.
-var focused_item_index: int = 0 ## Tracks which item should be highlighted on-screen.
+var focused_item_index: int = 0: ## Tracks which item should be highlighted on-screen.
+	get: return wrapi(focused_item_index, 0, items.size())
 
 func _process(delta: float) -> void:
 	if not active or start_positions.is_empty():
