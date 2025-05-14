@@ -115,7 +115,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		elif settings.ghost_tapping == 0:
 			on_note_miss(null, idx) # Disabled
 		strumline.play_strum(StrumNote.States.PRESS, idx)
-\
+
 func get_action_id(event: InputEvent) -> int:
 	var id: int = -1
 	if event.is_echo(): return id

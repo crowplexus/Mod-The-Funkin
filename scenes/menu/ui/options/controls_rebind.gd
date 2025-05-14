@@ -30,7 +30,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var move_axis: int = int(Input.get_axis("ui_up", "ui_down"))
 		if move_axis  != 0: change_selection(move_axis)
 		if Input.is_action_just_pressed("ui_accept"):	
-			controls_list.get_child(selected).bbcode_text = "> %s: [BINDING ID %s] <" % [ controls[selected].replace("_", " ").to_upper(), bind_selected ]
+			controls_list.get_child(selected).bbcode_text = "> %s: BINDING ID %s ([color=yellow]TAB[/color]) <" % [ controls[selected].replace("_", " ").to_upper(), bind_selected ]
 			binding = true
 		if Input.is_action_just_pressed("ui_cancel"):
 			exit()
@@ -38,7 +38,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var con: String = controls[selected]
 		if event.keycode == KEY_TAB:
 			bind_selected = (bind_selected + 1) % Global.settings.controls[con].size()
-			controls_list.get_child(selected).bbcode_text = "> %s: [BINDING ID %s] <" % [
+			controls_list.get_child(selected).bbcode_text = ">%s: BINDING ID %s ([color=yellow]TAB[/color]) <" % [
 				con.replace("_", " ").to_upper(), bind_selected
 			]
 		if event.keycode == KEY_ENTER or event.keycode == KEY_ESCAPE:
