@@ -93,10 +93,14 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 				chart.load_psych_events(song_note)
 				continue
 			var old_note: NoteData = NoteData.from_array(song_note, max_columns)
+			# RANT: welcome to fnf chart parsing where the original format didn't cut it
+			# so they made several other formats to solve an issue that shouldn't have existed in the first place.
+			# I'm not judging but y'all made this so much harder than it needed to me.
+			# NOTE: 0 is player 1 is enemy (thanks node ordering.)
 			if legacy_mode: # old format
-				old_note.side = int(column < max_columns == bool(must_hit_section))
-			elif is_psych: # Psych 1.0 format (removes must hit secitons
-				old_note.side = int(column > max_columns)
+				old_note.side = int(column >= max_columns) == must_hit_section
+			elif is_psych: # Psych 1.0 format (removes must hit secitons)
+				old_note.side = int(column >= max_columns)
 			if old_note.side > chart.note_counts.size():
 				chart.note_counts.append(0)
 			if song_note.size() > 3: # i completely forgot this exists.
