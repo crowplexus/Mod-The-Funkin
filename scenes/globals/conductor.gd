@@ -62,7 +62,7 @@ func reset(_bpm: float = 100.0, _active: bool = false) -> void:
 func set_time(new_time: float = 0.0) -> void:
 	_prev_time = new_time
 	current_beat = (new_time * bpm) / 60.0
-	current_bar = 0.0#current_beat * 4.0
+	current_bar = current_beat * 4.0
 	_prev_beat = current_beat
 	_prev_bar = current_bar
 	time = new_time

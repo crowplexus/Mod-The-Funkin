@@ -10,9 +10,11 @@ class OptionItem:
 	var current_value: Variant: # just in case.
 		get: return Global.settings.get(setting)
 		set(new_value): Global.settings.set(setting, new_value)
+	var description: String = ""
 	var values: Variant
 	
-	func _init(p_name: String, p_setting: String, p_values: Variant = null) -> void:
+	func _init(p_name: String, p_setting: String, p_desc: String = "", p_values: Variant = null) -> void:
+		self.description = p_desc
 		self.setting = p_setting
 		self.name = p_name
 		_set_type(p_values)
@@ -28,44 +30,55 @@ class OptionItem:
 			self.values = p_values
 
 var categories: Dictionary[String, Variant] = {
+	# TODO: move this data into the scene tree instead
+	# TODO: add descriptions (back, because this is a rewrite)
+	# NOTE: descriptions should probably be expandable or the text should have scrolling.
 	"gameplay": [
-		OptionItem.new("Scroll Direction", "scroll", ["Up", "Down"]),
-		OptionItem.new( "Ghost Tapping", "ghost_tapping", ["Disabled", "When in silence", "Enabled"]),
-		OptionItem.new( "Note Speed", "note_speed", {"min": 0.5, "max": 5.0, "step": 0.01}),
-		OptionItem.new( "Note Speed Mode", "note_speed_mode", ["Default", "Multiply Chart's", "User-Constant", "BPM-Based"]),
-		OptionItem.new( "Show 'Epic' Judgement", "use_epics"),
+		OptionItem.new("Scroll Direction", "scroll", "Changes the direction the notes scroll to.", ["Up", "Down"]),
+		OptionItem.new("Ghost Tapping", "ghost_tapping", "Punishes you for pressing buttons when no notes are close to hit.\n\"When silent\" will prevent if no notes are close to you.", ["Disabled", "When silent", "Enabled"]),
+		OptionItem.new("Note Speed", "note_speed", "Defines the speed of all notes.", {"min": 0.5, "max": 5.0, "step": 0.01}),
+		OptionItem.new("Note Speed Mode", "note_speed_mode", "Defines how note speed is calculated.\n\"Multiply\" means Default + Custom", ["Default", "Multiply", "Constant", "BPM-Based"]),
+		OptionItem.new("Show 'Epic' Judgement", "use_epics", "Enables a 5th judgement, originally not in the game."),
 	],
-	"controls": open_controls,
+	"controls": func() -> void: open_submenu("uid://dqxmfmm8a11j6"),
 	"visuals": [
-		OptionItem.new("Framerate", "framerate", {"min": 30, "max": 360, "step": 1}),
-		OptionItem.new("VSync Mode", "vsync_mode", ["Capped", "Unlimited", "Mailbox", "Adaptive"]),
-		OptionItem.new("HUD Style", "hud_style", ["Default", "Classic", "Advanced", "Psych"]),
-		OptionItem.new("Timer Style", "timer_style", ["Hidden", "Time Left", "Time Elapsed", "Song Name", "Elapsed/Total"]),
-		OptionItem.new("Note Splash Opacity", "note_splash_alpha", {"min": 0, "max": 100, "step": 1}),
-		OptionItem.new("Health Bar Opacity", "health_bar_alpha", {"min": 0, "max": 100, "step": 1}),
-		OptionItem.new("Simplify Popups", "simplify_popups"),
-		OptionItem.new("Combo Stacking", "combo_stacking"),
+		OptionItem.new("Framerate", "framerate", "You know what framerate is, be honest.", {"min": 30, "max": 360, "step": 1}),
+		OptionItem.new("VSync Mode", "vsync_mode", "Defines how framerate affects the engine.\nMailbox locks it to the monitor's refresh rate\nAdaptive adjusts to that refresh rate.", ["Capped", "Unlimited", "Mailbox", "Adaptive"]),
+		OptionItem.new("HUD Style", "hud_style", "How should the HUD look?", ["Default", "Classic", "Advanced", "Psych"]),
+		OptionItem.new("Timer Style", "timer_style", "What should the time in certain HUDs show?", ["Hidden", "Time Left", "Time Elapsed", "Song Name", "Elapsed/Total"]),
+		OptionItem.new("Note Splash Opacity", "note_splash_alpha", "How opaque should the note splashes be?", {"min": 0, "max": 100, "step": 1}),
+		OptionItem.new("Health Bar Opacity", "health_bar_alpha", "How opaque should the health bar be?", {"min": 0, "max": 100, "step": 1}),
+		OptionItem.new("Simplify Popups", "simplify_popups", "Simplifies in-game popups, making motions become pretty basic."),
+		OptionItem.new("Combo Stacking", "combo_stacking", "Makes the combo stack on top of itself when you hit notes."),
 	],
+	"notes": func() -> void:
+		menu_items.hide()
+		await open_submenu("uid://b3n6ic3en6yow")
+		menu_items.show(),
 	"exit": Global.rewind_scene,
 }
 @onready var background: Sprite2D = $"background"
-@onready var category_names: Array[String] = categories.keys()
 @onready var menu_items: AlphabetMenu = $"menu_items"
+@onready var description_label: Label = $"description"
+@onready var category_names: Array[String] = categories.keys()
 @onready var menu_offset_y: float = menu_items.offset.y
 
 var can_input: bool = false
 var current_state := MenuState.MAIN
 var current_category: String = "main"
+var current_option: OptionItem:
+	get: return categories[current_category][selected]
 var selected: int = 0
 
-func open_controls() -> void:
+func open_submenu(uid: String) -> bool:
 	set_process_unhandled_input(false)
-	var controls_menu: Control = load("uid://dqxmfmm8a11j6").instantiate()
+	var controls_menu: Control = load(uid).instantiate()
 	controls_menu.size = get_viewport_rect().size # it can be small apparently.
 	controls_menu.z_index = 666 # is that enough? ok.
 	add_child(controls_menu)
 	await controls_menu.tree_exited
 	set_process_unhandled_input(true)
+	return true
 
 func _ready() -> void:
 	# make sure the song is playing.
@@ -84,7 +97,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	# welcome back to Windows 8 out of box experience.
-	background.modulate.h += 1.0 + sin(PI * (10 * delta)/360)
+	background.modulate.h += 1.0 + sin(PI * (5 * delta)/360)
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if not can_input:
@@ -141,13 +154,16 @@ func reload_options(main: bool = false) -> void:
 		current_state = MenuState.CATEGORY
 		current_category = category_names[selected]
 		menu_items.items = get_settings_in_category()
+		description_label.text = categories[current_category][0].description
 		menu_items.offset.y = menu_offset_y
+		description_label.show()
+		
 	else:
+		description_label.hide()
 		current_category = "main"
 		current_state = MenuState.MAIN
 		menu_items.items = category_names
 		menu_items.offset.y = 0
-	
 	selected = 0
 	menu_items.active = not main
 	menu_items.regen_list()
@@ -156,6 +172,7 @@ func reload_options(main: bool = false) -> void:
 func change_selection(next: int = 0) -> void:
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	selected = wrapi(selected + next, 0, menu_items.items.size())
+	if description_label.visible: description_label.text = current_option.description
 	update_item_visual()
 
 func update_item_visual() -> void:

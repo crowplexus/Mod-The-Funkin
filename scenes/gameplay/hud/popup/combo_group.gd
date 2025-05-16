@@ -20,7 +20,6 @@ var display_tweens: Array[Tween] = []
 var judgement_tween: Tween
 var combo_digits: int = 3
 var assets: ChartAssets
-var settings: Settings
 
 func _ready() -> void:
 	if not has_node("judgement"):
@@ -42,9 +41,7 @@ func _ready() -> void:
 			display_digits.resize(5)
 			for i: int in display_digits.size():
 				setup_digit(i)
-		settings = Gameplay.current.local_settings
-	if not settings: settings = Global.settings
-	if settings.simplify_popups: combo_stacking = false
+	if Global.settings.simplify_popups: combo_stacking = false
 	else: combo_stacking = Global.settings.combo_stacking
 
 func display_judgement(judge: String) -> void:
@@ -61,7 +58,7 @@ func display_judgement(judge: String) -> void:
 	popup_judge.texture_filter = assets.judgement_filter
 	popup_judge.texture = assets.judgement_assets[judge]
 	popup_judge.position.y = -50
-	if not settings.simplify_popups:
+	if not Global.settings.simplify_popups:
 		popup_judge.velocity.y = randi_range(140, 175)
 		popup_judge.velocity.x = randi_range(0, 10)
 		popup_judge.acceleration.y = 550
@@ -97,7 +94,7 @@ func display_combo(amnt: int = 0) -> void:
 		)
 		num_score.scale = combo_scale
 		num_score.modulate.a = 1.0
-		if not settings.simplify_popups:
+		if not Global.settings.simplify_popups:
 			num_score.acceleration.y = randi_range(200, 300)
 			num_score.velocity.y = randi_range(140, 160)
 			num_score.velocity.x = randf_range(-5, 5)
