@@ -98,7 +98,7 @@ func change_selection(next: int = 0) -> void:
 	song_selected = wrapi(song_selected + next, selectables.front(), selectables.back() + 1)
 	selected = wrapi(selected + next, 0, song_menu.get_child_count())
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
-	song_menu.focus_item(selected)
+	song_menu.focus_item(song_selected)
 	change_difficulty()
 
 ## Changes the index of the difficulty cursor

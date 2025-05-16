@@ -131,7 +131,7 @@ func clear_overlapping_notes() -> void:
 		var prev: NoteData = datas[i - 1]
 		if prev and is_equal_approx(cur.time - prev.time, EPSILON) and cur.column == prev.column and cur.side == prev.side:
 			#print_debug("removed note 	at ", prev.time, " (", cur.time, ")")
-			notes.remove_at(i)
+			notes.remove_note_at(cur.side, i)
 			counter += 1
 		total += 1
 	print_debug("deleted ", counter, " overlapping notes from ", total, " total notes")

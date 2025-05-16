@@ -29,7 +29,8 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 	var chart: FNFChart = FNFChart.new()
 	var legacy_mode: bool = json.song is Dictionary
 	var chart_dict: Dictionary = json.song if legacy_mode else json
-	var is_psych: bool = false
+	var is_psych: bool = not legacy_mode
+	
 	if "stage" in chart_dict:
 		var new_stage: String = str(chart_dict.stage).to_snake_case()
 		match new_stage:
@@ -73,8 +74,6 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		var section_beats: float = 4.0
 		if "sectionBeats" in measure:
 			section_beats = float(measure["sectionBeats"])
-			if not is_psych and measure and "format" in chart_dict and str(chart_dict.format).find("psych_v1") > -1:
-				is_psych = true
 		
 		if was_must_hit != must_hit_section:
 			was_must_hit = must_hit_section
@@ -93,20 +92,18 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			if column <= -1:
 				chart.load_psych_events(song_note)
 				continue
-			var swag_note: NoteData = NoteData.from_array(song_note, max_columns)
-			if legacy_mode:
-				swag_note.side = int(must_hit_section)
-				if column % (max_columns * 2) >= max_columns:
-					swag_note.side = int(not must_hit_section)
-			if is_psych and swag_note.side < 2:
-				swag_note.side = 1 - swag_note.side
-			if swag_note.side > chart.note_counts.size():
+			var old_note: NoteData = NoteData.from_array(song_note, max_columns)
+			if legacy_mode: # old format
+				old_note.side = int(column < max_columns == bool(must_hit_section))
+			elif is_psych: # Psych 1.0 format (removes must hit secitons
+				old_note.side = int(column > max_columns)
+			if old_note.side > chart.note_counts.size():
 				chart.note_counts.append(0)
 			if song_note.size() > 3: # i completely forgot this exists.
-				chart.load_psych_notetypes_as_events(song_note, swag_note.side)
-				if str(song_note[3]) == "Alt Animation": swag_note.anim_suffix = "-alt"
-			chart.note_counts[swag_note.side] += 1
-			chart.notes.add_note(swag_note)
+				chart.load_psych_notetypes_as_events(song_note, old_note.side)
+				if str(song_note[3]) == "Alt Animation": old_note.anim_suffix = "-alt"
+			chart.note_counts[old_note.side] += 1
+			chart.notes.add_note(old_note)
 		
 		if measure["changeBPM"] == true and fake_bpm != measure.bpm:
 			fake_bpm = measure.bpm

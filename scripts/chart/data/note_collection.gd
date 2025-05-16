@@ -22,6 +22,9 @@ func add_note(data: NoteData) -> void:
 	if length > notes[data.side].size(): length += 1
 	notes[data.side].append(data)
 
+func remove_note_at(player: int, index: int) -> void:
+	notes[player].remove_at(index)
+
 #region Note Grabbing Functions
 
 ## Gets all the notes from all players in the collection.
