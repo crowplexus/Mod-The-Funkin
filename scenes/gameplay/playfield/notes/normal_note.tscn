@@ -350,6 +350,7 @@ libraries = {
 }
 
 [node name="clip_rect" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0.705882)
 clip_contents = true
 layout_mode = 3
 anchors_preset = 0
