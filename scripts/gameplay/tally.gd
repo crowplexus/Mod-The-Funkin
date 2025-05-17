@@ -127,7 +127,7 @@ func save_record(song: String, difficulty: StringName = "unknown", story: bool =
 		save.close()
 	scores.clear()
 
-## Merges a Tally with another.[br]
+## Merges a Tally with another.
 func merge(other: Tally, increase: bool = false) -> void:
 	if not other:
 		push_warning("Couldn't merge Tallies, the one provided is null!")
@@ -140,6 +140,16 @@ func merge(other: Tally, increase: bool = false) -> void:
 	for i: int in tiers_scored.size():
 		tiers_scored[i] = other.tiers_scored[i] + (tiers_scored[i] if increase else 0)
 
+## Clears all values set in the Tally.
+func clear() -> void:
+	score = 0
+	misses = 0
+	combo = 0
+	breaks = 0
+	notes_hit_count = 0
+	for i: int in tiers_scored.size():
+		tiers_scored[i] = 0
+	
 ## Increases the score by the amount provided (in ms).
 func increase_score(amount: float) -> void:
 	var deviation: float = min(absf(amount) / TIMINGS[-1], 1.0)

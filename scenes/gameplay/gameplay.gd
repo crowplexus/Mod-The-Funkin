@@ -562,6 +562,7 @@ func exit_game() -> void:
 		# TODO: save level score.
 		var is_story: bool = Gameplay.game_mode == Gameplay.GameMode.STORY
 		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty, is_story)
+		tally.clear()
 		tally = null
 	Gameplay.exit_to_menu()
 

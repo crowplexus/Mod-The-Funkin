@@ -119,7 +119,11 @@ func confirm_selection() -> void:
 			can_control = true
 		"exit":
 			can_control = false
-			Gameplay.exit_to_menu()
+			if Gameplay.current:
+				Gameplay.tally.clear()
+				Gameplay.exit_to_menu()
+			else: # in case you're running this outside of gameplay for some reason.
+				queue_free()
 
 ## Changes the index of the selection cursor
 func change_selection(next: int = 0) -> void:
