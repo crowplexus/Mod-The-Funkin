@@ -161,7 +161,7 @@ func calculate_hold_y_size(size: float = 0.0, speed: float = -1.0) -> float:
 		speed *= Note.SM_ARROW_SIZE
 	else:
 		speed *= 500.0
-	# general implementation, should work for everything???
+	# general implementation, should work for everything??? # it didn't lol i had to mess with psych charts for it to not fuck up shit.
 	return (size * speed) / absf(clip_rect.scale.y)
 
 ## Use this function for implementing splash visuals.[br]

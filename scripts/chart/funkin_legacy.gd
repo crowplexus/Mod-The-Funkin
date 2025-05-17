@@ -106,6 +106,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			if song_note.size() > 3: # i completely forgot this exists.
 				chart.load_psych_notetypes_as_events(song_note, old_note.side)
 				if str(song_note[3]) == "Alt Animation": old_note.anim_suffix = "-alt"
+			if old_note.length > 0.0: old_note.length = old_note.length - .1 # this was rounded at some point so...
 			chart.note_counts[old_note.side] += 1
 			chart.notes.add_note(old_note)
 		
