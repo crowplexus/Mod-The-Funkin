@@ -66,7 +66,7 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 		var play_data: Dictionary = meta["playData"]
 		if "stage" in play_data:
 			var new_stage: String = str(play_data.stage).to_snake_case()
-			var path: String = "res://scenes/gameplay/stages/%s.tscn" % new_stage
+			var path: String = "res://scenes/game/stages/%s.tscn" % new_stage
 			if ResourceLoader.exists(path):
 				chart.stage = load(path)
 			else:
@@ -80,7 +80,7 @@ static func parse_from_string(json: Dictionary, song_name: StringName, difficult
 					continue
 				var i: int = players.find(prop)
 				var char_name: StringName = play_data.characters[prop]
-				var path: String = "res://scenes/gameplay/characters/%s.tscn" % char_name
+				var path: String = "res://scenes/game/characters/%s.tscn" % char_name
 				if ResourceLoader.exists(path): chart.characters[i] = load(path)
 				else: chart.characters[i] = load(path.replace(play_data.characters[prop], Actor2D.PLACEHOLDER_NAME))
 				# save raw character names for the sake of loading assets later and blah blah blah.

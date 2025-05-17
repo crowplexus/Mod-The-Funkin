@@ -7,6 +7,7 @@ signal spawned_note(data: NoteData)
 
 const SPAWN_SECS: float = 0.9 # 900ms
 var reverse: bool = false
+var looping: bool = false
 var notes: Array[NoteData]
 var cursor: int = 0
 var length: int = 0
@@ -15,9 +16,13 @@ func _init(_notess: Array[NoteData]) -> void:
 	self.notes = _notess
 	self.length = notes.size()
 
-func reverse_modifier() -> void:
-	reverse = true
+func toogle_reverse() -> void:
+	reverse = not reverse
 	cursor = length-1
+
+func toggle_loop(val: bool = false) -> void:
+	cursor = 0 if not reverse else length-1
+	looping = val
 
 func spawn(note_spawn_callback: Callable) -> void:
 	if not note_spawn_callback:
@@ -40,12 +45,14 @@ func peek() -> NoteData:
 
 ## Gets the next note and advances the cursor.
 func next() -> NoteData:
-	cursor = (cursor + 1) % length
+	cursor = (cursor + 1)
+	if looping: cursor = cursor % length
 	return notes[cursor]
 
 ## Goes back one note and rewinds the cursor.
 func previous() -> NoteData:
-	cursor = (cursor - 1) % length
+	cursor = (cursor - 1)
+	if looping: cursor = cursor % length
 	return notes[cursor]
 
 func earliest_time() -> float:

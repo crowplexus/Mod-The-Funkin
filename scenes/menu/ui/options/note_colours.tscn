@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b3n6ic3en6yow"]
 
 [ext_resource type="Script" uid="uid://btts032ukjy0v" path="res://scenes/menu/ui/options/note_colours.gd" id="1_tr1pt"]
-[ext_resource type="PackedScene" uid="uid://ddp5iy3ye33eo" path="res://scenes/gameplay/playfield/strumline/skin/strum_note.tscn" id="2_nvoku"]
+[ext_resource type="PackedScene" uid="uid://ddp5iy3ye33eo" path="res://scenes/game/playfield/strumline/skin/strum_note.tscn" id="2_nvoku"]
 
 [node name="note_colours" type="Control"]
 layout_mode = 3

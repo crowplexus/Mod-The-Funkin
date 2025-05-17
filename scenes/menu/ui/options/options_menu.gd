@@ -18,6 +18,7 @@ var categories: Dictionary[String, CategoryOptions] = {
 	# if you wanna modify these probably go to res://assets/resources/options
 	"gameplay": preload("uid://n22ut3j84o16"),
 	"controls": CategoryAction.new(CategoryAction.Type.OPEN_SUBMENU, "", "uid://dqxmfmm8a11j6"),
+	"modifiers": preload("uid://croa2q4r658vp"),
 	"visuals": preload("uid://bxaiw0f16bjes"),
 	"notes": CategoryAction.new(CategoryAction.Type.CUSTOM_FUNCTION, "_open_note_colours"),
 	"exit": CategoryAction.new(CategoryAction.Type.CUSTOM_FUNCTION, "_exit_menu"),
@@ -49,12 +50,11 @@ func open_submenu(uid: String) -> bool:
 
 func _ready() -> void:
 	# make sure the song is playing.
+	AudioServer.set_bus_effect_enabled(1, 0, true)
 	if Global.DEFAULT_SONG and not Conductor.is_music_playing() and not Gameplay.current:
 		Conductor.set_music_stream(Global.DEFAULT_SONG)
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
 		Conductor.play_music(0.0, 0.7)
-	if not Gameplay.current: # in menu
-		AudioServer.set_bus_effect_enabled(1, 0, true)
 	
 	if Gameplay.current: # if the menu was opened from the Gameplay scene, that is.
 		background.modulate.a = 0.3 # since it's over the pause menu.

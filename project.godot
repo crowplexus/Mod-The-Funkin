@@ -58,7 +58,7 @@ folder_colors={
 "res://assets/resources/": "yellow",
 "res://assets/ui/": "pink",
 "res://scenes/": "purple",
-"res://scenes/gameplay/playfield/": "gray",
+"res://scenes/game/playfield/": "gray",
 "res://scripts/": "red",
 "res://scripts/chart/": "yellow",
 "res://scripts/gameplay/": "green"

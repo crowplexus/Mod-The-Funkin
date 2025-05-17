@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://ci64dha75wctw"]
 
-[ext_resource type="Script" uid="uid://b44gkei3dumkj" path="res://scenes/gameplay/characters/face.gd" id="1_4uipw"]
-[ext_resource type="Script" uid="uid://dovjbyvwk2plh" path="res://scenes/gameplay/characters/bases/health_icon.gd" id="2_qn23q"]
+[ext_resource type="Script" uid="uid://b44gkei3dumkj" path="res://scenes/game/characters/face.gd" id="1_4uipw"]
+[ext_resource type="Script" uid="uid://dovjbyvwk2plh" path="res://scenes/game/characters/bases/health_icon.gd" id="2_qn23q"]
 [ext_resource type="Texture2D" uid="uid://bl328tof6rxpc" path="res://assets/game/characters/djs/icon.png" id="3_r0cv3"]
 [ext_resource type="SpriteFrames" path="res://assets/ui/menu/title/gfDanceTitle.res" id="4_711xs"]
 

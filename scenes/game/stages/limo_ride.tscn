@@ -1,0 +1,358 @@
+[gd_scene load_steps=12 format=3 uid="uid://dgh02i8axe0tv"]
+
+[ext_resource type="Script" uid="uid://bj6dqi6tcmkjr" path="res://scenes/game/stages/limo_ride.gd" id="1_r2225"]
+[ext_resource type="Texture2D" uid="uid://bo7ribqdewd8m" path="res://assets/game/backgrounds/week4/limoSunset.png" id="2_ueuc6"]
+[ext_resource type="SpriteFrames" uid="uid://dy8bqgjgffxao" path="res://assets/game/backgrounds/week4/limoDrive.res" id="3_g1wyp"]
+[ext_resource type="SpriteFrames" uid="uid://caygix8miagm8" path="res://assets/game/backgrounds/week4/bgLimo.res" id="3_oxteu"]
+[ext_resource type="SpriteFrames" path="res://assets/game/backgrounds/week4/limoDancer.res" id="4_g1wyp"]
+[ext_resource type="Texture2D" uid="uid://c6xoaulhmih5s" path="res://assets/game/backgrounds/week4/fastCarLol.png" id="5_oyqf4"]
+[ext_resource type="Script" uid="uid://cku7st80n16gp" path="res://scenes/game/hud/popup/physics_sprite_2d.gd" id="7_yha1o"]
+
+[sub_resource type="Animation" id="Animation_6dooh"]
+length = 1.20834
+loop_mode = 1
+step = 0.0416667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("factor(0_4,0_4)/limo_dancer1:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bg dancer sketch PINK"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("factor(0_4,0_4)/limo_dancer1:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.20833),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 29]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("factor(0_4,0_4)/limo_dancer2:animation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bg dancer sketch PINK"]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("factor(0_4,0_4)/limo_dancer2:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.20833),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 29]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("factor(0_4,0_4)/limo_dancer3:animation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bg dancer sketch PINK"]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("factor(0_4,0_4)/limo_dancer3:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.20833),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 29]
+}
+
+[sub_resource type="Animation" id="Animation_r2225"]
+resource_name = "danceLeft"
+length = 0.458338
+step = 0.0416667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("factor(0_4,0_4)/limo_dancer1:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bg dancer sketch PINK"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("factor(0_4,0_4)/limo_dancer1:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.458333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 14]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("factor(0_4,0_4)/limo_dancer2:animation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bg dancer sketch PINK"]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("factor(0_4,0_4)/limo_dancer2:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.458333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 14]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("factor(0_4,0_4)/limo_dancer3:animation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bg dancer sketch PINK"]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("factor(0_4,0_4)/limo_dancer3:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.458333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 14]
+}
+
+[sub_resource type="Animation" id="Animation_i3rjn"]
+resource_name = "danceRight"
+length = 0.458338
+step = 0.0416667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("factor(0_4,0_4)/limo_dancer1:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bg dancer sketch PINK"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("factor(0_4,0_4)/limo_dancer1:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.458333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [15, 29]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("factor(0_4,0_4)/limo_dancer2:animation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bg dancer sketch PINK"]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("factor(0_4,0_4)/limo_dancer2:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.458333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [15, 29]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("factor(0_4,0_4)/limo_dancer3:animation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"bg dancer sketch PINK"]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("factor(0_4,0_4)/limo_dancer3:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.458333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [15, 29]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6dooh"]
+_data = {
+&"RESET": SubResource("Animation_6dooh"),
+&"danceLeft": SubResource("Animation_r2225"),
+&"danceRight": SubResource("Animation_i3rjn")
+}
+
+[node name="limo_ride" type="Node2D" node_paths=PackedStringArray("camera")]
+script = ExtResource("1_r2225")
+camera = NodePath("camera_2d")
+metadata/_custom_type_script = "uid://bqopd8xbhve36"
+
+[node name="camera_2d" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+zoom = Vector2(0.85, 0.85)
+limit_left = -150
+limit_top = -720
+limit_right = 1980
+limit_bottom = 1080
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 3.0
+rotation_smoothing_enabled = true
+rotation_smoothing_speed = 3.0
+
+[node name="factor(0_1,0_1)" type="Parallax2D" parent="."]
+
+[node name="limo_sunset" type="Sprite2D" parent="factor(0_1,0_1)"]
+z_index = 10
+position = Vector2(886, 329)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("2_ueuc6")
+
+[node name="factor(0_4,0_4)" type="Parallax2D" parent="."]
+
+[node name="bg_limo" type="AnimatedSprite2D" parent="factor(0_4,0_4)"]
+z_index = 20
+position = Vector2(1006, 429)
+sprite_frames = ExtResource("3_oxteu")
+animation = &"background limo pink"
+autoplay = "background limo pink"
+frame_progress = 0.00458633
+
+[node name="limo_dancer1" type="AnimatedSprite2D" parent="factor(0_4,0_4)"]
+z_index = 50
+position = Vector2(958, 51)
+sprite_frames = ExtResource("4_g1wyp")
+animation = &"bg dancer sketch PINK"
+
+[node name="limo_dancer2" type="AnimatedSprite2D" parent="factor(0_4,0_4)"]
+z_index = 50
+position = Vector2(1406, 51)
+sprite_frames = ExtResource("4_g1wyp")
+animation = &"bg dancer sketch PINK"
+
+[node name="limo_dancer3" type="AnimatedSprite2D" parent="factor(0_4,0_4)"]
+z_index = 50
+position = Vector2(1814, 51)
+sprite_frames = ExtResource("4_g1wyp")
+animation = &"bg dancer sketch PINK"
+
+[node name="factor(1,1)" type="Parallax2D" parent="."]
+
+[node name="limo" type="AnimatedSprite2D" parent="factor(1,1)"]
+z_index = 150
+position = Vector2(1020, 648)
+sprite_frames = ExtResource("3_g1wyp")
+animation = &"Limo stage"
+autoplay = "Limo stage"
+frame_progress = 0.449657
+
+[node name="car" type="Sprite2D" parent="factor(1,1)"]
+z_index = 100
+position = Vector2(-4500, 535)
+texture = ExtResource("5_oyqf4")
+script = ExtResource("7_yha1o")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+
+[node name="timer" type="Timer" parent="factor(1,1)/car"]
+wait_time = 2.0
+
+[node name="carr" type="Sprite2D" parent="factor(1,1)"]
+modulate = Color(0.4, 1, 0.81, 1)
+z_index = 150
+position = Vector2(4500, 844)
+texture = ExtResource("5_oyqf4")
+flip_h = true
+script = ExtResource("7_yha1o")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+
+[node name="timer" type="Timer" parent="factor(1,1)/carr"]
+wait_time = 2.0
+
+[node name="dj" type="Marker2D" parent="."]
+z_index = 100
+position = Vector2(617, 36)
+scale = Vector2(0.7, 0.7)
+
+[node name="enemy" type="Marker2D" parent="."]
+z_index = 200
+position = Vector2(400, 202)
+
+[node name="player" type="Marker2D" parent="."]
+z_index = 300
+position = Vector2(1273.5, 161)
+
+[node name="dancers_animator" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_6dooh")
+}
+
+[node name="car_pass_player" type="AudioStreamPlayer" parent="."]
+max_polyphony = 10
+bus = &"Sound Effects"
+
+[node name="driver_wait" type="Timer" parent="."]
+wait_time = 1.25

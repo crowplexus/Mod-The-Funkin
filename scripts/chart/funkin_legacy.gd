@@ -35,7 +35,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 		var new_stage: String = str(chart_dict.stage).to_snake_case()
 		match new_stage:
 			"stage": new_stage = "main_stage"
-		var path: String = "res://scenes/gameplay/stages/%s.tscn" % new_stage
+		var path: String = "res://scenes/game/stages/%s.tscn" % new_stage
 		if ResourceLoader.exists(path):
 			chart.stage = load(path)
 		else:
@@ -47,7 +47,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			continue
 		var i: int = players.find(prop)
 		var char_name: StringName = chart_dict[prop]
-		var path: String = "res://scenes/gameplay/characters/%s.tscn" % char_name
+		var path: String = "res://scenes/game/characters/%s.tscn" % char_name
 		if path.contains("gfVersion") and not ResourceLoader.exists(path): path = path.replace("gfVersion", "player3")
 		if ResourceLoader.exists(path): chart.characters[i] = load(path)
 		else: chart.characters[i] = load(path.replace(char_name, Actor2D.PLACEHOLDER_NAME))

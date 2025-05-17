@@ -1,0 +1,173 @@
+[gd_scene load_steps=12 format=3 uid="uid://br6ornbfmuj7l"]
+
+[ext_resource type="Script" uid="uid://cj82y7wjxiftj" path="res://scenes/game/hud/classic_hud.gd" id="1_igncb"]
+[ext_resource type="StyleBox" uid="uid://bb871j4np30b4" path="res://scenes/game/hud/styleboxes/health_bar_left.tres" id="2_2jnvp"]
+[ext_resource type="StyleBox" uid="uid://bdag5e631yhvt" path="res://scenes/game/hud/styleboxes/health_bar_right.tres" id="3_yvupv"]
+[ext_resource type="Texture2D" uid="uid://d3x8spahvh1je" path="res://assets/game/characters/face/icon.png" id="4_nfsnc"]
+[ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="5_5abol"]
+[ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/game/hud/popup/combo_group.gd" id="6_xq3v3"]
+[ext_resource type="Script" uid="uid://cku7st80n16gp" path="res://scenes/game/hud/popup/physics_sprite_2d.gd" id="7_wa1w5"]
+[ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="8_7it1m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it28e"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 4
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_detail = 1
+anti_aliasing = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_it28e"]
+paragraph_spacing = -2.0
+font = ExtResource("5_5abol")
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_76xds"]
+
+[node name="classic_hud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_igncb")
+keep_classic_health_colors = true
+
+[node name="health_bar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -295.5
+offset_top = -68.0
+offset_right = 294.5
+offset_bottom = -58.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/background = ExtResource("2_2jnvp")
+theme_override_styles/fill = ExtResource("3_yvupv")
+value = 50.0
+fill_mode = 1
+show_percentage = false
+
+[node name="panel" type="Panel" parent="health_bar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.007
+anchor_top = -0.3
+anchor_right = 1.005
+anchor_bottom = 1.3
+offset_left = 0.13
+offset_right = 1.04999
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_it28e")
+
+[node name="score_text" type="Label" parent="health_bar"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.002
+anchor_top = -0.48
+anchor_right = 1.012
+anchor_bottom = 1.486
+offset_left = 299.18
+offset_top = 18.8
+offset_right = -39.08
+offset_bottom = 32.14
+grow_horizontal = 2
+grow_vertical = 2
+text = "Score: 0"
+label_settings = SubResource("LabelSettings_it28e")
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="icon_p1" type="Sprite2D" parent="health_bar"]
+position = Vector2(310, 0)
+texture = ExtResource("4_nfsnc")
+offset = Vector2(30, 0)
+flip_h = true
+hframes = 2
+
+[node name="icon_p2" type="Sprite2D" parent="health_bar"]
+position = Vector2(280, 0)
+texture = ExtResource("4_nfsnc")
+offset = Vector2(-35, 0)
+hframes = 2
+
+[node name="combo_group" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -33.28
+offset_top = -96.0
+offset_right = -33.28
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+script = ExtResource("6_xq3v3")
+
+[node name="judgement" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit0" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit1" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit2" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit3" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_wa1w5")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="countdown" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="sprite" type="Sprite2D" parent="countdown"]
+visible = false
+position = Vector2(640, 360)
+scale = Vector2(0.7, 0.7)
+texture = SubResource("PlaceholderTexture2D_76xds")
+
+[node name="sound" type="AudioStreamPlayer" parent="countdown"]
+stream = ExtResource("8_7it1m")
+max_polyphony = 5
+
+[node name="timer" type="Timer" parent="countdown"]
+one_shot = true

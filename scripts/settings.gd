@@ -34,11 +34,19 @@ var ghost_tapping: int = 1
 ## Defines an offset for music synching, delays note spawning.[br]
 ## This is set to an amount of seconds.
 @export var note_offset: float = 0.0
+
 ## How fast should the notes be? affected by [code]Settings.note_speed_mode[/code]
 @export var note_speed: float = 1.0
 ## How should notes deal with scroll speed?
 @export_enum("Default:0", "Multiply Chart's:1", "User-Constant:2", "BPM-Based:3")
 var note_speed_mode: int = 0
+## How fast/slow should the song be when playing.
+@export var playback_rate: float = 1.0
+## Disables inputs and makes the player hit notes automatically.
+@export var botplay_mode: bool = false
+## Makes the song loop instead of end when playing.
+@export var loop_game_music: bool = false
+
 ## You know what a framerate is, right?
 @export var framerate: int = 120
 ## Decides if the game should pause if the window loses focus.

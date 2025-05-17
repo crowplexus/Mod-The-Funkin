@@ -141,6 +141,12 @@ func set_music_volume(volume_linear: float, stream: int = -1) -> void:
 		else:
 			bound_music.stream.set_sync_stream_volume(stream, linear_to_db(volume_linear))
 
+## Toggles whether the song should loop.
+func toggle_music_looping(value: bool = false) -> void:
+	if bound_music and bound_music.stream:
+		bound_music.stream.get_sync_stream(0).loop = value
+		current_stream_is_looped = value
+
 ## Pauses or unpauses the music stream of the Conductor.
 func toggle_pause_music(value: bool = false) -> void:
 	if bound_music: bound_music.stream_paused = not value

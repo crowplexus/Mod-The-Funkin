@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="CategoryOptions" load_steps=8 format=3 uid="uid://croa2q4r658vp"]
+
+[ext_resource type="Script" uid="uid://bctik2b5hfsge" path="res://scenes/menu/ui/options/option_item.gd" id="1_3okkt"]
+[ext_resource type="Script" uid="uid://cwgaodxrdar5h" path="res://scenes/menu/ui/options/category_options.gd" id="2_uypm4"]
+
+[sub_resource type="Resource" id="Resource_3okkt"]
+script = ExtResource("1_3okkt")
+name = "Note Speed"
+setting = "note_speed"
+description = "Custom Speed for all the notes"
+min_value = 0.5
+max_value = 5.0
+num_step = 0.01
+type = 2
+values = PackedStringArray()
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[sub_resource type="Resource" id="Resource_uypm4"]
+script = ExtResource("1_3okkt")
+name = "Note Speed Mode"
+setting = "note_speed_mode"
+description = "Define how the game should handle note speed.
+Multiply means Chart Default + Custom."
+min_value = 0.0
+max_value = 1.0
+num_step = 1.0
+type = 3
+values = PackedStringArray("Chart", "Multiply", "Constant", "BPM-Based")
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[sub_resource type="Resource" id="Resource_obdro"]
+script = ExtResource("1_3okkt")
+name = "Playback Rate"
+setting = "playback_rate"
+description = "Defines how fast/slow the song will be when playing."
+min_value = 0.5
+max_value = 1.0
+num_step = 0.01
+type = 2
+values = PackedStringArray()
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[sub_resource type="Resource" id="Resource_rlyku"]
+script = ExtResource("1_3okkt")
+name = "Botplay Mode"
+setting = "botplay_mode"
+description = "Disables inputs and makes the player hit notes automatically."
+min_value = 0.0
+max_value = 1.0
+num_step = 1.0
+type = 0
+values = PackedStringArray()
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[sub_resource type="Resource" id="Resource_gw7xk"]
+script = ExtResource("1_3okkt")
+name = "Loop Music"
+setting = "loop_game_music"
+description = "Makes the song loop instead of end when playing."
+min_value = 0.0
+max_value = 1.0
+num_step = 1.0
+type = 0
+values = PackedStringArray()
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[resource]
+script = ExtResource("2_uypm4")
+options = Array[ExtResource("1_3okkt")]([SubResource("Resource_3okkt"), SubResource("Resource_uypm4"), SubResource("Resource_obdro"), SubResource("Resource_rlyku"), SubResource("Resource_gw7xk")])
+metadata/_custom_type_script = "uid://cwgaodxrdar5h"
