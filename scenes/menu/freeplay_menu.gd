@@ -24,6 +24,7 @@ var exiting: bool = false
 var cursor_tween: Tween
 
 func _ready() -> void:
+	AudioServer.set_bus_effect_enabled(1, 0, false)
 	var levels: PlaylistArray = load("uid://c4s0d4u5i34m3")
 	for playlist: SongPlaylist in levels.list:
 		load_from_playlist(playlist)

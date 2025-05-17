@@ -53,6 +53,8 @@ func _ready() -> void:
 		Conductor.set_music_stream(Global.DEFAULT_SONG)
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
 		Conductor.play_music(0.0, 0.7)
+	if not Gameplay.current: # in menu
+		AudioServer.set_bus_effect_enabled(1, 0, true)
 	
 	if Gameplay.current: # if the menu was opened from the Gameplay scene, that is.
 		background.modulate.a = 0.3 # since it's over the pause menu.

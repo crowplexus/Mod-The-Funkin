@@ -23,6 +23,7 @@ var flash_tween: Tween
 func _ready() -> void:
 	title_sprites.hide()
 	random_text = get_random_text()
+	AudioServer.set_bus_effect_enabled(1, 0, false)
 	if Global.DEFAULT_SONG and not Conductor.is_music_playing():
 		Conductor.bpm = Global.DEFAULT_SONG.bpm
 		Conductor.set_music_stream(Global.DEFAULT_SONG)

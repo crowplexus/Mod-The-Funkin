@@ -15,6 +15,7 @@ var og_pos: float = -1.0
 
 func _ready() -> void:
 	advance()
+	AudioServer.set_bus_effect_enabled(1, 0, false)
 	var song: AudioStreamPlayer
 	if Global.bgm and Global.bgm.playing:
 		og_vol = Global.bgm.volume_linear

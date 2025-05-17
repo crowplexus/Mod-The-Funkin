@@ -25,8 +25,8 @@ Adaptive adjusts to that refresh rate."
 min_value = 0.0
 max_value = 1.0
 num_step = 1.0
-type = 0
-values = PackedStringArray()
+type = 3
+values = PackedStringArray("Capped", "Unlimited", "Mailbox", "Adaptive")
 metadata/_custom_type_script = "uid://bctik2b5hfsge"
 
 [sub_resource type="Resource" id="Resource_05vqk"]

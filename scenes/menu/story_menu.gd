@@ -29,6 +29,7 @@ var current_level: SongPlaylist:
 	get: return levels.list[selected]
 
 func _ready() -> void:
+	AudioServer.set_bus_effect_enabled(1, 0, false)
 	get_tree().paused = false
 	reset_music()
 	# cache difficulty textures

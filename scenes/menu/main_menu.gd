@@ -20,6 +20,7 @@ var selected: int = 0
 var copyright_tween: Tween
 
 func _ready() -> void:
+	AudioServer.set_bus_effect_enabled(1, 0, false)
 	for i: CanvasItem in button_options.get_children():
 		if i.visible: buttons.append(i)
 	if Global.DEFAULT_SONG and not Conductor.is_music_playing():
