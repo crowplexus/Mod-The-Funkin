@@ -11,10 +11,11 @@ func reload(p_data: NoteData) -> void:
 	show_all()
 
 func on_note_hit() -> void:
+	if strumline.input.botplay: return # prevent bot missing.
 	strumline.play_strum(StrumNote.States.PRESS, column, true)
 	strumline.input.on_note_miss(self, column)
 	hide_all()
 
 func on_note_miss() -> void:
-	# nothing.
-	pass
+	# just hide it.
+	hide_all()

@@ -98,7 +98,7 @@ static func parse_from_string(json: Dictionary) -> FNFChart:
 			# I'm not judging but y'all made this so much harder than it needed to me.
 			# NOTE: 0 is player 1 is enemy (thanks node ordering.)
 			if legacy_mode: # old format
-				old_note.side = int(column >= max_columns) == must_hit_section
+				old_note.side = int(column >= max_columns) != must_hit_section
 			elif is_psych: # Psych 1.0 format (removes must hit secitons)
 				old_note.side = int(column >= max_columns)
 			if old_note.side > chart.note_counts.size():

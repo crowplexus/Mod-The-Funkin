@@ -1,61 +1,26 @@
 extends Node2D
 
 enum MenuState { MAIN, CATEGORY, OCCUPIED }
-enum OptionType { BOOL, INT, FLOAT, STRING, ENUM }
 
-class OptionItem:
-	var name: String
-	var setting: String
-	var type: OptionType # "just use typeof()" shut up I just want this to WORK.
-	var current_value: Variant: # just in case.
-		get: return Global.settings.get(setting)
-		set(new_value): Global.settings.set(setting, new_value)
-	var description: String = ""
-	var values: Variant
-	
-	func _init(p_name: String, p_setting: String, p_desc: String = "", p_values: Variant = null) -> void:
-		self.description = p_desc
-		self.setting = p_setting
-		self.name = p_name
-		_set_type(p_values)
-	
-	func _set_type(p_values) -> void:
-		if p_values == null: type = OptionType.BOOL
-		elif p_values is Array or p_values is Dictionary:
-			if p_values is Dictionary and p_values.has("step"):
-				if p_values.step is int: type = OptionType.INT
-				else: type = OptionType.FLOAT
-			else:
-				type = OptionType.ENUM
-			self.values = p_values
+func _open_note_colours() -> void:
+	menu_items.hide()
+	await open_submenu("uid://b3n6ic3en6yow")
+	menu_items.show()
 
-var categories: Dictionary[String, Variant] = {
-	# TODO: move this data into the scene tree instead
-	# TODO: add descriptions (back, because this is a rewrite)
-	# NOTE: descriptions should probably be expandable or the text should have scrolling.
-	"gameplay": [
-		OptionItem.new("Scroll Direction", "scroll", "Changes the direction the notes scroll to.", ["Up", "Down"]),
-		OptionItem.new("Ghost Tapping", "ghost_tapping", "Punishes you for pressing buttons when no notes are close to hit.\n\"When silent\" will prevent if no notes are close to you.", ["Disabled", "When silent", "Enabled"]),
-		OptionItem.new("Note Speed", "note_speed", "Defines the speed of all notes.", {"min": 0.5, "max": 5.0, "step": 0.01}),
-		OptionItem.new("Note Speed Mode", "note_speed_mode", "Defines how note speed is calculated.\n\"Multiply\" means Default + Custom", ["Default", "Multiply", "Constant", "BPM-Based"]),
-		OptionItem.new("Show 'Epic' Judgement", "use_epics", "Enables a 5th judgement, originally not in the game."),
-	],
-	"controls": func() -> void: open_submenu("uid://dqxmfmm8a11j6"),
-	"visuals": [
-		OptionItem.new("Framerate", "framerate", "You know what framerate is, be honest.", {"min": 30, "max": 360, "step": 1}),
-		OptionItem.new("VSync Mode", "vsync_mode", "Defines how framerate affects the engine.\nMailbox locks it to the monitor's refresh rate\nAdaptive adjusts to that refresh rate.", ["Capped", "Unlimited", "Mailbox", "Adaptive"]),
-		OptionItem.new("HUD Style", "hud_style", "How should the HUD look?", ["Default", "Classic", "Advanced", "Psych"]),
-		OptionItem.new("Timer Style", "timer_style", "What should the time in certain HUDs show?", ["Hidden", "Time Left", "Time Elapsed", "Song Name", "Elapsed/Total"]),
-		OptionItem.new("Note Splash Opacity", "note_splash_alpha", "How opaque should the note splashes be?", {"min": 0, "max": 100, "step": 1}),
-		OptionItem.new("Health Bar Opacity", "health_bar_alpha", "How opaque should the health bar be?", {"min": 0, "max": 100, "step": 1}),
-		OptionItem.new("Simplify Popups", "simplify_popups", "Simplifies in-game popups, making motions become pretty basic."),
-		OptionItem.new("Combo Stacking", "combo_stacking", "Makes the combo stack on top of itself when you hit notes."),
-	],
-	"notes": func() -> void:
-		menu_items.hide()
-		await open_submenu("uid://b3n6ic3en6yow")
-		menu_items.show(),
-	"exit": Global.rewind_scene,
+func _exit_menu() -> void:
+	if Gameplay.current:
+		create_tween().set_ease(Tween.EASE_OUT).tween_property(self, "modulate:a", 0.0, 0.3) \
+			.finished.connect(queue_free)
+	else:
+		Global.rewind_scene()
+
+var categories: Dictionary[String, CategoryOptions] = {
+	# if you wanna modify these probably go to res://assets/resources/options
+	"gameplay": preload("uid://n22ut3j84o16"),
+	"controls": CategoryAction.new(CategoryAction.Type.OPEN_SUBMENU, "", "uid://dqxmfmm8a11j6"),
+	"visuals": preload("uid://bxaiw0f16bjes"),
+	"notes": CategoryAction.new(CategoryAction.Type.CUSTOM_FUNCTION, "_open_note_colours"),
+	"exit": CategoryAction.new(CategoryAction.Type.CUSTOM_FUNCTION, "_exit_menu"),
 }
 @onready var background: Sprite2D = $"background"
 @onready var menu_items: AlphabetMenu = $"menu_items"
@@ -67,7 +32,9 @@ var can_input: bool = false
 var current_state := MenuState.MAIN
 var current_category: String = "main"
 var current_option: OptionItem:
-	get: return categories[current_category][selected]
+	get:
+		var options: Array = categories[current_category].options
+		return options[selected] if selected < options.size() else null
 var selected: int = 0
 
 func open_submenu(uid: String) -> bool:
@@ -112,10 +79,11 @@ func _unhandled_input(_event: InputEvent) -> void:
 				current_category = category_names[selected]
 				Global.play_sfx(Global.resources.get_resource("confirm"))
 				await Global.begin_flicker(menu_items.get_child(selected), 0.35, 0.04, true, false)
-				var schwa: Variant = categories[current_category]
-				match typeof(schwa):
-					TYPE_CALLABLE: schwa.call()
-					TYPE_ARRAY: reload_options()
+				var schwa: CategoryOptions = categories[current_category]
+				if schwa is CategoryAction:
+					schwa.execute_func(self)
+				else:
+					reload_options()
 				await get_tree().create_timer(0.1).timeout # calm down.
 				can_input = true
 			if Input.is_action_just_pressed("ui_cancel"):
@@ -127,11 +95,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 					await Global.begin_flicker(menu_items.get_child(selected), 0.35, 0.04, true, false)
 				else:
 					Global.play_sfx(Global.resources.get_resource("cancel"))
-				if Gameplay.current:
-					create_tween().set_ease(Tween.EASE_OUT).tween_property(self, "modulate:a", 0.0, 0.3) \
-						.finished.connect(queue_free)
-				else:
-					Global.rewind_scene()
+				_exit_menu()
 		
 		MenuState.CATEGORY:
 			var move_axis: int = int(Input.get_axis("ui_up", "ui_down"))
@@ -144,7 +108,10 @@ func _unhandled_input(_event: InputEvent) -> void:
 			
 		MenuState.OCCUPIED:
 			var change_axis: int = int(Input.get_axis("ui_left", "ui_right"))
-			if change_axis != 0: change_option_selected(change_axis)
+			if change_axis != 0:
+				current_option.change(change_axis)
+				Global.play_sfx(Global.resources.get_resource("scroll"))
+				menu_items.get_child(selected).text = get_option_display(current_option, current_option.current_value)
 			if Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("ui_cancel"):
 				current_state = MenuState.CATEGORY
 				update_item_visual()
@@ -154,17 +121,17 @@ func reload_options(main: bool = false) -> void:
 		current_state = MenuState.CATEGORY
 		current_category = category_names[selected]
 		menu_items.items = get_settings_in_category()
-		description_label.text = categories[current_category][0].description
+		if not categories[current_category].options.is_empty(): # prevent crash from empty category
+			description_label.text = categories[current_category].options[0].description
 		menu_items.offset.y = menu_offset_y
-		description_label.show()
-		
 	else:
-		description_label.hide()
 		current_category = "main"
 		current_state = MenuState.MAIN
 		menu_items.items = category_names
 		menu_items.offset.y = 0
 	selected = 0
+	var is_cat: bool = current_category in categories and not categories[current_category].options.is_empty() 
+	description_label.visible = is_cat and current_state == MenuState.CATEGORY
 	menu_items.active = not main
 	menu_items.regen_list()
 	update_item_visual()
@@ -172,7 +139,8 @@ func reload_options(main: bool = false) -> void:
 func change_selection(next: int = 0) -> void:
 	if next != 0: Global.play_sfx(Global.resources.get_resource("scroll"))
 	selected = wrapi(selected + next, 0, menu_items.items.size())
-	if description_label.visible: description_label.text = current_option.description
+	if description_label.visible and current_option:
+		description_label.text = current_option.description
 	update_item_visual()
 
 func update_item_visual() -> void:
@@ -183,31 +151,10 @@ func update_item_visual() -> void:
 		if idx == selected and current_state == MenuState.OCCUPIED:
 			item.modulate = Color.CYAN
 
-func change_option_selected(change: int = 0) -> void:
-	var option: OptionItem = categories[current_category][selected]
-	var new_value: Variant = null
-	match option.type:
-		OptionType.BOOL when change != 0: new_value = not option.current_value
-		OptionType.INT, OptionType.FLOAT:
-			var step = option.values.get("step", 1.0) * (10.0 if Input.is_key_label_pressed(KEY_SHIFT) else 1.0)
-			var minv = option.values.get("min", 0.0)
-			var maxv = option.values.get("max", 1.0)
-			new_value = wrap(option.current_value + (change * step), minv, maxv + 1.0)
-		OptionType.ENUM:
-			if option.current_value is int:
-				new_value = wrapi(option.current_value + change, 0, option.values.size())
-			else:
-				var current_index = option.values.find(option.current_value)
-				if current_index == -1:  # Fallback if value missing
-					current_index = 0
-				new_value = option.values[wrapi(current_index + change, 0, option.values.size())]
-	
-	menu_items.get_child(selected).text = get_option_display(option, new_value)
-	option.current_value = new_value
-
 func get_settings_in_category() -> Array[String]:
 	var sets: Array[String] = []
-	for i: Variant in categories[current_category]:
+	for i: OptionItem in categories[current_category].options:
+		if not categories[current_category] is CategoryOptions: continue
 		if not i is OptionItem: continue
 		sets.append(get_option_display(i, i.current_value))
 	return sets
@@ -215,9 +162,9 @@ func get_settings_in_category() -> Array[String]:
 func get_option_display(option: OptionItem, value: Variant) -> String:
 	var display_value: Variant = value
 	match option.type:
-		OptionType.BOOL: display_value = "on" if value else "off"
-		OptionType.FLOAT: display_value = "%.2f" % value
-		OptionType.ENUM:
+		OptionItem.Type.BOOL: display_value = "on" if value else "off"
+		OptionItem.Type.FLOAT: display_value = "%.2f" % value
+		OptionItem.Type.ENUM:
 			if value is int and value >= 0 and value < option.values.size():
 				display_value = str(option.values[value])
 			else:

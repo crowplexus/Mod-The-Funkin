@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="CategoryOptions" load_steps=8 format=3 uid="uid://n22ut3j84o16"]
+
+[ext_resource type="Script" uid="uid://bctik2b5hfsge" path="res://scenes/menu/ui/options/option_item.gd" id="1_neet2"]
+[ext_resource type="Script" uid="uid://cwgaodxrdar5h" path="res://scenes/menu/ui/options/category_options.gd" id="2_p26nq"]
+
+[sub_resource type="Resource" id="Resource_0o7db"]
+script = ExtResource("1_neet2")
+name = "Scroll Direction"
+setting = "scroll"
+description = "Changes the direction the notes scroll to."
+min_value = 0.0
+max_value = 1.0
+num_step = 1.0
+type = 3
+values = PackedStringArray("Up", "Down")
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[sub_resource type="Resource" id="Resource_mj5yp"]
+script = ExtResource("1_neet2")
+name = "Ghost Tapping"
+setting = "ghost_tapping"
+description = "Punishes you for pressing buttons when no notes are close to hit.
+'When silent\" makes it so it'll only be done for the strum that has notes incoming
+and when the note is getting close."
+min_value = 0.0
+max_value = 1.0
+num_step = 1.0
+type = 3
+values = PackedStringArray("OFF", "When Silent", "ON")
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[sub_resource type="Resource" id="Resource_g6yst"]
+script = ExtResource("1_neet2")
+name = "Note Speed"
+setting = "note_speed"
+description = "Custom Speed for all the notes."
+min_value = 0.5
+max_value = 5.0
+num_step = 0.01
+type = 2
+values = PackedStringArray()
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[sub_resource type="Resource" id="Resource_xrfsu"]
+script = ExtResource("1_neet2")
+name = "Note Speed Mode"
+setting = "note_speed_mode"
+description = "Define how the game should handle note speed.
+Multiply means Chart Default + Custom"
+min_value = 0.0
+max_value = 1.0
+num_step = 1.0
+type = 3
+values = PackedStringArray("Default", "Multiply", "Constant", "BPM-Based")
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[sub_resource type="Resource" id="Resource_lfnfb"]
+script = ExtResource("1_neet2")
+name = "Show 'Epic' Judgement"
+setting = "use_epics"
+description = "Enables a 5th judgement, originally not in the game."
+min_value = 0.0
+max_value = 1.0
+num_step = 1.0
+type = 0
+values = PackedStringArray()
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
+[resource]
+script = ExtResource("2_p26nq")
+options = Array[ExtResource("1_neet2")]([SubResource("Resource_0o7db"), SubResource("Resource_mj5yp"), SubResource("Resource_g6yst"), SubResource("Resource_xrfsu"), SubResource("Resource_lfnfb")])
+metadata/_custom_type_script = "uid://cwgaodxrdar5h"
