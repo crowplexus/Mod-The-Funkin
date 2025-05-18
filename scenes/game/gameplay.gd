@@ -202,6 +202,7 @@ func kill_every_note(advancing: bool = false) -> void:
 		note_spawner.seek(Conductor.time)
 	for note: Note in notes_that_spawned:
 		if is_instance_valid(note):
+			note.visible = false
 			note.queue_free()
 	notes_that_spawned.clear()
 
@@ -214,9 +215,10 @@ func restart_song() -> void:
 	# disable note spawning and event dispatching.
 	should_process_events = false
 	should_spawn_notes = false
-	local_tally.zero()
-	health = Gameplay.DEFAULT_HEALTH_VALUE
-	tally.merge(local_tally)
+	if times_looped <= 0:
+		local_tally.zero()
+		health = Gameplay.DEFAULT_HEALTH_VALUE
+		tally.merge(local_tally)
 	# unfire any previously fired events
 	for event: TimedEvent in timed_events:
 		event.was_fired = false
@@ -274,7 +276,7 @@ func _physics_process(_delta: float) -> void:
 	if should_spawn_notes:
 		note_spawner.spawn(note_spawning)
 		if note_spawner.cursor >= note_spawner.length:
-			should_spawn_notes
+			should_spawn_notes = false
 	if should_process_events: process_timed_events()
 
 func note_spawning(note_data: NoteData) -> void:
@@ -569,12 +571,13 @@ func on_beat_hit(beat: float) -> void:
 		hud_layer.scale += Vector2(hud.get_bump_scale(), hud.get_bump_scale())
 
 func end_song() -> void:
+	Conductor.bound_music.stop()
+	should_spawn_notes = false
 	if note_spawner.looping:
 		times_looped += 1
 		restart_song()
 		return
 	ending = true
-	note_spawner.running = false
 	await get_tree().create_timer(0.5).timeout
 	change_playlist_song(1)
 
@@ -583,7 +586,7 @@ func exit_game() -> void:
 		# TODO: save level score.
 		var is_story: bool = Gameplay.game_mode == Gameplay.GameMode.STORY
 		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty, is_story)
-		tally.clear_values()
+		tally.zero()
 		tally = null
 	Gameplay.exit_to_menu()
 

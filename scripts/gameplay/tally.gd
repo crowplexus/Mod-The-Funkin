@@ -139,16 +139,6 @@ func merge(other: Tally, increase: bool = false) -> void:
 	notes_hit_count = other.notes_hit_count + (notes_hit_count if increase else 0)
 	for i: int in tiers_scored.size():
 		tiers_scored[i] = other.tiers_scored[i] + (tiers_scored[i] if increase else 0)
-
-## Clears all values set in the Tally.
-func clear_values() -> void:
-	score = 0
-	misses = 0
-	combo = 0
-	breaks = 0
-	notes_hit_count = 0
-	for i: int in tiers_scored.size():
-		tiers_scored[i] = 0
 	
 ## Increases the score by the amount provided (in ms).
 func increase_score(amount: float) -> void:
@@ -199,7 +189,7 @@ static func get_max_hit_window_secs() -> float:
 ## Tier 0 (Epic) will never get returned if disabled in settings.
 static func judge_time(ms: float) -> int:
 	for i: int in TIMINGS.size():
-		var can_return: bool = ms <= TIMINGS[i]
+		var can_return: bool = (ms / Conductor.rate) <= TIMINGS[i]
 		if not use_epics and i == 0:
 			can_return = false
 		if can_return: return i

@@ -50,15 +50,11 @@ func settings_changed(settings: Settings = Global.settings) -> void:
 	if not settings: return
 	match settings.scroll:
 		0:
-			if game is Gameplay:
-				game.strumlines.position.y = 0
 			score_value.position.y = 680
 			score_text.position.y = 580
 			health_bar.position.y = 660
 			shield_bar.position.y = 645
 		1:
-			if game is Gameplay:
-				game.strumlines.position.y = 500
 			score_value.position.y = 80
 			score_text.position.y = 10
 			health_bar.position.y = 50

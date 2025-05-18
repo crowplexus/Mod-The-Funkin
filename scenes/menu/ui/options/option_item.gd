@@ -25,7 +25,8 @@ func change(p_next: int = 0) -> void:
 	match type:
 		OptionItem.Type.BOOL when p_next != 0: new_value = not current_value
 		OptionItem.Type.INT, OptionItem.Type.FLOAT:
-			new_value = wrap(current_value + (p_next * num_step), min_value, max_value + 1.0)
+			var is_shift: bool = Input.is_key_label_pressed(KEY_SHIFT)
+			new_value = wrap(current_value + (p_next * (num_step * 4.0 if is_shift else num_step)), min_value, max_value + 1.0)
 		OptionItem.Type.ENUM:
 			if current_value is int:
 				new_value = wrapi(current_value + p_next, 0, values.size())

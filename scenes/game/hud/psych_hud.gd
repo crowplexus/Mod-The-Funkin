@@ -49,13 +49,9 @@ func settings_changed(s: Settings = Global.settings) -> void:
 	if not s: return
 	match s.scroll:
 		0:
-			if Gameplay.current and Gameplay.current.strumlines:
-				Gameplay.current.strumlines.position.y = 0
 			health_bar.position.y = 660
 			time_bar.position.y = 19
 		1:
-			if Gameplay.current and Gameplay.current.strumlines:
-				Gameplay.current.strumlines.position.y = 510
 			health_bar.position.y = 65
 			time_bar.position.y = 693
 	health_bar.self_modulate.a = settings.health_bar_alpha * 0.01

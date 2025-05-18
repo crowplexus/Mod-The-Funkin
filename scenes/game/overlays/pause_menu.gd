@@ -23,6 +23,7 @@ var selected: int = 0
 var tween: Tween
 
 func _ready() -> void:
+	Conductor.rate = 1.0
 	Global.update_discord("Paused")
 	
 	var mlength: float = pause_music.stream.get_length()
@@ -100,10 +101,14 @@ func confirm_selection() -> void:
 		"resume":
 			get_tree().paused = false
 			Conductor.toggle_pause_music(true)
+			if Gameplay.current:
+				Gameplay.current.set_modifiers()
 			close()
 		"restart":
 			if game is Gameplay: game.restart_song()
 			get_tree().paused = false
+			if Gameplay.current:
+				Gameplay.current.set_modifiers()
 			close()
 		"difficulty":
 			list = difficulties
@@ -132,7 +137,7 @@ func confirm_selection() -> void:
 		"exit":
 			can_control = false
 			if Gameplay.current:
-				Gameplay.tally.clear()
+				Gameplay.tally.zero()
 				Gameplay.exit_to_menu()
 			else: # in case you're running this outside of gameplay for some reason.
 				close()

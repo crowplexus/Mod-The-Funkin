@@ -98,7 +98,7 @@ func get_total_speed() -> float:
 		2: speed = Global.settings.note_speed # Constant/C-Mod
 		1: speed = speed * Global.settings.note_speed # Multiplicative/A-Mod
 		3: speed = Global.settings.note_speed * (Conductor.bpm / 60.0) # BPM-Based/X-Mod
-	return speed * markplier
+	return (speed * markplier) / Conductor.rate
 
 func scroll_ahead() -> void:
 	var note_speed: float = get_total_speed()#Conductor.bpm
