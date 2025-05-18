@@ -83,20 +83,20 @@ func reload(p_data: NoteData) -> void:
 	apply_color(p_data.time)
 	show_all()
 	if clip_rect and hold_size > 0.0:
-		clip_rect.size.y = calculate_hold_y_size(hold_size, get_total_speed())
-		clip_rect.size.y += hold_tail.texture.get_height()
-		stretch_hold()
+		var tail: float = hold_tail.texture.get_height()
+		clip_rect.size.y = calculate_hold_y_size(hold_size, get_total_speed()) + tail
 		loaded_hold = true
+		stretch_hold()
 
 func update_hold(delta: float) -> void:
 	super(delta)
 	stretch_hold()
 
 func stretch_hold() -> void:
-	var w: float = hold_tail.texture.get_width()
+	var tail: float = hold_tail.texture.get_width()
 	var next_size: float = calculate_hold_y_size(hold_size, get_total_speed())
-	hold_tail.position.y = hold_body.get_point_position(4).y
-	hold_body.points[4].y = next_size + w
+	hold_body.points[4].y = next_size + tail
+	hold_tail.position.y = hold_body.get_point_position(4).y + (next_size * 0.005)
 	body_high_l.size.y = next_size * 0.8
 	body_high_r.size.y = next_size * 0.8
 
