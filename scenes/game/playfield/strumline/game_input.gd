@@ -96,7 +96,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			strumline.set_reset_timer(idx, 0.0)
 		return
 	var note: Note = _get_note(idx)
-	if note and note.is_hittable(settings.max_hit_window):
+	var max_window: float = Tally.get_max_hit_window_secs()
+	if note and note.is_hittable(max_window):
 		note.on_note_hit()
 		if note.was_hit:
 			note.hit_time = note.time - Conductor.playhead
@@ -110,7 +111,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 				note._stupid_visual_bug = note.hit_time < 0.0
 	else:
 		if settings.ghost_tapping == 1:
-			var can_ghost: bool = note and note.is_hittable(settings.max_hit_window + 1.3) and not note.is_mine
+			var can_ghost: bool = note and note.is_hittable(max_window + 1.3) and not note.is_mine
 			if can_ghost: on_note_miss(null, idx) # When silent
 		elif settings.ghost_tapping == 0:
 			on_note_miss(null, idx) # Disabled

@@ -27,30 +27,22 @@ var scroll: int = 0
 ## Prevents inputs from punishing you if you press keys when there's no notes to hit.
 @export_enum("Disabled:0", "When in silence:1", "Enabled:2")
 var ghost_tapping: int = 1
-## Defines the maximum timing window for a note to be hittable.
-@export var max_hit_window: float = 0.18 # 180ms
-## Enables a 5th judgement not originally present in the game.
-@export var use_epics: bool = true
+
+@export var judge_difficulty: int = 4 ## Scale used for judgement calculations, Higher = Tighter.
+@export var use_epics: bool = true ## Enables a 5th judgement not originally present in the game.
 ## Defines an offset for music synching, delays note spawning.[br]
 ## This is set to an amount of seconds.
 @export var note_offset: float = 0.0
 
-## How fast should the notes be? affected by [code]Settings.note_speed_mode[/code]
-@export var note_speed: float = 1.0
-## How should notes deal with scroll speed?
+@export var note_speed: float = 1.0 ## How fast should the notes be? affected by [code]Settings.note_speed_mode[/code]
 @export_enum("Default:0", "Multiply Chart's:1", "User-Constant:2", "BPM-Based:3")
-var note_speed_mode: int = 0
-## How fast/slow should the song be when playing.
-@export var playback_rate: float = 1.0
-## Disables inputs and makes the player hit notes automatically.
-@export var botplay_mode: bool = false
-## Makes the song loop instead of end when playing.
-@export var loop_game_music: bool = false
+var note_speed_mode: int = 0 ## How should notes deal with scroll speed?
+@export var playback_rate: float = 1.0 ## How fast/slow should the song be when playing.
+@export var botplay_mode: bool = false ## Disables inputs and makes the player hit notes automatically.
+@export var loop_game_music: bool = false ## Makes the song loop instead of end when playing.
 
-## You know what a framerate is, right?
-@export var framerate: int = 120
-## Decides if the game should pause if the window loses focus.
-@export var auto_pause: bool = true
+@export var framerate: int = 120 ## You know what a framerate is, right?
+@export var auto_pause: bool = true ## Decides if the game should pause if the window loses focus.
 ## Changes how framerate updates in the engine.[br][br]
 ## Capped will use whatever value is in the framerate setting.
 ## Unlimited won't use any values at all, instead, the framerate will be updated based on hardware limits.[br]
@@ -58,49 +50,29 @@ var note_speed_mode: int = 0
 ## Adaptive adjusts the framerate if it's high, or if it's dropping, essentially balacing the drawbacks of VSync with the benefits.
 @export_enum("Capped:0", "Unlimited:1", "Mailbox:2", "Adaptive:3")
 var vsync_mode: int = 0
-
-## Defines the intensity of the Camera Bump.
-@export var bump_intensity: int = 100:
+@export var bump_intensity: int = 100: ## Defines the intensity of the Camera Bump.
 	set(new_bi): bump_intensity = clampi(new_bi, 0, 100)
-## Defines the intensity of the HUD Bump.
-@export var hud_bump_intensity: int = 100:
+@export var hud_bump_intensity: int = 100: ## Defines the intensity of the HUD Bump.
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
 
-## Select a HUD style, or leave "Default" to let the songs decide.
 @export_enum("Default", "Advanced", "Classic", "Psych")
-var hud_style: String = "Default"
-## Choose how the game deals with note colours.
+var hud_style: String = "Default" ## Select a HUD style, or leave "Default" to let the songs decide.
 @export_enum("Column:0", "Judgement:1", "Quant:2")
-var note_color_mode: int = 0
+var note_color_mode: int = 0 ## Choose how the game deals with note colours.
 ## Makes it so the judgements and combo will stack on top of themselves.[br]
 ## Disable to only have a single sprite for each judgement and combo at a time.
 @export var combo_stacking: bool = true
-## Changes the UI elements and dialogue language.
 @export_enum("en")
-var language: String = "auto": # "auto" means get OS locale
+var language: String = "auto": ## Changes the UI elements and dialogue language.
 	set(new_lang): language = new_lang.to_snake_case()
-## Defines the transition type, or disables it altogether.
-@export_enum("None:0", "Default:1", "Wipe:2")#, "Sticker:3")
-var transition_style: int = 1:
-	set(new_trans):
-		transition_style = new_trans
-		match transition_style:
-			2: Global.current_transition = &"default"
-			#3: Global.current_transition = &"sticker"
-## Defines how opaque should the note impact effect be when hitting judgements that display it.
-@export var note_splash_alpha: int = 60:
+@export var skip_transitions: bool = false ## Toggle this to skip in-game transitions.
+@export var note_splash_alpha: int = 60: ## Defines how opaque should the note impact effect be when hitting judgements that display it.
 	set(new_alpha): note_splash_alpha = clampi(new_alpha, 0, 100)
-## Defines how opaque should the health bar be for HUDs that have it.
-@export var health_bar_alpha: int = 100:
+@export var health_bar_alpha: int = 100: ## Defines how opaque should the health bar be for HUDs that have it.
 	set(new_alpha): health_bar_alpha = clampi(new_alpha, 0, 100)
-## Simplifies the in-game pop ups to make them easier to see (maybe less obnoxious).
-@export var simplify_popups: bool = false
-## Changes the style of any present HUD timers.
+@export var simplify_popups: bool = false ## Simplifies the in-game pop ups to make them easier to see (maybe less obnoxious).
 @export_enum("Hidden:0", "Time Left:1", "Time Elapsed:2", "Song Name:3", "Elapsed / Total:4")
-var timer_style: int = 0
-
-var skip_transitions: bool:
-	get: return transition_style < 0
+var timer_style: int = 0 ## Changes the style of any present HUD timers.
 
 func _init(use_defaults: bool = false) -> void:
 	if not use_defaults: # not a "defaults-only" instance

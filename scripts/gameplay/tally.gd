@@ -5,7 +5,9 @@ const MAX_SCORE: int = 500 ## Maximum score a note can receive.
 const MISS_SCORE: int = -50 ## Score penalty per miss (negative to subtract from total).
 const DEVIATION_MULT: float = 7.1045825 ## Score Deviation scale (higher = stricter timing).
 const PENALTY_CURVE: float = 1.5 ## Penalty curve (worse judgments hurt more).
+
 const TIMINGS: Array[float] = [ 22.5, 45.0, 90.0, 135.4, 180.0 ] ## Temporary, will be replaced with settings.
+const JUDGE_SCALE: Array[float] = [1.5, 1.33, 1.16, 1.0, 0.84, 0.66, 0.5, 0.33, 0.2] ## Scale for timings (Judge Difficulty).
 
 static var use_epics: bool = true ## Checks if epics are enabled in-game.
 
@@ -188,11 +190,11 @@ static func get_max_hit_window_secs() -> float:
 ## Returns a judgement tier based on the time provided.[br]
 ## Tier 0 (Epic) will never get returned if disabled in settings.
 static func judge_time(ms: float) -> int:
+	var scale: float = JUDGE_SCALE[Global.settings.judge_difficulty-1]
 	for i: int in TIMINGS.size():
-		var can_return: bool = (ms / Conductor.rate) <= TIMINGS[i]
-		if not use_epics and i == 0:
-			can_return = false
-		if can_return: return i
+		if not use_epics and i == 0: continue
+		if (ms / Conductor.rate) <= (TIMINGS[i] * scale):
+			return i
 	return TIMINGS.find(TIMINGS.back())
 
 ## Returns a string with an clear flag, depends on what judgements have been hit in the tier list given.[br]

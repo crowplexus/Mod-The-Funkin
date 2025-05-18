@@ -169,8 +169,8 @@ func calculate_hold_y_size(size: float = 0.0, speed: float = -1.0) -> float:
 func display_splash() -> Node2D:
 	return null
 
-## Checks if the note is in range to be hitp
-func is_hittable(hit_window: float = 0.18) -> bool:
+## Checks if the note is in range to be hit
+func is_hittable(hit_window: float) -> bool:
 	#const diff: float = data.time - Conductor.playhead
 	#return absf(diff) <= (hit_window * (early_hitbox if diff < 0 else late_hitbox))
 	return absf(Conductor.playhead - time) <= hit_window and not was_hit and not was_missed

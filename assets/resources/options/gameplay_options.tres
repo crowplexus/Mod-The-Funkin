@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CategoryOptions" load_steps=8 format=3 uid="uid://n22ut3j84o16"]
+[gd_resource type="Resource" script_class="CategoryOptions" load_steps=9 format=3 uid="uid://n22ut3j84o16"]
 
 [ext_resource type="Script" uid="uid://bctik2b5hfsge" path="res://scenes/menu/ui/options/option_item.gd" id="1_neet2"]
 [ext_resource type="Script" uid="uid://cwgaodxrdar5h" path="res://scenes/menu/ui/options/category_options.gd" id="2_p26nq"]
@@ -66,7 +66,20 @@ type = 0
 values = PackedStringArray()
 metadata/_custom_type_script = "uid://bctik2b5hfsge"
 
+[sub_resource type="Resource" id="Resource_neet2"]
+script = ExtResource("1_neet2")
+name = "Judge Difficulty"
+setting = "judge_difficulty"
+description = "Defines how tight it is to hit higher judgements timing-wise.
+4 is the baseline, the higher the number, the tighter."
+min_value = 1.0
+max_value = 9.0
+num_step = 1.0
+type = 1
+values = PackedStringArray()
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
+
 [resource]
 script = ExtResource("2_p26nq")
-options = Array[ExtResource("1_neet2")]([SubResource("Resource_0o7db"), SubResource("Resource_mj5yp"), SubResource("Resource_g6yst"), SubResource("Resource_xrfsu"), SubResource("Resource_lfnfb")])
+options = Array[ExtResource("1_neet2")]([SubResource("Resource_0o7db"), SubResource("Resource_mj5yp"), SubResource("Resource_g6yst"), SubResource("Resource_xrfsu"), SubResource("Resource_lfnfb"), SubResource("Resource_neet2")])
 metadata/_custom_type_script = "uid://cwgaodxrdar5h"
