@@ -1,7 +1,19 @@
-[gd_resource type="Resource" script_class="CategoryOptions" load_steps=11 format=3 uid="uid://bxaiw0f16bjes"]
+[gd_resource type="Resource" script_class="CategoryOptions" load_steps=12 format=3 uid="uid://bxaiw0f16bjes"]
 
 [ext_resource type="Script" uid="uid://bctik2b5hfsge" path="res://scenes/menu/ui/options/option_item.gd" id="1_hm3h6"]
 [ext_resource type="Script" uid="uid://cwgaodxrdar5h" path="res://scenes/menu/ui/options/category_options.gd" id="2_6ygsy"]
+
+[sub_resource type="Resource" id="Resource_iu66l"]
+script = ExtResource("1_hm3h6")
+name = "Auto Pause"
+setting = "auto_pause"
+description = "Toggles if the window should pause the whole game when unfocused."
+min_value = 0.0
+max_value = 1.0
+num_step = 1.0
+type = 0
+values = PackedStringArray()
+metadata/_custom_type_script = "uid://bctik2b5hfsge"
 
 [sub_resource type="Resource" id="Resource_hm3h6"]
 script = ExtResource("1_hm3h6")
@@ -104,5 +116,5 @@ metadata/_custom_type_script = "uid://bctik2b5hfsge"
 
 [resource]
 script = ExtResource("2_6ygsy")
-options = Array[ExtResource("1_hm3h6")]([SubResource("Resource_hm3h6"), SubResource("Resource_6ygsy"), SubResource("Resource_05vqk"), SubResource("Resource_rrhsv"), SubResource("Resource_8i4ls"), SubResource("Resource_v58b3"), SubResource("Resource_jvmo0"), SubResource("Resource_8o7uv")])
+options = Array[ExtResource("1_hm3h6")]([SubResource("Resource_iu66l"), SubResource("Resource_hm3h6"), SubResource("Resource_6ygsy"), SubResource("Resource_05vqk"), SubResource("Resource_rrhsv"), SubResource("Resource_8i4ls"), SubResource("Resource_v58b3"), SubResource("Resource_jvmo0"), SubResource("Resource_8o7uv")])
 metadata/_custom_type_script = "uid://cwgaodxrdar5h"

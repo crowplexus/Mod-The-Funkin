@@ -99,6 +99,7 @@ var local_tally: Tally
 var local_settings: Settings
 var assets: ChartAssets
 var scripts: ScriptPack
+var times_looped: int = 0
 
 @onready var strumlines: Control = $"hud_layer/strumlines"
 @onready var default_strumline_position: Vector2 = strumlines.position
@@ -150,7 +151,7 @@ func _ready() -> void:
 	if not tally:
 		tally = Tally.new()
 	else: # merge local tally with global tally data if any, for story mode.
-		local_tally.merge(local_tally)
+		local_tally.merge(tally)
 	scripts.load_global_scripts()
 	if chart:
 		assets = chart.assets
@@ -175,8 +176,6 @@ func _ready() -> void:
 			strums.skin = assets.noteskin
 		if strums.skin: strums.reload_skin()
 		strums.input.setup()
-	player_sl.input.botplay = player_botplay
-	if player_botplay: tally.is_valid = false
 
 	Conductor.on_beat_hit.connect(on_beat_hit)
 	scripts.call_func("_ready_post")
@@ -192,6 +191,9 @@ func set_modifiers() -> void:
 	Conductor.toggle_music_looping(Global.settings.loop_game_music)
 	note_spawner.toggle_loop(Global.settings.loop_game_music)
 	player_botplay = Global.settings.botplay_mode
+	player_sl.input.botplay = player_botplay
+	if hud and Global.settings.botplay_mode: # should probably just update the score text lol.
+		hud.update_score_text(true)
 	if player_botplay or Conductor.rate < 1.0: # TODO: decrease max score for lower rates instead of disabling records.
 		tally.is_valid = false
 
@@ -236,7 +238,7 @@ func restart_song() -> void:
 func play_countdown(offset: float = 0.0) -> void:
 	var skip_countdown: bool = false
 	var crotchet_offset: float = -3.0
-	if hud and hud.is_inside_tree():
+	if hud and hud.is_inside_tree() and times_looped <= 0: # only play on first loop
 		skip_countdown = hud.skip_countdown
 		if not skip_countdown:
 			crotchet_offset = -5.0
@@ -269,7 +271,10 @@ func _process(delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	# I don't need this to run every single frame.
-	if should_spawn_notes: note_spawner.spawn(note_spawning)
+	if should_spawn_notes:
+		note_spawner.spawn(note_spawning)
+		if note_spawner.cursor >= note_spawner.length:
+			should_spawn_notes
 	if should_process_events: process_timed_events()
 
 func note_spawning(note_data: NoteData) -> void:
@@ -509,8 +514,8 @@ func on_note_hit(note: Note) -> void:
 	if hud and hud.is_inside_tree():
 		hud.display_judgement(judgement)
 		hud.display_combo(local_tally.combo)
-		hud.update_score_text(false)
 		hud.update_health(display_health)
+		hud.update_score_text(false)
 	if Global.settings.note_color_mode == 1 and note.strumline == player_sl:
 		note._strum.color = judgement.color
 
@@ -554,8 +559,8 @@ func on_note_miss(note: Note, idx: int = -1) -> void:
 		Global.play_sfx(assets.miss_note_sounds.pick_random(), randf_range(0.1, 0.4))
 	# update hud
 	if hud and hud.is_inside_tree():
-		hud.update_score_text(true)
 		hud.update_health(display_health)
+		hud.update_score_text(true)
 	# play miss animations.
 	if player: player.sing(idx, true, "miss")
 
@@ -564,7 +569,12 @@ func on_beat_hit(beat: float) -> void:
 		hud_layer.scale += Vector2(hud.get_bump_scale(), hud.get_bump_scale())
 
 func end_song() -> void:
+	if note_spawner.looping:
+		times_looped += 1
+		restart_song()
+		return
 	ending = true
+	note_spawner.running = false
 	await get_tree().create_timer(0.5).timeout
 	change_playlist_song(1)
 
@@ -573,7 +583,7 @@ func exit_game() -> void:
 		# TODO: save level score.
 		var is_story: bool = Gameplay.game_mode == Gameplay.GameMode.STORY
 		tally.save_record(chart.parsed_values.song_name, chart.parsed_values.difficulty, is_story)
-		tally.clear()
+		tally.clear_values()
 		tally = null
 	Gameplay.exit_to_menu()
 

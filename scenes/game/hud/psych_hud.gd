@@ -95,6 +95,9 @@ func update_icons(delta: float) -> void:
 		if game.enemy and game.enemy.icon: icon_p2.frame = game.enemy.icon.get_frame(100 - health_bar.value)
 
 func update_score_text(missed: bool = false) -> void:
+	if Gameplay.current and Gameplay.current.player_botplay:
+		score_text.text = "BOTPLAY"
+		return
 	var tally: bool = game and game.tally
 	if not tally:
 		score_text.text = "%s: 0 | %s: 0 | %s: ?" % [ tr("score", &"gameplay"), tr("combo_breaks", &"gameplay"), tr("rating") ]

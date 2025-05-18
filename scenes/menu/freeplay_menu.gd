@@ -11,8 +11,8 @@ extends Node2D
 @onready var diff_text: Label = $"ui/score_text/diff_text"
 @onready var tip_text: Label = $"ui/tip_text"
 
-var selected: int = 0
-var song_selected: int = 0
+var selected: int = -1
+var song_selected: int = -1
 var difficulty: int = 1 # NORMAL
 var lerp_score: float = 0
 
@@ -120,7 +120,7 @@ func reload_song_items() -> void:
 		selectables.append(songs.find(song))
 		song_menu.items.append(song.name)
 	song_selected = selectables.front()
-	selected = selectables.find(song_selected)
+	selected = selectables.find(song_selected) - 1
 	song_menu.regen_list()
 	change_selection()
 

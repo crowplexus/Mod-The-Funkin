@@ -153,6 +153,9 @@ func countdown_progress() -> void:
 	_countdown_iteration += 1
 
 func update_score_text(_missed: bool = false) -> void:
+	if Gameplay.current and Gameplay.current.player_botplay:
+		score_text.text = "BotPlay Enabled"
+		return
 	var tally: bool = game and game.tally
 	_min_score = Tally.calculate_worst_score(game.tally.notes_hit_count, game.tally.misses + game.tally.breaks)
 	score_text.text  = "%s: %s" % [ tr("score", &"gameplay"), ("0" if not tally else Global.separate_thousands(game.tally.score)) ]

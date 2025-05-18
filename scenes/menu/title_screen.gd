@@ -55,6 +55,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if not skipped_intro:
 			skip_intro()
 		elif not pressed_enter:
+			flash_screen(0.5)
 			pressed_enter = true
 			Global.play_sfx(Global.resources.get_resource("confirm"))
 			await get_tree().create_timer(1.0).timeout

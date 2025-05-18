@@ -5,16 +5,16 @@
 func _init(p_options:Array[OptionItem] = []) -> void:
 	options = p_options
 
-func _get_property_list() -> Array:
-	var properties: Array = []
-	for i: int in options.size():
-		properties.append({
-			"name": "options/%d" % i,
-			"type": TYPE_OBJECT,
-			"hint": PROPERTY_HINT_RESOURCE_TYPE,
-			"hint_string": "Option"
-		})
-	return properties
+#func _get_property_list() -> Array:
+#	var properties: Array = []
+#	for i: int in options.size():
+#		properties.append({
+#			"name": "options/%d" % i,
+#			"type": TYPE_OBJECT,
+#			"hint": PROPERTY_HINT_RESOURCE_TYPE,
+#			"hint_string": "Option"
+#		})
+#	return properties
 
 func get_value(setting: String) -> Variant:
 	return Global.settings.get(setting)

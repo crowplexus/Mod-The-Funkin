@@ -100,6 +100,9 @@ func countdown_progress() -> void:
 	_countdown_iteration += 1
 
 func update_score_text(_missed: bool = false) -> void:
+	if Gameplay.current and Gameplay.current.player_botplay:
+		score_text.text = "BotPlay"
+		return
 	var tally: bool = game and game.tally
 	if tally:
 		score_value.value = game.tally.score

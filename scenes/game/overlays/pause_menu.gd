@@ -123,6 +123,10 @@ func confirm_selection() -> void:
 				if Gameplay.current.hud_is_built_in == true and Gameplay.current.local_settings.hud_style != Global.settings.hud_style:
 					Gameplay.current.local_settings.hud_style = Global.settings.hud_style
 					Gameplay.current.reload_hud()
+				if Gameplay.current.hud: # forced update
+					Gameplay.current.hud.update_health(Gameplay.current.display_health)
+					Gameplay.current.hud.update_score_text(true)
+				
 			AudioServer.set_bus_effect_enabled(1, 0, false)
 			can_control = true
 		"exit":

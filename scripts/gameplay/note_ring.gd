@@ -6,6 +6,7 @@ class_name NoteRing
 signal spawned_note(data: NoteData)
 
 const SPAWN_SECS: float = 0.9 # 900ms
+var running: bool = true
 var reverse: bool = false
 var looping: bool = false
 var notes: Array[NoteData]
@@ -25,7 +26,7 @@ func toggle_loop(val: bool = false) -> void:
 	looping = val
 
 func spawn(note_spawn_callback: Callable) -> void:
-	if not note_spawn_callback:
+	if not note_spawn_callback or not running:
 		push_error("Cannot spawn notes without a callback.")
 		return
 	var play_time: float = Conductor.playhead
@@ -45,14 +46,12 @@ func peek() -> NoteData:
 
 ## Gets the next note and advances the cursor.
 func next() -> NoteData:
-	cursor = (cursor + 1)
-	if looping: cursor = cursor % length
+	cursor = (cursor + 1) % length
 	return notes[cursor]
 
 ## Goes back one note and rewinds the cursor.
 func previous() -> NoteData:
-	cursor = (cursor - 1)
-	if looping: cursor = cursor % length
+	cursor = (cursor - 1) % length
 	return notes[cursor]
 
 func earliest_time() -> float:

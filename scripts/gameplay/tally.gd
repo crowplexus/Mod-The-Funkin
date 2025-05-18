@@ -141,7 +141,7 @@ func merge(other: Tally, increase: bool = false) -> void:
 		tiers_scored[i] = other.tiers_scored[i] + (tiers_scored[i] if increase else 0)
 
 ## Clears all values set in the Tally.
-func clear() -> void:
+func clear_values() -> void:
 	score = 0
 	misses = 0
 	combo = 0
