@@ -90,14 +90,20 @@ func to_dictionary(_story: bool = false) -> Dictionary:
 	var complete: float = calculate_score_percentage(self.score,
 		calculate_perfect_score(Gameplay.chart.note_counts[0]),
 		calculate_worst_score(notes_hit_count, misses + breaks))
+	var difficulty: int = Global.settings.judge_difficulty
+	var scale: float = JUDGE_SCALE[difficulty-1]
+	var final_score: int = self.score
+	if difficulty < 4: # Difficulty 4 and higher won't get penalized
+		final_score = int(float(final_score) / scale) # just gotta prevent integer division
 	return {
-		score = int(self.score),
+		score = max(final_score, 0),
 		misses = int(self.misses),
 		combo = int(self.combo),
 		breaks = int(self.breaks),
 		completion = float(complete),
 		total_notes_hit = int(self.notes_hit_count),
 		judgement_counts = PackedInt32Array(self.tiers_scored),
+		judge_difficulty = int(difficulty),
 		used_epics = bool(Tally.use_epics),
 		date = String(self.date),
 		story = _story,
