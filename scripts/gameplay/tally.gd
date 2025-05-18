@@ -5,7 +5,7 @@ const MAX_SCORE: int = 500 ## Maximum score a note can receive.
 const MISS_SCORE: int = -50 ## Score penalty per miss (negative to subtract from total).
 const DEVIATION_MULT: float = 7.1045825 ## Score Deviation scale (higher = stricter timing).
 const PENALTY_CURVE: float = 1.5 ## Penalty curve (worse judgments hurt more).
-const TIMINGS: Array[float] = [ 18.9, 37.8, 75.6, 113.4, 180.0 ] ## Temporary, will be replaced with settings.
+const TIMINGS: Array[float] = [ 22.5, 45.0, 90.0, 135.4, 180.0 ] ## Temporary, will be replaced with settings.
 
 static var use_epics: bool = true ## Checks if epics are enabled in-game.
 
