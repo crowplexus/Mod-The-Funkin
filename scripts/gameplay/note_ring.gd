@@ -19,10 +19,12 @@ func _init(_notess: Array[NoteData]) -> void:
 
 func toogle_reverse() -> void:
 	reverse = not reverse
-	cursor = length-1
+	if cursor <= 0 or cursor >= length:
+		cursor = length-1
 
 func toggle_loop(val: bool = false) -> void:
-	cursor = 0 if not reverse else length-1
+	if cursor <= 0 or cursor >= length:
+		cursor = 0 if not reverse else length-1
 	looping = val
 
 func spawn(note_spawn_callback: Callable) -> void:

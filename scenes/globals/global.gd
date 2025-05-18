@@ -144,7 +144,7 @@ func request_audio_fade(player: AudioStreamPlayer, to: float = 0.0, speed: float
 	return player
 
 ## Plays background music (remember to stop it if you're switching to a scene that has custom music nodes).
-func g(stream: AudioStream, volume: float = 1.0, loop: bool = true) -> AudioStreamPlayer:
+func play_bgm(stream: AudioStream, volume: float = 1.0, loop: bool = true) -> AudioStreamPlayer:
 	bgm.stop()
 	bgm.stream = stream
 	bgm.volume_db = linear_to_db(volume)

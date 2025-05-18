@@ -575,6 +575,7 @@ func end_song() -> void:
 	should_spawn_notes = false
 	if note_spawner.looping:
 		times_looped += 1
+		print_debug("song looped, loops (so far): ", times_looped)
 		restart_song()
 		return
 	ending = true

@@ -4,12 +4,10 @@
 [ext_resource type="AudioStream" uid="uid://c732jy0inr3bb" path="res://assets/sounds/scroll.ogg" id="2_emm5y"]
 
 [sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_rcp3f"]
-stream_count = 5
+stream_count = 3
 stream_0/volume = 0.0
 stream_1/volume = 0.0
 stream_2/volume = 0.0
-stream_3/volume = 0.0
-stream_4/volume = 0.0
 
 [node name="conductor" type="Node"]
 process_mode = 3

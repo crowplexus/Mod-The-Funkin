@@ -132,8 +132,9 @@ func setup_digit(digit: int) -> PhysicsSprite2D:
 		sprite.hframes = 10
 	sprite.hide()
 	display_digits[digit] = sprite
-	if not has_node(digit_name) or combo_stacking:
-		add_child(sprite)
+	if has_node(digit_name):
+		return sprite
+	add_child(sprite)
 	return sprite
 
 func get_digit(digit: int) -> PhysicsSprite2D:
