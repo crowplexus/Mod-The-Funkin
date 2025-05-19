@@ -20,7 +20,12 @@ func add_player(at: int) -> void:
 func add_note(data: NoteData) -> void:
 	if (data.side+1) > notes.size(): add_player(data.side)
 	if length > notes[data.side].size(): length += 1
-	notes[data.side].append(data)
+	var passed: bool = true
+	for i: NoteData in notes[data.side]:
+		if is_equal_approx(i.time, data.time):
+			passed = false
+			break
+	if passed: notes[data.side].append(data)
 
 func remove_note_at(player: int, index: int) -> void:
 	notes[player].remove_at(index)
