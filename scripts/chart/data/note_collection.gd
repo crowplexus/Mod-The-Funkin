@@ -22,7 +22,7 @@ func add_note(data: NoteData) -> void:
 	if length > notes[data.side].size(): length += 1
 	var passed: bool = true
 	for i: NoteData in notes[data.side]:
-		if is_equal_approx(i.time, data.time):
+		if is_equal_approx(i.time, data.time) and i.column == data.column:
 			passed = false
 			break
 	if passed: notes[data.side].append(data)
