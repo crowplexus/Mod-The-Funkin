@@ -45,7 +45,7 @@ func scroll_item(item: Control) -> void:
 	#var target_y: float = pos.y + ((relative - (visible_item_count-1)/2) * spacing) * int(change_y)
 	
 	# this is painful.
-	var center_offset: float = (size.y/2) - (spacing/2)
+	var center_offset: float = (size.y/2) + (spacing/2)
 	var target_y: float = pos.y - scroll_offset * spacing + center_offset
 	
 	var visible_padding: float = spacing

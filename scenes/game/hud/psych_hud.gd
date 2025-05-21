@@ -47,6 +47,7 @@ func init_vars() -> void:
 
 func settings_changed(s: Settings = Global.settings) -> void:
 	if not s: return
+	if game is Gameplay: game.strumlines.position = game.get_strumline_position(s)
 	match s.scroll:
 		0:
 			health_bar.position.y = 660

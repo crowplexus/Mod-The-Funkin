@@ -1,11 +1,12 @@
 @tool class_name OptionItem extends Resource
 
-enum Type { BOOL, INT, FLOAT, ENUM }
+enum Type { BOOL, INT, FLOAT, ENUM, LINK }
 
 #@export_category("General")
 @export var name: String
 @export var setting: String
 @export_multiline var description: String = ""
+@export var link_url: String = ""
 
 #@export_category("Numeric Options")
 @export var min_value: float = 0.0
@@ -37,8 +38,8 @@ func change(p_next: int = 0) -> void:
 				new_value = values[wrapi(current_index + p_next, 0, values.size())]
 	current_value = new_value
 
-func _validate_type(p_typ: int) -> void:
-	match p_typ:
+func _validate_type(p_type: int) -> void:
+	match p_type:
 		TYPE_INT, TYPE_FLOAT:
 			if type == TYPE_INT: type = Type.INT
 			else: type = Type.FLOAT
@@ -48,7 +49,8 @@ func _validate_type(p_typ: int) -> void:
 func _validate_property(property: Dictionary) -> void:
 	# Hide irrelevant properties based on type OHHH I LOVE WORKAROUNDS.
 	match type:
-		Type.BOOL: if property.name in ["min_value", "max_value", "num_step", "values"]: property.usage = PROPERTY_USAGE_NO_EDITOR
-		Type.INT, Type.FLOAT: if property.name == "values": property.usage = PROPERTY_USAGE_NO_EDITOR
-		Type.ENUM: if property.name in ["min_value", "max_value", "num_step"]: property.usage = PROPERTY_USAGE_NO_EDITOR
-		_: if property.name in ["min_value", "max_value", "num_step", "values"]: property.usage = PROPERTY_USAGE_NO_EDITOR
+		Type.BOOL: if property.name in ["min_value", "max_value", "num_step", "values", "link_url"]: property.usage = PROPERTY_USAGE_NO_EDITOR
+		Type.INT, Type.FLOAT: if property.name == ["values", "link_url"]: property.usage = PROPERTY_USAGE_NO_EDITOR
+		Type.ENUM: if property.name in ["min_value", "max_value", "num_step", "link_url"]: property.usage = PROPERTY_USAGE_NO_EDITOR
+		Type.LINK: if property.name in ["setting", "min_value", "max_value", "num_step", "values"]: property.usage = PROPERTY_USAGE_NO_EDITOR
+		_: if property.name in ["min_value", "max_value", "num_step", "values", "link_url"]: property.usage = PROPERTY_USAGE_NO_EDITOR

@@ -59,6 +59,7 @@ func _exit_tree() -> void:
 
 func settings_changed(settings: Settings = Global.settings) -> void:
 	if not settings: return
+	if game is Gameplay: game.strumlines.position = game.get_strumline_position(settings)
 	match settings.scroll:
 		0:
 			health_bar.position.y = 660

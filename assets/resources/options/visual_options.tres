@@ -50,7 +50,7 @@ min_value = 0.0
 max_value = 1.0
 num_step = 1.0
 type = 3
-values = PackedStringArray("Default", "Classic", "Advanced", "Psych")
+values = PackedStringArray("Song Default", "Classic", "Classic+", "Psych")
 metadata/_custom_type_script = "uid://bctik2b5hfsge"
 
 [sub_resource type="Resource" id="Resource_rrhsv"]

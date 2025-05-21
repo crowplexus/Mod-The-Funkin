@@ -20,7 +20,8 @@ var categories: Dictionary[String, CategoryOptions] = {
 	"controls": CategoryAction.new(CategoryAction.Type.OPEN_SUBMENU, "", "uid://dqxmfmm8a11j6"),
 	"modifiers": preload("uid://croa2q4r658vp"),
 	"visuals": preload("uid://bxaiw0f16bjes"),
-	"notes": CategoryAction.new(CategoryAction.Type.CUSTOM_FUNCTION, "_open_note_colours"),
+	#"notes": CategoryAction.new(CategoryAction.Type.CUSTOM_FUNCTION, "_open_note_colours"),
+	"credits": preload("uid://dt87rth208ixk"),
 	"exit": CategoryAction.new(CategoryAction.Type.CUSTOM_FUNCTION, "_exit_menu"),
 }
 @onready var background: Sprite2D = $"background"
@@ -41,9 +42,9 @@ var selected: int = 0
 func open_submenu(uid: String) -> bool:
 	set_process_unhandled_input(false)
 	var controls_menu: Control = load(uid).instantiate()
-	controls_menu.size = get_viewport_rect().size # it can be small apparently.
 	controls_menu.z_index = 666 # is that enough? ok.
 	add_child(controls_menu)
+	controls_menu.size = get_viewport_rect().size # it can be small apparently.
 	await controls_menu.tree_exited
 	set_process_unhandled_input(true)
 	return true
@@ -103,7 +104,11 @@ func _unhandled_input(_event: InputEvent) -> void:
 			var move_axis: int = int(Input.get_axis("ui_up", "ui_down"))
 			if move_axis != 0: change_selection(move_axis)
 			if Input.is_action_just_pressed("ui_accept"):
-				current_state = MenuState.OCCUPIED
+				if current_option.type == OptionItem.Type.LINK and not current_option.link_url.is_empty():
+					OS.shell_open(current_option.link_url)
+				else:
+					current_state = MenuState.OCCUPIED
+					update_item_visual()
 			if Input.is_action_just_pressed("ui_cancel"):
 				current_state = MenuState.MAIN
 				reload_options(true)
@@ -122,10 +127,12 @@ func reload_options(main: bool = false) -> void:
 	if not main:
 		current_state = MenuState.CATEGORY
 		current_category = category_names[selected]
+		menu_items.horizontal_alignment = categories[current_category].horizontal_alignment
+		menu_items.vertical_alignment = categories[current_category].vertical_alignment
 		menu_items.items = get_settings_in_category()
 		if not categories[current_category].options.is_empty(): # prevent crash from empty category
 			description_label.text = categories[current_category].options[0].description
-		menu_items.offset.y = menu_offset_y
+		menu_items.offset.y = menu_offset_y + categories[current_category].vertical_offset
 	else:
 		current_category = "main"
 		current_state = MenuState.MAIN
@@ -149,9 +156,11 @@ func update_item_visual() -> void:
 	menu_items.focus_item(selected)
 	for idx: int in menu_items.get_child_count():
 		var item: Control = menu_items.get_child(idx)
-		if not menu_items.active: item.modulate.a = 1.0 if idx == selected else 0.6
 		if idx == selected and current_state == MenuState.OCCUPIED:
 			item.modulate = Color.CYAN
+		else:
+			item.modulate = Color.WHITE
+		if not menu_items.active: item.modulate.a = 1.0 if idx == selected else 0.6
 
 func get_settings_in_category() -> Array[String]:
 	var sets: Array[String] = []
@@ -171,6 +180,7 @@ func get_option_display(option: OptionItem, value: Variant) -> String:
 				display_value = str(option.values[value])
 			else:
 				display_value = str(value)
+		OptionItem.Type.LINK: return "%s" % option.name
 		_:
 			display_value = str(display_value)
 	return "%s: %s" % [option.name, display_value]

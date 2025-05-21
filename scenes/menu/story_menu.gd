@@ -52,12 +52,12 @@ func _ready() -> void:
 	change_selection()
 
 func _process(delta: float) -> void:
-	var scroll_lerp: float = clamp(delta * 10.2, 0.0, 1.0)
+	var scroll_lerp: float = clampf(delta * 10.2, 0.0, 1.0)
 	for i: int in titles.get_child_count():
 		var hm: TextureRect = titles.get_child(i)
-		var w: float = hm.texture.get_width() if hm.texture else 480
-		var target_y: float = 135.0 + (title_separation * (w * 0.008)) * (i - selected)
+		var target_y: float = 135.0 + ((title_separation * 3.0) * (i - selected))
 		hm.position.y = lerpf(hm.position.y, target_y, scroll_lerp)
+		
 	# arrow animations wow i gotta do this shit on update so it looks right damn fuck me.
 	arrow_animations()
 

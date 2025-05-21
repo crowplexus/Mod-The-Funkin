@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dakw6tmvuvou7"]
+[gd_scene load_steps=7 format=3 uid="uid://dakw6tmvuvou7"]
 
 [ext_resource type="Script" uid="uid://ct3dvueif5qg2" path="res://scenes/menu/story_menu.gd" id="1_yrk5c"]
 [ext_resource type="Resource" uid="uid://c4s0d4u5i34m3" path="res://assets/resources/level_list.tres" id="2_3ai1w"]
 [ext_resource type="Texture2D" uid="uid://bym6lttxb8cbe" path="res://assets/ui/menu/story/arrows.png" id="8_bittg"]
 [ext_resource type="Texture2D" uid="uid://br7jrnns00i1b" path="res://assets/ui/menu/story/difficulties/normal.png" id="8_lfwej"]
 [ext_resource type="FontFile" uid="uid://3lcboqej2ls6" path="res://assets/ui/fonts/monoMMM_5.ttf" id="10_0n4na"]
-[ext_resource type="LabelSettings" uid="uid://ckiqm8178ehbn" path="res://assets/ui/fonts/alphabet_font_bold.tres" id="10_85cfy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ml01f"]
 font = ExtResource("10_0n4na")
@@ -148,11 +147,3 @@ text = "
 N/A"
 horizontal_alignment = 1
 metadata/_edit_lock_ = true
-
-[node name="label" type="Label" parent="."]
-offset_top = 55.0
-offset_right = 1280.0
-offset_bottom = 440.0
-text = "
-"
-label_settings = ExtResource("10_85cfy")

@@ -15,7 +15,7 @@ const NOTE_TYPES: Dictionary[String, PackedScene] = {
 ## Default HUD scenes to use, mainly for settings and stuff.
 var DEFAULT_HUDS: Dictionary[String, PackedScene] = {
 	"Classic": load("uid://br6ornbfmuj7l"),
-	"Advanced": load("uid://bjkg052ui3mnl"),
+	"Classic+": load("uid://gla5haje0tjy"),
 	"Psych": load("uid://chxabingjikr6"),
 }
 ## Default Pause Menu, used if there's none set in the Chart Assets.

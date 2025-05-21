@@ -1,0 +1,200 @@
+[gd_scene load_steps=12 format=3 uid="uid://gla5haje0tjy"]
+
+[ext_resource type="Script" uid="uid://cu05hkp30n0xg" path="res://scenes/game/hud/classic_plus_hud.gd" id="1_jll0a"]
+[ext_resource type="StyleBox" uid="uid://bb871j4np30b4" path="res://scenes/game/hud/styleboxes/health_bar_left.tres" id="2_nxmn7"]
+[ext_resource type="StyleBox" uid="uid://bdag5e631yhvt" path="res://scenes/game/hud/styleboxes/health_bar_right.tres" id="3_mcog5"]
+[ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="4_hngks"]
+[ext_resource type="Texture2D" uid="uid://d3x8spahvh1je" path="res://assets/game/characters/face/icon.png" id="5_v0oxc"]
+[ext_resource type="Script" uid="uid://dxoh2eni26dvh" path="res://scenes/game/hud/popup/combo_group.gd" id="6_3klod"]
+[ext_resource type="Script" uid="uid://cku7st80n16gp" path="res://scenes/game/hud/popup/physics_sprite_2d.gd" id="7_hnp6v"]
+[ext_resource type="AudioStream" uid="uid://cs4y7h8cnhhwm" path="res://assets/sounds/countdown/funkin/3.ogg" id="8_xcdu3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_it28e"]
+bg_color = Color(0, 0, 0, 1)
+draw_center = false
+border_width_left = 4
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_detail = 1
+anti_aliasing = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_jll0a"]
+paragraph_spacing = -2.0
+font = ExtResource("4_hngks")
+font_size = 18
+outline_size = 8
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_76xds"]
+
+[node name="classic_plus_hud" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jll0a")
+keep_classic_health_colors = true
+
+[node name="health_bar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -295.5
+offset_top = -68.0
+offset_right = 294.5
+offset_bottom = -58.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/background = ExtResource("2_nxmn7")
+theme_override_styles/fill = ExtResource("3_mcog5")
+value = 50.0
+fill_mode = 1
+show_percentage = false
+
+[node name="panel" type="Panel" parent="health_bar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.007
+anchor_top = -0.3
+anchor_right = 1.005
+anchor_bottom = 1.3
+offset_left = 0.13
+offset_right = 1.04999
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_it28e")
+
+[node name="icon_p1" type="Sprite2D" parent="health_bar"]
+position = Vector2(310, 0)
+texture = ExtResource("5_v0oxc")
+offset = Vector2(30, 0)
+flip_h = true
+hframes = 2
+
+[node name="icon_p2" type="Sprite2D" parent="health_bar"]
+position = Vector2(280, 0)
+texture = ExtResource("5_v0oxc")
+offset = Vector2(-35, 0)
+hframes = 2
+
+[node name="score_text" type="Label" parent="health_bar"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.002
+anchor_top = -0.48
+anchor_right = 1.012
+anchor_bottom = 1.486
+offset_left = -1.82
+offset_top = 18.8
+offset_right = -2.07996
+offset_bottom = 32.14
+grow_horizontal = 2
+grow_vertical = 2
+text = "| Score:0/N/A  Breaks:0 |"
+label_settings = SubResource("LabelSettings_jll0a")
+horizontal_alignment = 3
+vertical_alignment = 1
+
+[node name="combo_group" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -33.28
+offset_top = -96.0
+offset_right = -33.28
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.8, 0.8)
+script = ExtResource("6_3klod")
+
+[node name="judgement" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_hnp6v")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit0" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_hnp6v")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit1" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_hnp6v")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit2" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_hnp6v")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="combo_digit3" type="Sprite2D" parent="combo_group"]
+script = ExtResource("7_hnp6v")
+metadata/_custom_type_script = "uid://cku7st80n16gp"
+metadata/velocity = Vector2(0, 0)
+metadata/acceleration = Vector2(0, 0)
+
+[node name="countdown" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="sprite" type="Sprite2D" parent="countdown"]
+visible = false
+position = Vector2(640, 360)
+scale = Vector2(0.7, 0.7)
+texture = SubResource("PlaceholderTexture2D_76xds")
+
+[node name="sound" type="AudioStreamPlayer" parent="countdown"]
+stream = ExtResource("8_xcdu3")
+max_polyphony = 5
+
+[node name="timer" type="Timer" parent="countdown"]
+one_shot = true
+
+[node name="judgement_counter" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -55.0
+offset_right = 165.0
+offset_bottom = 54.0
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_constants/line_separation = 5
+theme_override_fonts/normal_font = ExtResource("4_hngks")
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "[color=ffc266]Epic:[/color] 0
+[color=a0ffff]Sick[/color]: 0
+[color=9cffa4]Good:[/color] 0
+[color=db7487]Bad:[/color] 0
+[color=862739]Shit:[/color] 0
+[color=ba59ff]Missed:[/color] 0"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

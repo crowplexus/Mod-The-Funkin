@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c6hgxbdiwb6yn"]
+[gd_scene load_steps=9 format=3 uid="uid://c6hgxbdiwb6yn"]
 
 [ext_resource type="Script" uid="uid://btkq7ya33cm2w" path="res://scenes/menu/main_menu.gd" id="1_isoef"]
 [ext_resource type="Texture2D" uid="uid://d8uxfnyjvyij" path="res://assets/ui/menu/menuBG.png" id="1_nl8w3"]
@@ -6,7 +6,6 @@
 [ext_resource type="SpriteFrames" uid="uid://bajnb2cbquj4i" path="res://assets/ui/menu/main/freeplay.res" id="3_247la"]
 [ext_resource type="Texture2D" uid="uid://ciwp55vsaghii" path="res://assets/ui/menu/menuDesat.png" id="3_qgo02"]
 [ext_resource type="SpriteFrames" uid="uid://b0ocws475fvcc" path="res://assets/ui/menu/main/options.res" id="4_kiqgm"]
-[ext_resource type="SpriteFrames" uid="uid://d27drw7auebj0" path="res://assets/ui/menu/main/credits.res" id="5_hj162"]
 [ext_resource type="FontFile" uid="uid://ddfumfkyfy17s" path="res://assets/ui/fonts/vcr.ttf" id="6_xn6kt"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qgo02"]
@@ -61,25 +60,19 @@ alignment = 1
 vertical = true
 
 [node name="storymode" type="AnimatedSprite2D" parent="canvas_layer/ui/buttons"]
-position = Vector2(0, -184)
+position = Vector2(0, -136)
 sprite_frames = ExtResource("2_3rkf3")
 animation = &"storymode idle"
 
 [node name="freeplay" type="AnimatedSprite2D" parent="canvas_layer/ui/buttons"]
-position = Vector2(0, -40)
+position = Vector2(0, 8)
 sprite_frames = ExtResource("3_247la")
 animation = &"freeplay idle"
 
 [node name="options" type="AnimatedSprite2D" parent="canvas_layer/ui/buttons"]
-position = Vector2(0, 112)
+position = Vector2(0, 160)
 sprite_frames = ExtResource("4_kiqgm")
 animation = &"options idle"
-
-[node name="credits" type="AnimatedSprite2D" parent="canvas_layer/ui/buttons"]
-visible = false
-position = Vector2(0, 248)
-sprite_frames = ExtResource("5_hj162")
-animation = &"credits idle"
 
 [node name="color_rect" type="ColorRect" parent="canvas_layer/ui"]
 layout_mode = 1

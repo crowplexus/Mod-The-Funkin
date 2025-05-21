@@ -55,7 +55,7 @@ var vsync_mode: int = 0
 @export var hud_bump_intensity: int = 100: ## Defines the intensity of the HUD Bump.
 	set(new_bi): hud_bump_intensity = clampi(new_bi, 0, 100)
 
-@export_enum("Default", "Advanced", "Classic", "Psych")
+@export_enum("Default", "Classic", "Classic+", "Psych")
 var hud_style: String = "Default" ## Select a HUD style, or leave "Default" to let the songs decide.
 @export_enum("Column:0", "Judgement:1", "Quant:2")
 var note_color_mode: int = 0 ## Choose how the game deals with note colours.

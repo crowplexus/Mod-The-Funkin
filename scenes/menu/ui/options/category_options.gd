@@ -1,6 +1,9 @@
 @tool class_name CategoryOptions extends Resource
 
 @export var options: Array[OptionItem] = []
+@export var vertical_offset: float = 0.0 ## Vertical offset of the menu items.
+@export var horizontal_alignment: = HORIZONTAL_ALIGNMENT_CENTER ## Horizontal alignment for each of the menu entries.
+@export var vertical_alignment: = VERTICAL_ALIGNMENT_TOP ## Vertical alignment for each of the menu entries.
 
 func _init(p_options:Array[OptionItem] = []) -> void:
 	options = p_options

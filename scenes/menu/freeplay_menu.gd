@@ -119,8 +119,8 @@ func reload_song_items() -> void:
 	for song: SongItem in songs.list:
 		selectables.append(songs.find(song))
 		song_menu.items.append(song.name)
-	song_selected = selectables.front()
-	selected = selectables.find(song_selected) - 1
+	song_selected = 0
+	selected = 0
 	song_menu.regen_list()
 	change_selection()
 
