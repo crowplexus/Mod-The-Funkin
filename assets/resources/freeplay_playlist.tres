@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="SongPlaylist" load_steps=7 format=3 uid="uid://xqeend23c3cf"]
+[gd_resource type="Resource" script_class="SongPlaylist" load_steps=8 format=3 uid="uid://xqeend23c3cf"]
 
 [ext_resource type="Script" uid="uid://cfh5aidjsi5bg" path="res://scripts/song_item.gd" id="1_rxiwv"]
 [ext_resource type="Script" uid="uid://cb8wmjygxeh2h" path="res://scripts/song_playlist.gd" id="2_82lft"]
@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="Resource_rxiwv"]
 script = ExtResource("1_rxiwv")
 name = &"DadBattle (Pico Mix)"
-folder = "dadbattle/pico"
+folder = "BASE_GAME_SONGS/dadbattle/pico"
 difficulties = ["easy", "normal", "hard"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -14,7 +14,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_82lft"]
 script = ExtResource("1_rxiwv")
 name = &"Senpai (Pico Mix)"
-folder = "senpai/pico"
+folder = "BASE_GAME_SONGS/senpai/pico"
 difficulties = ["easy", "normal", "hard"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -22,7 +22,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_40uqr"]
 script = ExtResource("1_rxiwv")
 name = &"Test"
-folder = "test"
+folder = "BASE_GAME_SONGS/test"
 difficulties = ["normal"]
 visible = 3
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -30,14 +30,22 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_43k0c"]
 script = ExtResource("1_rxiwv")
 name = &"Endless (D-Sides)"
-folder = "endless-d"
+folder = "MODDED_SONGS/endless-d"
+difficulties = ["normal"]
+visible = 0
+metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
+
+[sub_resource type="Resource" id="Resource_y0ax8"]
+script = ExtResource("1_rxiwv")
+name = &"Skin on Skin"
+folder = "MODDED_SONGS/skin-on-skin"
 difficulties = ["normal"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 
 [resource]
 script = ExtResource("2_82lft")
-list = Array[ExtResource("1_rxiwv")]([SubResource("Resource_rxiwv"), SubResource("Resource_82lft"), SubResource("Resource_40uqr"), SubResource("Resource_43k0c")])
+list = Array[ExtResource("1_rxiwv")]([SubResource("Resource_rxiwv"), SubResource("Resource_82lft"), SubResource("Resource_40uqr"), SubResource("Resource_43k0c"), SubResource("Resource_y0ax8")])
 tagline = &"Unknown"
 campaign_difficulties = Array[String](["easy", "normal", "hard"])
 visible = 0

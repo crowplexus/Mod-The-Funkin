@@ -1,9 +1,12 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://p542pgi2pxxm"]
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://p542pgi2pxxm"]
 
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_j3pel"]
 resource_name = "LowPassFilter"
 cutoff_hz = 1000.0
 resonance = 0.3
+
+[sub_resource type="AudioEffectPitchShift" id="AudioEffectPitchShift_j3pel"]
+resource_name = "PitchShift"
 
 [resource]
 bus/1/name = &"Music"
@@ -14,6 +17,8 @@ bus/1/volume_db = 0.0
 bus/1/send = &"Master"
 bus/1/effect/0/effect = SubResource("AudioEffectLowPassFilter_j3pel")
 bus/1/effect/0/enabled = false
+bus/1/effect/1/effect = SubResource("AudioEffectPitchShift_j3pel")
+bus/1/effect/1/enabled = false
 bus/2/name = &"Sound Effects"
 bus/2/solo = false
 bus/2/mute = false

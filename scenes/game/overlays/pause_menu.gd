@@ -101,14 +101,12 @@ func confirm_selection() -> void:
 		"resume":
 			get_tree().paused = false
 			Conductor.toggle_pause_music(true)
-			if Gameplay.current:
-				Gameplay.current.set_modifiers()
+			if Gameplay.current: Gameplay.current.set_modifiers()
 			close()
 		"restart":
 			if game is Gameplay: game.restart_song()
 			get_tree().paused = false
-			if Gameplay.current:
-				Gameplay.current.set_modifiers()
+			if Gameplay.current: Gameplay.current.set_modifiers()
 			close()
 		"difficulty":
 			list = difficulties

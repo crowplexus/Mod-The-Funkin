@@ -1,7 +1,5 @@
 extends Node2D
 
-var credits_thing: PackedScene = load("uid://wh2umjjgf2f6")
-
 @onready var camera: Camera2D = $"camera_2d"
 @onready var bg: Sprite2D = $"bg_scroll/background"
 
@@ -90,16 +88,6 @@ func confirm_selection() -> void:
 		"options":
 			saw_copyright = true
 			Global.change_scene("uid://btno3m7xritu5")
-		"credits":
-			can_input = false
-			var display_credits: Control = credits_thing.instantiate()
-			hud.add_child(display_credits)
-			display_credits.label.position = get_viewport_rect().size * 0.005
-			display_credits.size = get_viewport_rect().size
-			display_credits.z_index = 500 # good enough.
-			await display_credits.tree_exited
-			can_input = true
-			default_confirm()
 		_:
 			default_confirm()
 

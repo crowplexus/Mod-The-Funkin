@@ -36,6 +36,7 @@ var rate: float = 1.0:
 	set(new_rate):
 		rate = new_rate
 		AudioServer.playback_speed_scale = new_rate
+		#AudioServer.get_bus_effect(1, 1).pitch_scale = new_rate
 		Engine.time_scale = new_rate
 ## Beat Length in seconds, calculated when setting the bpm.
 var crotchet: float = 0.0
@@ -66,6 +67,7 @@ func set_time(new_time: float = 0.0) -> void:
 	_prev_beat = current_beat
 	_prev_bar = current_bar
 	time = new_time
+	update_beats()
 
 func _ready() -> void:
 	set_process_input(false)
@@ -92,10 +94,13 @@ func update(new_time: float) -> void:
 	if bpm != ctc.bpm:
 		#print_debug("Changed BPM from ", bpm, " to ", ctc.bpm, " at timestamp ", time)
 		bpm = ctc.bpm
-	
 	var beat_dt: float = ctc.calculate_beat_delta(time - _prev_time)
 	current_bar += beat_dt * 4.0
 	current_beat += beat_dt
+	update_beats()
+	_prev_time = time
+
+func update_beats() -> void:
 	if floori(current_beat) > floori(_prev_beat):
 		for i: int in range(_prev_beat,current_beat):
 			on_beat_hit.emit(i)
@@ -104,7 +109,6 @@ func update(new_time: float) -> void:
 		for i: int in range(_prev_bar,current_bar):
 			on_bar_hit.emit(i)
 		_prev_bar = current_bar
-	_prev_time = time
 
 ## Syncs the Conductor's time to the bound music stream.
 func update_bound_music() -> void:

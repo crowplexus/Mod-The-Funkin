@@ -11,7 +11,7 @@
 [sub_resource type="Resource" id="Resource_fj5t8"]
 script = ExtResource("2_62nkd")
 name = &"Tutorial"
-folder = "tutorial"
+folder = "BASE_GAME_SONGS/tutorial"
 difficulties = ["easy", "normal", "hard"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -30,7 +30,7 @@ metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
 [sub_resource type="Resource" id="Resource_1pc23"]
 script = ExtResource("2_62nkd")
 name = &"Bopeebo"
-folder = "bopeebo"
+folder = "BASE_GAME_SONGS/bopeebo"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare", "flaccid"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -38,7 +38,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_fr5ij"]
 script = ExtResource("2_62nkd")
 name = &"Fresh"
-folder = "fresh"
+folder = "BASE_GAME_SONGS/fresh"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -46,7 +46,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_cpmq5"]
 script = ExtResource("2_62nkd")
 name = &"DadBattle"
-folder = "dadbattle"
+folder = "BASE_GAME_SONGS/dadbattle"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -65,7 +65,7 @@ metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
 [sub_resource type="Resource" id="Resource_pqc7o"]
 script = ExtResource("2_62nkd")
 name = &"Satin-Panties"
-folder = "satin-panties"
+folder = "BASE_GAME_SONGS/satin-panties"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -73,7 +73,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_vkjpr"]
 script = ExtResource("2_62nkd")
 name = &"High"
-folder = "high"
+folder = "BASE_GAME_SONGS/high"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -81,7 +81,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_vwi5a"]
 script = ExtResource("2_62nkd")
 name = &"M.I.L.F"
-folder = "milf"
+folder = "BASE_GAME_SONGS/milf"
 difficulties = ["easy", "normal", "hard"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -100,7 +100,7 @@ metadata/_custom_type_script = "uid://cb8wmjygxeh2h"
 [sub_resource type="Resource" id="Resource_sxkes"]
 script = ExtResource("2_62nkd")
 name = &"Senpai"
-folder = "senpai"
+folder = "BASE_GAME_SONGS/senpai"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -108,7 +108,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_yfyfi"]
 script = ExtResource("2_62nkd")
 name = &"Roses"
-folder = "roses"
+folder = "BASE_GAME_SONGS/roses"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
@@ -116,7 +116,7 @@ metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
 [sub_resource type="Resource" id="Resource_gcxdx"]
 script = ExtResource("2_62nkd")
 name = &"Thorns"
-folder = "thorns"
+folder = "BASE_GAME_SONGS/thorns"
 difficulties = ["easy", "normal", "hard", "erect", "nightmare"]
 visible = 0
 metadata/_custom_type_script = "uid://cfh5aidjsi5bg"
