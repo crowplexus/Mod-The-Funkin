@@ -23,7 +23,8 @@ var selected: int = 0
 var tween: Tween
 
 func _ready() -> void:
-	Conductor.rate = 1.0
+	Conductor.set_music_speed_scale(1.0)
+	Conductor.set_bgm_bus_pitch_rate(1.0)
 	Global.update_discord("Paused")
 	
 	var mlength: float = pause_music.stream.get_length()

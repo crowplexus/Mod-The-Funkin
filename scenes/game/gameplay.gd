@@ -184,10 +184,13 @@ func _ready() -> void:
 	if hud and hud.is_inside_tree():
 		hud.on_countdown_tick.connect(tick_scripts)
 	camera = get_viewport().get_camera_2d()
+	
+	set_modifiers()
 	restart_song()
 
 func set_modifiers() -> void:
-	Conductor.rate = Global.settings.playback_rate
+	Conductor.set_music_speed_scale(Global.settings.playback_rate)
+	Conductor.set_bgm_bus_pitch_rate(Global.settings.playback_pitch)
 	Conductor.toggle_music_looping(Global.settings.loop_game_music)
 	note_spawner.toggle_loop(Global.settings.loop_game_music)
 	player_botplay = Global.settings.botplay_mode
@@ -207,7 +210,6 @@ func kill_every_note(advancing: bool = false) -> void:
 	notes_that_spawned.clear()
 
 func restart_song() -> void:
-	set_modifiers()
 	starting = true
 	ending = false
 	Conductor.toggle_pause_music(false)
@@ -251,7 +253,8 @@ func play_countdown(offset: float = 0.0) -> void:
 
 func _exit_tree() -> void:
 	current = null
-	Conductor.rate = 1.0 # set to default after ending.
+	Conductor.set_music_speed_scale(1.0)
+	Conductor.set_bgm_bus_pitch_rate(1.0)
 	Conductor.bound_music.finished.disconnect(end_song)
 	Conductor.on_beat_hit.disconnect(on_beat_hit)
 	local_settings.unreference()

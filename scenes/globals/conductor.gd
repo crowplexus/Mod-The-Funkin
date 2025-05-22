@@ -32,12 +32,8 @@ var bpm: float = 100.0:
 		bpm = new_bpm
 		crotchet = 60.0 / new_bpm
 ## Audio Playback Speed rate.
-var rate: float = 1.0:
-	set(new_rate):
-		rate = new_rate
-		AudioServer.playback_speed_scale = new_rate
-		#AudioServer.get_bus_effect(1, 1).pitch_scale = new_rate
-		Engine.time_scale = new_rate
+var rate: float:
+	get: return Global.settings.playback_rate
 ## Beat Length in seconds, calculated when setting the bpm.
 var crotchet: float = 0.0
 ## List of Timing Changes.
@@ -144,6 +140,13 @@ func set_music_volume(volume_linear: float, stream: int = -1) -> void:
 			bound_music.volume_linear = volume_linear
 		else:
 			bound_music.stream.set_sync_stream_volume(stream, linear_to_db(volume_linear))
+
+func set_music_speed_scale(new_speed: float = 1.0) -> void:
+	if bound_music: bound_music.pitch_scale = new_speed
+
+## Sets the pitch scale of the background audio.
+func set_bgm_bus_pitch_rate(new_pitch: float = 1.0) -> void:
+	AudioServer.get_bus_effect(1, 1).pitch_scale = new_pitch
 
 ## Toggles whether the song should loop.
 func toggle_music_looping(value: bool = false) -> void:

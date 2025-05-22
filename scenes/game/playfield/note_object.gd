@@ -94,11 +94,15 @@ func reset_scroll() -> void:
 func get_total_speed() -> float:
 	var markplier: float = (Note.SM_SPEED_MULT if Note.USE_SM_SCROLL else 1.5)
 	var speed: float = strumline.speed * strumline.get_strum(column).speed
-	match Global.settings.note_speed_mode:
+	var mode: int = Global.settings.note_speed_mode
+	match mode:
 		2: speed = Global.settings.note_speed # Constant/C-Mod
 		1: speed = speed * Global.settings.note_speed # Multiplicative/A-Mod
 		3: speed = Global.settings.note_speed * (Conductor.bpm / 60.0) # BPM-Based/X-Mod
-	return (speed * markplier) / Conductor.rate
+	var ret: float = (speed * markplier)
+	if mode == 0 | 1:
+		if Conductor.rate < 1.0: ret /= Conductor.rate
+	return ret
 
 func scroll_ahead() -> void:
 	var note_speed: float = get_total_speed()#Conductor.bpm

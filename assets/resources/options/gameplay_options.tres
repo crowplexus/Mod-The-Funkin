@@ -8,6 +8,7 @@ script = ExtResource("1_neet2")
 name = "Scroll Direction"
 setting = "scroll"
 description = "Changes the direction the notes scroll to."
+link_url = ""
 min_value = 0.0
 max_value = 1.0
 num_step = 1.0
@@ -22,6 +23,7 @@ setting = "ghost_tapping"
 description = "Punishes you for pressing buttons when no notes are close to hit.
 'When silent\" makes it so it'll only be done for the strum that has notes incoming
 and when the note is getting close."
+link_url = ""
 min_value = 0.0
 max_value = 1.0
 num_step = 1.0
@@ -34,6 +36,7 @@ script = ExtResource("1_neet2")
 name = "Note Speed"
 setting = "note_speed"
 description = "Custom Speed for all the notes."
+link_url = ""
 min_value = 0.5
 max_value = 5.0
 num_step = 0.01
@@ -47,6 +50,7 @@ name = "Note Speed Mode"
 setting = "note_speed_mode"
 description = "Define how the game should handle note speed.
 Multiply means Chart Default + Custom"
+link_url = ""
 min_value = 0.0
 max_value = 1.0
 num_step = 1.0
@@ -59,6 +63,7 @@ script = ExtResource("1_neet2")
 name = "Show 'Epic' Judgement"
 setting = "use_epics"
 description = "Enables a 5th judgement, originally not in the game."
+link_url = ""
 min_value = 0.0
 max_value = 1.0
 num_step = 1.0
@@ -72,6 +77,7 @@ name = "Judge Difficulty"
 setting = "judge_difficulty"
 description = "Defines how tight it is to hit higher judgements timing-wise.
 4 is the baseline, the higher the number, the tighter."
+link_url = ""
 min_value = 1.0
 max_value = 9.0
 num_step = 1.0
@@ -82,4 +88,7 @@ metadata/_custom_type_script = "uid://bctik2b5hfsge"
 [resource]
 script = ExtResource("2_p26nq")
 options = Array[ExtResource("1_neet2")]([SubResource("Resource_0o7db"), SubResource("Resource_mj5yp"), SubResource("Resource_g6yst"), SubResource("Resource_xrfsu"), SubResource("Resource_lfnfb"), SubResource("Resource_neet2")])
+vertical_offset = 0.0
+horizontal_alignment = 1
+vertical_alignment = 0
 metadata/_custom_type_script = "uid://cwgaodxrdar5h"

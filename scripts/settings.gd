@@ -38,6 +38,7 @@ var ghost_tapping: int = 1
 @export_enum("Default:0", "Multiply Chart's:1", "User-Constant:2", "BPM-Based:3")
 var note_speed_mode: int = 0 ## How should notes deal with scroll speed?
 @export var playback_rate: float = 1.0 ## How fast/slow should the song be when playing.
+@export var playback_pitch: float = 1.0 ## How deep/soft should the song pitch be when playing.
 @export var botplay_mode: bool = false ## Disables inputs and makes the player hit notes automatically.
 @export var loop_game_music: bool = false ## Makes the song loop instead of end when playing.
 
